@@ -169,6 +169,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(IphoneAudioSupport);
 {
 	if(nil == url)
 	{
+		NSLog(@"Error: IphoneAudioSupport: Cannot open NULL file / url");
 		return nil;
 	}
 
@@ -373,18 +374,22 @@ done:
 
 - (NSURL*) urlForPath:(NSString*) path
 {
-	if([path characterAtIndex:0] != '/')
+	if(nil == path)
 	{
-		NSString* fullPath = [[NSBundle mainBundle] pathForResource:[[path pathComponents] lastObject] ofType:nil];
+		return nil;
+	}
+	NSString* fullPath = path;
+	if([fullPath characterAtIndex:0] != '/')
+	{
+		fullPath = [[NSBundle mainBundle] pathForResource:[[path pathComponents] lastObject] ofType:nil];
 		if(nil == fullPath)
 		{
 			NSLog(@"Error: IphoneAudioSupport: Could not find file %@", path);
 			return nil;
 		}
-		path = fullPath;
 	}
 	
-	return [NSURL fileURLWithPath:path];
+	return [NSURL fileURLWithPath:fullPath];
 }
 
 

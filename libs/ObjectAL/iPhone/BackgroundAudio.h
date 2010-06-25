@@ -56,6 +56,9 @@
 	 * Note: Only one asynchronous operation is allowed at a time.
 	 */
 	NSOperationQueue* operationQueue;
+
+	/** Keeps track of whether the player was playing when it got paused */
+	bool wasPlaying;
 }
 
 

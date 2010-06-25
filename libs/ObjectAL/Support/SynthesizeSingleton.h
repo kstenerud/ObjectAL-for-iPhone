@@ -5,6 +5,7 @@
 // Moved the swizzle code to allocWithZone so that non-default init methods may be
 // used to initialize the singleton.
 // Added "lesser" singleton which allows other instances besides sharedInstance to be created.
+// Added guard ifndef so that this file can be used in multiple library distributions.
 //
 //  Modified by CJ Hanson on 26/02/2010.
 //  This version of Matt's code uses method_setImplementaiton() to dynamically
@@ -21,6 +22,8 @@
 //  this copyright and permission notice. Attribution in compiled projects is
 //  appreciated but not required.
 //
+
+#ifndef SYNTHESIZE_SINGLETON_FOR_CLASS
 
 #import <objc/runtime.h>
 
@@ -329,3 +332,5 @@ static volatile __CLASSNAME__* _sharedInstance = nil;	\
 	CALL_LESSER_SINGLETON_INIT_METHOD_PRE(); \
 	_sharedInstance = [[self alloc] __INIT_CALL__];	\
 	CALL_LESSER_SINGLETON_INIT_METHOD_POST()
+
+#endif /* SYNTHESIZE_SINGLETON_FOR_CLASS */

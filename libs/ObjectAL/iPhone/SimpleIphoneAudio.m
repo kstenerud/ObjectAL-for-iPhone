@@ -218,6 +218,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 
 - (bool) preloadBg:(NSString*) filePath
 {
+	if(nil == filePath)
+	{
+		NSLog(@"Error: SimpleIphoneAudio: preloadBg: filePath was NULL");
+		return NO;
+	}
 	return [[BackgroundAudio sharedInstance] preloadFile:filePath];
 }
 
@@ -228,6 +233,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 
 - (bool) playBg:(NSString*) filePath loop:(bool) loop
 {
+	if(nil == filePath)
+	{
+		NSLog(@"Error: SimpleIphoneAudio: playBg: filePath was NULL");
+		return NO;
+	}
 	[BackgroundAudio sharedInstance].numberOfLoops = loop ? -1 : 0;
 	return [[BackgroundAudio sharedInstance] playFile:filePath];
 }
@@ -268,11 +278,21 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 
 - (void) preloadEffect:(NSString*) filePath
 {
+	if(nil == filePath)
+	{
+		NSLog(@"Error: SimpleIphoneAudio: preloadEffect: filePath was NULL");
+		return;
+	}
 	[self internalPreloadEffect:filePath];
 }
 
 - (void) unloadEffect:(NSString*) filePath
 {
+	if(nil == filePath)
+	{
+		NSLog(@"Error: SimpleIphoneAudio: unloadEffect: filePath was NULL");
+		return;
+	}
 	[preloadCache removeObjectForKey:filePath];
 }
 
@@ -288,6 +308,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 
 - (id<SoundSource>) playEffect:(NSString*) filePath volume:(float) volume pitch:(float) pitch pan:(float) pan loop:(bool) loop
 {
+	if(nil == filePath)
+	{
+		NSLog(@"Error: SimpleIphoneAudio: playEffect: filePath was NULL");
+		return NO;
+	}
 	ALBuffer* buffer = [self internalPreloadEffect:filePath];
 	if(nil != buffer)
 	{

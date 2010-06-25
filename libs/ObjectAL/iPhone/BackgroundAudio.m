@@ -242,9 +242,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 		paused = value;
 		if(paused)
 		{
+			wasPlaying = player.playing;
 			[player pause];
 		}
-		else
+		else if(wasPlaying)
 		{
 			[player play];
 		}
@@ -288,40 +289,46 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (bool) preloadUrl:(NSURL*) url
 {
+	if(nil == url)
+	{
+		NSLog(@"Error: BackgroundAudio: Cannot open NULL file / url");
+		return NO;
+	}
+
 	if(suspended)
 	{
 		NSLog(@"Error: BackgroundAudio: Could not load URL %@: Audio is still suspended", url);
 		return NO;
 	}
 	
-	[self stop];
-	
 	// Only load if it's not the same URL as last time.
 	if(![url isEqual:currentlyLoadedUrl])
 	{
+		[player stop];
 		[player release];
 		NSError* error;
 		player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
-		if(nil == error)
+		if(nil != error)
 		{
-			player.volume = gain;
-			player.numberOfLoops = numberOfLoops;
-			player.meteringEnabled = meteringEnabled;
-
-#if TARGET_IPHONE_SIMULATOR
-			player.delegate = self;
-#else /* TARGET_IPHONE_SIMULATOR */
-			player.delegate = delegate;
-#endif /* TARGET_IPHONE_SIMULATOR */
-
-			currentlyLoadedUrl = [url retain];
-			return [player prepareToPlay];
+			NSLog(@"Error: BackgroundAudio: Could not load URL %@: %@", url, [error localizedDescription]);
+			return NO;
 		}
-		NSLog(@"Error: BackgroundAudio: Could not load URL %@: %@", url, [error localizedDescription]);
-		return NO;
-	}
 
-	return YES;
+		player.volume = gain;
+		player.numberOfLoops = numberOfLoops;
+		player.meteringEnabled = meteringEnabled;
+		
+#if TARGET_IPHONE_SIMULATOR
+		player.delegate = self;
+#else /* TARGET_IPHONE_SIMULATOR */
+		player.delegate = delegate;
+#endif /* TARGET_IPHONE_SIMULATOR */
+		
+		currentlyLoadedUrl = [url retain];
+	}
+	
+	player.currentTime = 0;
+	return [player prepareToPlay];
 }
 
 - (bool) preloadFile:(NSString*) path
@@ -372,6 +379,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 		NSLog(@"Error: BackgroundAudio: Could not play: Audio is still suspended");
 		return NO;
 	}
+	player.currentTime = 0;
 	player.volume = gain;
 	player.numberOfLoops = numberOfLoops;
 	return [player play];
@@ -388,6 +396,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 #endif /* TARGET_IPHONE_SIMULATOR */
 	}
 	paused = NO;
+	wasPlaying = NO;
 }
 
 - (void) clear
