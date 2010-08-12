@@ -71,6 +71,12 @@
 {
 	[context notifySourceDeallocating:self];
 	
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper sourceStop:sourceId];
+		[ALWrapper sourcei:sourceId parameter:AL_BUFFER value:AL_NONE];
+	}
+
 	[buffer release];
 
 	@synchronized([ObjectAL sharedInstance])
