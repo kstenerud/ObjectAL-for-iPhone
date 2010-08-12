@@ -185,7 +185,7 @@
 
 - (void) setDirection:(ALVector) value
 {
-	SYNCHRONIZED_OP(self)
+	SYNCHRONIZED_OP_WITH_STRUCT(self)
 	{
 		[ALWrapper source3f:sourceId parameter:AL_DIRECTION v1:value.x v2:value.y v3:value.z];
 	}
@@ -403,7 +403,7 @@
 
 - (void) setPosition:(ALPoint) value
 {
-	SYNCHRONIZED_OP(self)
+	SYNCHRONIZED_OP_WITH_STRUCT(self)
 	{
 		[ALWrapper source3f:sourceId parameter:AL_POSITION v1:value.x v2:value.y v3:value.z];
 	}
@@ -513,7 +513,7 @@
 
 - (void) setVelocity:(ALVector) value
 {
-	SYNCHRONIZED_OP(self)
+	SYNCHRONIZED_OP_WITH_STRUCT(self)
 	{
 		[ALWrapper source3f:sourceId parameter:AL_VELOCITY v1:value.x v2:value.y v3:value.z];
 	}

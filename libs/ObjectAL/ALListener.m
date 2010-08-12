@@ -104,7 +104,7 @@
 
 - (void) setOrientation:(ALOrientation) value
 {
-	SYNCHRONIZED_OP(self)
+	SYNCHRONIZED_OP_WITH_STRUCT(self)
 	{
 		[ALWrapper listenerfv:AL_ORIENTATION values:(float*)&value];
 	}
@@ -122,7 +122,7 @@
 
 - (void) setPosition:(ALPoint) value
 {
-	SYNCHRONIZED_OP(self)
+	SYNCHRONIZED_OP_WITH_STRUCT(self)
 	{
 		[ALWrapper listener3f:AL_POSITION v1:value.x v2:value.y v3:value.z];
 	}
@@ -140,7 +140,7 @@
 
 - (void) setVelocity:(ALVector) value
 {
-	SYNCHRONIZED_OP(self)
+	SYNCHRONIZED_OP_WITH_STRUCT(self)
 	{
 		[ALWrapper listener3f:AL_VELOCITY v1:value.x v2:value.y v3:value.z];
 	}

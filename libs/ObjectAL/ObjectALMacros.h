@@ -44,6 +44,20 @@
 
 
 #pragma mark -
+#pragma mark OBJECTAL_CLANG_LLVM_BUG_WORKAROUND
+
+#if OBJECTAL_CLANG_LLVM_BUG_WORKAROUND && __clang__
+
+#define SYNCHRONIZED_OP_WITH_STRUCT(A)
+
+#else
+
+#define SYNCHRONIZED_OP_WITH_STRUCT(A) SYNCHRONIZED_OP(A)
+
+#endif /* OBJECTAL_CLANG_LLVM_BUG_WORKAROUND */
+
+
+#pragma mark -
 #pragma mark Logging
 
 #if OBJECTAL_CFG_LOG_ERRORS

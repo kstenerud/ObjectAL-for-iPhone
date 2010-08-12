@@ -155,7 +155,7 @@
 
 - (void) setDirection:(ALVector) value
 {
-	SYNCHRONIZED_OP(self)
+	SYNCHRONIZED_OP_WITH_STRUCT(self)
 	{
 		direction = value;
 		for(id<SoundSource> source in sourcePool.sources)
@@ -370,7 +370,7 @@
 
 - (void) setPosition:(ALPoint) value
 {
-	SYNCHRONIZED_OP(self)
+	SYNCHRONIZED_OP_WITH_STRUCT(self)
 	{
 		position = value;
 		for(id<SoundSource> source in sourcePool.sources)
@@ -482,7 +482,7 @@
 
 - (void) setVelocity:(ALVector) value
 {
-	SYNCHRONIZED_OP(self)
+	SYNCHRONIZED_OP_WITH_STRUCT(self)
 	{
 		velocity = value;
 		for(id<SoundSource> source in sourcePool.sources)
