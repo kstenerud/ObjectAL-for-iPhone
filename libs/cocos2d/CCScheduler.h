@@ -143,7 +143,7 @@ struct _hashUpdateEntry;
 
  @since v0.99.3
  */
--(void) scheduleSelector:(SEL)selector forTarget:(id)target interval:(float)interval paused:(BOOL)paused;
+-(void) scheduleSelector:(SEL)selector forTarget:(id)target interval:(ccTime)interval paused:(BOOL)paused;
 
 /** Schedules the 'update' selector for a given target with a given priority.
  The 'update' selector will be called every frame.
@@ -196,13 +196,13 @@ struct _hashUpdateEntry;
  
  @deprecated Use scheduleSelector:forTarget:interval:paused instead. Will be removed in 1.0
  */
--(void) scheduleTimer: (CCTimer*) timer __attribute__((deprecated));
+-(void) scheduleTimer: (CCTimer*) timer DEPRECATED_ATTRIBUTE;
 
 /** unschedules an already scheduled Timer
  
  @deprecated Use unscheduleSelector:forTarget. Will be removed in v1.0
  */
--(void) unscheduleTimer: (CCTimer*) timer __attribute__((deprecated));
+-(void) unscheduleTimer: (CCTimer*) timer DEPRECATED_ATTRIBUTE;
 
 /** unschedule all timers.
  You should NEVER call this method, unless you know what you are doing.
@@ -210,5 +210,5 @@ struct _hashUpdateEntry;
  @deprecated Use scheduleAllSelectors instead. Will be removed in 1.0
  @since v0.8
  */
--(void) unscheduleAllTimers __attribute__ ((deprecated));
+-(void) unscheduleAllTimers DEPRECATED_ATTRIBUTE;
 @end

@@ -12,7 +12,7 @@
 	unsigned int seedValue;
 }
 /** The current seed value being used */
-@property(readwrite,assign) unsigned int seedValue;
+@property(nonatomic,readwrite,assign) unsigned int seedValue;
 
 SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(RNG);
 

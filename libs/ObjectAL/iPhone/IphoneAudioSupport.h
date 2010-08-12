@@ -57,6 +57,16 @@
 	bool handleInterruptions;
 	/** If true, audio was suspended by an interrupt (such as a phone call) */
 	bool suspendedByInterrupt;
+	
+	/** Dictionary mapping audio session error codes to human readable descriptions.
+	 * Key: NSNumber, Value: NSString
+	 */
+	NSDictionary* audioSessionErrorCodes;
+
+	/** Dictionary mapping ExtAudio error codes to human readable descriptions.
+	 * Key: NSNumber, Value: NSString
+	 */
+	NSDictionary* extAudioErrorCodes;
 }
 
 
@@ -140,6 +150,22 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(IphoneAudioSupport);
 
 
 #pragma mark Internal Use
+
+/** (INTERNAL USE) Log an error if the specified AudioSession error code indicates an error.
+ *
+ * @param errorCode: The error code returned from an OS call.
+ * @param function: The function name where the error occurred.
+ * @param description: A printf-style description of what happened.
+ */
+- (void) logAudioSessionError:(OSStatus)errorCode function:(const char*) function description:(NSString*) description, ...;
+
+/** (INTERNAL USE) Log an error if the specified ExtAudio error code indicates an error.
+ *
+ * @param errorCode: The error code returned from an OS call.
+ * @param function: The function name where the error occurred.
+ * @param description: A printf-style description of what happened.
+ */
+- (void) logExtAudioError:(OSStatus)errorCode function:(const char*) function description:(NSString*) description, ...;
 
 /** (INTERNAL USE) Used by the interrupt handler to suspend audio
  * (if interrupts are enabled).

@@ -24,9 +24,9 @@
  */
 
 #import "CCTextureCache.h"
+#import "CCTexture2D.h"
 #import "ccMacros.h"
 #import "CCDirector.h"
-#import "CCTexture2D.h"
 #import "Support/CCFileUtils.h"
 
 static EAGLContext *auxEAGLcontext = nil;
@@ -187,9 +187,28 @@ static CCTextureCache *sharedTextureCache;
 		// Split up directory and filename
 		NSString *fullpath = [CCFileUtils fullPathFromRelativePath: path ];
 
+		NSString *lowerCase = [path lowercaseString];
 		// all images are handled by UIImage except PVR extension that is handled by our own handler
-		if ( [[path lowercaseString] hasSuffix:@".pvr"] )
+		if ( [lowerCase hasSuffix:@".pvr"] )
 			tex = [self addPVRTCImage:fullpath];
+		
+		// Issue #886: TEMPORARY FIX FOR TRANSPARENT JPEGS IN IOS4
+		else if ( [lowerCase hasSuffix:@".jpg"] || [lowerCase hasSuffix:@".jpeg"]) {
+			// convert jpg to png before loading the texture
+			UIImage *jpg = [[UIImage alloc] initWithContentsOfFile:fullpath];
+			UIImage *png = [[UIImage alloc] initWithData:UIImagePNGRepresentation(jpg)];
+			tex = [ [CCTexture2D alloc] initWithImage: png ];
+			[png release];
+			[jpg release];
+			
+			if( tex )
+				[textures setObject: tex forKey:path];
+			else
+				CCLOG(@"cocos2d: Couldn't add image:%@ in CCTextureCache", path);
+			
+			[tex release];
+		}
+
 		else {
 
 			// prevents overloading the autorelease pool
@@ -311,4 +330,13 @@ static CCTextureCache *sharedTextureCache;
 	for( NSUInteger i = 0; i < [keys count]; i++ )
 		[textures removeObjectForKey:[keys objectAtIndex:i]];
 }
+
+-(void) removeTextureForKey:(NSString*)name
+{
+	if( ! name )
+		return;
+	
+	[textures removeObjectForKey:name];
+}
+
 @end

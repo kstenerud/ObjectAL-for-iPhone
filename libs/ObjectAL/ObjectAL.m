@@ -25,6 +25,7 @@
 //
 
 #import "ObjectAL.h"
+#import "ObjectALMacros.h"
 #import "ALWrapper.h"
 #import "MutableArray-WeakReferences.h"
 
@@ -67,14 +68,23 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(ObjectAL);
 	return [ALWrapper getNullSeparatedStringList:nil attribute:ALC_DEVICE_SPECIFIER];
 }
 
-@synthesize currentContext;
+- (ALContext*) currentContext
+{
+	SYNCHRONIZED_OP(self)
+	{
+		return currentContext;
+	}
+}
 
 - (void) setCurrentContext:(ALContext *) context
 {
-	if(context != currentContext)
+	SYNCHRONIZED_OP(self)
 	{
-		currentContext = context;
-		[ALWrapper makeContextCurrent:context.context];
+		if(context != currentContext)
+		{
+			currentContext = context;
+			[ALWrapper makeContextCurrent:context.context];
+		}
 	}
 }
 
@@ -92,12 +102,18 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(ObjectAL);
 
 - (ALdouble) mixerOutputFrequency
 {
-	return [ALWrapper getMixerOutputDataRate];
+	SYNCHRONIZED_OP(self)
+	{
+		return [ALWrapper getMixerOutputDataRate];
+	}
 }
 
 - (void) setMixerOutputFrequency:(ALdouble) frequency
 {
-	[ALWrapper setMixerOutputDataRate:frequency];
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper setMixerOutputDataRate:frequency];
+	}
 }
 
 
@@ -105,48 +121,59 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(ObjectAL);
 
 - (void) clearAllBuffers
 {
-	for(ALDevice* device in devices)
+	SYNCHRONIZED_OP(self)
 	{
-		[device clearBuffers];
+		for(ALDevice* device in devices)
+		{
+			[device clearBuffers];
+		}
 	}
 }
 
-
 #pragma mark Internal Use
 
-@synthesize suspended;
+- (bool) suspended
+{
+	SYNCHRONIZED_OP(self)
+	{
+		return suspended;
+	}
+}
 
 - (void) setSuspended:(bool) value
 {
-	if(value != suspended)
+	SYNCHRONIZED_OP(self)
 	{
-		suspended = value;
-		if(suspended)
+		if(value != suspended)
 		{
-			[ALWrapper makeContextCurrent:nil];
-			for(ALDevice* device in devices)
+			suspended = value;
+			if(suspended)
 			{
-				for(ALContext* context in device.contexts)
+				[ALWrapper makeContextCurrent:nil];
+				for(ALDevice* device in devices)
 				{
-					if(!context.suspended)
+					for(ALContext* context in device.contexts)
 					{
-						[suspendedContexts addObject:context];
-						[ALWrapper suspendContext:context.context];
+						if(!context.suspended)
+						{
+							[suspendedContexts addObject:context];
+							[ALWrapper suspendContext:context.context];
+						}
 					}
 				}
 			}
-		}
-		else
-		{
-			for(ALContext* context in suspendedContexts)
+			else
 			{
-				[ALWrapper makeContextCurrent:context.context];
-				[context process];
-			}
-			[suspendedContexts removeAllObjects];
-			if(nil != currentContext)
-			{
-				[ALWrapper makeContextCurrent:currentContext.context];
+				for(ALContext* context in suspendedContexts)
+				{
+					[ALWrapper makeContextCurrent:context.context];
+					[context process];
+				}
+				[suspendedContexts removeAllObjects];
+				if(nil != currentContext)
+				{
+					[ALWrapper makeContextCurrent:currentContext.context];
+				}
 			}
 		}
 	}
@@ -154,12 +181,18 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(ObjectAL);
 
 - (void) notifyDeviceInitializing:(ALDevice*) device
 {
-	[devices addObject:device];
+	SYNCHRONIZED_OP(self)
+	{
+		[devices addObject:device];
+	}
 }
 
 - (void) notifyDeviceDeallocating:(ALDevice*) device
 {
-	[devices removeObject:device];
+	SYNCHRONIZED_OP(self)
+	{
+		[devices removeObject:device];
+	}
 }
 
 @end

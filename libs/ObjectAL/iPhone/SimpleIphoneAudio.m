@@ -25,6 +25,7 @@
 //
 
 #import "SimpleIphoneAudio.h"
+#import "ObjectALMacros.h"
 #import "BackgroundAudio.h"
 #import "IphoneAudioSupport.h"
 
@@ -91,40 +92,49 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 
 - (void) dealloc
 {
-#if TARGET_IPHONE_SIMULATOR
-	// Any allocated AVAudioPlayer MUST be playing while OpenAL is being shut down
-	// or else the simulator will lag for a LOONG time.
-	[[BackgroundAudio sharedInstance] handleSimulatorEndPlaybackBug];
-#endif /* TARGET_IPHONE_SIMULATOR */
+	[[BackgroundAudio sharedInstance] clear];
 	[channel stop];
 	[channel release];
 	[preloadCache release];
 	[context release];
 	[device release];
-	[[BackgroundAudio sharedInstance] clear];
 	
 	[super dealloc];
 }
 
 #pragma mark Properties
 
+- (NSUInteger) preloadCacheCount
+{
+	SYNCHRONIZED_OP(self)
+	{
+		return [preloadCache count];
+	}
+}
+
 - (bool) preloadCacheEnabled
 {
-	return nil != preloadCache;
+	SYNCHRONIZED_OP(self)
+	{
+		return nil != preloadCache;
+	}
 }
 
 - (void) setPreloadCacheEnabled:(bool) value
 {
-	if(value != self.preloadCacheEnabled)
+	SYNCHRONIZED_OP(self)
 	{
-		if(value)
+		if(value != self.preloadCacheEnabled)
 		{
-			preloadCache = [[NSMutableDictionary dictionaryWithCapacity:50] retain];
-		}
-		else
-		{
-			[preloadCache release];
-			preloadCache = nil;
+			if(value)
+			{
+				preloadCache = [[NSMutableDictionary dictionaryWithCapacity:50] retain];
+			}
+			else
+			{
+				[preloadCache release];
+				preloadCache = nil;
+			}
 		}
 	}
 }
@@ -161,10 +171,20 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 
 - (void) setBgVolume:(float) value
 {
-	if(!muted)
+	SYNCHRONIZED_OP(self)
 	{
 		[BackgroundAudio sharedInstance].gain = value;
 	}
+}
+
+- (bool) effectsPaused
+{
+	return channel.paused;
+}
+
+- (void) setEffectsPaused:(bool) value
+{
+	channel.paused = value;
 }
 
 - (float) effectsVolume
@@ -174,9 +194,25 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 
 - (void) setEffectsVolume:(float) value
 {
-	if(!muted)
+	SYNCHRONIZED_OP(self)
 	{
 		[ObjectAL sharedInstance].currentContext.listener.gain = value;
+	}
+}
+
+- (bool) paused
+{
+	SYNCHRONIZED_OP(self)
+	{
+		return self.effectsPaused && self.bgPaused;
+	}
+}
+
+- (void) setPaused:(bool) value
+{
+	SYNCHRONIZED_OP(self)
+	{
+		self.effectsPaused = self.bgPaused = value;
 	}
 }
 
@@ -190,29 +226,57 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 	[BackgroundAudio sharedInstance].honorSilentSwitch = value;
 }
 
-@synthesize muted;
-
-- (void) setMuted:(bool) value
+- (bool) bgMuted
 {
-	if(value != muted)
+	SYNCHRONIZED_OP(self)
 	{
-		muted = value;
-		if(muted)
-		{
-			bgVolumeOnMute = [BackgroundAudio sharedInstance].gain;
-			[BackgroundAudio sharedInstance].gain = 0;
-
-			effectsVolumeOnMute = [ObjectAL sharedInstance].currentContext.listener.gain;
-			[ObjectAL sharedInstance].currentContext.listener.gain = 0;
-		}
-		else
-		{
-			[BackgroundAudio sharedInstance].gain = bgVolumeOnMute;
-			[ObjectAL sharedInstance].currentContext.listener.gain = effectsVolumeOnMute;
-		}
+		return bgMuted;
 	}
 }
 
+- (void) setBgMuted:(bool) value
+{
+	SYNCHRONIZED_OP(self)
+	{
+		bgMuted = value;
+		[BackgroundAudio sharedInstance].muted = bgMuted | muted;
+	}
+}
+
+- (bool) effectsMuted
+{
+	SYNCHRONIZED_OP(self)
+	{
+		return effectsMuted;
+	}
+}
+
+- (void) setEffectsMuted:(bool) value
+{
+	SYNCHRONIZED_OP(self)
+	{
+		effectsMuted = value;
+		[ObjectAL sharedInstance].currentContext.listener.muted = effectsMuted | muted;
+	}
+}
+
+- (bool) muted
+{
+	SYNCHRONIZED_OP(self)
+	{
+		return muted;
+	}
+}
+
+- (void) setMuted:(bool) value
+{
+	SYNCHRONIZED_OP(self)
+	{
+		muted = value;
+		[BackgroundAudio sharedInstance].muted = bgMuted | muted;
+		[ObjectAL sharedInstance].currentContext.listener.muted = effectsMuted | muted;
+	}
+}	
 
 #pragma mark Background Music
 
@@ -220,7 +284,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 {
 	if(nil == filePath)
 	{
-		NSLog(@"Error: SimpleIphoneAudio: preloadBg: filePath was NULL");
+		LOG_ERROR(@"filePath was NULL");
 		return NO;
 	}
 	return [[BackgroundAudio sharedInstance] preloadFile:filePath];
@@ -235,11 +299,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 {
 	if(nil == filePath)
 	{
-		NSLog(@"Error: SimpleIphoneAudio: playBg: filePath was NULL");
+		LOG_ERROR(@"filePath was NULL");
 		return NO;
 	}
-	[BackgroundAudio sharedInstance].numberOfLoops = loop ? -1 : 0;
-	return [[BackgroundAudio sharedInstance] playFile:filePath];
+	return [[BackgroundAudio sharedInstance] playFile:filePath loops:loop ? -1 : 0];
 }
 
 - (bool) playBg
@@ -249,8 +312,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 
 - (bool) playBgWithLoop:(bool) loop
 {
-	[BackgroundAudio sharedInstance].numberOfLoops = loop ? -1 : 0;
-	return [[BackgroundAudio sharedInstance] play];
+	SYNCHRONIZED_OP(self)
+	{
+		[BackgroundAudio sharedInstance].numberOfLoops = loop ? -1 : 0;
+		return [[BackgroundAudio sharedInstance] play];
+	}
 }
 
 - (void) stopBg
@@ -263,24 +329,34 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 
 - (ALBuffer*) internalPreloadEffect:(NSString*) filePath
 {
-	if(self.preloadCacheEnabled)
+	ALBuffer* buffer;
+	SYNCHRONIZED_OP(self)
 	{
-		ALBuffer* buffer = [preloadCache objectForKey:filePath];
+		buffer = [preloadCache objectForKey:filePath];
+	}
+	if(nil == buffer)
+	{
+		buffer = [[IphoneAudioSupport sharedInstance] bufferFromFile:filePath];
 		if(nil == buffer)
 		{
-			buffer = [[IphoneAudioSupport sharedInstance] bufferFromFile:filePath];
+			LOG_ERROR(@"Could not load effect %@", filePath);
+			return nil;
+		}
+
+		SYNCHRONIZED_OP(self)
+		{
 			[preloadCache setObject:buffer forKey:filePath];
 		}
-		return buffer;
 	}
-	return nil;
+
+	return buffer;
 }
 
 - (void) preloadEffect:(NSString*) filePath
 {
 	if(nil == filePath)
 	{
-		NSLog(@"Error: SimpleIphoneAudio: preloadEffect: filePath was NULL");
+		LOG_ERROR(@"filePath was NULL");
 		return;
 	}
 	[self internalPreloadEffect:filePath];
@@ -290,27 +366,38 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 {
 	if(nil == filePath)
 	{
-		NSLog(@"Error: SimpleIphoneAudio: unloadEffect: filePath was NULL");
+		LOG_ERROR(@"filePath was NULL");
 		return;
 	}
-	[preloadCache removeObjectForKey:filePath];
+	SYNCHRONIZED_OP(self)
+	{
+		[preloadCache removeObjectForKey:filePath];
+	}
 }
 
 - (void) unloadAllEffects
 {
-	[preloadCache removeAllObjects];
+	SYNCHRONIZED_OP(self)
+	{
+		[preloadCache removeAllObjects];
+	}
 }
 
 - (id<SoundSource>) playEffect:(NSString*) filePath
 {
-	return [self playEffect:filePath volume:1.0 pitch:1.0 pan:1.0 loop:NO];
+	return [self playEffect:filePath volume:1.0 pitch:1.0 pan:0.0 loop:NO];
+}
+
+- (id<SoundSource>) playEffect:(NSString*) filePath loop:(bool) loop
+{
+	return [self playEffect:filePath volume:1.0 pitch:1.0 pan:0.0 loop:loop];
 }
 
 - (id<SoundSource>) playEffect:(NSString*) filePath volume:(float) volume pitch:(float) pitch pan:(float) pan loop:(bool) loop
 {
 	if(nil == filePath)
 	{
-		NSLog(@"Error: SimpleIphoneAudio: playEffect: filePath was NULL");
+		LOG_ERROR(@"filePath was NULL");
 		return NO;
 	}
 	ALBuffer* buffer = [self internalPreloadEffect:filePath];

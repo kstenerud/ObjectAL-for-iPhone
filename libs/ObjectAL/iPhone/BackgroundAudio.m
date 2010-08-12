@@ -26,6 +26,7 @@
 
 #import "BackgroundAudio.h"
 #import <AudioToolbox/AudioToolbox.h>
+#import "ObjectALMacros.h"
 #import "IphoneAudioSupport.h"
 
 
@@ -95,16 +96,39 @@
  */
 @interface AsyncPlayOperation : AsyncAudioOperation
 {
+	NSInteger loops;
 }
+
++ (id) operationWithUrl:(NSURL*) url loops:(NSInteger) loops target:(id) target selector:(SEL) selector;
+- (id) initWithUrl:(NSURL*) url loops:(NSInteger) loops target:(id) target selector:(SEL) selector;
 
 @end
 
 
 @implementation AsyncPlayOperation
 
++ (id) operationWithUrl:(NSURL*) url loops:(NSInteger) loops target:(id) target selector:(SEL) selector
+{
+	return [[[self alloc] initWithUrl:url loops:loops target:target selector:selector] autorelease];
+}
+
+- (id) initWithUrl:(NSURL*) urlIn loops:(NSInteger) loopsIn target:(id) targetIn selector:(SEL) selectorIn
+{
+	if(nil != (self = [super initWithUrl:urlIn target:targetIn selector:selectorIn]))
+	{
+		loops = loopsIn;
+	}
+	return self;
+}
+
+- (id) initWithUrl:(NSURL*) urlIn target:(id) targetIn selector:(SEL) selectorIn
+{
+	return [self initWithUrl:urlIn loops:0 target:targetIn selector:selectorIn];
+}
+
 - (void)main
 {
-	[[BackgroundAudio sharedInstance] playUrl:url];
+	[[BackgroundAudio sharedInstance] playUrl:url loops:loops];
 	[target performSelectorOnMainThread:selector withObject:nil waitUntilDone:NO];
 }
 
@@ -157,6 +181,30 @@
  */
 - (void) updateAudioMode;
 
+
+#if TARGET_IPHONE_SIMULATOR && OBJECTAL_CFG_SIMULATOR_BUG_WORKAROUND
+
+/** If the background music playback on the simulator ends (or is stopped), it mutes
+ * OpenAL audio.  This method works around the issue by putting the player into looped
+ * playback mode with volume set to 0 until the next instruction is received.
+ */
+- (void) simulatorBugWorkaroundHoldPlayer;
+
+/** Part of the simulator bug workaround
+ */
+- (void) simulatorBugWorkaroundRestorePlayer;
+
+
+#define SIMULATOR_BUG_WORKAROUND_PREPARE_PLAYBACK() [self simulatorBugWorkaroundRestorePlayer]
+#define SIMULATOR_BUG_WORKAROUND_END_PLAYBACK() [self simulatorBugWorkaroundHoldPlayer]
+
+#else /* TARGET_IPHONE_SIMULATOR && OBJECTAL_CFG_SIMULATOR_BUG_WORKAROUND */
+
+#define SIMULATOR_BUG_WORKAROUND_PREPARE_PLAYBACK()
+#define SIMULATOR_BUG_WORKAROUND_END_PLAYBACK()
+
+#endif /* TARGET_IPHONE_SIMULATOR && OBJECTAL_CFG_SIMULATOR_BUG_WORKAROUND */
+
 @end
 
 #pragma mark -
@@ -176,7 +224,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 		operationQueue.maxConcurrentOperationCount = 1;
 		gain = 1.0;
 		numberOfLoops = 0;
-		allowIpod = NO;
+		allowIpod = YES;
 		honorSilentSwitch = YES;
 		[self updateAudioMode];
 	}
@@ -188,76 +236,150 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 	[operationQueue release];
 	[currentlyLoadedUrl release];
 	[player release];
+	[simulatorPlayerRef release];
 	[super dealloc];
 }
 
 
 #pragma mark Properties
 
-@synthesize allowIpod;
+- (bool) allowIpod
+{
+	SYNCHRONIZED_OP(self)
+	{
+		return allowIpod;
+	}
+}
 
 - (void) setAllowIpod:(bool) value
 {
-	allowIpod = value;
-	[self updateAudioMode];
+	SYNCHRONIZED_OP(self)
+	{
+		allowIpod = value;
+		[self updateAudioMode];
+	}
 }
 
 @synthesize currentlyLoadedUrl;
 
-@synthesize delegate;
+- (id<AVAudioPlayerDelegate>) delegate
+{
+	SYNCHRONIZED_OP(self)
+	{
+		return delegate;
+	}
+}
 
 - (void) setDelegate:(id<AVAudioPlayerDelegate>) value
 {
-	player.delegate = delegate = value;
+	SYNCHRONIZED_OP(self)
+	{
+		player.delegate = delegate = value;
+	}
 }
 
-@synthesize gain;
+- (float) gain
+{
+	SYNCHRONIZED_OP(self)
+	{
+		return gain;
+	}
+}
 
 - (void) setGain:(float) value
 {
-	player.volume = gain = value;
+	SYNCHRONIZED_OP(self)
+	{
+		gain = value;
+		if(muted)
+		{
+			value = 0;
+		}
+		player.volume = value;
+	}
 }
 
-@synthesize honorSilentSwitch;
+- (bool) muted
+{
+	SYNCHRONIZED_OP(self)
+	{
+		return muted;
+	}
+}
+
+- (void) setMuted:(bool) value
+{
+	SYNCHRONIZED_OP(self)
+	{
+		muted = value;
+		float resultingGain = muted ? 0 : gain;
+		player.volume = resultingGain;
+	}
+}
+
+- (bool) honorSilentSwitch
+{
+	SYNCHRONIZED_OP(self)
+	{
+		return honorSilentSwitch;
+	}
+}
 
 - (void) setHonorSilentSwitch:(bool) value
 {
-	honorSilentSwitch = value;
-	[self updateAudioMode];
+	SYNCHRONIZED_OP(self)
+	{
+		honorSilentSwitch = value;
+		[self updateAudioMode];
+	}
 }
 
-@synthesize numberOfLoops;
+- (NSInteger) numberOfLoops
+{
+	SYNCHRONIZED_OP(self)
+	{
+		return numberOfLoops;
+	}
+}
 
 - (void) setNumberOfLoops:(NSInteger) value
 {
-	player.numberOfLoops = numberOfLoops = value;
+	SYNCHRONIZED_OP(self)
+	{
+		player.numberOfLoops = numberOfLoops = value;
+	}
 }
 
-@synthesize paused;
+- (bool) paused
+{
+	SYNCHRONIZED_OP(self)
+	{
+		return paused;
+	}
+}
 
 - (void) setPaused:(bool) value
 {
-	if(paused != value)
+	SYNCHRONIZED_OP(self)
 	{
-		paused = value;
-		if(paused)
+		if(paused != value)
 		{
-			wasPlaying = player.playing;
-			[player pause];
-		}
-		else if(wasPlaying)
-		{
-			[player play];
+			paused = value;
+			if(paused)
+			{
+				[player pause];
+			}
+			else if(playing)
+			{
+				[player play];
+			}
 		}
 	}
 }
 
 @synthesize player;
 
-- (bool) playing
-{
-	return player.playing;
-}
+@synthesize playing;
 
 - (bool) ipodPlaying
 {
@@ -266,22 +388,34 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (NSTimeInterval) currentTime
 {
-	return player.currentTime;
+	SYNCHRONIZED_OP(self)
+	{
+		return player.currentTime;
+	}
 }
 
 - (void) setCurrentTime:(NSTimeInterval) value
 {
-	player.currentTime = value;
+	SYNCHRONIZED_OP(self)
+	{
+		player.currentTime = value;
+	}
 }
 
 - (NSTimeInterval) duration
 {
-	return player.duration;
+	SYNCHRONIZED_OP(self)
+	{
+		return player.duration;
+	}
 }
 
 - (NSUInteger) numberOfChannels
 {
-	return player.numberOfChannels;
+	SYNCHRONIZED_OP(self)
+	{
+		return player.numberOfChannels;
+	}
 }
 
 
@@ -291,44 +425,45 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 {
 	if(nil == url)
 	{
-		NSLog(@"Error: BackgroundAudio: Cannot open NULL file / url");
+		LOG_ERROR(@"Cannot open NULL file / url");
 		return NO;
 	}
 
-	if(suspended)
+	SYNCHRONIZED_OP(self)
 	{
-		NSLog(@"Error: BackgroundAudio: Could not load URL %@: Audio is still suspended", url);
-		return NO;
-	}
-	
-	// Only load if it's not the same URL as last time.
-	if(![url isEqual:currentlyLoadedUrl])
-	{
-		[player stop];
-		[player release];
-		NSError* error;
-		player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
-		if(nil != error)
+		if(suspended)
 		{
-			NSLog(@"Error: BackgroundAudio: Could not load URL %@: %@", url, [error localizedDescription]);
+			LOG_ERROR(@"Could not load URL %@: Audio is still suspended", url);
 			return NO;
 		}
-
-		player.volume = gain;
-		player.numberOfLoops = numberOfLoops;
-		player.meteringEnabled = meteringEnabled;
 		
-#if TARGET_IPHONE_SIMULATOR
-		player.delegate = self;
-#else /* TARGET_IPHONE_SIMULATOR */
-		player.delegate = delegate;
-#endif /* TARGET_IPHONE_SIMULATOR */
+		// Only load if it's not the same URL as last time.
+		if(![url isEqual:currentlyLoadedUrl])
+		{
+			SIMULATOR_BUG_WORKAROUND_PREPARE_PLAYBACK();
+			[player stop];
+			[player release];
+			NSError* error;
+			player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+			if(nil != error)
+			{
+				LOG_ERROR(@"Could not load URL %@: %@", url, [error localizedDescription]);
+				return NO;
+			}
+			
+			player.volume = muted ? 0 : gain;
+			player.numberOfLoops = numberOfLoops;
+			player.meteringEnabled = meteringEnabled;
+			player.delegate = self;
+			
+			currentlyLoadedUrl = [url retain];
+		}
 		
-		currentlyLoadedUrl = [url retain];
+		player.currentTime = 0;
+		playing = NO;
+		paused = NO;
+		return [player prepareToPlay];
 	}
-	
-	player.currentTime = 0;
-	return [player prepareToPlay];
 }
 
 - (bool) preloadFile:(NSString*) path
@@ -338,8 +473,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (bool) preloadUrlAsync:(NSURL*) url target:(id) target selector:(SEL) selector
 {
-	[operationQueue addOperation:[AsyncPreloadOperation operationWithUrl:url target:target selector:selector]];
-	return NO;
+	SYNCHRONIZED_OP(self)
+	{
+		[operationQueue addOperation:[AsyncPreloadOperation operationWithUrl:url target:target selector:selector]];
+		return NO;
+	}
 }
 
 - (bool) preloadFileAsync:(NSString*) path target:(id) target selector:(SEL) selector
@@ -349,11 +487,20 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (bool) playUrl:(NSURL*) url
 {
-	if([self preloadUrl:url])
+	return [self playUrl:url loops:0];
+}
+
+- (bool) playUrl:(NSURL*) url loops:(NSInteger) loops
+{
+	SYNCHRONIZED_OP(self)
 	{
-		return [self play];
+		if([self preloadUrl:url])
+		{
+			self.numberOfLoops = loops;
+			return [self play];
+		}
+		return NO;
 	}
-	return NO;
 }
 
 - (bool) playFile:(NSString*) path
@@ -361,114 +508,109 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 	return [self playUrl:[[IphoneAudioSupport sharedInstance] urlForPath:path]];
 }
 
-- (bool) playUrlAsync:(NSURL*) url target:(id) target selector:(SEL) selector
+- (bool) playFile:(NSString*) path loops:(NSInteger) loops
 {
-	[operationQueue addOperation:[AsyncPlayOperation operationWithUrl:url target:target selector:selector]];
-	return NO;
+	return [self playUrl:[[IphoneAudioSupport sharedInstance] urlForPath:path] loops:loops];
 }
 
-- (bool) playFileAsync:(NSString*) path target:(id) target selector:(SEL) selector
+- (void) playUrlAsync:(NSURL*) url target:(id) target selector:(SEL) selector
 {
-	return [self playUrlAsync:[[IphoneAudioSupport sharedInstance] urlForPath:path] target:target selector:selector];
+	[self playUrlAsync:url loops:0 target:target selector:selector];
+}
+
+- (void) playUrlAsync:(NSURL*) url loops:(NSInteger) loops target:(id) target selector:(SEL) selector
+{
+	[operationQueue addOperation:[AsyncPlayOperation operationWithUrl:url loops:loops target:target selector:selector]];
+}
+
+- (void) playFileAsync:(NSString*) path target:(id) target selector:(SEL) selector
+{
+	[self playFileAsync:path loops:0 target:target selector:selector];
+}
+
+- (void) playFileAsync:(NSString*) path loops:(NSInteger) loops target:(id) target selector:(SEL) selector
+{
+	[self playUrlAsync:[[IphoneAudioSupport sharedInstance] urlForPath:path] loops:loops target:target selector:selector];
 }
 
 - (bool) play
 {
-	if(suspended)
+	SYNCHRONIZED_OP(self)
 	{
-		NSLog(@"Error: BackgroundAudio: Could not play: Audio is still suspended");
-		return NO;
+		if(suspended)
+		{
+			LOG_ERROR(@"Could not play: Audio is still suspended");
+			return NO;
+		}
+		
+		SIMULATOR_BUG_WORKAROUND_PREPARE_PLAYBACK();
+		player.currentTime = 0;
+		player.volume = muted ? 0 : gain;
+		player.numberOfLoops = numberOfLoops;
+		paused = NO;
+		playing = [player play];
+		return playing;
 	}
-	player.currentTime = 0;
-	player.volume = gain;
-	player.numberOfLoops = numberOfLoops;
-	return [player play];
 }
 
 - (void) stop
 {
-	if(player.playing)
+	SYNCHRONIZED_OP(self)
 	{
 		[player stop];
 		player.currentTime = 0;
-#if TARGET_IPHONE_SIMULATOR
-		[self handleSimulatorEndPlaybackBug];
-#endif /* TARGET_IPHONE_SIMULATOR */
+		SIMULATOR_BUG_WORKAROUND_END_PLAYBACK();
+		paused = NO;
+		playing = NO;
 	}
-	paused = NO;
-	wasPlaying = NO;
 }
 
 - (void) clear
 {
-	[currentlyLoadedUrl release];
-	currentlyLoadedUrl = nil;
-	[player release];
-	player = nil;
+	SYNCHRONIZED_OP(self)
+	{
+		[currentlyLoadedUrl release];
+		currentlyLoadedUrl = nil;
+		
+		[player stop];
+		[player release];
+		player = nil;
+		playing = NO;
+		paused = NO;
+		muted = NO;
+	}
 }
 
 
 #pragma mark Internal Utility
 
-- (void) checkForError:(OSStatus) errorCode
-{
-	switch(errorCode)
-	{
-		case kAudioSessionNoError:
-			break;
-		case kAudioSessionNotInitialized:
-			NSLog(@"Error: BackgroundAudio: Session not initialized (error code %x)", errorCode);
-			break;
-		case kAudioSessionAlreadyInitialized:
-			NSLog(@"Error: BackgroundAudio: Session already initialized (error code %x)", errorCode);
-			break;
-		case kAudioSessionInitializationError:
-			NSLog(@"Error: BackgroundAudio: Sesion initialization error (error code %x)", errorCode);
-			break;
-		case kAudioSessionUnsupportedPropertyError:
-			NSLog(@"Error: BackgroundAudio: Unsupported session property (error code %x)", errorCode);
-			break;
-		case kAudioSessionBadPropertySizeError:
-			NSLog(@"Error: BackgroundAudio: Bad session property size (error code %x)", errorCode);
-			break;
-		case kAudioSessionNotActiveError:
-			NSLog(@"Error: BackgroundAudio: Session is not active (error code %x)", errorCode);
-			break;
-#if 0 // Documented but not implemented on iPhone
-		case kAudioSessionNoHardwareError:
-			NSLog(@"Error: BackgroundAudio: Hardware not available for session (error code %x)", errorCode);
-			break;
-#endif
-#ifdef __IPHONE_3_1
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_3_1
-		case kAudioSessionNoCategorySet:
-			NSLog(@"Error: BackgroundAudio: No session category set (error code %x)", errorCode);
-			break;
-		case kAudioSessionIncompatibleCategory:
-			NSLog(@"Error: BackgroundAudio: Incompatible session category (error code %x)", errorCode);
-			break;
-#endif /* __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_3_1 */
-#endif /* __IPHONE_3_1 */
-		default:
-			NSLog(@"Error: BackgroundAudio: Unknown session error (error code %x)", errorCode);
-	}
-}
-
 - (UInt32) getIntProperty:(AudioSessionPropertyID) property
 {
 	UInt32 value;
 	UInt32 size = sizeof(value);
-	[self checkForError:AudioSessionGetProperty(property, &size, &value)];
+	OSStatus result;
+	SYNCHRONIZED_OP(self)
+	{
+		result = AudioSessionGetProperty(property, &size, &value);
+	}
+	REPORT_AUDIOSESSION_CALL(result, @"Failed to get int property %08x", property);
 	return value;
 }
 
 - (void) setIntProperty:(AudioSessionPropertyID) property value:(UInt32) value
 {
-	[self checkForError:AudioSessionSetProperty(property, sizeof(value), &value)];
+	OSStatus result;
+	SYNCHRONIZED_OP(self)
+	{
+		result = AudioSessionSetProperty(property, sizeof(value), &value);
+	}
+	REPORT_AUDIOSESSION_CALL(result, @"Failed to get int property %08x", property);
 }
 
 - (void) updateAudioMode
 {
+#if !TARGET_IPHONE_SIMULATOR
+	// Note: Simulator doesn't support setting the audio category
 	if(honorSilentSwitch)
 	{
 		if(allowIpod)
@@ -492,6 +634,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 			[self setIntProperty:kAudioSessionProperty_OverrideCategoryMixWithOthers value:FALSE];
 		}
 	}
+#endif /* !TARGET_IPHONE_SIMULATOR */
 }
 
 
@@ -499,84 +642,152 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (bool) meteringEnabled
 {
-	return meteringEnabled;
+	SYNCHRONIZED_OP(self)
+	{
+		return meteringEnabled;
+	}
 }
 
 - (void) setMeteringEnabled:(bool) value
 {
-	meteringEnabled = value;
-	player.meteringEnabled = meteringEnabled;
+	SYNCHRONIZED_OP(self)
+	{
+		meteringEnabled = value;
+		player.meteringEnabled = meteringEnabled;
+	}
 }
 
 - (void) updateMeters
 {
-	[player updateMeters];
+	SYNCHRONIZED_OP(self)
+	{
+		[player updateMeters];
+	}
 }
 
 - (float) averagePowerForChannel:(NSUInteger)channelNumber
 {
-	return [player averagePowerForChannel:channelNumber];
+	SYNCHRONIZED_OP(self)
+	{
+		return [player averagePowerForChannel:channelNumber];
+	}
 }
 
 - (float) peakPowerForChannel:(NSUInteger)channelNumber
 {
-	return [player peakPowerForChannel:channelNumber];
+	SYNCHRONIZED_OP(self)
+	{
+		return [player peakPowerForChannel:channelNumber];
+	}
 }
 
 
 #pragma mark Internal Use
 
-@synthesize suspended;
+- (bool) suspended
+{
+	SYNCHRONIZED_OP(self)
+	{
+		return suspended;
+	}
+}
 
 - (void) setSuspended:(bool) value
 {
-	if(suspended != value)
+	SYNCHRONIZED_OP(self)
 	{
-		suspended = value;
-		if(suspended)
+		if(suspended != value)
 		{
-			AudioSessionSetActive(NO);
-		}
-		else
-		{
-			[self updateAudioMode];
-			AudioSessionSetActive(YES);
+			suspended = value;
+			if(suspended)
+			{
+				AudioSessionSetActive(NO);
+			}
+			else
+			{
+				[self updateAudioMode];
+				AudioSessionSetActive(YES);
+			}
 		}
 	}
 }
 
-
 #pragma mark -
-#pragma mark Simulator playback bug handler
+#pragma mark AVAudioPlayerDelegate
 
-#if TARGET_IPHONE_SIMULATOR
 - (void) audioPlayerBeginInterruption:(AVAudioPlayer*) playerIn
 {
-	[delegate audioPlayerBeginInterruption:playerIn];
+	if([delegate respondsToSelector:@selector(audioPlayerBeginInterruption:)])
+	{
+		[delegate audioPlayerBeginInterruption:playerIn];
+	}
 }
 
 - (void) audioPlayerEndInterruption:(AVAudioPlayer*) playerIn
 {
-	[delegate audioPlayerEndInterruption:playerIn];
+	if([delegate respondsToSelector:@selector(audioPlayerEndInterruption:)])
+	{
+		[delegate audioPlayerEndInterruption:playerIn];
+	}
 }
 
 - (void) audioPlayerDecodeErrorDidOccur:(AVAudioPlayer*) playerIn error:(NSError*) error
 {
-	[delegate audioPlayerDecodeErrorDidOccur:playerIn error:error];
+	if([delegate respondsToSelector:@selector(audioPlayerDecodeErrorDidOccur:error:)])
+	{
+		[delegate audioPlayerDecodeErrorDidOccur:playerIn error:error];
+	}
 }
 
 - (void) audioPlayerDidFinishPlaying:(AVAudioPlayer*) playerIn successfully:(BOOL) flag
 {
-	[self handleSimulatorEndPlaybackBug];
-	[delegate audioPlayerDidFinishPlaying:playerIn successfully:flag];
+	SYNCHRONIZED_OP(self)
+	{
+		playing = NO;
+		paused = NO;
+		SIMULATOR_BUG_WORKAROUND_END_PLAYBACK();
+	}
+	if([delegate respondsToSelector:@selector(audioPlayerDidFinishPlaying:successfully:)])
+	{
+		[delegate audioPlayerDidFinishPlaying:playerIn successfully:flag];
+	}
 }
 
-- (void) handleSimulatorEndPlaybackBug
+#pragma mark -
+#pragma mark Simulator playback bug handler
+
+#if TARGET_IPHONE_SIMULATOR && OBJECTAL_CFG_SIMULATOR_BUG_WORKAROUND
+
+- (void) simulatorBugWorkaroundRestorePlayer
 {
-	player.volume = 0;
-	player.numberOfLoops = -1;
-	[player play];
+	SYNCHRONIZED_OP(self)
+	{
+		if(nil != simulatorPlayerRef)
+		{
+			player = simulatorPlayerRef;
+			simulatorPlayerRef = nil;
+			[player stop];
+			player.numberOfLoops = numberOfLoops;
+			player.volume = gain;
+		}
+	}
 }
-#endif /* TARGET_IPHONE_SIMULATOR */
+
+- (void) simulatorBugWorkaroundHoldPlayer
+{
+	SYNCHRONIZED_OP(self)
+	{
+		if(nil != player)
+		{
+			player.volume = 0;
+			player.numberOfLoops = -1;
+			[player play];
+			simulatorPlayerRef = player;
+			player = nil;
+		}
+	}
+}
+
+#endif /* TARGET_IPHONE_SIMULATOR && OBJECTAL_CFG_SIMULATOR_BUG_WORKAROUND */
 
 @end

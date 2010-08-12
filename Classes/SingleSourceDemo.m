@@ -67,8 +67,9 @@
 
 - (void) dealloc
 {
-	[buffer release];
+	[source stop];
 	[source release];
+	[buffer release];
 
 	// Note: Normally you wouldn't release the context and device when leaving a scene.
 	// I'm doing it here to provide a clean slate for the other demos.

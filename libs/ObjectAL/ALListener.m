@@ -25,6 +25,7 @@
 //
 
 #import "ALListener.h"
+#import "ObjectALMacros.h"
 #import "ALWrapper.h"
 
 
@@ -42,6 +43,7 @@
 	if(nil != (self = [super init]))
 	{
 		context = contextIn;
+		gain = 1.0;
 	}
 	return self;
 }
@@ -51,50 +53,97 @@
 
 @synthesize context;
 
+- (bool) muted
+{
+	SYNCHRONIZED_OP(self)
+	{
+		return muted;
+	}
+}
+
+- (void) setMuted:(bool) value
+{
+	SYNCHRONIZED_OP(self)
+	{
+		muted = value;
+		float resultingGain = muted ? 0 : gain;
+		self.gain = resultingGain;
+	}
+}
+
 - (float) gain
 {
-	return [ALWrapper getListenerf:AL_GAIN];
+	SYNCHRONIZED_OP(self)
+	{
+		return gain;
+	}
 }
 
 - (void) setGain:(float) value
 {
-	[ALWrapper listenerf:AL_GAIN value:value];
+	SYNCHRONIZED_OP(self)
+	{
+		gain = value;
+		if(muted)
+		{
+			value = 0;
+		}
+		[ALWrapper listenerf:AL_GAIN value:value];
+	}
 }
 
 - (ALOrientation) orientation
 {
 	ALOrientation result;
-	[ALWrapper getListenerfv:AL_ORIENTATION values:(float*)&result];
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper getListenerfv:AL_ORIENTATION values:(float*)&result];
+	}
 	return result;
 }
 
 - (void) setOrientation:(ALOrientation) value
 {
-	[ALWrapper listenerfv:AL_ORIENTATION values:(float*)&value];
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper listenerfv:AL_ORIENTATION values:(float*)&value];
+	}
 }
 
 - (ALPoint) position
 {
 	ALPoint result;
-	[ALWrapper getListener3f:AL_POSITION v1:&result.x v2:&result.y v3:&result.z];
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper getListener3f:AL_POSITION v1:&result.x v2:&result.y v3:&result.z];
+	}
 	return result;
 }
 
 - (void) setPosition:(ALPoint) value
 {
-	[ALWrapper listener3f:AL_POSITION v1:value.x v2:value.y v3:value.z];
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper listener3f:AL_POSITION v1:value.x v2:value.y v3:value.z];
+	}
 }
 
 - (ALVector) velocity
 {
 	ALVector result;
-	[ALWrapper getListener3f:AL_VELOCITY v1:&result.x v2:&result.y v3:&result.z];
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper getListener3f:AL_VELOCITY v1:&result.x v2:&result.y v3:&result.z];
+	}
 	return result;
 }
 
 - (void) setVelocity:(ALVector) value
 {
-	[ALWrapper listener3f:AL_VELOCITY v1:value.x v2:value.y v3:value.z];
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper listener3f:AL_VELOCITY v1:value.x v2:value.y v3:value.z];
+	}
 }
 
 @end

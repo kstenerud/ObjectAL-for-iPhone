@@ -41,6 +41,8 @@
 @interface ALListener : NSObject
 {
 	ALContext* context; // Weak reference
+	bool muted;
+	float gain;
 }
 
 
@@ -48,6 +50,11 @@
 
 /** The context this listener belongs to. */
 @property(readonly) ALContext* context;
+
+/** Causes this listener to stop hearing sound.
+ * It's called "muted" rather than "deaf" to give a consistent name with other mute functions.
+ */
+@property(readwrite,assign) bool muted;
 
 /** Gain (volume), affecting every sound this listener hears (0.0 = no sound, 1.0 = max volume).
  * Only valid if this listener's context is the current context.

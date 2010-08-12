@@ -95,6 +95,8 @@
 {
 	NSString *path = [CCFileUtils fullPathFromRelativePath:plistFile];
 	NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:path];
+	
+	NSAssert( dict != nil, @"Particles: file not found");
 	return [self initWithDictionary:dict];
 }
 
@@ -158,9 +160,9 @@
 				
 		
 		emitterMode_ = [[dictionary valueForKey:@"emitterType"] intValue];
-		
+
+		// Mode A: Gravity + tangential accel + radial accel
 		if( emitterMode_ == kCCParticleModeGravity ) {
-			// Mode A: Gravity + tangential accel + radial accel
 			// gravity
 			mode.A.gravity.x = [[dictionary valueForKey:@"gravityx"] floatValue];
 			mode.A.gravity.y = [[dictionary valueForKey:@"gravityy"] floatValue];
@@ -170,7 +172,13 @@
 			mode.A.speed = [[dictionary valueForKey:@"speed"] floatValue];
 			mode.A.speedVar = [[dictionary valueForKey:@"speedVariance"] floatValue];
 			
-			// radial & tangential accel should be supported as well by Particle Designer
+			// radial acceleration
+			mode.A.radialAccel = [[dictionary valueForKey:@"radialAcceleration"] floatValue];
+			mode.A.radialAccelVar = [[dictionary valueForKey:@"radialAccelVariance"] floatValue];
+			
+			// tangential acceleration
+			mode.A.tangentialAccel = [[dictionary valueForKey:@"tangentialAcceleration"] floatValue];
+			mode.A.tangentialAccelVar = [[dictionary valueForKey:@"tangentialAccelVariance"] floatValue];
 		}
 		
 		
@@ -315,8 +323,8 @@
 	particle->timeToLive = MAX(0, life + lifeVar * CCRANDOM_MINUS1_1() );
 
 	// position
-	particle->pos.x = (int) (centerOfGravity.x + posVar.x * CCRANDOM_MINUS1_1());
-	particle->pos.y = (int) (centerOfGravity.y + posVar.y * CCRANDOM_MINUS1_1());
+	particle->pos.x = centerOfGravity.x + posVar.x * CCRANDOM_MINUS1_1();
+	particle->pos.y = centerOfGravity.y + posVar.y * CCRANDOM_MINUS1_1();
 	
 	// Color
 	ccColor4F start;

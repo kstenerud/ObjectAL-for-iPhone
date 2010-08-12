@@ -54,10 +54,8 @@
 	/** Cache for preloaded sound samples. */
 	NSMutableDictionary* preloadCache;
 	bool muted;
-	/** The volume of the OpenAL listener before muting. */
-	float effectsVolumeOnMute;
-	/** The volume of BackgroundAudio before muting. */
-	float bgVolumeOnMute;
+	bool bgMuted;
+	bool effectsMuted;
 }
 
 
@@ -69,11 +67,20 @@
 /** Pauses BG music playback */
 @property(readwrite,assign) bool bgPaused;
 
+/** Mutes BG music playback */
+@property(readwrite,assign) bool bgMuted;
+
 /** If true, BG music is currently playing */
 @property(readonly) bool bgPlaying;
 
 /** Background music playback gain/volume (0.0 - 1.0) */
 @property(readwrite,assign) float bgVolume;
+
+/** Pauses effects playback */
+@property(readwrite,assign) bool effectsPaused;
+
+/** Mutes effects playback */
+@property(readwrite,assign) bool effectsMuted;
 
 /** Master effects gain/volume (0.0 - 1.0) */
 @property(readwrite,assign) float effectsVolume;
@@ -83,6 +90,9 @@
  */
 @property(readwrite,assign) bool honorSilentSwitch;
 
+/** Pauses everything */
+@property(readwrite,assign) bool paused;
+
 /** Mutes all audio */
 @property(readwrite,assign) bool muted;
 
@@ -91,6 +101,8 @@
  */
 @property(readwrite,assign) bool preloadCacheEnabled;
 
+/** The number of items currently in the preload cache. */
+@property(readonly) NSUInteger preloadCacheCount;
 
 #pragma mark Object Management
 
@@ -207,6 +219,14 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(SimpleIphoneAudio);
  * @return The sound source being used for playback, or nil if an error occurred.
  */
 - (id<SoundSource>) playEffect:(NSString*) filePath;
+
+/** Play a sound effect with volume 1.0, pitch 1.0, pan 0.0.  The sound will be loaded and cached if it wasn't already.
+ *
+ * @param filePath The path containing the sound data.
+ * @param loop If TRUE, the sound will loop until you call "stop" on the returned sound source.
+ * @return The sound source being used for playback, or nil if an error occurred.
+ */
+- (id<SoundSource>) playEffect:(NSString*) filePath loop:(bool) loop;
 
 /** Play a sound effect.  The sound will be loaded and cached if it wasn't already.
  *

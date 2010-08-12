@@ -185,9 +185,8 @@
 
 - (void) onEnterTransitionDidFinish
 {
-	// Set to loop forever.
-	[BackgroundAudio sharedInstance].numberOfLoops = -1;
-	[[BackgroundAudio sharedInstance] playFile:@"PlanetKiller.mp3"];
+	// Loop forever.
+	[[BackgroundAudio sharedInstance] playFile:@"PlanetKiller.mp3" loops:-1];
 }
 
 - (void) onExitPressed

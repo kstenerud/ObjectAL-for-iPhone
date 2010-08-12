@@ -25,6 +25,7 @@
 //
 
 #import "ALSource.h"
+#import "ObjectALMacros.h"
 #import "ObjectAL.h"
 
 
@@ -61,6 +62,7 @@
 		}
 		
 		[context notifySourceInitializing:self];
+		gain = [ALWrapper getSourcef:sourceId parameter:AL_GAIN];
 	}
 	return self;
 }
@@ -69,7 +71,7 @@
 {
 	[context notifySourceDeallocating:self];
 	
-	self.buffer = nil;
+	[buffer release];
 
 	@synchronized([ObjectAL sharedInstance])
 	{
@@ -86,14 +88,23 @@
 
 #pragma mark Properties
 
-@synthesize buffer;
+- (ALBuffer*) buffer
+{
+	SYNCHRONIZED_OP(self)
+	{
+		return buffer;
+	}
+}
 
 - (void) setBuffer:(ALBuffer *) value
 {
-	[self stop];
-	[buffer autorelease];
-	buffer = [value retain];
-	[ALWrapper sourcei:sourceId parameter:AL_BUFFER value:buffer.bufferId];
+	SYNCHRONIZED_OP(self)
+	{
+		[self stop];
+		[buffer autorelease];
+		buffer = [value retain];
+		[ALWrapper sourcei:sourceId parameter:AL_BUFFER value:buffer.bufferId];
+	}
 }
 
 - (int) buffersQueued
@@ -108,32 +119,50 @@
 
 - (float) coneInnerAngle
 {
-	return [ALWrapper getSourcef:sourceId parameter:AL_CONE_INNER_ANGLE];
+	SYNCHRONIZED_OP(self)
+	{
+		return [ALWrapper getSourcef:sourceId parameter:AL_CONE_INNER_ANGLE];
+	}
 }
 
 - (void) setConeInnerAngle:(float) value
 {
-	[ALWrapper sourcef:sourceId parameter:AL_CONE_INNER_ANGLE value:value];
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper sourcef:sourceId parameter:AL_CONE_INNER_ANGLE value:value];
+	}
 }
 
 - (float) coneOuterAngle
 {
-	return [ALWrapper getSourcef:sourceId parameter:AL_CONE_OUTER_ANGLE];
+	SYNCHRONIZED_OP(self)
+	{
+		return [ALWrapper getSourcef:sourceId parameter:AL_CONE_OUTER_ANGLE];
+	}
 }
 
 - (void) setConeOuterAngle:(float) value
 {
-	[ALWrapper sourcef:sourceId parameter:AL_CONE_OUTER_ANGLE value:value];
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper sourcef:sourceId parameter:AL_CONE_OUTER_ANGLE value:value];
+	}
 }
 
 - (float) coneOuterGain
 {
-	return [ALWrapper getSourcef:sourceId parameter:AL_CONE_OUTER_GAIN];
+	SYNCHRONIZED_OP(self)
+	{
+		return [ALWrapper getSourcef:sourceId parameter:AL_CONE_OUTER_GAIN];
+	}
 }
 
 - (void) setConeOuterGain:(float) value
 {
-	[ALWrapper sourcef:sourceId parameter:AL_CONE_OUTER_GAIN value:value];
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper sourcef:sourceId parameter:AL_CONE_OUTER_GAIN value:value];
+	}
 }
 
 @synthesize context;
@@ -141,105 +170,172 @@
 - (ALVector) direction
 {
 	ALVector result;
-	[ALWrapper getSource3f:sourceId parameter:AL_DIRECTION v1:&result.x v2:&result.y v3:&result.z];
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper getSource3f:sourceId parameter:AL_DIRECTION v1:&result.x v2:&result.y v3:&result.z];
+	}
 	return result;
 }
 
 - (void) setDirection:(ALVector) value
 {
-	[ALWrapper source3f:sourceId parameter:AL_DIRECTION v1:value.x v2:value.y v3:value.z];
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper source3f:sourceId parameter:AL_DIRECTION v1:value.x v2:value.y v3:value.z];
+	}
 }
+
 - (float) gain
 {
-	return [ALWrapper getSourcef:sourceId parameter:AL_GAIN];
+	SYNCHRONIZED_OP(self)
+	{
+		return gain;
+	}
 }
 
 - (void) setGain:(float) value
 {
-	[ALWrapper sourcef:sourceId parameter:AL_GAIN value:value];
+	SYNCHRONIZED_OP(self)
+	{
+		gain = value;
+		if(muted)
+		{
+			value = 0;
+		}
+		[ALWrapper sourcef:sourceId parameter:AL_GAIN value:value];
+	}
 }
 
 @synthesize interruptible;
 
 - (bool) looping
 {
-	return [ALWrapper getSourcei:sourceId parameter:AL_LOOPING];
+	SYNCHRONIZED_OP(self)
+	{
+		return [ALWrapper getSourcei:sourceId parameter:AL_LOOPING];
+	}
 }
 
 - (void) setLooping:(bool) value
 {
-	[ALWrapper sourcei:sourceId parameter:AL_LOOPING value:value];
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper sourcei:sourceId parameter:AL_LOOPING value:value];
+	}
 }
 
 - (float) maxDistance
 {
-	return [ALWrapper getSourcef:sourceId parameter:AL_MAX_DISTANCE];
+	SYNCHRONIZED_OP(self)
+	{
+		return [ALWrapper getSourcef:sourceId parameter:AL_MAX_DISTANCE];
+	}
 }
 
 - (void) setMaxDistance:(float) value
 {
-	[ALWrapper sourcef:sourceId parameter:AL_MAX_DISTANCE value:value];
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper sourcef:sourceId parameter:AL_MAX_DISTANCE value:value];
+	}
 }
 
 - (float) maxGain
 {
-	return [ALWrapper getSourcef:sourceId parameter:AL_MAX_GAIN];
+	SYNCHRONIZED_OP(self)
+	{
+		return [ALWrapper getSourcef:sourceId parameter:AL_MAX_GAIN];
+	}
 }
 
 - (void) setMaxGain:(float) value
 {
-	[ALWrapper sourcef:sourceId parameter:AL_MAX_GAIN value:value];
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper sourcef:sourceId parameter:AL_MAX_GAIN value:value];
+	}
 }
 
 - (float) minGain
 {
-	return [ALWrapper getSourcef:sourceId parameter:AL_MIN_GAIN];
+	SYNCHRONIZED_OP(self)
+	{
+		return [ALWrapper getSourcef:sourceId parameter:AL_MIN_GAIN];
+	}
 }
 
 - (void) setMinGain:(float) value
 {
-	[ALWrapper sourcef:sourceId parameter:AL_MIN_GAIN value:value];
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper sourcef:sourceId parameter:AL_MIN_GAIN value:value];
+	}
 }
 
-@synthesize muted;
+- (bool) muted
+{
+	SYNCHRONIZED_OP(self)
+	{
+		return muted;
+	}
+}
 
 - (void) setMuted:(bool) value
 {
-	muted = value;
-	if(muted && self.playing)
+	SYNCHRONIZED_OP(self)
 	{
-		[self stop];
+		muted = value;
+		float resultingGain = muted ? 0 : gain;
+		[ALWrapper sourcef:sourceId parameter:AL_GAIN value:resultingGain];
 	}
 }
 
 - (float) offsetInBytes
 {
-	return [ALWrapper getSourcef:sourceId parameter:AL_BYTE_OFFSET];
+	SYNCHRONIZED_OP(self)
+	{
+		return [ALWrapper getSourcef:sourceId parameter:AL_BYTE_OFFSET];
+	}
 }
 
 - (void) setOffsetInBytes:(float) value
 {
-	[ALWrapper sourcef:sourceId parameter:AL_BYTE_OFFSET value:value];
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper sourcef:sourceId parameter:AL_BYTE_OFFSET value:value];
+	}
 }
 
 - (float) offsetInSamples
 {
-	return [ALWrapper getSourcef:sourceId parameter:AL_SAMPLE_OFFSET];
+	SYNCHRONIZED_OP(self)
+	{
+		return [ALWrapper getSourcef:sourceId parameter:AL_SAMPLE_OFFSET];
+	}
 }
 
 - (void) setOffsetInSamples:(float) value
 {
-	[ALWrapper sourcef:sourceId parameter:AL_SAMPLE_OFFSET value:value];
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper sourcef:sourceId parameter:AL_SAMPLE_OFFSET value:value];
+	}
 }
 
 - (float) offsetInSeconds
 {
-	return [ALWrapper getSourcef:sourceId parameter:AL_SEC_OFFSET];
+	SYNCHRONIZED_OP(self)
+	{
+		return [ALWrapper getSourcef:sourceId parameter:AL_SEC_OFFSET];
+	}
 }
 
 - (void) setOffsetInSeconds:(float) value
 {
-	[ALWrapper sourcef:sourceId parameter:AL_SEC_OFFSET value:value];
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper sourcef:sourceId parameter:AL_SEC_OFFSET value:value];
+	}
 }
 
 - (bool) paused
@@ -249,30 +345,39 @@
 
 - (void) setPaused:(bool) shouldPause
 {
-	if(shouldPause)
+	SYNCHRONIZED_OP(self)
 	{
-		if(AL_PLAYING == self.state)
+		if(shouldPause)
 		{
-			[ALWrapper sourcePause:sourceId];
+			if(AL_PLAYING == self.state)
+			{
+				[ALWrapper sourcePause:sourceId];
+			}
 		}
-	}
-	else
-	{
-		if(AL_PAUSED == self.state)
+		else
 		{
-			[ALWrapper sourcePlay:sourceId];
+			if(AL_PAUSED == self.state)
+			{
+				[ALWrapper sourcePlay:sourceId];
+			}
 		}
 	}
 }
 
 - (float) pitch
 {
-	return [ALWrapper getSourcef:sourceId parameter:AL_PITCH];
+	SYNCHRONIZED_OP(self)
+	{
+		return [ALWrapper getSourcef:sourceId parameter:AL_PITCH];
+	}
 }
 
 - (void) setPitch:(float) value
 {
-	[ALWrapper sourcef:sourceId parameter:AL_PITCH value:value];
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper sourcef:sourceId parameter:AL_PITCH value:value];
+	}
 }
 
 - (bool) playing
@@ -283,13 +388,19 @@
 - (ALPoint) position
 {
 	ALPoint result;
-	[ALWrapper getSource3f:sourceId parameter:AL_POSITION v1:&result.x v2:&result.y v3:&result.z];
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper getSource3f:sourceId parameter:AL_POSITION v1:&result.x v2:&result.y v3:&result.z];
+	}
 	return result;
 }
 
 - (void) setPosition:(ALPoint) value
 {
-	[ALWrapper source3f:sourceId parameter:AL_POSITION v1:value.x v2:value.y v3:value.z];
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper source3f:sourceId parameter:AL_POSITION v1:value.x v2:value.y v3:value.z];
+	}
 }
 
 - (float) pan
@@ -304,66 +415,102 @@
 
 - (float) referenceDistance
 {
-	return [ALWrapper getSourcef:sourceId parameter:AL_REFERENCE_DISTANCE];
+	SYNCHRONIZED_OP(self)
+	{
+		return [ALWrapper getSourcef:sourceId parameter:AL_REFERENCE_DISTANCE];
+	}
 }
 
 - (void) setReferenceDistance:(float) value
 {
-	[ALWrapper sourcef:sourceId parameter:AL_REFERENCE_DISTANCE value:value];
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper sourcef:sourceId parameter:AL_REFERENCE_DISTANCE value:value];
+	}
 }
 
 - (float) rolloffFactor
 {
-	return [ALWrapper getSourcef:sourceId parameter:AL_ROLLOFF_FACTOR];
+	SYNCHRONIZED_OP(self)
+	{
+		return [ALWrapper getSourcef:sourceId parameter:AL_ROLLOFF_FACTOR];
+	}
 }
 
 - (void) setRolloffFactor:(float) value
 {
-	[ALWrapper sourcef:sourceId parameter:AL_ROLLOFF_FACTOR value:value];
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper sourcef:sourceId parameter:AL_ROLLOFF_FACTOR value:value];
+	}
 }
 
 @synthesize sourceId;
 
 - (int) sourceRelative
 {
-	return [ALWrapper getSourcei:sourceId parameter:AL_SOURCE_RELATIVE];
+	SYNCHRONIZED_OP(self)
+	{
+		return [ALWrapper getSourcei:sourceId parameter:AL_SOURCE_RELATIVE];
+	}
 }
 
 - (void) setSourceRelative:(int) value
 {
-	[ALWrapper sourcei:sourceId parameter:AL_SOURCE_RELATIVE value:value];
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper sourcei:sourceId parameter:AL_SOURCE_RELATIVE value:value];
+	}
 }
 
 - (int) sourceType
 {
-	return [ALWrapper getSourcei:sourceId parameter:AL_SOURCE_TYPE];
+	SYNCHRONIZED_OP(self)
+	{
+		return [ALWrapper getSourcei:sourceId parameter:AL_SOURCE_TYPE];
+	}
 }
 
 - (void) setSourceType:(int) value
 {
-	[ALWrapper sourcei:sourceId parameter:AL_SOURCE_TYPE value:value];
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper sourcei:sourceId parameter:AL_SOURCE_TYPE value:value];
+	}
 }
 
 - (int) state
 {
-	return [ALWrapper getSourcei:sourceId parameter:AL_SOURCE_STATE];
+	SYNCHRONIZED_OP(self)
+	{
+		return [ALWrapper getSourcei:sourceId parameter:AL_SOURCE_STATE];
+	}
 }
 
 - (void) setState:(int) value
 {
-	[ALWrapper sourcei:sourceId parameter:AL_SOURCE_STATE value:value];
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper sourcei:sourceId parameter:AL_SOURCE_STATE value:value];
+	}
 }
 
 - (ALVector) velocity
 {
 	ALVector result;
-	[ALWrapper getSource3f:sourceId parameter:AL_VELOCITY v1:&result.x v2:&result.y v3:&result.z];
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper getSource3f:sourceId parameter:AL_VELOCITY v1:&result.x v2:&result.y v3:&result.z];
+	}
 	return result;
 }
 
 - (void) setVelocity:(ALVector) value
 {
-	[ALWrapper source3f:sourceId parameter:AL_VELOCITY v1:value.x v2:value.y v3:value.z];
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper source3f:sourceId parameter:AL_VELOCITY v1:value.x v2:value.y v3:value.z];
+	}
 }
 
 
@@ -371,36 +518,37 @@
 
 - (void) preload:(ALBuffer*) bufferIn
 {
-	if(self.playing || self.paused)
+	SYNCHRONIZED_OP(self)
 	{
-		[self stop];
-	}
+		if(self.playing || self.paused)
+		{
+			[self stop];
+		}
 	
-	self.buffer = bufferIn;
+		self.buffer = bufferIn;
+	}
 }
 
 - (id<SoundSource>) play
 {
-	if(muted)
+	SYNCHRONIZED_OP(self)
 	{
-		return nil;
-	}
-	
-	if(self.playing)
-	{
-		if(!interruptible)
+		if(self.playing)
 		{
-			return nil;
+			if(!interruptible)
+			{
+				return nil;
+			}
+			[self stop];
 		}
-		[self stop];
+		
+		if(self.paused)
+		{
+			[self stop];
+		}
+		
+		[ALWrapper sourcePlay:sourceId];
 	}
-	
-	if(self.paused)
-	{
-		[self stop];
-	}
-	
-	[ALWrapper sourcePlay:sourceId];
 	return self;
 }
 
@@ -411,67 +559,67 @@
 
 - (id<SoundSource>) play:(ALBuffer*) bufferIn loop:(bool) loop
 {
-	if(muted)
+	SYNCHRONIZED_OP(self)
 	{
-		return nil;
-	}
-	
-	if(self.playing)
-	{
-		if(!interruptible)
+		if(self.playing)
 		{
-			return nil;
+			if(!interruptible)
+			{
+				return nil;
+			}
+			[self stop];
 		}
-		[self stop];
+		
+		self.buffer = bufferIn;
+		self.looping = loop;
+		
+		[ALWrapper sourcePlay:sourceId];
 	}
-	
-	self.buffer = bufferIn;
-	self.looping = loop;
-	
-	[ALWrapper sourcePlay:sourceId];
-	
 	return self;
 }
 
-- (id<SoundSource>) play:(ALBuffer*) bufferIn gain:(float) gain pitch:(float) pitch pan:(float) pan loop:(bool) loop
+- (id<SoundSource>) play:(ALBuffer*) bufferIn gain:(float) gainIn pitch:(float) pitchIn pan:(float) panIn loop:(bool) loopIn
 {
-	if(muted)
+	SYNCHRONIZED_OP(self)
 	{
-		return nil;
-	}
-	
-	if(self.playing)
-	{
-		if(!interruptible)
+		if(self.playing)
 		{
-			return nil;
+			if(!interruptible)
+			{
+				return nil;
+			}
+			[self stop];
 		}
-		[self stop];
-	}
-	
-	self.buffer = bufferIn;
-	
-	// Set gain, pitch, and pan
-	self.gain = gain;
-	self.pitch = pitch;
-	self.pan = pan;
-	self.looping = loop;
-
-	[ALWrapper sourcePlay:sourceId];
-	
+		
+		self.buffer = bufferIn;
+		
+		// Set gain, pitch, and pan
+		self.gain = gainIn;
+		self.pitch = pitchIn;
+		self.pan = panIn;
+		self.looping = loopIn;
+		
+		[ALWrapper sourcePlay:sourceId];
+	}		
 	return self;
 }
 
 - (void) stop
 {
-	[ALWrapper sourceStop:sourceId];
-	paused = NO;
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper sourceStop:sourceId];
+		paused = NO;
+	}
 }
 
 - (void) clear
 {
-	[self stop];
-	self.buffer = nil;
+	SYNCHRONIZED_OP(self)
+	{
+		[self stop];
+		self.buffer = nil;
+	}
 }
 
 
@@ -479,70 +627,84 @@
 
 - (bool) queueBuffer:(ALBuffer*) bufferIn
 {
-	if(AL_STATIC == self.state)
+	SYNCHRONIZED_OP(self)
 	{
-		self.buffer = nil;
+		if(AL_STATIC == self.state)
+		{
+			self.buffer = nil;
+		}
+		ALuint bufferId = bufferIn.bufferId;
+		return [ALWrapper sourceQueueBuffers:sourceId numBuffers:1 bufferIds:&bufferId];
 	}
-	ALuint bufferId = bufferIn.bufferId;
-	return [ALWrapper sourceQueueBuffers:sourceId numBuffers:1 bufferIds:&bufferId];
 }
 
 - (bool) queueBuffers:(NSArray*) buffers
 {
-	if(AL_STATIC == self.state)
+	SYNCHRONIZED_OP(self)
 	{
-		self.buffer = nil;
+		if(AL_STATIC == self.state)
+		{
+			self.buffer = nil;
+		}
+		int numBuffers = [buffers count];
+		ALuint* bufferIds = malloc(sizeof(ALuint) * numBuffers);
+		int i = 0;
+		for(ALBuffer* buf in buffers)
+		{
+			bufferIds[i] = buf.bufferId;
+		}
+		bool result = [ALWrapper sourceQueueBuffers:sourceId numBuffers:numBuffers bufferIds:bufferIds];
+		free(bufferIds);
+		return result;
 	}
-	int numBuffers = [buffers count];
-	ALuint* bufferIds = malloc(sizeof(ALuint) * numBuffers);
-	int i = 0;
-	for(ALBuffer* buf in buffers)
-	{
-		bufferIds[i] = buf.bufferId;
-	}
-	bool result = [ALWrapper sourceQueueBuffers:sourceId numBuffers:numBuffers bufferIds:bufferIds];
-	free(bufferIds);
-	return result;
 }
 
 - (bool) unqueueBuffer:(ALBuffer*) bufferIn
 {
-	ALuint bufferId = bufferIn.bufferId;
-	return [ALWrapper sourceUnqueueBuffers:sourceId numBuffers:1 bufferIds:&bufferId];
+	SYNCHRONIZED_OP(self)
+	{
+		ALuint bufferId = bufferIn.bufferId;
+		return [ALWrapper sourceUnqueueBuffers:sourceId numBuffers:1 bufferIds:&bufferId];
+	}
 }
 
 - (bool) unqueueBuffers:(NSArray*) buffers
 {
-	if(AL_STATIC == self.state)
+	SYNCHRONIZED_OP(self)
 	{
-		self.buffer = nil;
+		if(AL_STATIC == self.state)
+		{
+			self.buffer = nil;
+		}
+		int numBuffers = [buffers count];
+		ALuint* bufferIds = malloc(sizeof(ALuint) * numBuffers);
+		int i = 0;
+		for(ALBuffer* buf in buffers)
+		{
+			bufferIds[i] = buf.bufferId;
+		}
+		bool result = [ALWrapper sourceUnqueueBuffers:sourceId numBuffers:numBuffers bufferIds:bufferIds];
+		free(bufferIds);
+		return result;
 	}
-	int numBuffers = [buffers count];
-	ALuint* bufferIds = malloc(sizeof(ALuint) * numBuffers);
-	int i = 0;
-	for(ALBuffer* buf in buffers)
-	{
-		bufferIds[i] = buf.bufferId;
-	}
-	bool result = [ALWrapper sourceUnqueueBuffers:sourceId numBuffers:numBuffers bufferIds:bufferIds];
-	free(bufferIds);
-	return result;
 }
-
 
 #pragma mark Internal Use
 
 - (bool) requestUnreserve:(bool) interrupt
 {
-	if(self.playing)
+	SYNCHRONIZED_OP(self)
 	{
-		if(!self.interruptible || !interrupt)
+		if(self.playing)
 		{
-			return NO;
+			if(!self.interruptible || !interrupt)
+			{
+				return NO;
+			}
+			[self stop];
 		}
-		[self stop];
+		self.buffer = nil;
 	}
-	self.buffer = nil;
 	return YES;
 }
 

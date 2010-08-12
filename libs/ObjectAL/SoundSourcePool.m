@@ -25,6 +25,8 @@
 //
 
 #import "SoundSourcePool.h"
+#import "ObjectALMacros.h"
+
 
 #pragma mark Private Methods
 
@@ -79,54 +81,64 @@
 
 - (void) addSource:(id<SoundSource>) source
 {
-	[sources addObject:source];
+	SYNCHRONIZED_OP(self)
+	{
+		[sources addObject:source];
+	}
 }
 
 - (void) removeSource:(id<SoundSource>) source
 {
-	[sources removeObject:source];
+	SYNCHRONIZED_OP(self)
+	{
+		[sources removeObject:source];
+	}
 }
 
 - (void) moveToHead:(int) index
 {
-	id source = [[sources objectAtIndex:index] retain];
-	[sources removeObjectAtIndex:index];
-	[sources addObject:source];
-	[source release];
+	SYNCHRONIZED_OP(self)
+	{
+		id source = [[sources objectAtIndex:index] retain];
+		[sources removeObjectAtIndex:index];
+		[sources addObject:source];
+		[source release];
+	}
 }
 
 - (id<SoundSource>) getFreeSource:(bool) attemptToInterrupt
 {
-	int index;
+	int index = 0;
 	
-	// Try to find any free source.
-	index = 0;
-	for(id<SoundSource> source in sources)
+	SYNCHRONIZED_OP(self)
 	{
-		if(!source.playing)
-		{
-			[self moveToHead:index];
-			return source;
-		}
-		index++;
-	}
-	
-	if(attemptToInterrupt)
-	{
-		// Try to forcibly free a source.
-		index = 0;
+		// Try to find any free source.
 		for(id<SoundSource> source in sources)
 		{
-			if(!source.playing || source.interruptible)
+			if(!source.playing)
 			{
-				[source stop];
 				[self moveToHead:index];
 				return source;
 			}
 			index++;
 		}
-	}
-	
+		
+		if(attemptToInterrupt)
+		{
+			// Try to forcibly free a source.
+			index = 0;
+			for(id<SoundSource> source in sources)
+			{
+				if(!source.playing || source.interruptible)
+				{
+					[source stop];
+					[self moveToHead:index];
+					return source;
+				}
+				index++;
+			}
+		}
+	}		
 	return nil;
 }
 

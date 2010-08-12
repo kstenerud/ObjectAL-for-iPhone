@@ -25,6 +25,7 @@
 //
 
 #import "ALContext.h"
+#import "ObjectALMacros.h"
 #import "ObjectAL.h"
 #import "ALWrapper.h"
 #import "ALDevice.h"
@@ -199,22 +200,34 @@
 
 - (ALenum) distanceModel
 {
-	return [ALWrapper getInteger:AL_DISTANCE_MODEL];
+	SYNCHRONIZED_OP(self)
+	{
+		return [ALWrapper getInteger:AL_DISTANCE_MODEL];
+	}
 }
 
 - (void) setDistanceModel:(ALenum) value
 {
-	[ALWrapper distanceModel:value];
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper distanceModel:value];
+	}
 }
 
 - (float) dopplerFactor
 {
-	return [ALWrapper getFloat:AL_DOPPLER_FACTOR];
+	SYNCHRONIZED_OP(self)
+	{
+		return [ALWrapper getFloat:AL_DOPPLER_FACTOR];
+	}
 }
 
 - (void) setDopplerFactor:(float) value
 {
-	[ALWrapper dopplerFactor:value];
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper dopplerFactor:value];
+	}
 }
 
 - (NSArray*) extensions
@@ -233,30 +246,45 @@
 
 - (float) speedOfSound
 {
-	return [ALWrapper getFloat:AL_SPEED_OF_SOUND];
+	SYNCHRONIZED_OP(self)
+	{
+		return [ALWrapper getFloat:AL_SPEED_OF_SOUND];
+	}
 }
 
 - (void) setSpeedOfSound:(float) value
 {
-	[ALWrapper speedOfSound:value];
+	SYNCHRONIZED_OP(self)
+	{
+		[ALWrapper speedOfSound:value];
+	}
 }
 
-@synthesize suspended;
+- (bool) suspended
+{
+	SYNCHRONIZED_OP(self)
+	{
+		return suspended;
+	}
+}
 
 - (void) setSuspended:(bool) value
 {
-	if(value != suspended)
+	SYNCHRONIZED_OP(self)
 	{
-		suspended = value;
-		if(suspended)
+		if(value != suspended)
 		{
-			[ALWrapper suspendContext:context];
+			suspended = value;
+			if(suspended)
+			{
+				[ALWrapper suspendContext:context];
+			}
+			else
+			{
+				[self process];
+			}
+			
 		}
-		else
-		{
-			[self process];
-		}
-
 	}
 }
 
@@ -270,9 +298,12 @@
 
 - (void) clearBuffers
 {
-	for(ALSource* source in sources)
+	SYNCHRONIZED_OP(self)
 	{
-		[source clear];
+		for(ALSource* source in sources)
+		{
+			[source clear];
+		}
 	}
 }
 
@@ -283,9 +314,12 @@
 
 - (void) stopAllSounds
 {
-	for(ALSource* source in sources)
+	SYNCHRONIZED_OP(self)
 	{
-		[source stop];
+		for(ALSource* source in sources)
+		{
+			[source stop];
+		}
 	}
 }
 
@@ -307,12 +341,18 @@
 
 - (void) notifySourceInitializing:(ALSource*) source
 {
-	[sources addObject:source];
+	SYNCHRONIZED_OP(self)
+	{
+		[sources addObject:source];
+	}
 }
 
 - (void) notifySourceDeallocating:(ALSource*) source
 {
-	[sources removeObject:source];
+	SYNCHRONIZED_OP(self)
+	{
+		[sources removeObject:source];
+	}
 }
 
 

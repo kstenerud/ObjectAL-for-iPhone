@@ -25,6 +25,7 @@
 //
 
 #import "ALDevice.h"
+#import "ObjectALMacros.h"
 #import "ObjectAL.h"
 #import "MutableArray-WeakReferences.h"
 
@@ -101,9 +102,12 @@
 
 - (void) clearBuffers
 {
-	for(ALContext* context in contexts)
+	SYNCHRONIZED_OP(self)
 	{
-		[context clearBuffers];
+		for(ALContext* context in contexts)
+		{
+			[context clearBuffers];
+		}
 	}
 }
 
@@ -112,12 +116,18 @@
 
 - (void) notifyContextInitializing:(ALContext*) context
 {
-	[contexts addObject:context];
+	SYNCHRONIZED_OP(self)
+	{
+		[contexts addObject:context];
+	}
 }
 
 - (void) notifyContextDeallocating:(ALContext*) context
 {
-	[contexts removeObject:context];
+	SYNCHRONIZED_OP(self)
+	{
+		[contexts removeObject:context];
+	}
 }
 
 @end

@@ -22,7 +22,7 @@
 	SEL selector;
 }
 /** The portion of this button that is actually touchable */
-@property(readwrite,retain) CCNode* touchablePortion;
+@property(nonatomic,readwrite,retain) CCNode* touchablePortion;
 
 /** Create a new button.
  * @param node the node to use as a touchable portion.

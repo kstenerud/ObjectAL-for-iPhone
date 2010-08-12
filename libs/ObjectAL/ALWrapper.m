@@ -25,6 +25,20 @@
 //
 
 #import "ALWrapper.h"
+#import "ObjectALMacros.h"
+
+/** Check the result of an AL call, logging an error if necessary.
+ *
+ * @return TRUE if the call was successful.
+ */
+#define CHECK_AL_CALL() checkIfSuccessful(__PRETTY_FUNCTION__)
+
+/** Check the result of an ALC call, logging an error if necessary.
+ *
+ * @param DEVICE The device involved in the ALC call.
+ * @return TRUE if the call was successful.
+ */
+#define CHECK_ALC_CALL(DEVICE) checkIfSuccessfulWithDevice(__PRETTY_FUNCTION__, (DEVICE))
 
 
 /**
@@ -52,8 +66,6 @@
 
 @implementation ALWrapper
 
-static BOOL logErrors = TRUE;
-
 typedef ALdouble AL_APIENTRY (*alcMacOSXGetMixerOutputRateProcPtr)();
 typedef ALvoid AL_APIENTRY (*alcMacOSXMixerOutputRateProcPtr) (const ALdouble value);
 typedef ALvoid	AL_APIENTRY	(*alBufferDataStaticProcPtr) (const ALint bid, ALenum format, const ALvoid* data, ALsizei size, ALsizei freq);
@@ -61,14 +73,6 @@ typedef ALvoid	AL_APIENTRY	(*alBufferDataStaticProcPtr) (const ALint bid, ALenum
 static alcMacOSXGetMixerOutputRateProcPtr alcGetMacOSXMixerOutputRate = NULL;
 static alcMacOSXMixerOutputRateProcPtr alcMacOSXMixerOutputRate = NULL;
 static alBufferDataStaticProcPtr alBufferDataStatic = NULL;
-
-#pragma mark -
-#pragma mark Configuration
-
-- (void) setLogErrorsEnabled:(BOOL) value
-{
-	logErrors = value;
-}
 
 
 #pragma mark -
@@ -79,15 +83,12 @@ static alBufferDataStaticProcPtr alBufferDataStatic = NULL;
  * @param contextInfo Contextual information to add when logging an error.
  * @return TRUE if the operation was successful (no error).
  */
-BOOL checkIfSuccessful(NSString* contextInfo)
+BOOL checkIfSuccessful(const char* contextInfo)
 {
 	ALenum error = alGetError();
 	if(AL_NO_ERROR != error)
 	{
-		if(logErrors)
-		{
-			NSLog(@"Error: OpenAL: %@: %s (error code 0x%x)", contextInfo, alGetString(error), error);
-		}
+		LOG_ERROR_CONTEXT(contextInfo, @"%s (error code 0x%08x)", alGetString(error), error);
 		return NO;
 	}
 	return YES;
@@ -99,15 +100,12 @@ BOOL checkIfSuccessful(NSString* contextInfo)
  * @param device The device to check for errors on.
  * @return TRUE if the operation was successful (no error).
  */
-BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
+BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device)
 {
 	ALenum error = alcGetError(device);
 	if(ALC_NO_ERROR != error)
 	{
-		if(logErrors)
-		{
-			NSLog(@"Error: OpenAL: %@: %s (error code 0x%x)", contextInfo, alcGetString(device, error), error);
-		}
+		LOG_ERROR_CONTEXT(contextInfo, @"%s (error code 0x%08x)", alcGetString(device, error), error);
 		return NO;
 	}
 	return YES;
@@ -174,7 +172,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alEnable(capability);
-		result = checkIfSuccessful(@"enable");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -185,7 +183,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alDisable(capability);
-		result = checkIfSuccessful(@"disable");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -196,7 +194,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		result = alIsEnabled(capability);
-		checkIfSuccessful(@"isEnabled");
+		CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -210,7 +208,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		result = alIsExtensionPresent([extensionName UTF8String]);
-		checkIfSuccessful(@"isExtensionPresent");
+		CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -221,7 +219,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		result = alGetProcAddress([functionName UTF8String]);
-		checkIfSuccessful(@"getProcAddress");
+		CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -232,7 +230,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		result = alGetEnumValue([enumName UTF8String]);
-		checkIfSuccessful(@"getEnumValue");
+		CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -249,7 +247,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 		device = alcOpenDevice([deviceName UTF8String]);
 		if(NULL == device)
 		{
-			NSLog(@"Error: OpenAL: openDevice:%@: Could not open device", deviceName);
+			LOG_ERROR(@"Could not open device %@", deviceName);
 		}
 	}
 	return device;
@@ -261,7 +259,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alcCloseDevice(device);
-		result = checkIfSuccessfulWithDevice(@"getEnumValue", device);
+		result = CHECK_ALC_CALL(device);
 	}
 	return result;
 }
@@ -275,7 +273,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		result = alcIsExtensionPresent(device, [extensionName UTF8String]);
-		checkIfSuccessfulWithDevice(@"isExtensionPresent", device);
+		CHECK_ALC_CALL(device);
 	}
 	return result;
 }
@@ -286,7 +284,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		result = alcGetProcAddress(device, [functionName UTF8String]);
-		checkIfSuccessfulWithDevice(@"getProcAddress", device);
+		CHECK_ALC_CALL(device);
 	}
 	return result;
 }
@@ -297,7 +295,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		result = alcGetEnumValue(device, [enumName UTF8String]);
-		checkIfSuccessfulWithDevice(@"getEnumValue", device);
+		CHECK_ALC_CALL(device);
 	}
 	return result;
 }
@@ -311,7 +309,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		result = alcGetString(device, attribute);
-		checkIfSuccessfulWithDevice(@"getString", device);
+		CHECK_ALC_CALL(device);
 	}
 	return [NSString stringWithFormat:@"%s", result];
 }
@@ -322,7 +320,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		result = alcGetString(device, attribute);
-		checkIfSuccessfulWithDevice(@"getNullSeparatedStringList", device);
+		CHECK_ALC_CALL(device);
 	}
 	return [self decodeNullSeparatedStringList:result];
 }
@@ -333,7 +331,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		result = alcGetString(device, attribute);
-		checkIfSuccessfulWithDevice(@"getSpaceSeparatedStringList", device);
+		CHECK_ALC_CALL(device);
 	}
 	return [self decodeSpaceSeparatedStringList:result];
 }
@@ -351,7 +349,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alcGetIntegerv(device, attribute, size, data);
-		result = checkIfSuccessfulWithDevice(@"getIntegerv", device);
+		result = CHECK_ALC_CALL(device);
 	}
 	return result;
 }
@@ -367,7 +365,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 		result = alcCaptureOpenDevice([deviceName UTF8String], frequency, format, bufferSize);
 		if(nil == result)
 		{
-			NSLog(@"Error: OpenAL: openCaptureDevice:%@: Could not open device", deviceName);
+			LOG_ERROR(@"Could not open capture device %@", deviceName);
 		}
 	}
 	return result;
@@ -379,7 +377,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alcCaptureCloseDevice(device);
-		result = checkIfSuccessfulWithDevice(@"closeCaptureDevice", device);
+		result = CHECK_ALC_CALL(device);
 	}
 	return result;
 }
@@ -390,7 +388,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alcCaptureStop(device);
-		result = checkIfSuccessfulWithDevice(@"startCapture", device);
+		result = CHECK_ALC_CALL(device);
 	}
 	return result;
 }
@@ -401,7 +399,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alcCaptureStop(device);
-		result = checkIfSuccessfulWithDevice(@"stopCapture", device);
+		result = CHECK_ALC_CALL(device);
 	}
 	return result;
 }
@@ -412,7 +410,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alcCaptureSamples(device, buffer, numSamples);
-		result = checkIfSuccessfulWithDevice(@"captureSamples", device);
+		result = CHECK_ALC_CALL(device);
 	}
 	return result;
 }
@@ -427,7 +425,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		result = alcCreateContext(device, attributes);
-		checkIfSuccessfulWithDevice(@"createContext", device);
+		CHECK_ALC_CALL(device);
 	}
 	return result;
 }
@@ -445,11 +443,11 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 		{
 			if(nil != deviceReference)
 			{
-				checkIfSuccessfulWithDevice(@"makeContextCurrent", deviceReference);
+				CHECK_ALC_CALL(deviceReference);
 			}
 			else
 			{
-				NSLog(@"Error: OpenAL: makeContextCurrent: Could not make context %x current.  Pass in a device reference for better diagnostic info.");
+				LOG_ERROR(@"Could not make context %@ current.  Pass in a device reference for better diagnostic info.", context);
 			}
 			return NO;
 		}
@@ -508,11 +506,11 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 		{
 			if(nil != deviceReference)
 			{
-				checkIfSuccessfulWithDevice(@"getContextsDevice", deviceReference);
+				CHECK_ALC_CALL(deviceReference);
 			}
 			else
 			{
-				NSLog(@"Error: OpenAL: getContextsDevice: Could not get device for context %x.  Pass in a device reference for better diagnostic info.");
+				LOG_ERROR(@"Could not get device for context %@.  Pass in a device reference for better diagnostic info.", context);
 			}
 		}
 	}
@@ -528,7 +526,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		result = alGetBoolean(parameter);
-		checkIfSuccessful(@"getBoolean");
+		CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -539,7 +537,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		result = alGetDouble(parameter);
-		checkIfSuccessful(@"getDouble");
+		CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -550,7 +548,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		result = alGetFloat(parameter);
-		checkIfSuccessful(@"getFloat");
+		CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -561,7 +559,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		result = alGetInteger(parameter);
-		checkIfSuccessful(@"getInteger");
+		CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -572,7 +570,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		result = alGetString(parameter);
-		checkIfSuccessful(@"getString");
+		CHECK_AL_CALL();
 	}
 	return [NSString stringWithFormat:@"%s", result];
 }
@@ -583,7 +581,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		result = alGetString(parameter);
-		checkIfSuccessful(@"getNullSeparatedStringList");
+		CHECK_AL_CALL();
 	}
 	return [self decodeNullSeparatedStringList:result];
 }
@@ -594,7 +592,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		result = alGetString(parameter);
-		checkIfSuccessful(@"getSpaceSeparatedStringList");
+		CHECK_AL_CALL();
 	}
 	return [self decodeSpaceSeparatedStringList:result];
 }
@@ -605,7 +603,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alGetBooleanv(parameter, values);
-		result = checkIfSuccessful(@"getBooleanv");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -616,7 +614,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alGetDoublev(parameter, values);
-		result = checkIfSuccessful(@"getDoublev");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -627,7 +625,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alGetFloatv(parameter, values);
-		result = checkIfSuccessful(@"getFloatv");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -638,7 +636,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alGetIntegerv(parameter, values);
-		result = checkIfSuccessful(@"getIntegerv");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -649,7 +647,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alDistanceModel(value);
-		result = checkIfSuccessful(@"distanceModel");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -660,7 +658,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alDopplerFactor(value);
-		result = checkIfSuccessful(@"dopplerFactor");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -671,7 +669,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alSpeedOfSound(value);
-		result = checkIfSuccessful(@"speedOfSound");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -686,7 +684,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alListenerf(parameter, value);
-		result = checkIfSuccessful(@"listenerf");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -697,7 +695,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alListener3f(parameter, v1, v2, v3);
-		result = checkIfSuccessful(@"listener3f");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -708,7 +706,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alListenerfv(parameter, values);
-		result = checkIfSuccessful(@"listenerfv");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -719,7 +717,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alListeneri(parameter, value);
-		result = checkIfSuccessful(@"listeneri");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -730,7 +728,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alListener3i(parameter, v1, v2, v3);
-		result = checkIfSuccessful(@"listener3i");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -741,7 +739,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alListeneriv(parameter, values);
-		result = checkIfSuccessful(@"listeneriv");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -753,7 +751,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alGetListenerf(parameter, &value);
-		checkIfSuccessful(@"getListenerf");
+		CHECK_AL_CALL();
 	}
 	return value;
 }
@@ -764,7 +762,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alGetListener3f(parameter, v1, v2, v3);
-		result = checkIfSuccessful(@"getListener3f");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -775,7 +773,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alGetListenerfv(parameter, values);
-		result = checkIfSuccessful(@"getListenerfv");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -786,7 +784,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alGetListeneri(parameter, &value);
-		checkIfSuccessful(@"getListeneri");
+		CHECK_AL_CALL();
 	}
 	return value;
 }
@@ -797,7 +795,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alGetListener3i(parameter, v1, v2, v3);
-		result = checkIfSuccessful(@"getListener3i");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -808,7 +806,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alGetListeneriv(parameter, values);
-		result = checkIfSuccessful(@"getListeneriv");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -823,7 +821,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alGenSources(numSources, sourceIds);
-		result = checkIfSuccessful(@"genSources");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -834,7 +832,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		[self genSources:&sourceId numSources:1];
-		sourceId = checkIfSuccessful(@"genSource") ? sourceId : AL_INVALID;
+		sourceId = CHECK_AL_CALL() ? sourceId : AL_INVALID;
 	}
 	return sourceId;
 }
@@ -845,7 +843,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alDeleteSources(numSources, sourceIds);
-		result = checkIfSuccessful(@"deleteSources");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -856,7 +854,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		[self deleteSources:&sourceId numSources:1];
-		result = checkIfSuccessful(@"deleteSource");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -867,7 +865,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		result = alIsSource(sourceId);
-		checkIfSuccessful(@"isSource");
+		CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -881,7 +879,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alSourcef(sourceId, parameter, value);
-		result = checkIfSuccessful(@"sourcef");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -892,7 +890,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alSource3f(sourceId, parameter, v1, v2, v3);
-		result = checkIfSuccessful(@"source3f");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -903,7 +901,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alSourcefv(sourceId, parameter, values);
-		result = checkIfSuccessful(@"sourcefv");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -914,7 +912,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alSourcei(sourceId, parameter, value);
-		result = checkIfSuccessful(@"sourcei");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -925,7 +923,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alSource3i(sourceId, parameter, v1, v2, v3);
-		result = checkIfSuccessful(@"source3i");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -936,7 +934,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alSourceiv(sourceId, parameter, values);
-		result = checkIfSuccessful(@"sourceiv");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -948,7 +946,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alGetSourcef(sourceId, parameter, &value);
-		checkIfSuccessful(@"getSourcef");
+		CHECK_AL_CALL();
 	}
 	return value;
 }
@@ -959,7 +957,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alGetSource3f(sourceId, parameter, v1, v2, v3);
-		result = checkIfSuccessful(@"getSource3f");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -970,7 +968,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alGetSourcefv(sourceId, parameter, values);
-		result = checkIfSuccessful(@"getSourcefv");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -981,7 +979,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alGetSourcei(sourceId, parameter, &value);
-		checkIfSuccessful(@"getSourcei");
+		CHECK_AL_CALL();
 	}
 	return value;
 }
@@ -992,7 +990,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alGetSource3i(sourceId, parameter, v1, v2, v3);
-		result = checkIfSuccessful(@"getSource3i");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -1003,7 +1001,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alGetSourceiv(sourceId, parameter, values);
-		result = checkIfSuccessful(@"getSourceiv");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -1017,7 +1015,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alSourcePlay(sourceId);
-		result = checkIfSuccessful(@"sourcePlay");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -1028,7 +1026,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alSourcePlayv(numSources, sourceIds);
-		result = checkIfSuccessful(@"sourcePlayv");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -1039,7 +1037,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alSourcePause(sourceId);
-		result = checkIfSuccessful(@"sourcePause");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -1050,7 +1048,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alSourcePausev(numSources, sourceIds);
-		result = checkIfSuccessful(@"sourcePausev");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -1061,7 +1059,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alSourceStop(sourceId);
-		result = checkIfSuccessful(@"sourceStop");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -1072,7 +1070,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alSourceStopv(numSources, sourceIds);
-		result = checkIfSuccessful(@"sourceStopv");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -1083,7 +1081,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alSourceRewind(sourceId);
-		result = checkIfSuccessful(@"sourceRewind");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -1094,7 +1092,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alSourceRewindv(numSources, sourceIds);
-		result = checkIfSuccessful(@"sourceRewindv");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -1105,7 +1103,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alSourceQueueBuffers(sourceId, numBuffers, bufferIds);
-		result = checkIfSuccessful(@"sourceQueueBuffers");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -1116,7 +1114,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alSourceUnqueueBuffers(sourceId, numBuffers, bufferIds);
-		result = checkIfSuccessful(@"sourceUnqueueBuffers");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -1131,7 +1129,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alGenBuffers(numBuffers, bufferIds);
-		result = checkIfSuccessful(@"genBuffers");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -1142,7 +1140,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		[self genBuffers:&bufferId numBuffers:1];
-		bufferId = checkIfSuccessful(@"genBuffer") ? bufferId : AL_INVALID;
+		bufferId = CHECK_AL_CALL() ? bufferId : AL_INVALID;
 	}
 	return bufferId;
 }
@@ -1153,7 +1151,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alDeleteBuffers(numBuffers, bufferIds);
-		result = checkIfSuccessful(@"deleteBuffers");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -1164,7 +1162,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		[self deleteBuffers:&bufferId numBuffers:1];
-		result = checkIfSuccessful(@"deleteBuffer");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -1175,7 +1173,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		result = alIsBuffer(bufferId);
-		checkIfSuccessful(@"isBuffer");
+		CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -1186,7 +1184,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alBufferData(bufferId, format, data, size, frequency);
-		result = checkIfSuccessful(@"bufferData");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -1200,7 +1198,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alBufferf(bufferId, parameter, value);
-		result = checkIfSuccessful(@"bufferf");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -1211,7 +1209,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alBuffer3f(bufferId, parameter, v1, v2, v3);
-		result = checkIfSuccessful(@"buffer3f");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -1222,7 +1220,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alBufferfv(bufferId, parameter, values);
-		result = checkIfSuccessful(@"bufferfv");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -1233,7 +1231,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alBufferi(bufferId, parameter, value);
-		result = checkIfSuccessful(@"bufferi");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -1244,7 +1242,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alBuffer3i(bufferId, parameter, v1, v2, v3);
-		result = checkIfSuccessful(@"buffer3i");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -1255,7 +1253,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alBufferiv(bufferId, parameter, values);
-		result = checkIfSuccessful(@"bufferiv");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -1267,7 +1265,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alGetBufferf(bufferId, parameter, &value);
-		checkIfSuccessful(@"getBufferf");
+		CHECK_AL_CALL();
 	}
 	return value;
 }
@@ -1278,7 +1276,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alGetBuffer3f(bufferId, parameter, v1, v2, v3);
-		result = checkIfSuccessful(@"getBuffer3f");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -1289,7 +1287,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alGetBufferfv(bufferId, parameter, values);
-		result = checkIfSuccessful(@"getBufferfv");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -1300,7 +1298,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alGetBufferi(bufferId, parameter, &value);
-		checkIfSuccessful(@"getBufferi");
+		CHECK_AL_CALL();
 	}
 	return value;
 }
@@ -1311,7 +1309,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alGetBuffer3i(bufferId, parameter, v1, v2, v3);
-		result = checkIfSuccessful(@"getBuffer3i");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -1322,7 +1320,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alGetBufferiv(bufferId, parameter, values);
-		result = checkIfSuccessful(@"getBufferiv");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -1338,7 +1336,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 		alcGetMacOSXMixerOutputRate = (alcMacOSXGetMixerOutputRateProcPtr) alcGetProcAddress(NULL, (const ALCchar*) "alcMacOSXGetMixerOutputRate");
 		if(NULL == alcGetMacOSXMixerOutputRate)
 		{
-			NSLog(@"Error: ALWrapper: Could not get proc pointer for \"alcMacOSXMixerOutputRate\".");
+			LOG_ERROR(@"Could not get proc pointer for \"alcMacOSXMixerOutputRate\".");
 		}
 	}
 	
@@ -1346,7 +1344,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		result = alcGetMacOSXMixerOutputRate();
-		checkIfSuccessful(@"MixerOutputRate");
+		CHECK_AL_CALL();
 	}
 	return result;
 }
@@ -1358,7 +1356,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 		alcMacOSXMixerOutputRate = (alcMacOSXMixerOutputRateProcPtr) alcGetProcAddress(NULL, (const ALCchar*) "alcMacOSXMixerOutputRate");
 		if(NULL == alcMacOSXMixerOutputRate)
 		{
-			NSLog(@"Error: ALWrapper: Could not get proc pointer for \"alcMacOSXMixerOutputRate\".");
+			LOG_ERROR(@"Could not get proc pointer for \"alcMacOSXMixerOutputRate\".");
 		}
 	}
 	
@@ -1372,7 +1370,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 		alBufferDataStatic = (alBufferDataStaticProcPtr) alcGetProcAddress(NULL, (const ALCchar*) "alBufferDataStatic");
 		if(NULL == alBufferDataStatic)
 		{
-			NSLog(@"Error: ALWrapper: Could not get proc pointer for \"alBufferDataStatic\".");
+			LOG_ERROR(@"Could not get proc pointer for \"alBufferDataStatic\".");
 		}
 	}
 	
@@ -1380,7 +1378,7 @@ BOOL checkIfSuccessfulWithDevice(NSString* contextInfo, ALCdevice* device)
 	@synchronized(self)
 	{
 		alBufferDataStatic(bufferId, format, data, size, frequency);
-		result = checkIfSuccessful(@"bufferDataStatic");
+		result = CHECK_AL_CALL();
 	}
 	return result;
 }

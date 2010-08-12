@@ -33,20 +33,11 @@
  * A thin wrapper around the C OpenAL API, with a few convenience methods thrown in.
  * Wherever possible, methods return the requested data rather than requiring a pointer to be passed in. 
  * Besides collecting the API calls into a single global object, all calls are combined with an error check.
- * Any OpenAL errors that occur will be output using NSLog.
+ * Any OpenAL errors that occur will be logged if error logging is enabled.
  */
 @interface ALWrapper : NSObject
 {
 }
-
-#pragma mark -
-#pragma mark Configuration
-
-/** Turn error logging on/off.
- *
- * @param value TRUE or FALSE.
- */
-- (void) setLogErrorsEnabled:(BOOL) value;
 
 #pragma mark -
 #pragma mark Buffers

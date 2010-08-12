@@ -130,7 +130,7 @@
 	{
 		if([child conformsToProtocol:@protocol(CCRGBAProtocol)])
 		{
-			((id<CCRGBAProtocol>)child).opacity =  value;
+			[((id<CCRGBAProtocol>)child) setOpacity:value];
 		}
 	}
 }
@@ -153,7 +153,7 @@
 	{
 		if([child conformsToProtocol:@protocol(CCRGBAProtocol)])
 		{
-			((id<CCRGBAProtocol>)child).color =  value;
+			[((id<CCRGBAProtocol>)child) setColor:value];
 		}
 	}
 }

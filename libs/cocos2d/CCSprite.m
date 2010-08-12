@@ -336,6 +336,18 @@ struct transformValues_ {
 
 	[self setContentSize:untrimmedSize];
 	[self updateTextureCoords:rect];
+
+	CGPoint relativeOffset = unflippedOffsetPositionFromCenter_;
+	
+	// issue #732
+	if( flipX_ )
+		relativeOffset.x = - relativeOffset.x;
+	if( flipY_ )
+		relativeOffset.y = - relativeOffset.y;
+	
+	offsetPosition_.x = relativeOffset.x + (contentSize_.width - rect_.size.width) / 2;
+	offsetPosition_.y = relativeOffset.y + (contentSize_.height - rect_.size.height) / 2;
+	
 	
 	// rendering using SpriteSheet
 	if( usesSpriteSheet_ ) {
@@ -449,10 +461,11 @@ struct transformValues_ {
 		}		
 	}
 	
+	
 	//
 	// calculate the Quad based on the Affine Matrix
-	//
-	
+	//	
+
 	CGSize size = rect_.size;
 
 	float x1 = offsetPosition_.x;
@@ -626,7 +639,8 @@ struct transformValues_ {
 	dirty_ = recursiveDirty_ = b;
 	// recursively set dirty
 	if( hasChildren_ ) {
-		for( CCSprite *child in children_)
+		CCSprite *child;
+		CCARRAY_FOREACH(children_, child)
 			[child setDirtyRecursively:YES];
 	}
 }
@@ -694,7 +708,8 @@ struct transformValues_ {
 		[super setVisible:v];
 		if( usesSpriteSheet_ && ! recursiveDirty_ ) {
 			dirty_ = recursiveDirty_ = YES;
-			for( id child in children_)
+			id child;
+			CCARRAY_FOREACH(children_, child)
 				[child setVisible:v];
 		}
 	}
@@ -806,16 +821,12 @@ struct transformValues_ {
 
 -(void) setDisplayFrame:(CCSpriteFrame*)frame
 {
-	offsetPosition_ = frame.offset;
-	
-	CGRect rect = frame.rect;
-	CGSize origSize = frame.originalSize;
-	offsetPosition_.x += (origSize.width - rect.size.width) / 2;
-	offsetPosition_.y += (origSize.height - rect.size.height) / 2;
+	unflippedOffsetPositionFromCenter_ = frame.offset;
 
+	CCTexture2D *newTexture = [frame texture];
 	// update texture before updating texture rect
-	if ( frame.texture.name != self.texture.name )
-		[self setTexture: frame.texture];
+	if ( newTexture.name != texture_.name )
+		[self setTexture: newTexture];
 	
 	// update rect
 	[self setTextureRect:frame.rect untrimmedSize:frame.originalSize];

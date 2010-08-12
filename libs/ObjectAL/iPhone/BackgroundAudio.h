@@ -48,23 +48,34 @@
 	AVAudioPlayer* player;
 	NSURL* currentlyLoadedUrl;
 	bool paused;
+	bool muted;
 	float gain;
 	NSInteger numberOfLoops;
 	id<AVAudioPlayerDelegate> delegate; // Weak reference
+
+	/** When the simulator is running (and the playback fix is in use),
+	 * player will be copied to here, and then player set to nil.
+	 * This prevents other code from inadvertently raising the volume
+	 * and starting playback.
+	 */
+	AVAudioPlayer* simulatorPlayerRef;
 
 	/** Operation queue for running asynchronous operations.
 	 * Note: Only one asynchronous operation is allowed at a time.
 	 */
 	NSOperationQueue* operationQueue;
 
-	/** Keeps track of whether the player was playing when it got paused */
-	bool wasPlaying;
+	/** If true, the audio player is currently playing.
+	 * We need to maintain our own value because AVAudioPlayer will
+	 * sometimes say it's not playing when it actually is.
+	 */
+	bool playing;
 }
 
 
 #pragma mark Properties
 
-/** If true, allow ipod music to continue playing. */
+/** If true, allow ipod music to continue playing (NOT SUPPORTED ON THE SIMULATOR). */
 @property(readwrite,assign) bool allowIpod;
 
 /** The URL of the currently loaded audio data. */
@@ -72,23 +83,33 @@
 
 /** Optional object that will receive notifications for decoding errors,
  * audio interruptions (such as an incoming phone call), and playback completion. <br>
- * Note: BackgroundAudio keeps a WEAK reference to delegate.
+ * Note: BackgroundAudio keeps a WEAK reference to delegate, so make sure you clear it
+ * when your object is going to be deallocated.
  */
 @property(readwrite,assign) id<AVAudioPlayerDelegate> delegate;
 
 /** The gain (volume) for playback (0.0 - 1.0, where 1.0 = no attenuation). */
 @property(readwrite,assign) float gain;
 
-/** If true, mute when the silent switch is turned on or when the device enters sleep mode. */
+/** If true, background audio is muted */
+@property(readwrite,assign) bool muted;
+
+/** If true, mute when the silent switch is turned on or when the device enters sleep mode (NOT SUPPORTED ON THE SIMULATOR). */
 @property(readwrite,assign) bool honorSilentSwitch;
 
-/** The number of times to loop playback (-1 = forever). */
+/** The number of times to loop playback (-1 = forever).
+ * Note: This value will be ignored, and get changed when you call the various playXX methods.
+ * Only [[BackgroundAudio sharedInstance] play] will use the current value of "numberOfLoops".
+ */
 @property(readwrite,assign) NSInteger numberOfLoops;
 
 /** If true, pause playback. */
 @property(readwrite,assign) bool paused;
 
-/** Access to the underlying AVAudioPlayer object. */
+/** Access to the underlying AVAudioPlayer object.
+ * WARNING: Be VERY careful when accessing this.  Modifying anything will
+ * likely cause it to fall out of sync with BackgroundAudio.
+ */
 @property(readonly) AVAudioPlayer* player;
 
 /** If true, background music is currently playing. */
@@ -173,7 +194,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(BackgroundAudio);
  */
 - (bool) preloadFileAsync:(NSString*) path target:(id) target selector:(SEL) selector;
 
-/** Play the contents of a URL.
+/** Play the contents of a URL once.
  *
  * <strong>Note:</strong> only <strong>ONE</strong> file may be played or
  * preloaded at a time (the hardware only supports one file at a time).
@@ -184,7 +205,19 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(BackgroundAudio);
  */
 - (bool) playUrl:(NSURL*) url;
 
-/** Play the contents of a file.
+/** Play the contents of a URL and loop the specified number of times.
+ *
+ * <strong>Note:</strong> only <strong>ONE</strong> file may be played or
+ * preloaded at a time (the hardware only supports one file at a time).
+ * If you play or preload another file, the one currently playing will stop.
+ *
+ * @param url The URL containing the sound data.
+ * @param loops The number of times to loop playback (-1 = forever)
+ * @return TRUE if the operation was successful.
+ */
+- (bool) playUrl:(NSURL*) url loops:(NSInteger) loops;
+
+/** Play the contents of a file once.
  *
  * <strong>Note:</strong> only <strong>ONE</strong> file may be played or
  * preloaded at a time (the hardware only supports one file at a time).
@@ -195,7 +228,19 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(BackgroundAudio);
  */
 - (bool) playFile:(NSString*) path;
 
-/** Play the contents of a URL asynchronously.
+/** Play the contents of a file and loop the specified number of times.
+ *
+ * <strong>Note:</strong> only <strong>ONE</strong> file may be played or
+ * preloaded at a time (the hardware only supports one file at a time).
+ * If you play or preload another file, the one currently playing will stop.
+ *
+ * @param path The file containing the sound data.
+ * @param loops The number of times to loop playback (-1 = forever)
+ * @return TRUE if the operation was successful.
+ */
+- (bool) playFile:(NSString*) path loops:(NSInteger) loops;
+
+/** Play the contents of a URL asynchronously once.
  *
  * <strong>Note:</strong> only <strong>ONE</strong> file may be played or
  * preloaded at a time (the hardware only supports one file at a time).
@@ -204,11 +249,23 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(BackgroundAudio);
  * @param url The URL containing the sound data.
  * @param target the target to inform when playing has started.
  * @param selector the selector to call when playing has started.
- * @return TRUE if the operation was successfully queued.
  */
-- (bool) playUrlAsync:(NSURL*) url target:(id) target selector:(SEL) selector;
+- (void) playUrlAsync:(NSURL*) url target:(id) target selector:(SEL) selector;
 
-/** Play the contents of a file asynchronously.
+/** Play the contents of a URL asynchronously and loop the specified number of times.
+ *
+ * <strong>Note:</strong> only <strong>ONE</strong> file may be played or
+ * preloaded at a time (the hardware only supports one file at a time).
+ * If you play or preload another file, the one currently playing will stop.
+ *
+ * @param url The URL containing the sound data.
+ * @param loops The number of times to loop playback (-1 = forever)
+ * @param target the target to inform when playing has started.
+ * @param selector the selector to call when playing has started.
+ */
+- (void) playUrlAsync:(NSURL*) url loops:(NSInteger) loops target:(id) target selector:(SEL) selector;
+
+/** Play the contents of a file asynchronously once.
  *
  * <strong>Note:</strong> only <strong>ONE</strong> file may be played or
  * preloaded at a time (the hardware only supports one file at a time).
@@ -217,9 +274,21 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(BackgroundAudio);
  * @param path The file containing the sound data.
  * @param target the target to inform when playing has started.
  * @param selector the selector to call when playing has started.
- * @return TRUE if the operation was successfully queued.
  */
-- (bool) playFileAsync:(NSString*) path target:(id) target selector:(SEL) selector;
+- (void) playFileAsync:(NSString*) path target:(id) target selector:(SEL) selector;
+
+/** Play the contents of a file asynchronously and loop the specified number of times.
+ *
+ * <strong>Note:</strong> only <strong>ONE</strong> file may be played or
+ * preloaded at a time (the hardware only supports one file at a time).
+ * If you play or preload another file, the one currently playing will stop.
+ *
+ * @param path The file containing the sound data.
+ * @param loops The number of times to loop playback (-1 = forever)
+ * @param target the target to inform when playing has started.
+ * @param selector the selector to call when playing has started.
+ */
+- (void) playFileAsync:(NSString*) path loops:(NSInteger) loops target:(id) target selector:(SEL) selector;
 
 /** Play the currently loaded audio track.
  *
@@ -279,18 +348,5 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(BackgroundAudio);
  * (if interrupts are enabled in IphoneAudioSupport).
  */
 @property(readwrite,assign) bool suspended;
-
-
-
-#pragma mark Simulator playback bug handler
-
-#if TARGET_IPHONE_SIMULATOR
-/** If the background music playback on the simulator ends (or is stopped), it mutes
- * OpenAL audio.  This method works around the issue by putting the player into looped
- * playback mode with volume set to 0 until the next instruction is received.
- */
-- (void) handleSimulatorEndPlaybackBug;
-#endif /* TARGET_IPHONE_SIMULATOR */
-
 
 @end

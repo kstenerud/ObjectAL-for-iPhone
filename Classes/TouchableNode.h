@@ -19,17 +19,17 @@
 	BOOL registeredWithDispatcher;
 }
 /** Priority position in which this node will be handled (lower = sooner) */
-@property(readwrite,assign) int touchPriority;
+@property(nonatomic,readwrite,assign) int touchPriority;
 
-@property(readwrite,assign) BOOL targetedTouches;
-@property(readwrite,assign) BOOL swallowTouches;
+@property(nonatomic,readwrite,assign) BOOL targetedTouches;
+@property(nonatomic,readwrite,assign) BOOL swallowTouches;
 
 /** whether or not it will receive Touch events.
  You can enable / disable touch events with this property.
  Only the touches of this node will be affected. This "method" is not propagated to it's children.
  @since v0.8.1
  */
-@property(nonatomic,assign) BOOL isTouchesEnabled;
+@property(nonatomic,nonatomic,assign) BOOL isTouchesEnabled;
 
 - (BOOL) touchHitsSelf:(UITouch*) touch;
 - (BOOL) touch:(UITouch*) touch hitsNode:(CCNode*) node;

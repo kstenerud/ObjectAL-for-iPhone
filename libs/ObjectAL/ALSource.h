@@ -41,6 +41,7 @@
 {
 	unsigned int sourceId;
 	bool interruptible;
+	float gain;
 	bool muted;
 	bool paused;
 	ALBuffer* buffer;

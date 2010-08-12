@@ -63,6 +63,7 @@
 
 	bool interruptible;
 	bool muted;
+	bool paused;
 }
 
 
