@@ -6,6 +6,20 @@
 	objectVersion = 45;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		3987241E1215692600781573 /* Documentation */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 398724241215695400781573 /* Build configuration list for PBXAggregateTarget "Documentation" */;
+			buildPhases = (
+				3987241D1215692600781573 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = Documentation;
+			productName = Documentation;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1F3B9A2D0EF2145700286867 /* ObjectALAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F3B9A2B0EF2145700286867 /* ObjectALAppDelegate.m */; };
@@ -67,7 +81,7 @@
 		39AD8547121032E00049990E /* SingleSourceDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 39AD8539121032E00049990E /* SingleSourceDemo.m */; };
 		39AD8548121032E00049990E /* TwoSourceDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 39AD853B121032E00049990E /* TwoSourceDemo.m */; };
 		39AD8549121032E00049990E /* VolumePitchPanDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 39AD853D121032E00049990E /* VolumePitchPanDemo.m */; };
-		39AD854E1210335E0049990E /* libObjectAL Library.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 39AD84B6121031BC0049990E /* libObjectAL Library.a */; };
+		39AD854E1210335E0049990E /* libObjectAL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 39AD84B6121031BC0049990E /* libObjectAL.a */; };
 		505574581045D68500A31725 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 506EDBA4102F4C9F00A389B3 /* AVFoundation.framework */; };
 		505574591045D68500A31725 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC6640020F83B3EA000B3E49 /* AudioToolbox.framework */; };
 		5055745A1045D68500A31725 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCCBF1B60F6022AE0040855A /* CoreGraphics.framework */; };
@@ -275,7 +289,7 @@
 		1F3B9A2C0EF2145700286867 /* ObjectALAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ObjectALAppDelegate.h; path = Classes/ObjectALAppDelegate.h; sourceTree = SOURCE_ROOT; };
 		1F3B9A820EF2151B00286867 /* ObjectAL_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectAL_Prefix.pch; sourceTree = SOURCE_ROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		39AD84B6121031BC0049990E /* libObjectAL Library.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libObjectAL Library.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		39AD84B6121031BC0049990E /* libObjectAL.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libObjectAL.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		39AD84BC121031E40049990E /* ALBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALBuffer.h; sourceTree = "<group>"; };
 		39AD84BD121031E40049990E /* ALBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALBuffer.m; sourceTree = "<group>"; };
 		39AD84BE121031E40049990E /* ALCaptureDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALCaptureDevice.h; sourceTree = "<group>"; };
@@ -531,7 +545,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				39AD854E1210335E0049990E /* libObjectAL Library.a in Frameworks */,
+				39AD854E1210335E0049990E /* libObjectAL.a in Frameworks */,
 				DCCBF1B70F6022AE0040855A /* CoreGraphics.framework in Frameworks */,
 				DCCBF1B90F6022AE0040855A /* Foundation.framework in Frameworks */,
 				DCCBF1BB0F6022AE0040855A /* OpenGLES.framework in Frameworks */,
@@ -574,7 +588,7 @@
 			children = (
 				1D6058910D05DD3D006BFB54 /* ObjectAL.app */,
 				506EE05E10304ED200A389B3 /* libcocos2d libraries.a */,
-				39AD84B6121031BC0049990E /* libObjectAL Library.a */,
+				39AD84B6121031BC0049990E /* libObjectAL.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1063,9 +1077,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		1D6058900D05DD3D006BFB54 /* ObjectAL */ = {
+		1D6058900D05DD3D006BFB54 /* ObjectAL Demo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "ObjectAL" */;
+			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "ObjectAL Demo" */;
 			buildPhases = (
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
@@ -1077,14 +1091,14 @@
 				506EE1A81030507B00A389B3 /* PBXTargetDependency */,
 				39AD8502121031F70049990E /* PBXTargetDependency */,
 			);
-			name = ObjectAL;
+			name = "ObjectAL Demo";
 			productName = ObjectAL;
 			productReference = 1D6058910D05DD3D006BFB54 /* ObjectAL.app */;
 			productType = "com.apple.product-type.application";
 		};
-		39AD84B5121031BC0049990E /* ObjectAL Library */ = {
+		39AD84B5121031BC0049990E /* ObjectAL */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 39AD84BA121031C50049990E /* Build configuration list for PBXNativeTarget "ObjectAL Library" */;
+			buildConfigurationList = 39AD84BA121031C50049990E /* Build configuration list for PBXNativeTarget "ObjectAL" */;
 			buildPhases = (
 				39AD84B2121031BC0049990E /* Headers */,
 				39AD84B3121031BC0049990E /* Sources */,
@@ -1094,9 +1108,9 @@
 			);
 			dependencies = (
 			);
-			name = "ObjectAL Library";
+			name = ObjectAL;
 			productName = "ObjectAL Library";
-			productReference = 39AD84B6121031BC0049990E /* libObjectAL Library.a */;
+			productReference = 39AD84B6121031BC0049990E /* libObjectAL.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		506EE05D10304ED200A389B3 /* cocos2d libraries */ = {
@@ -1128,9 +1142,10 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1D6058900D05DD3D006BFB54 /* ObjectAL */,
+				1D6058900D05DD3D006BFB54 /* ObjectAL Demo */,
+				3987241E1215692600781573 /* Documentation */,
 				506EE05D10304ED200A389B3 /* cocos2d libraries */,
-				39AD84B5121031BC0049990E /* ObjectAL Library */,
+				39AD84B5121031BC0049990E /* ObjectAL */,
 			);
 		};
 /* End PBXProject section */
@@ -1160,6 +1175,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3987241D1215692600781573 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "########################################################################\n#\n#  This script builds the Doxygen documentation for your project\n#  and loads the docset into Xcode. You can create a new Shell Script\n#  target or just add a new Run Script build phase to an existing target.\n#\n#  This script needs to know the Doxygen binary's path. It gets this\n#  from your build settings. To add the path to your build settings:\n#\n#  Add a User-Defined Setting to your Doxygen target's Build Info named\n#  DOXYGEN_PATH and set its value to the location of your Doxygen binary,\n#  which may be one of the following (or not):\n#\n#    Application  : /Applications/Doxygen.app/Contents/Resources/doxygen\n#    Source build : /usr/local/bin/doxygen\n#\n########################################################################\n\nDOX_SRC=\"$SOURCE_ROOT/doxygen.config\"\nDOX_TEMP=\"$TEMP_DIR/doxygen.temp\"\nDOX_DEST=\"$TEMP_DIR/doxygen.config\"\nDOX_SET=\"$TEMP_DIR/DoxygenDocs.docset\"\nDOX_NAME=\"org.doxygen.$PROJECT_NAME\"\n\ndoxset() {\n  subst=${2//\\//\\\\\\/}\n  subst=${subst//\\\"/\\\\\\\"/}\n  if [ \"$3\" != \"NO_QUOTES\" -a `expr \"$subst\" : \".*[ '].*\"` -gt 0 ]; then\n  \tsubst=\\\"$subst\\\"\n  fi\n  cat \"$DOX_DEST\" | sed -E \"s/($1[ \\t]+=[ \\t]*).*$/\\1$subst/g\" >\"$DOX_TEMP\"\n  mv -f \"$DOX_TEMP\" \"$DOX_DEST\"\n}\n\n#\n# If the config file doesn't exist, run 'doxygen -g <dest>' to create a default file.\n#\nif ! [ -f \"$DOX_SRC\" ]; then\n  echo doxygen config file does not exist\n  $DOXYGEN_PATH -g \"$DOX_SRC\"\nfi\n\n#\n#  Make a copy of the default config\n#\ncp \"$DOX_SRC\" \"$DOX_DEST\"\n\n#\n# Customize the settings we want to change\n#\ndoxset PROJECT_NAME\t\t\t\"$PROJECT_NAME\"\ndoxset INPUT\t\t\t\t\"$SOURCE_ROOT/libs/ObjectAL\"\ndoxset IMAGE_PATH\t\t\t\"$SOURCE_ROOT/diagrams\"\ndoxset OUTPUT_DIRECTORY\t\t\"$DOX_SET\"\ndoxset DOCSET_BUNDLE_ID\t\t\"$DOX_NAME\"\ndoxset RECURSIVE\t\t\tYES\ndoxset GENERATE_DOCSET\t\tYES\ndoxset GENERATE_LATEX\t\tNO\ndoxset QUIET\t\t\t\tYES\ndoxset TAB_SIZE\t\t\t\t4\ndoxset QT_AUTOBRIEF\t\t\tYES\ndoxset JAVADOC_AUTOBRIEF\tYES\ndoxset FULL_PATH_NAMES\t\tNO\n#doxset EXTRACT_ALL\t\t\tYES\ndoxset EXTRACT_PRIVATE\t\tNO\ndoxset EXTRACT_STATIC\t\tNO\ndoxset ALWAYS_DETAILED_SEC \tYES\ndoxset FILE_PATTERNS\t\t\"*.c *.cc *.cxx *.cpp *.c++ *.java *.h *.hh *.hxx *.hpp *.h++ *.m *.mm *.dox\" NO_QUOTES\ndoxset WARN_FORMAT\t\t\t\"\\$file:\\$line: warning: \\$text\"\n\ndoxset USE_PDFLATEX\t\tYES\ndoxset PDF_HYPERLINKS\t\tYES\n\n#\n#  Run doxygen on the updated config file.\n#  Note: doxygen creates a Makefile that does most of the heavy lifting.\n#\n$DOXYGEN_PATH \"$DOX_DEST\"\n\n#\n#  make will invoke docsetutil. Take a look at the Makefile to see how this is done.\n#\nmake -C \"$DOX_SET/html\" install\n\n#\n#  Load the doc set\n#\n/usr/bin/osascript -e 'tell application \"Xcode\" to load documentation set with path \"/Users/'$USER'/Library/Developer/Shared/Documentation/DocSets/'$DOX_NAME'.docset\"'\n\n\nexit 0";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1D60588E0D05DD3D006BFB54 /* Sources */ = {
@@ -1291,7 +1322,7 @@
 /* Begin PBXTargetDependency section */
 		39AD8502121031F70049990E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 39AD84B5121031BC0049990E /* ObjectAL Library */;
+			target = 39AD84B5121031BC0049990E /* ObjectAL */;
 			targetProxy = 39AD8501121031F70049990E /* PBXContainerItemProxy */;
 		};
 		506EE1A81030507B00A389B3 /* PBXTargetDependency */ = {
@@ -1348,6 +1379,28 @@
 			};
 			name = Release;
 		};
+		3987241F1215692700781573 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DOXYGEN_PATH = /Applications/Doxygen.app/Contents/Resources/doxygen;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = Documentation;
+			};
+			name = Debug;
+		};
+		398724201215692700781573 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = Documentation;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 		39AD84B7121031BD0049990E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1356,7 +1409,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				PREBINDING = NO;
-				PRODUCT_NAME = "ObjectAL Library";
+				PRODUCT_NAME = ObjectAL;
 			};
 			name = Debug;
 		};
@@ -1368,7 +1421,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				PREBINDING = NO;
-				PRODUCT_NAME = "ObjectAL Library";
+				PRODUCT_NAME = ObjectAL;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -1445,7 +1498,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "ObjectAL" */ = {
+		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "ObjectAL Demo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
@@ -1454,7 +1507,16 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		39AD84BA121031C50049990E /* Build configuration list for PBXNativeTarget "ObjectAL Library" */ = {
+		398724241215695400781573 /* Build configuration list for PBXAggregateTarget "Documentation" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3987241F1215692700781573 /* Debug */,
+				398724201215692700781573 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		39AD84BA121031C50049990E /* Build configuration list for PBXNativeTarget "ObjectAL" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				39AD84B7121031BD0049990E /* Debug */,

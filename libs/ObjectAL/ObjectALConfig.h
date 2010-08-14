@@ -30,7 +30,8 @@
  * synchronized blocks.
  * Turning this off can improve performance a bit if your application makes heavy
  * use of audio calls, but you'll be on your own for ensuring two threads don't
- * access the same part of the audio library at the same time.
+ * access the same part of the audio library at the same time. <br>
+ * Recommended value: 1
  */
 #define OBJECTAL_CFG_SYNCHRONIZED_OPERATIONS 1
 
@@ -38,7 +39,8 @@
 /** When this option is enabled, ObjectAL will output log entries for any errors that occur.
  * In general, turning this off won't help performance since the log code only gets called
  * when an error occurs.  There can be a slight improvement, however, since it won't even
- * check return codes in many cases.
+ * check return codes in many cases. <br>
+ * Recommended value: 1
  */
 #define OBJECTAL_CFG_LOG_ERRORS 1
 
@@ -46,17 +48,19 @@
 /** The CLANG/LLVM 1.5 compiler that ships with XCode 3.2.3 fails when compiling a method
  * which takes a struct and passes that struct or one of its components to a C function
  * from within a @synchronized(self) context when compiling for the Device in Debug
- * configuration (Apple issue #8303765).
+ * configuration (Apple issue #8303765). <br>
  * If this option is enabled, all synchronization will be disabled for methods which fall
  * under this category. <br>
- * Note: This only takes effect if the CLANG compiler is used (__clang__ == 1)
+ * Note: This only takes effect if the CLANG compiler is used (__clang__ == 1) <br>
+ * Recommended value: 1
  */
-#define OBJECTAL_CLANG_LLVM_BUG_WORKAROUND 1
+#define OBJECTAL_CFG_CLANG_LLVM_BUG_WORKAROUND 1
 
 
 /** When this option is enabled, ObjectAL will invoke special code when playback ends for
  * any reason on the simulator.  This is to counter a bug where the simulator would mute
- * OpenAL playback when AVAudioPlayer playback ends.
- * With XCode 3.2.3, this bug seems to be fixed.
+ * OpenAL playback when AVAudioPlayer playback ends. <br>
+ * Note: With XCode 3.2.3, this bug seems to be fixed. <br>
+ * Recommended value: 0 for XCode 3.2.3, 1 for earlier versions.
  */
 #define OBJECTAL_CFG_SIMULATOR_BUG_WORKAROUND 0

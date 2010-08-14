@@ -94,7 +94,9 @@
 /** If true, background audio is muted */
 @property(readwrite,assign) bool muted;
 
-/** If true, mute when the silent switch is turned on or when the device enters sleep mode (NOT SUPPORTED ON THE SIMULATOR). */
+/** If true, mute when the silent switch is turned on or when the device enters sleep mode
+ * (NOT SUPPORTED ON THE SIMULATOR).
+ */
 @property(readwrite,assign) bool honorSilentSwitch;
 
 /** The number of times to loop playback (-1 = forever).
@@ -263,7 +265,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(BackgroundAudio);
  * @param target the target to inform when playing has started.
  * @param selector the selector to call when playing has started.
  */
-- (void) playUrlAsync:(NSURL*) url loops:(NSInteger) loops target:(id) target selector:(SEL) selector;
+- (void) playUrlAsync:(NSURL*) url
+				loops:(NSInteger) loops
+			   target:(id) target
+			 selector:(SEL) selector;
 
 /** Play the contents of a file asynchronously once.
  *
@@ -288,7 +293,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(BackgroundAudio);
  * @param target the target to inform when playing has started.
  * @param selector the selector to call when playing has started.
  */
-- (void) playFileAsync:(NSString*) path loops:(NSInteger) loops target:(id) target selector:(SEL) selector;
+- (void) playFileAsync:(NSString*) path
+				 loops:(NSInteger) loops
+				target:(id) target
+			  selector:(SEL) selector;
 
 /** Play the currently loaded audio track.
  *
@@ -310,8 +318,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(BackgroundAudio);
 @property (readwrite,assign) bool meteringEnabled;
 
 /** Updates the metering system to give current values.
- * You must call this method before calling averagePowerForChannel or peakPowerForChannel in order
- * to get current values.
+ * You must call this method before calling averagePowerForChannel or peakPowerForChannel in
+ * order to get current values.
  */
 - (void) updateMeters;
 
@@ -323,7 +331,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(BackgroundAudio);
  * <strong>Note:</strong> The value returned is in reference to when updateMeters was last called.
  * You must call updateMeters again before calling this method to get a current value.
  *
- * @param channelNumber The channel to get the value from.  For mono or left, use 0.  For right, use 1.
+ * @param channelNumber The channel to get the value from.  For mono or left, use 0.  For right,
+ *        use 1.
  * @return the average power for the channel.
  */
 - (float) averagePowerForChannel:(NSUInteger)channelNumber;
@@ -336,7 +345,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(BackgroundAudio);
  * <strong>Note:</strong> The value returned is in reference to when updateMeters was last called.
  * You must call updateMeters again before calling this method to get a current value.
  *
- * @param channelNumber The channel to get the value from.  For mono or left, use 0.  For right, use 1.
+ * @param channelNumber The channel to get the value from.  For mono or left, use 0.  For right,
+ *        use 1.
  * @return the average power for the channel.
  */
 - (float) peakPowerForChannel:(NSUInteger)channelNumber;

@@ -69,7 +69,8 @@
 
 /** Acquire a free or freeable source from this pool.
  * It first attempts to find a completely free source.
- * Failing this, it will attempt to interrupt a source and return that (if attemptToInterrupt is TRUE).
+ * Failing this, it will attempt to interrupt a source and return that (if attemptToInterrupt
+ * is TRUE).
  *
  * @param attemptToInterrupt If TRUE, attempt to interrupt sources to free them for use.
  * @return The freed sound source, or nil if no sources are freeable.

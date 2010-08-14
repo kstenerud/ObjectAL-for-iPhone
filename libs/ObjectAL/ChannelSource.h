@@ -35,7 +35,8 @@
  * A Sound source composed of other sources.
  * Property values are applied to all sources within the channel. <br>
  * Sounds will get played by any free sources within this channel. <br>
- * If all sources are busy when playback is requested, it will attempt to interrupt a source to free it for playback.
+ * If all sources are busy when playback is requested, it will attempt to interrupt a source
+ * to free it for playback.
  */
 @interface ChannelSource : NSObject <SoundSource>
 {

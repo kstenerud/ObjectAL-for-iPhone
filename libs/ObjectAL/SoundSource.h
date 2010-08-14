@@ -137,7 +137,11 @@
  * @param loop If TRUE, the sound will loop until you call "stop" on the returned sound source.
  * @return the source playing the sound, or nil if the sound could not be played.
  */
-- (id<SoundSource>) play:(ALBuffer*) buffer gain:(float) gain pitch:(float) pitch pan:(float) pan loop:(bool) loop;
+- (id<SoundSource>) play:(ALBuffer*) buffer
+					gain:(float) gain
+				   pitch:(float) pitch
+					 pan:(float) pan
+					loop:(bool) loop;
 
 /** Stop playing the current sound.
  */

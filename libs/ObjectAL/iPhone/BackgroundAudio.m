@@ -96,10 +96,30 @@
  */
 @interface AsyncPlayOperation : AsyncAudioOperation
 {
+	/** The number of times to loop during playback */
 	NSInteger loops;
 }
 
+/**
+ * (INTERNAL USE) Create an asynchronous play operation.
+ *
+ * @param url The URL of the file to play.
+ * @param loops The number of times to loop playback (-1 = forever).
+ * @param target The target to inform when playback finishes.
+ * @param selector the selector to call when playback finishes.
+ * @return a new operation.
+ */
 + (id) operationWithUrl:(NSURL*) url loops:(NSInteger) loops target:(id) target selector:(SEL) selector;
+
+/**
+ * (INTERNAL USE) Initialize an asynchronous play operation.
+ *
+ * @param url The URL of the file to play.
+ * @param loops The number of times to loop playback (-1 = forever).
+ * @param target The target to inform when playback finishes.
+ * @param selector the selector to call when playback finishes.
+ * @return The initialized operation.
+ */
 - (id) initWithUrl:(NSURL*) url loops:(NSInteger) loops target:(id) target selector:(SEL) selector;
 
 @end
@@ -456,6 +476,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 			player.meteringEnabled = meteringEnabled;
 			player.delegate = self;
 			
+			[currentlyLoadedUrl release];
 			currentlyLoadedUrl = [url retain];
 		}
 		

@@ -33,13 +33,14 @@
 
 /**
  * Provides iphone-specific audio support.
- * Specifically, it can handle suspending and resuming the audio sessions when the current application
- * gets interrupted by phone calls and such.
+ * Specifically, it can handle suspending and resuming the audio sessions when the current
+ * application gets interrupted by phone calls and such.
  *
- * <strong>Note:</strong> OpenAL is only able to play PCM (uncompressed) 8 bit or 16 bit (little endian)
- * audio files.  As such, the buffer loading routines will attempt to convert incompatible sound files.  If you
- * want to avoid the conversion cost, you can pre-convert your audio files prior to adding them to your project.
- * The <strong>afconvert</strong> command line tool is able to do this conversion.
+ * <strong>Note:</strong> OpenAL is only able to play PCM (uncompressed) 8 bit or 16 bit (little
+ * endian) audio files.  As such, the buffer loading routines will attempt to convert incompatible
+ * sound files.  If you want to avoid the conversion cost, you can pre-convert your audio files
+ * prior to adding them to your project. The <strong>afconvert</strong> command line tool is able
+ * to do this conversion.
  *
  * Example: convert from a wav file to iPhone compatible, 16 bits per channel, 44100KHz:
  *
@@ -109,10 +110,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(IphoneAudioSupport);
 - (ALBuffer*) bufferFromUrl:(NSURL*) url;
 
 /** Load an OpenAL buffer with the contents of an audio file asynchronously.
- * This method will schedule a request to have the buffer created and filled, and then call the specified
- * selector with the newly created buffer. <br>
+ * This method will schedule a request to have the buffer created and filled, and then call the
+ * specified selector with the newly created buffer. <br>
  * The buffer's name will be the fully qualified URL of the path. <br>
- * Returns the fully qualified URL of the path, which you can match up to the buffer name in your callback method.
+ * Returns the fully qualified URL of the path, which you can match up to the buffer name in your
+ * callback method.
  *
  * See the class description note regarding sound file formats.
  *
@@ -124,10 +126,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(IphoneAudioSupport);
 - (NSString*) bufferAsyncFromFile:(NSString*) filePath target:(id) target selector:(SEL) selector;
 
 /** Load an OpenAL buffer with the contents of a URL asynchronously.
- * This method will schedule a request to have the buffer created and filled, and then call the specified
- * selector with the newly created buffer. <br>
+ * This method will schedule a request to have the buffer created and filled, and then call the
+ * specified selector with the newly created buffer. <br>
  * The buffer's name will be the fully qualified URL. <br>
- * Returns the fully qualified URL, which you can match up to the buffer name in your callback method.
+ * Returns the fully qualified URL, which you can match up to the buffer name in your callback
+ * method.
  *
  * See the class description note regarding sound file formats.
  *
@@ -157,7 +160,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(IphoneAudioSupport);
  * @param function: The function name where the error occurred.
  * @param description: A printf-style description of what happened.
  */
-- (void) logAudioSessionError:(OSStatus)errorCode function:(const char*) function description:(NSString*) description, ...;
+- (void) logAudioSessionError:(OSStatus)errorCode
+					 function:(const char*) function
+				  description:(NSString*) description, ...;
 
 /** (INTERNAL USE) Log an error if the specified ExtAudio error code indicates an error.
  *
@@ -165,7 +170,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(IphoneAudioSupport);
  * @param function: The function name where the error occurred.
  * @param description: A printf-style description of what happened.
  */
-- (void) logExtAudioError:(OSStatus)errorCode function:(const char*) function description:(NSString*) description, ...;
+- (void) logExtAudioError:(OSStatus)errorCode
+				 function:(const char*) function
+			  description:(NSString*) description, ...;
 
 /** (INTERNAL USE) Used by the interrupt handler to suspend audio
  * (if interrupts are enabled).

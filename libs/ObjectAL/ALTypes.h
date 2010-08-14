@@ -106,7 +106,12 @@ static inline ALVector alvector(const float x, const float y, const float z)
  * @param upZ The Z component of "up".
  * @return An ALOrientation.
  */
-static inline ALOrientation alorientation(const float atX, const float atY, const float atZ, const float upX, const float upY, const float upZ)
+static inline ALOrientation alorientation(const float atX,
+										  const float atY,
+										  const float atZ,
+										  const float upX,
+										  const float upY,
+										  const float upZ)
 {
 	ALOrientation orientation = { {atX, atY, atZ}, {upX,upY,upZ} };
 	return orientation;

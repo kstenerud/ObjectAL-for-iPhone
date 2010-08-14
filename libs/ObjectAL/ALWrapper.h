@@ -31,8 +31,10 @@
 
 /**
  * A thin wrapper around the C OpenAL API, with a few convenience methods thrown in.
- * Wherever possible, methods return the requested data rather than requiring a pointer to be passed in. 
- * Besides collecting the API calls into a single global object, all calls are combined with an error check.
+ * Wherever possible, methods return the requested data rather than requiring a pointer to be
+ * passed in. 
+ * Besides collecting the API calls into a single global object, all calls are combined with an
+ * error check.
  * Any OpenAL errors that occur will be logged if error logging is enabled.
  */
 @interface ALWrapper : NSObject
@@ -81,12 +83,17 @@
 /** Load data into a buffer.
  *
  * @param bufferId The ID of the buffer to load data into.
- * @param format The format of the data being loaded (typically AL_FORMAT_MONO16 or AL_FORMAT_STEREO16).
+ * @param format The format of the data being loaded (typically AL_FORMAT_MONO16 or 
+ *        AL_FORMAT_STEREO16).
  * @param data The audio data.
  * @param size The size of the data in bytes.
  * @param frequency The sample frequency of the data.
  */
-+ (bool) bufferData:(ALuint) bufferId format:(ALenum) format data:(const ALvoid*) data size:(ALsizei) size frequency:(ALsizei) frequency;
++ (bool) bufferData:(ALuint) bufferId
+			 format:(ALenum) format
+			   data:(const ALvoid*) data
+			   size:(ALsizei) size
+		  frequency:(ALsizei) frequency;
 
 #pragma mark Setters
 
@@ -108,7 +115,11 @@
  * @param v3 The third value to write.
  * @return TRUE if the operation was successful.
  */
-+ (bool) buffer3f:(ALuint) bufferId parameter:(ALenum) parameter v1:(ALfloat) v1 v2:(ALfloat) v2 v3:(ALfloat) v3;
++ (bool) buffer3f:(ALuint) bufferId
+		parameter:(ALenum) parameter
+			   v1:(ALfloat) v1
+			   v2:(ALfloat) v2
+			   v3:(ALfloat) v3;
 
 /** Write a float array paramter to a buffer.
  *
@@ -137,7 +148,11 @@
  * @param v3 The third value to write.
  * @return TRUE if the operation was successful.
  */
-+ (bool) buffer3i:(ALuint) bufferId parameter:(ALenum) parameter v1:(ALint) v1 v2:(ALint) v2 v3:(ALint) v3;
++ (bool) buffer3i:(ALuint) bufferId
+		parameter:(ALenum) parameter
+			   v1:(ALint) v1
+			   v2:(ALint) v2
+			   v3:(ALint) v3;
 
 /** Write an integer array paramter to a buffer.
  *
@@ -167,7 +182,11 @@
  * @param v3 The third value to read.
  * @return TRUE if the operation was successful.
  */
-+ (bool) getBuffer3f:(ALuint) bufferId parameter:(ALenum) parameter v1:(ALfloat*) v1 v2:(ALfloat*) v2 v3:(ALfloat*) v3;
++ (bool) getBuffer3f:(ALuint) bufferId
+		   parameter:(ALenum) parameter
+				  v1:(ALfloat*) v1
+				  v2:(ALfloat*) v2
+				  v3:(ALfloat*) v3;
 
 /** Read a float array paramter from a buffer.
  *
@@ -195,7 +214,11 @@
  * @param v3 The third value to read.
  * @return TRUE if the operation was successful.
  */
-+ (bool) getBuffer3i:(ALuint) bufferId parameter:(ALenum) parameter v1:(ALint*) v1 v2:(ALint*) v2 v3:(ALint*) v3;
++ (bool) getBuffer3i:(ALuint) bufferId
+		   parameter:(ALenum) parameter
+				  v1:(ALint*) v1
+				  v2:(ALint*) v2
+				  v3:(ALint*) v3;
 
 /** Read an integer array paramter from a buffer.
  *
@@ -316,7 +339,9 @@
  * @param bufferIds The IDs of the buffers to queue.
  * @return TRUE if the operation is successful.
  */
-+ (bool) sourceQueueBuffers:(ALuint) sourceId numBuffers:(ALsizei) numBuffers bufferIds:(ALuint*) bufferIds;
++ (bool) sourceQueueBuffers:(ALuint) sourceId
+				 numBuffers:(ALsizei) numBuffers
+				  bufferIds:(ALuint*) bufferIds;
 
 /** Unqueue previously queued buffers.
  *
@@ -325,7 +350,9 @@
  * @param bufferIds The IDs of the buffers to unqueue.
  * @return TRUE if the operation is successful.
  */
-+ (bool) sourceUnqueueBuffers:(ALuint) sourceId numBuffers:(ALsizei) numBuffers bufferIds:(ALuint*) bufferIds;
++ (bool) sourceUnqueueBuffers:(ALuint) sourceId
+				   numBuffers:(ALsizei) numBuffers
+					bufferIds:(ALuint*) bufferIds;
 
 #pragma mark Setters
 
@@ -347,7 +374,11 @@
  * @param v3 The third value to write.
  * @return TRUE if the operation was successful.
  */
-+ (bool) source3f:(ALuint) sourceId parameter:(ALenum) parameter v1:(ALfloat) v1 v2:(ALfloat) v2 v3:(ALfloat) v3;
++ (bool) source3f:(ALuint) sourceId
+		parameter:(ALenum) parameter
+			   v1:(ALfloat) v1
+			   v2:(ALfloat) v2
+			   v3:(ALfloat) v3;
 
 /** Write a float array paramter to a source.
  *
@@ -376,7 +407,11 @@
  * @param v3 The third value to write.
  * @return TRUE if the operation was successful.
  */
-+ (bool) source3i:(ALuint) sourceId parameter:(ALenum) parameter v1:(ALint) v1 v2:(ALint) v2 v3:(ALint) v3;
++ (bool) source3i:(ALuint) sourceId
+		parameter:(ALenum) parameter
+			   v1:(ALint) v1
+			   v2:(ALint) v2
+			   v3:(ALint) v3;
 
 /** Write an integer array paramter to a source.
  *
@@ -406,7 +441,11 @@
  * @param v3 The third value to read.
  * @return TRUE if the operation was successful.
  */
-+ (bool) getSource3f:(ALuint) sourceId parameter:(ALenum) parameter v1:(ALfloat*) v1 v2:(ALfloat*) v2 v3:(ALfloat*) v3;
++ (bool) getSource3f:(ALuint) sourceId
+		   parameter:(ALenum) parameter
+				  v1:(ALfloat*) v1
+				  v2:(ALfloat*) v2
+				  v3:(ALfloat*) v3;
 
 /** Read a float array paramter from a source.
  *
@@ -434,7 +473,11 @@
  * @param v3 The third value to read.
  * @return TRUE if the operation was successful.
  */
-+ (bool) getSource3i:(ALuint) sourceId parameter:(ALenum) parameter v1:(ALint*) v1 v2:(ALint*) v2 v3:(ALint*) v3;
++ (bool) getSource3i:(ALuint) sourceId
+		   parameter:(ALenum) parameter
+				  v1:(ALint*) v1
+				  v2:(ALint*) v2
+				  v3:(ALint*) v3;
 
 /** Read an integer array paramter from a source.
  *
@@ -610,14 +653,16 @@
  */
 + (NSString*) getString:(ALenum) parameter;
 
-/** Get a string list parameter.  Use this method for OpenAL parameters that return a null separated list.
+/** Get a string list parameter.  Use this method for OpenAL parameters that return a null
+ * separated list.
  *
  * @param parameter The parameter to fetch.
  * @return The parameter's current value (as an array of NSString*).
  */
 + (NSArray*) getNullSeparatedStringList:(ALenum) parameter;
 
-/** Get a string list parameter.  Use this method for OpenAL parameters that return a space separated list.
+/** Get a string list parameter.  Use this method for OpenAL parameters that return a space
+ * separated list.
  *
  * @param parameter The parameter to fetch.
  * @return The parameter's current value (as an array of NSString*).
@@ -738,7 +783,8 @@
  */
 + (bool) makeContextCurrent:(ALCcontext*) context;
 
-/** Make the specified context the current context, passing in a device reference for more informative logging info.
+/** Make the specified context the current context, passing in a device reference for more
+ * informative logging info.
  *
  * @param context The context to make current.
  * @param deviceReference The device reference to use when logging an error.
@@ -780,13 +826,15 @@
  */
 + (ALCdevice*) getContextsDevice:(ALCcontext*) context;
 
-/** Get the device a context was created from, passing in a device reference for more informative logging info.
+/** Get the device a context was created from, passing in a device reference for more
+ * informative logging info.
  *
  * @param context The context.
  * @param deviceReference The device reference to use when logging an error.
  * @return The context's device.
  */
-+ (ALCdevice*) getContextsDevice:(ALCcontext*) context deviceReference:(ALCdevice*) deviceReference;
++ (ALCdevice*) getContextsDevice:(ALCcontext*) context
+				 deviceReference:(ALCdevice*) deviceReference;
 
 
 
@@ -828,7 +876,8 @@
  */
 + (NSString*) getString:(ALCdevice*) device attribute:(ALenum) attribute;
 
-/** Get a string list attribute.  Use this method for OpenAL attribute that return a null separated list.
+/** Get a string list attribute.  Use this method for OpenAL attribute that return a null
+ * separated list.
  *
  * @param device The device to read the attribute from.
  * @param attribute The attribute to fetch.
@@ -836,7 +885,8 @@
  */
 + (NSArray*) getNullSeparatedStringList:(ALCdevice*) device attribute:(ALenum) attribute;
 
-/** Get a string list attribute.  Use this method for OpenAL attribute that return a space separated list.
+/** Get a string list attribute.  Use this method for OpenAL attribute that return a space
+ * separated list.
  *
  * @param device The device to read the attribute from.
  * @param attribute The attribute to fetch.
@@ -860,7 +910,10 @@
  * @param data An array to store the values.
  * @return TRUE if the operation was successful.
  */
-+ (bool) getIntegerv:(ALCdevice*) device attribute:(ALenum) attribute size:(ALsizei) size data:(ALCint*) data;
++ (bool) getIntegerv:(ALCdevice*) device
+		   attribute:(ALenum) attribute
+				size:(ALsizei) size
+				data:(ALCint*) data;
 
 
 
@@ -874,7 +927,10 @@
  * @param bufferSize The size of capture buffer to use.
  * @return The opened device, or nil if an error occurred.
  */
-+ (ALCdevice*) openCaptureDevice:(NSString*) deviceName frequency:(ALCuint) frequency format:(ALCenum) format bufferSize:(ALCsizei) bufferSize;
++ (ALCdevice*) openCaptureDevice:(NSString*) deviceName
+					   frequency:(ALCuint) frequency
+						  format:(ALCenum) format
+					  bufferSize:(ALCsizei) bufferSize;
 
 /** Close a capture device.
  *
@@ -903,7 +959,9 @@
  * @param buffer the buffer to copy the samples into.
  * @param numSamples the number of samples to fetch.
  */
-+ (bool) captureSamples:(ALCdevice*) device buffer:(ALCvoid*) buffer numSamples:(ALCsizei) numSamples;
++ (bool) captureSamples:(ALCdevice*) device
+				 buffer:(ALCvoid*) buffer
+			 numSamples:(ALCsizei) numSamples;
 
 
 #pragma mark iPhone extensions
@@ -925,11 +983,16 @@
  * and copying from the data buffer.
  *
  * @param bufferId The ID of the buffer to load data into.
- * @param format The format of the data being loaded (typically AL_FORMAT_MONO16 or AL_FORMAT_STEREO16).
+ * @param format The format of the data being loaded (typically AL_FORMAT_MONO16 or
+ *        AL_FORMAT_STEREO16).
  * @param data The audio data.
  * @param size The size of the data in bytes.
  * @param frequency The sample frequency of the data.
  */
-+ (bool) bufferDataStatic:(ALuint) bufferId format:(ALenum) format data:(const ALvoid*) data size:(ALsizei) size frequency:(ALsizei) frequency;
++ (bool) bufferDataStatic:(ALuint) bufferId
+				   format:(ALenum) format
+					 data:(const ALvoid*) data
+					 size:(ALsizei) size
+				frequency:(ALsizei) frequency;
 
 @end

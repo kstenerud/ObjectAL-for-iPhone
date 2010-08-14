@@ -51,7 +51,9 @@
 
 #pragma mark Properties
 
-/** The sound buffer this source is attached to (set to nil to detach the currently attached buffer). */
+/** The sound buffer this source is attached to (set to nil to detach the currently attached
+ * buffer).
+ */
 @property(readwrite,retain) ALBuffer* buffer;
 
 /** How many buffers this source has queued. */

@@ -35,7 +35,8 @@
 
 /**
  * The listener represents the user who is listening to sounds in 3D space.
- * This object controls his position, orientation, and velocity, as well as providing a master gain. <br>
+ * This object controls his position, orientation, and velocity, as well as providing a master
+ * gain. <br>
  * A context contains one and only one listener.
  */
 @interface ALListener : NSObject

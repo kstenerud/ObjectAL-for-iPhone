@@ -43,10 +43,6 @@
  * Note: Some property values are only valid if this context is the current
  * context.
  *
- * Note: deallocating the current context will lag out the simulator if BackgroundAudio was playing
- * something, and then was stopped or cleared.  This doesn't happen on a real device.  To avoid this issue,
- * make sure BackgroundAudio is playing when you change the context (if you use BackgroundAudio).
- *
  * @see ObjectAL.currentContext
  */
 @interface ALContext : NSObject
@@ -64,7 +60,8 @@
 
 #pragma mark Properties
 
-/** OpenAL version string in format “[spec major number].[spec minor number] [optional vendor version information]”
+/** OpenAL version string in format
+ * “[spec major number].[spec minor number] [optional vendor version information]”
  * Only valid when this is the current context.
  */
 @property(readonly) NSString* alVersion;
@@ -138,8 +135,10 @@
  *
  * @param device The device to open the context on.
  * @param outputFrequency The frequency to mix all sources to before outputting.
- * @param refreshIntervals The number of passes per second used to mix the audio sources.  For games this can be 5-15.  For audio intensive apps, it should be higher.
- * @param synchronousContext If true, this context runs on the main thread and depends on you calling alcUpdateContext (best to leave this FALSE unless you know what you're doing).
+ * @param refreshIntervals The number of passes per second used to mix the audio sources.
+ *        For games this can be 5-15.  For audio intensive apps, it should be higher.
+ * @param synchronousContext If true, this context runs on the main thread and depends on you
+ *        calling alcUpdateContext (best to leave this FALSE unless you know what you're doing).
  * @param monoSources A hint indicating how many sources should support mono.
  * @param stereoSources A hint indicating how many sources should support stereo.
  * @return A new context.
@@ -156,8 +155,10 @@
  *
  * @param device The device to open the context on.
  * @param outputFrequency The frequency to mix all sources to before outputting.
- * @param refreshIntervals The number of passes per second used to mix the audio sources.  For games this can be 5-15.  For audio intensive apps, it should be higher.
- * @param synchronousContext If true, this context runs on the main thread and depends on you calling alcUpdateContext (best to leave this FALSE unless you know what you're doing).
+ * @param refreshIntervals The number of passes per second used to mix the audio sources.
+ *        For games this can be 5-15.  For audio intensive apps, it should be higher.
+ * @param synchronousContext If true, this context runs on the main thread and depends on you
+ *        calling alcUpdateContext (best to leave this FALSE unless you know what you're doing).
  * @param monoSources A hint indicating how many sources should support mono.
  * @param stereoSources A hint indicating how many sources should support stereo.
  * @return The initialized context.

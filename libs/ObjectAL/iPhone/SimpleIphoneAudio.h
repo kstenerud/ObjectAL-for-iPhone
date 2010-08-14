@@ -97,7 +97,8 @@
 @property(readwrite,assign) bool muted;
 
 /** Enables/disables the preload cache.
- * If the preload cache is disabled, effects preloading will do nothing (BG preloading will still work).
+ * If the preload cache is disabled, effects preloading will do nothing (BG preloading will still
+ * work).
  */
 @property(readwrite,assign) bool preloadCacheEnabled;
 
@@ -213,14 +214,16 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(SimpleIphoneAudio);
  */
 - (void) unloadAllEffects;
 
-/** Play a sound effect with volume 1.0, pitch 1.0, pan 0.0, loop NO.  The sound will be loaded and cached if it wasn't already.
+/** Play a sound effect with volume 1.0, pitch 1.0, pan 0.0, loop NO.  The sound will be loaded
+ * and cached if it wasn't already.
  *
  * @param filePath The path containing the sound data.
  * @return The sound source being used for playback, or nil if an error occurred.
  */
 - (id<SoundSource>) playEffect:(NSString*) filePath;
 
-/** Play a sound effect with volume 1.0, pitch 1.0, pan 0.0.  The sound will be loaded and cached if it wasn't already.
+/** Play a sound effect with volume 1.0, pitch 1.0, pan 0.0.  The sound will be loaded and cached
+ * if it wasn't already.
  *
  * @param filePath The path containing the sound data.
  * @param loop If TRUE, the sound will loop until you call "stop" on the returned sound source.
@@ -235,9 +238,14 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(SimpleIphoneAudio);
  * @param pitch The pitch to play at (1.0 = normal pitch).
  * @param pan Left-right panning (-1.0 = far left, 1.0 = far right).
  * @param loop If TRUE, the sound will loop until you call "stop" on the returned sound source.
- * @return The sound source being used for playback, or nil if an error occurred (You'll need to keep this if you want to be able to stop a looped playback).
+ * @return The sound source being used for playback, or nil if an error occurred (You'll need to
+ *         keep this if you want to be able to stop a looped playback).
  */
-- (id<SoundSource>) playEffect:(NSString*) filePath volume:(float) volume pitch:(float) pitch pan:(float) pan loop:(bool) loop;
+- (id<SoundSource>) playEffect:(NSString*) filePath
+						volume:(float) volume
+						 pitch:(float) pitch
+						   pan:(float) pan
+						  loop:(bool) loop;
 
 /** Stop ALL sound effect playback.
  */
