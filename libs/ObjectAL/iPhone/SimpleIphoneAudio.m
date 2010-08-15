@@ -76,16 +76,14 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 		device = [[ALDevice deviceWithDeviceSpecifier:nil] retain];
 		context = [[ALContext contextOnDevice:device attributes:nil] retain];
 		[ObjectAL sharedInstance].currentContext = context;
-		
-		[IphoneAudioSupport sharedInstance].handleInterruptions = YES;
-		
 		channel = [[ChannelSource channelWithSources:sources] retain];
-		
+
+		// Make sure BackgroundAudio is initialized.
+		[BackgroundAudio sharedInstance];
+
 		self.preloadCacheEnabled = YES;
 		self.bgVolume = 1.0;
 		self.effectsVolume = 1.0;
-
-		[BackgroundAudio sharedInstance];
 	}
 	return self;
 }
@@ -141,12 +139,12 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 
 - (bool) allowIpod
 {
-	return [BackgroundAudio sharedInstance].allowIpod;
+	return [IphoneAudioSupport sharedInstance].allowIpod;
 }
 
 - (void) setAllowIpod:(bool) value
 {
-	[BackgroundAudio sharedInstance].allowIpod = value;
+	[IphoneAudioSupport sharedInstance].allowIpod = value;
 }
 
 - (bool) bgPaused
@@ -218,12 +216,12 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 
 - (bool) honorSilentSwitch
 {
-	return [BackgroundAudio sharedInstance].honorSilentSwitch;
+	return [IphoneAudioSupport sharedInstance].honorSilentSwitch;
 }
 
 - (void) setHonorSilentSwitch:(bool) value
 {
-	[BackgroundAudio sharedInstance].honorSilentSwitch = value;
+	[IphoneAudioSupport sharedInstance].honorSilentSwitch = value;
 }
 
 - (bool) bgMuted

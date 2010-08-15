@@ -42,8 +42,6 @@
 @interface BackgroundAudio : NSObject <AVAudioPlayerDelegate>
 {
 	bool meteringEnabled;
-	bool allowIpod;
-	bool honorSilentSwitch;
 	bool suspended;
 	AVAudioPlayer* player;
 	NSURL* currentlyLoadedUrl;
@@ -75,9 +73,6 @@
 
 #pragma mark Properties
 
-/** If true, allow ipod music to continue playing (NOT SUPPORTED ON THE SIMULATOR). */
-@property(readwrite,assign) bool allowIpod;
-
 /** The URL of the currently loaded audio data. */
 @property(readonly) NSURL* currentlyLoadedUrl;
 
@@ -93,11 +88,6 @@
 
 /** If true, background audio is muted */
 @property(readwrite,assign) bool muted;
-
-/** If true, mute when the silent switch is turned on or when the device enters sleep mode
- * (NOT SUPPORTED ON THE SIMULATOR).
- */
-@property(readwrite,assign) bool honorSilentSwitch;
 
 /** The number of times to loop playback (-1 = forever).
  * Note: This value will be ignored, and get changed when you call the various playXX methods.
@@ -116,9 +106,6 @@
 
 /** If true, background music is currently playing. */
 @property(readonly) bool playing;
-
-/** If true, another application (usually iPod) is playing music. */
-@property(readonly) bool ipodPlaying;
 
 /** The current playback position in seconds from the start of the sound.
  * You can set this to change the playback position, whether it is currently playing or not.

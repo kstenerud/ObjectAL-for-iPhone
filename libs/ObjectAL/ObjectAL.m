@@ -28,6 +28,7 @@
 #import "ObjectALMacros.h"
 #import "ALWrapper.h"
 #import "MutableArray-WeakReferences.h"
+#import "IphoneAudioSupport.h"
 
 
 @implementation ObjectAL
@@ -40,6 +41,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(ObjectAL);
 {
 	if(nil != (self = [super init]))
 	{
+		// Make sure IphoneAudioSupport is initialized.
+		[IphoneAudioSupport sharedInstance];
+		
 		devices = [[NSMutableArray mutableArrayUsingWeakReferencesWithCapacity:5] retain];
 		suspendedContexts = [[NSMutableArray mutableArrayUsingWeakReferencesWithCapacity:30] retain];
 	}

@@ -28,6 +28,7 @@
 #import "ObjectALMacros.h"
 #import "ObjectAL.h"
 #import "MutableArray-WeakReferences.h"
+#import "IphoneAudioSupport.h"
 
 
 @implementation ALDevice
@@ -43,6 +44,9 @@
 {
 	if(nil != (self = [super init]))
 	{
+		// Make sure IphoneAudioSupport is initialized.
+		[IphoneAudioSupport sharedInstance];
+
 		if(nil != (device = [ALWrapper openDevice:deviceSpecifier]))
 		{
 			contexts = [[NSMutableArray mutableArrayUsingWeakReferencesWithCapacity:5] retain];

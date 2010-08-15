@@ -56,6 +56,8 @@
 	NSOperationQueue* operationQueue;
 
 	bool handleInterruptions;
+	bool allowIpod;
+	bool honorSilentSwitch;
 	/** If true, audio was suspended by an interrupt (such as a phone call) */
 	bool suspendedByInterrupt;
 	
@@ -73,8 +75,21 @@
 
 #pragma mark Properties
 
-/** If true, automatically handle interruptions */
+/** If true, allow ipod music to continue playing (default YES) (NOT SUPPORTED ON THE
+ * SIMULATOR).
+ */
+@property(readwrite,assign) bool allowIpod;
+
+/** If true, mute when the silent switch is turned on or when the device enters sleep
+ * mode (default YES) (NOT SUPPORTED ON THE SIMULATOR).
+ */
+@property(readwrite,assign) bool honorSilentSwitch;
+
+/** If true, automatically handle interruptions (default YES) */
 @property(readwrite,assign) bool handleInterruptions;
+
+/** If true, another application (usually iPod) is playing music. */
+@property(readonly) bool ipodPlaying;
 
 
 #pragma mark Object Management
@@ -150,33 +165,5 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(IphoneAudioSupport);
  * @return the corresponding URL, or nil if one couldn't be gemerated.
  */
 - (NSURL*) urlForPath:(NSString*) path;
-
-
-#pragma mark Internal Use
-
-/** (INTERNAL USE) Log an error if the specified AudioSession error code indicates an error.
- *
- * @param errorCode: The error code returned from an OS call.
- * @param function: The function name where the error occurred.
- * @param description: A printf-style description of what happened.
- */
-- (void) logAudioSessionError:(OSStatus)errorCode
-					 function:(const char*) function
-				  description:(NSString*) description, ...;
-
-/** (INTERNAL USE) Log an error if the specified ExtAudio error code indicates an error.
- *
- * @param errorCode: The error code returned from an OS call.
- * @param function: The function name where the error occurred.
- * @param description: A printf-style description of what happened.
- */
-- (void) logExtAudioError:(OSStatus)errorCode
-				 function:(const char*) function
-			  description:(NSString*) description, ...;
-
-/** (INTERNAL USE) Used by the interrupt handler to suspend audio
- * (if interrupts are enabled).
- */
-@property(readwrite,assign) bool suspended;
 
 @end

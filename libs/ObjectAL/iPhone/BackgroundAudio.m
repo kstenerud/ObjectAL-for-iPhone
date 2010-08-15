@@ -183,25 +183,6 @@
  */
 @interface BackgroundAudio (Private)
 
-/** (INTERNAL USE) Get an AudioSession property.
- *
- * @param property The property to get.
- * @return The property's value.
- */
-- (UInt32) getIntProperty:(AudioSessionPropertyID) property;
-
-/** (INTERNAL USE) Set an AudioSession property.
- *
- * @param property The property to set.
- * @param value The value to set this property to.
- */
-- (void) setIntProperty:(AudioSessionPropertyID) property value:(UInt32) value;
-
-/** (INTERNAL USE) Update AudioSession based on the allowIpod and honorSilentSwitch values.
- */
-- (void) updateAudioMode;
-
-
 #if TARGET_IPHONE_SIMULATOR && OBJECTAL_CFG_SIMULATOR_BUG_WORKAROUND
 
 /** If the background music playback on the simulator ends (or is stopped), it mutes
@@ -240,13 +221,13 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 {
 	if(nil != (self = [super init]))
 	{
+		// Make sure IphoneAudioSupport is initialized.
+		[IphoneAudioSupport sharedInstance];
+		
 		operationQueue = [[NSOperationQueue alloc] init];
 		operationQueue.maxConcurrentOperationCount = 1;
 		gain = 1.0;
 		numberOfLoops = 0;
-		allowIpod = YES;
-		honorSilentSwitch = YES;
-		[self updateAudioMode];
 	}
 	return self;
 }
@@ -262,23 +243,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 
 #pragma mark Properties
-
-- (bool) allowIpod
-{
-	SYNCHRONIZED_OP(self)
-	{
-		return allowIpod;
-	}
-}
-
-- (void) setAllowIpod:(bool) value
-{
-	SYNCHRONIZED_OP(self)
-	{
-		allowIpod = value;
-		[self updateAudioMode];
-	}
-}
 
 @synthesize currentlyLoadedUrl;
 
@@ -337,23 +301,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 	}
 }
 
-- (bool) honorSilentSwitch
-{
-	SYNCHRONIZED_OP(self)
-	{
-		return honorSilentSwitch;
-	}
-}
-
-- (void) setHonorSilentSwitch:(bool) value
-{
-	SYNCHRONIZED_OP(self)
-	{
-		honorSilentSwitch = value;
-		[self updateAudioMode];
-	}
-}
-
 - (NSInteger) numberOfLoops
 {
 	SYNCHRONIZED_OP(self)
@@ -400,11 +347,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 @synthesize player;
 
 @synthesize playing;
-
-- (bool) ipodPlaying
-{
-	return 0 != [self getIntProperty:kAudioSessionProperty_OtherAudioIsPlaying];
-}
 
 - (NSTimeInterval) currentTime
 {
@@ -603,62 +545,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 }
 
 
-#pragma mark Internal Utility
-
-- (UInt32) getIntProperty:(AudioSessionPropertyID) property
-{
-	UInt32 value;
-	UInt32 size = sizeof(value);
-	OSStatus result;
-	SYNCHRONIZED_OP(self)
-	{
-		result = AudioSessionGetProperty(property, &size, &value);
-	}
-	REPORT_AUDIOSESSION_CALL(result, @"Failed to get int property %08x", property);
-	return value;
-}
-
-- (void) setIntProperty:(AudioSessionPropertyID) property value:(UInt32) value
-{
-	OSStatus result;
-	SYNCHRONIZED_OP(self)
-	{
-		result = AudioSessionSetProperty(property, sizeof(value), &value);
-	}
-	REPORT_AUDIOSESSION_CALL(result, @"Failed to get int property %08x", property);
-}
-
-- (void) updateAudioMode
-{
-#if !TARGET_IPHONE_SIMULATOR
-	// Note: Simulator doesn't support setting the audio category
-	if(honorSilentSwitch)
-	{
-		if(allowIpod)
-		{
-			[self setIntProperty:kAudioSessionProperty_AudioCategory value:kAudioSessionCategory_AmbientSound];
-		}
-		else
-		{
-			[self setIntProperty:kAudioSessionProperty_AudioCategory value:kAudioSessionCategory_SoloAmbientSound];
-		}
-	}
-	else
-	{
-		[self setIntProperty:kAudioSessionProperty_AudioCategory value:kAudioSessionCategory_MediaPlayback];
-		if(allowIpod)
-		{
-			[self setIntProperty:kAudioSessionProperty_OverrideCategoryMixWithOthers value:TRUE];
-		}
-		else
-		{
-			[self setIntProperty:kAudioSessionProperty_OverrideCategoryMixWithOthers value:FALSE];
-		}
-	}
-#endif /* !TARGET_IPHONE_SIMULATOR */
-}
-
-
 #pragma mark Metering
 
 - (bool) meteringEnabled
@@ -719,16 +605,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 	{
 		if(suspended != value)
 		{
+			// TODO: Anything to be done here?
 			suspended = value;
-			if(suspended)
-			{
-				AudioSessionSetActive(NO);
-			}
-			else
-			{
-				[self updateAudioMode];
-				AudioSessionSetActive(YES);
-			}
 		}
 	}
 }

@@ -107,6 +107,49 @@
  */
 @interface IphoneAudioSupport (Private)
 
+/** (INTERNAL USE) Log an error if the specified AudioSession error code indicates an error.
+ *
+ * @param errorCode: The error code returned from an OS call.
+ * @param function: The function name where the error occurred.
+ * @param description: A printf-style description of what happened.
+ */
+- (void) logAudioSessionError:(OSStatus)errorCode
+					 function:(const char*) function
+				  description:(NSString*) description, ...;
+
+/** (INTERNAL USE) Log an error if the specified ExtAudio error code indicates an error.
+ *
+ * @param errorCode: The error code returned from an OS call.
+ * @param function: The function name where the error occurred.
+ * @param description: A printf-style description of what happened.
+ */
+- (void) logExtAudioError:(OSStatus)errorCode
+				 function:(const char*) function
+			  description:(NSString*) description, ...;
+
+/** (INTERNAL USE) Used by the interrupt handler to suspend audio
+ * (if interrupts are enabled).
+ */
+@property(readwrite,assign) bool suspended;
+
+/** (INTERNAL USE) Get an AudioSession property.
+ *
+ * @param property The property to get.
+ * @return The property's value.
+ */
+- (UInt32) getIntProperty:(AudioSessionPropertyID) property;
+
+/** (INTERNAL USE) Set an AudioSession property.
+ *
+ * @param property The property to set.
+ * @param value The value to set this property to.
+ */
+- (void) setIntProperty:(AudioSessionPropertyID) property value:(UInt32) value;
+
+/** (INTERNAL USE) Update AudioSession based on the allowIpod and honorSilentSwitch values.
+ */
+- (void) updateAudioMode;
+
 /** (INTERNAL USE) Called when an interrupt begins.
  */
 - (void) onInterruptBegin;
@@ -172,6 +215,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(IphoneAudioSupport);
 							   nil] retain];
 		operationQueue = [[NSOperationQueue alloc] init];
 		REPORT_AUDIOSESSION_CALL(AudioSessionInitialize(NULL, NULL, interruptListenerCallback, self), @"Failed to initialize audio session");
+
+		handleInterruptions = YES;
+		allowIpod = YES;
+		honorSilentSwitch = YES;
+		[self updateAudioMode];
 	}
 	return self;
 }
@@ -188,7 +236,46 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(IphoneAudioSupport);
 
 #pragma mark Properties
 
+- (bool) allowIpod
+{
+	SYNCHRONIZED_OP(self)
+	{
+		return allowIpod;
+	}
+}
+
+- (void) setAllowIpod:(bool) value
+{
+	SYNCHRONIZED_OP(self)
+	{
+		allowIpod = value;
+		[self updateAudioMode];
+	}
+}
+
 @synthesize handleInterruptions;
+
+- (bool) honorSilentSwitch
+{
+	SYNCHRONIZED_OP(self)
+	{
+		return honorSilentSwitch;
+	}
+}
+
+- (void) setHonorSilentSwitch:(bool) value
+{
+	SYNCHRONIZED_OP(self)
+	{
+		honorSilentSwitch = value;
+		[self updateAudioMode];
+	}
+}
+
+- (bool) ipodPlaying
+{
+	return 0 != [self getIntProperty:kAudioSessionProperty_OtherAudioIsPlaying];
+}
 
 
 #pragma mark Buffers
@@ -335,7 +422,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(IphoneAudioSupport);
 done:
 	if(nil != fileHandle)
 	{
-		ExtAudioFileDispose(fileHandle);
+		REPORT_EXTAUDIO_CALL(ExtAudioFileDispose(fileHandle), @"Error closing audio file");
 	}
 	if(nil != streamData)
 	{
@@ -421,6 +508,59 @@ done:
 
 #pragma mark Internal Use
 
+- (UInt32) getIntProperty:(AudioSessionPropertyID) property
+{
+	UInt32 value;
+	UInt32 size = sizeof(value);
+	OSStatus result;
+	SYNCHRONIZED_OP(self)
+	{
+		result = AudioSessionGetProperty(property, &size, &value);
+	}
+	REPORT_AUDIOSESSION_CALL(result, @"Failed to get int property %08x", property);
+	return value;
+}
+
+- (void) setIntProperty:(AudioSessionPropertyID) property value:(UInt32) value
+{
+	OSStatus result;
+	SYNCHRONIZED_OP(self)
+	{
+		result = AudioSessionSetProperty(property, sizeof(value), &value);
+	}
+	REPORT_AUDIOSESSION_CALL(result, @"Failed to get int property %08x", property);
+}
+
+- (void) updateAudioMode
+{
+#if !TARGET_IPHONE_SIMULATOR
+	// Note: Simulator doesn't support setting the audio category
+	if(honorSilentSwitch)
+	{
+		if(allowIpod)
+		{
+			[self setIntProperty:kAudioSessionProperty_AudioCategory value:kAudioSessionCategory_AmbientSound];
+		}
+		else
+		{
+			[self setIntProperty:kAudioSessionProperty_AudioCategory value:kAudioSessionCategory_SoloAmbientSound];
+		}
+	}
+	else
+	{
+		[self setIntProperty:kAudioSessionProperty_AudioCategory value:kAudioSessionCategory_MediaPlayback];
+		if(allowIpod)
+		{
+			[self setIntProperty:kAudioSessionProperty_OverrideCategoryMixWithOthers value:TRUE];
+		}
+		else
+		{
+			[self setIntProperty:kAudioSessionProperty_OverrideCategoryMixWithOthers value:FALSE];
+		}
+	}
+#endif /* !TARGET_IPHONE_SIMULATOR */
+}
+
 - (bool) suspended
 {
 	SYNCHRONIZED_OP(self)
@@ -435,11 +575,6 @@ done:
 	{
 		[ObjectAL sharedInstance].suspended = suspended;
 		[BackgroundAudio sharedInstance].suspended = suspended;
-		
-		if(!suspended)
-		{
-			suspendedByInterrupt = NO;
-		}
 	}
 }
 
@@ -447,10 +582,15 @@ done:
 {
 	SYNCHRONIZED_OP(self)
 	{
-		if(handleInterruptions && !self.suspended)
+		if(handleInterruptions)
 		{
-			suspendedByInterrupt = YES;
-			self.suspended = YES;
+			if(!self.suspended)
+			{
+				suspendedByInterrupt = YES;
+				self.suspended = YES;
+			}
+
+			REPORT_AUDIOSESSION_CALL(AudioSessionSetActive(NO), @"Error deactivating audio session");
 		}
 	}
 }
@@ -459,9 +599,16 @@ done:
 {
 	SYNCHRONIZED_OP(self)
 	{
-		if(handleInterruptions && suspendedByInterrupt)
+		if(handleInterruptions)
 		{
-			self.suspended = NO;
+			[self updateAudioMode];
+			REPORT_AUDIOSESSION_CALL(AudioSessionSetActive(YES), @"Error reactivating audio session");
+			
+			if(suspendedByInterrupt)
+			{
+				suspendedByInterrupt = NO;
+				self.suspended = NO;
+			}
 		}
 	}
 }
