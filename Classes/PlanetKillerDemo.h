@@ -22,6 +22,4 @@
 	float impactDistanceSquared;
 }
 
-+(id) scene;
-
 @end

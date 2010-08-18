@@ -6,6 +6,7 @@
 //
 
 #import "VolumePitchPanDemo.h"
+#import "CCLayer+Scene.h"
 #import "Slider.h"
 #import "ImageButton.h"
 #import "IphoneAudioSupport.h"
@@ -27,13 +28,6 @@
 @implementation VolumePitchPanDemo
 
 #pragma mark Object Management
-
-+(id) scene
-{
-	CCScene *scene = [CCScene node];
-	[scene addChild: [self node]];
-	return scene;
-}
 
 - (id) init
 {

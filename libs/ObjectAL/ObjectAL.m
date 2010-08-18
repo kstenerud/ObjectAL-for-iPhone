@@ -74,7 +74,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(ObjectAL);
 
 - (ALContext*) currentContext
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return currentContext;
 	}
@@ -82,7 +82,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(ObjectAL);
 
 - (void) setCurrentContext:(ALContext *) context
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		if(context != currentContext)
 		{
@@ -106,7 +106,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(ObjectAL);
 
 - (ALdouble) mixerOutputFrequency
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return [ALWrapper getMixerOutputDataRate];
 	}
@@ -114,7 +114,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(ObjectAL);
 
 - (void) setMixerOutputFrequency:(ALdouble) frequency
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[ALWrapper setMixerOutputDataRate:frequency];
 	}
@@ -125,7 +125,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(ObjectAL);
 
 - (void) clearAllBuffers
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		for(ALDevice* device in devices)
 		{
@@ -138,7 +138,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(ObjectAL);
 
 - (bool) suspended
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return suspended;
 	}
@@ -146,7 +146,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(ObjectAL);
 
 - (void) setSuspended:(bool) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		if(value != suspended)
 		{
@@ -185,7 +185,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(ObjectAL);
 
 - (void) notifyDeviceInitializing:(ALDevice*) device
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[devices addObject:device];
 	}
@@ -193,7 +193,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(ObjectAL);
 
 - (void) notifyDeviceDeallocating:(ALDevice*) device
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[devices removeObject:device];
 	}

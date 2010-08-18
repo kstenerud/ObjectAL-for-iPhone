@@ -6,6 +6,7 @@
 //
 
 #import "PlanetKillerDemo.h"
+#import "CCLayer+Scene.h"
 #import "SimpleIphoneAudio.h"
 #import "MainScene.h"
 #import "ImageButton.h"
@@ -34,13 +35,6 @@
 @implementation PlanetKillerDemo
 
 #pragma mark Object Management
-
-+(id) scene
-{
-	CCScene *scene = [CCScene node];
-	[scene addChild: [self node]];
-	return scene;
-}
 
 - (id) init
 {

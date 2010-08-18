@@ -24,6 +24,4 @@
 	ALBuffer* rightBuffer;
 }
 
-+ (id) scene;
-
 @end

@@ -81,7 +81,7 @@
 
 - (void) addSource:(id<SoundSource>) source
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[sources addObject:source];
 	}
@@ -89,7 +89,7 @@
 
 - (void) removeSource:(id<SoundSource>) source
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[sources removeObject:source];
 	}
@@ -97,7 +97,7 @@
 
 - (void) moveToHead:(int) index
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		id source = [[sources objectAtIndex:index] retain];
 		[sources removeObjectAtIndex:index];
@@ -110,7 +110,7 @@
 {
 	int index = 0;
 	
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		// Try to find any free source.
 		for(id<SoundSource> source in sources)

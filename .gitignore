@@ -7,3 +7,4 @@ build
 ._*
 Thumbs.db
 project.pbxproj.mergesave
+doxygen.config

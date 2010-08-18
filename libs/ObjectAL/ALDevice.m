@@ -106,7 +106,7 @@
 
 - (void) clearBuffers
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		for(ALContext* context in contexts)
 		{
@@ -120,7 +120,7 @@
 
 - (void) notifyContextInitializing:(ALContext*) context
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[contexts addObject:context];
 	}
@@ -128,7 +128,7 @@
 
 - (void) notifyContextDeallocating:(ALContext*) context
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[contexts removeObject:context];
 	}

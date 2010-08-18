@@ -55,7 +55,7 @@
 
 - (bool) muted
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return muted;
 	}
@@ -63,7 +63,7 @@
 
 - (void) setMuted:(bool) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		muted = value;
 		float resultingGain = muted ? 0 : gain;
@@ -73,7 +73,7 @@
 
 - (float) gain
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return gain;
 	}
@@ -81,7 +81,7 @@
 
 - (void) setGain:(float) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		gain = value;
 		if(muted)
@@ -95,7 +95,7 @@
 - (ALOrientation) orientation
 {
 	ALOrientation result;
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[ALWrapper getListenerfv:AL_ORIENTATION values:(float*)&result];
 	}
@@ -104,7 +104,7 @@
 
 - (void) setOrientation:(ALOrientation) value
 {
-	SYNCHRONIZED_OP_WITH_STRUCT(self)
+	OPTIONALLY_SYNCHRONIZED_STRUCT_OP(self)
 	{
 		[ALWrapper listenerfv:AL_ORIENTATION values:(float*)&value];
 	}
@@ -113,7 +113,7 @@
 - (ALPoint) position
 {
 	ALPoint result;
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[ALWrapper getListener3f:AL_POSITION v1:&result.x v2:&result.y v3:&result.z];
 	}
@@ -122,7 +122,7 @@
 
 - (void) setPosition:(ALPoint) value
 {
-	SYNCHRONIZED_OP_WITH_STRUCT(self)
+	OPTIONALLY_SYNCHRONIZED_STRUCT_OP(self)
 	{
 		[ALWrapper listener3f:AL_POSITION v1:value.x v2:value.y v3:value.z];
 	}
@@ -131,7 +131,7 @@
 - (ALVector) velocity
 {
 	ALVector result;
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[ALWrapper getListener3f:AL_VELOCITY v1:&result.x v2:&result.y v3:&result.z];
 	}
@@ -140,7 +140,7 @@
 
 - (void) setVelocity:(ALVector) value
 {
-	SYNCHRONIZED_OP_WITH_STRUCT(self)
+	OPTIONALLY_SYNCHRONIZED_STRUCT_OP(self)
 	{
 		[ALWrapper listener3f:AL_VELOCITY v1:value.x v2:value.y v3:value.z];
 	}

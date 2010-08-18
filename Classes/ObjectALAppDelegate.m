@@ -7,6 +7,7 @@
 
 #import "ObjectALAppDelegate.h"
 #import "cocos2d.h"
+#import "CCLayer+Scene.h"
 #import "MainScene.h"
 #import "SimpleIphoneAudio.h"
 

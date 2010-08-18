@@ -160,12 +160,12 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(ObjectAL);
    to muddle around with arrays of data, maintain IDs, or pass around pointers to basic types.
 
  - BackgroundAudio provides a simpler interface to AVAudioPlayer, allowing you to play, stop,
-   pause, and mute background music tracks. <br>
-   As well, it provides an easy way to configure how AVAudioPlayer will handle iPod-style music
-   playing and the silent switch.
+   pause, and mute background music tracks.
  
  - IphoneAudioSupport provides support functionality for audio in iPhone, including automatic
-   interrupt handling and audio data loading routines.
+   interrupt handling and audio data loading routines. <br>
+   As well, it provides an easy way to configure how the audio session will handle iPod-style music
+   playing and the silent switch.
  
  - SimpleIphoneAudio layers on top of the other three, providing an even simpler interface for
    playing background music and sound effects.
@@ -451,10 +451,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(ObjectAL);
 		
 		// We don't want ipod music to keep playing since
 		// we have our own bg music.
-		[BackgroundAudio sharedInstance].allowIpod = NO;
+		[IphoneAudioSupport sharedInstance].allowIpod = NO;
 		
 		// Mute all audio if the silent switch is turned on.
-		[BackgroundAudio sharedInstance].honorSilentSwitch = YES;
+		[IphoneAudioSupport sharedInstance].honorSilentSwitch = YES;
 		
 		// Take all 32 sources for this channel.
 		// (we probably won't use that many but what the heck!)
@@ -567,7 +567,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(ObjectAL);
  \subsection simulator_limitations Simulator Limitations
  
  The simulator does not support setting audio modes, so setting allowIpod or honorSilentSwitch
- in BackgroundAudio will have no effect in the simulator.
+ in IphoneAudioSupport will have no effect in the simulator.
  
  
  <br>

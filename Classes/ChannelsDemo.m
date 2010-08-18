@@ -6,8 +6,10 @@
 //
 
 #import "ChannelsDemo.h"
+#import "CCLayer+Scene.h"
 #import "Slider.h"
 #import "ImageButton.h"
+#import "ImageAndLabelButton.h"
 #import "IphoneAudioSupport.h"
 #import "MainScene.h"
 #import "BackgroundAudio.h"
@@ -27,13 +29,6 @@
 @implementation ChannelsDemo
 
 #pragma mark Object Management
-
-+(id) scene
-{
-	CCScene *scene = [CCScene node];
-	[scene addChild: [self node]];
-	return scene;
-}
 
 - (id) init
 {
@@ -126,51 +121,54 @@
 	
 	
 	// Channel Buttons
-	ImageButton* button;
+	ImageAndLabelButton* button;
 	CGPoint position = ccp(center.x, size.height - 80);
 	
-	button = [ImageButton buttonWithImageFile:@"Ganymede.png" target:self selector:@selector(on1SourceChannel:)];
-	button.position = position;
-	[self addChild:button];
 	label = [CCLabel labelWithString:@"1 Source Channel" fontName:@"Helvetica" fontSize:24];
-	label.anchorPoint = ccp(0, 0.5);
 	label.color = ccBLACK;
-	label.position = ccp(button.position.x + 20,
-						 button.position.y);
-	[self addChild:label];
-	
-	position.y -= 60;
-	button = [ImageButton buttonWithImageFile:@"Ganymede.png" target:self selector:@selector(on2SourceChannel:)];
+	button = [ImageAndLabelButton buttonWithImageFile:@"Ganymede.png"
+												label:label
+											   target:self
+											 selector:@selector(on1SourceChannel:)];
+	button.anchorPoint = ccp(0, 0.5);
 	button.position = position;
 	[self addChild:button];
+	
+	position.y -= 60;
+
 	label = [CCLabel labelWithString:@"2 Source Channel" fontName:@"Helvetica" fontSize:24];
-	label.anchorPoint = ccp(0, 0.5);
 	label.color = ccBLACK;
-	label.position = ccp(button.position.x + 20,
-						 button.position.y);
-	[self addChild:label];
-	
-	position.y -= 60;
-	button = [ImageButton buttonWithImageFile:@"Ganymede.png" target:self selector:@selector(on3SourceChannel:)];
+	button = [ImageAndLabelButton buttonWithImageFile:@"Ganymede.png"
+												label:label
+											   target:self
+											 selector:@selector(on2SourceChannel:)];
+	button.anchorPoint = ccp(0, 0.5);
 	button.position = position;
 	[self addChild:button];
+	
+	position.y -= 60;
+	
 	label = [CCLabel labelWithString:@"3 Source Channel" fontName:@"Helvetica" fontSize:24];
-	label.anchorPoint = ccp(0, 0.5);
 	label.color = ccBLACK;
-	label.position = ccp(button.position.x + 20,
-						 button.position.y);
-	[self addChild:label];
-	
-	position.y -= 60;
-	button = [ImageButton buttonWithImageFile:@"Ganymede.png" target:self selector:@selector(on8SourceChannel:)];
+	button = [ImageAndLabelButton buttonWithImageFile:@"Ganymede.png"
+												label:label
+											   target:self
+											 selector:@selector(on3SourceChannel:)];
+	button.anchorPoint = ccp(0, 0.5);
 	button.position = position;
 	[self addChild:button];
+	
+	position.y -= 60;
+	
 	label = [CCLabel labelWithString:@"8 Source Channel" fontName:@"Helvetica" fontSize:24];
-	label.anchorPoint = ccp(0, 0.5);
 	label.color = ccBLACK;
-	label.position = ccp(button.position.x + 20,
-						 button.position.y);
-	[self addChild:label];
+	button = [ImageAndLabelButton buttonWithImageFile:@"Ganymede.png"
+												label:label
+											   target:self
+											 selector:@selector(on8SourceChannel:)];
+	button.anchorPoint = ccp(0, 0.5);
+	button.position = position;
+	[self addChild:button];
 
 
 	// Exit button

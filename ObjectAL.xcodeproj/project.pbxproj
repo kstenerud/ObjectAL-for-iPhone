@@ -23,6 +23,9 @@
 /* Begin PBXBuildFile section */
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1F3B9A2D0EF2145700286867 /* ObjectALAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F3B9A2B0EF2145700286867 /* ObjectALAppDelegate.m */; };
+		3918AB1F121ABB520060C2AF /* FadeDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 3918AB1E121ABB520060C2AF /* FadeDemo.m */; };
+		3918AB23121ABBA90060C2AF /* CCLayer+Scene.m in Sources */ = {isa = PBXBuildFile; fileRef = 3918AB22121ABBA90060C2AF /* CCLayer+Scene.m */; };
+		396BFFD1121B03AD00E707BB /* ImageAndLabelButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 396BFFD0121B03AD00E707BB /* ImageAndLabelButton.m */; };
 		3987EFCA1210350800781573 /* ColdFunk.wav in Resources */ = {isa = PBXBuildFile; fileRef = 39AD850C121032430049990E /* ColdFunk.wav */; };
 		3987EFCB1210350B00781573 /* Exit.png in Resources */ = {isa = PBXBuildFile; fileRef = 39AD850D121032430049990E /* Exit.png */; };
 		3987EFCC1210350F00781573 /* Ganymede.png in Resources */ = {isa = PBXBuildFile; fileRef = 39AD850E121032430049990E /* Ganymede.png */; };
@@ -289,6 +292,12 @@
 		1F3B9A2C0EF2145700286867 /* ObjectALAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ObjectALAppDelegate.h; path = Classes/ObjectALAppDelegate.h; sourceTree = SOURCE_ROOT; };
 		1F3B9A820EF2151B00286867 /* ObjectAL_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectAL_Prefix.pch; sourceTree = SOURCE_ROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		3918AB1D121ABB520060C2AF /* FadeDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FadeDemo.h; sourceTree = "<group>"; };
+		3918AB1E121ABB520060C2AF /* FadeDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FadeDemo.m; sourceTree = "<group>"; };
+		3918AB21121ABBA90060C2AF /* CCLayer+Scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCLayer+Scene.h"; sourceTree = "<group>"; };
+		3918AB22121ABBA90060C2AF /* CCLayer+Scene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CCLayer+Scene.m"; sourceTree = "<group>"; };
+		396BFFCF121B03AD00E707BB /* ImageAndLabelButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageAndLabelButton.h; sourceTree = "<group>"; };
+		396BFFD0121B03AD00E707BB /* ImageAndLabelButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageAndLabelButton.m; sourceTree = "<group>"; };
 		39AD84B6121031BC0049990E /* libObjectAL.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libObjectAL.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		39AD84BC121031E40049990E /* ALBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALBuffer.h; sourceTree = "<group>"; };
 		39AD84BD121031E40049990E /* ALBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALBuffer.m; sourceTree = "<group>"; };
@@ -640,6 +649,8 @@
 				39AD8531121032E00049990E /* ChannelsDemo.m */,
 				39AD8532121032E00049990E /* CrossFadeDemo.h */,
 				39AD8533121032E00049990E /* CrossFadeDemo.m */,
+				3918AB1D121ABB520060C2AF /* FadeDemo.h */,
+				3918AB1E121ABB520060C2AF /* FadeDemo.m */,
 				39AD8534121032E00049990E /* MainScene.h */,
 				39AD8535121032E00049990E /* MainScene.m */,
 				1F3B9A2C0EF2145700286867 /* ObjectALAppDelegate.h */,
@@ -719,6 +730,10 @@
 			children = (
 				39AD8526121032E00049990E /* Button.h */,
 				39AD8527121032E00049990E /* Button.m */,
+				3918AB21121ABBA90060C2AF /* CCLayer+Scene.h */,
+				3918AB22121ABBA90060C2AF /* CCLayer+Scene.m */,
+				396BFFCF121B03AD00E707BB /* ImageAndLabelButton.h */,
+				396BFFD0121B03AD00E707BB /* ImageAndLabelButton.m */,
 				39AD8528121032E00049990E /* ImageButton.h */,
 				39AD8529121032E00049990E /* ImageButton.m */,
 				39AD852A121032E00049990E /* RNG.h */,
@@ -1211,6 +1226,9 @@
 				39AD8547121032E00049990E /* SingleSourceDemo.m in Sources */,
 				39AD8548121032E00049990E /* TwoSourceDemo.m in Sources */,
 				39AD8549121032E00049990E /* VolumePitchPanDemo.m in Sources */,
+				3918AB1F121ABB520060C2AF /* FadeDemo.m in Sources */,
+				3918AB23121ABBA90060C2AF /* CCLayer+Scene.m in Sources */,
+				396BFFD1121B03AD00E707BB /* ImageAndLabelButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

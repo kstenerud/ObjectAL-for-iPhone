@@ -85,7 +85,7 @@
 
 - (float) coneInnerAngle
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return coneInnerAngle;
 	}
@@ -93,7 +93,7 @@
 
 - (void) setConeInnerAngle:(float) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		coneInnerAngle = value;
 		for(id<SoundSource> source in sourcePool.sources)
@@ -105,7 +105,7 @@
 
 - (float) coneOuterAngle
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return coneOuterAngle;
 	}
@@ -113,7 +113,7 @@
 
 - (void) setConeOuterAngle:(float) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		coneOuterAngle = value;
 		for(id<SoundSource> source in sourcePool.sources)
@@ -125,7 +125,7 @@
 
 - (float) coneOuterGain
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return coneOuterGain;
 	}
@@ -133,7 +133,7 @@
 
 - (void) setConeOuterGain:(float) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		coneOuterGain = value;
 		for(id<SoundSource> source in sourcePool.sources)
@@ -147,7 +147,7 @@
 
 - (ALVector) direction
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return direction;
 	}
@@ -155,7 +155,7 @@
 
 - (void) setDirection:(ALVector) value
 {
-	SYNCHRONIZED_OP_WITH_STRUCT(self)
+	OPTIONALLY_SYNCHRONIZED_STRUCT_OP(self)
 	{
 		direction = value;
 		for(id<SoundSource> source in sourcePool.sources)
@@ -167,7 +167,7 @@
 
 - (float) gain
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return gain;
 	}
@@ -175,7 +175,7 @@
 
 - (void) setGain:(float) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		gain = value;
 		for(id<SoundSource> source in sourcePool.sources)
@@ -187,7 +187,7 @@
 
 - (bool) interruptible
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return interruptible;
 	}
@@ -195,7 +195,7 @@
 
 - (void) setInterruptible:(bool) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		interruptible = value;
 		for(id<SoundSource> source in sourcePool.sources)
@@ -207,7 +207,7 @@
 
 - (bool) looping
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return looping;
 	}
@@ -215,7 +215,7 @@
 
 - (void) setLooping:(bool) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		looping = value;
 		for(id<SoundSource> source in sourcePool.sources)
@@ -227,7 +227,7 @@
 
 - (float) maxDistance
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return maxDistance;
 	}
@@ -235,7 +235,7 @@
 
 - (void) setMaxDistance:(float) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		maxDistance = value;
 		for(id<SoundSource> source in sourcePool.sources)
@@ -247,7 +247,7 @@
 
 - (float) maxGain
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return maxGain;
 	}
@@ -255,7 +255,7 @@
 
 - (void) setMaxGain:(float) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		maxGain = value;
 		for(id<SoundSource> source in sourcePool.sources)
@@ -267,7 +267,7 @@
 
 - (float) minGain
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return minGain;
 	}
@@ -275,7 +275,7 @@
 
 - (void) setMinGain:(float) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		minGain = value;
 		for(id<SoundSource> source in sourcePool.sources)
@@ -287,7 +287,7 @@
 
 - (bool) muted
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return muted;
 	}
@@ -295,7 +295,7 @@
 
 - (void) setMuted:(bool) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		muted = value;
 		for(id<SoundSource> source in sourcePool.sources)
@@ -307,7 +307,7 @@
 
 - (bool) paused
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return paused;
 	}
@@ -315,7 +315,7 @@
 
 - (void) setPaused:(bool) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		paused = value;
 		for(id<SoundSource> source in sourcePool.sources)
@@ -327,7 +327,7 @@
 
 - (float) pitch
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return pitch;
 	}
@@ -335,7 +335,7 @@
 
 - (void) setPitch:(float) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		pitch = value;
 		for(id<SoundSource> source in sourcePool.sources)
@@ -347,7 +347,7 @@
 
 - (bool) playing
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		for(id<SoundSource> source in sourcePool.sources)
 		{
@@ -362,7 +362,7 @@
 
 - (ALPoint) position
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return position;
 	}
@@ -370,7 +370,7 @@
 
 - (void) setPosition:(ALPoint) value
 {
-	SYNCHRONIZED_OP_WITH_STRUCT(self)
+	OPTIONALLY_SYNCHRONIZED_STRUCT_OP(self)
 	{
 		position = value;
 		for(id<SoundSource> source in sourcePool.sources)
@@ -392,7 +392,7 @@
 
 - (float) referenceDistance
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return referenceDistance;
 	}
@@ -400,7 +400,7 @@
 
 - (void) setReferenceDistance:(float) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		referenceDistance = value;
 		for(id<SoundSource> source in sourcePool.sources)
@@ -412,7 +412,7 @@
 
 - (float) rolloffFactor
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return rolloffFactor;
 	}
@@ -420,7 +420,7 @@
 
 - (void) setRolloffFactor:(float) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		rolloffFactor = value;
 		for(id<SoundSource> source in sourcePool.sources)
@@ -432,7 +432,7 @@
 
 - (int) sourceRelative
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return sourceRelative;
 	}
@@ -440,7 +440,7 @@
 
 - (void) setSourceRelative:(int) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		sourceRelative = value;
 		for(id<SoundSource> source in sourcePool.sources)
@@ -452,7 +452,7 @@
 
 - (int) sourceType
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return sourceType;
 	}
@@ -460,7 +460,7 @@
 
 - (void) setSourceType:(int) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		sourceType = value;
 		for(id<SoundSource> source in sourcePool.sources)
@@ -474,7 +474,7 @@
 
 - (ALVector) velocity
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return velocity;
 	}
@@ -482,7 +482,7 @@
 
 - (void) setVelocity:(ALVector) value
 {
-	SYNCHRONIZED_OP_WITH_STRUCT(self)
+	OPTIONALLY_SYNCHRONIZED_STRUCT_OP(self)
 	{
 		velocity = value;
 		for(id<SoundSource> source in sourcePool.sources)
@@ -509,7 +509,7 @@
 
 - (id<SoundSource>) play:(ALBuffer*) buffer loop:(bool) loop
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		// Try to find a free source for playback.
 		// If this channel is not interruptible, it will not attempt to interrupt its contained sources.
@@ -520,7 +520,7 @@
 
 - (id<SoundSource>) play:(ALBuffer*) buffer gain:(float) gainIn pitch:(float) pitchIn pan:(float) panIn loop:(bool) loop
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		// Try to find a free source for playback.
 		// If this channel is not interruptible, it will not attempt to interrupt its contained sources.
@@ -531,7 +531,7 @@
 
 - (void) stop
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		for(id<SoundSource> source in sourcePool.sources)
 		{
@@ -540,9 +540,53 @@
 	}
 }
 
+- (void) fadeTo:(float) value duration:(time_t) duration target:(id) target selector:(SEL) selector
+{
+	// Must always be synchronized
+	@synchronized(self)
+	{
+		[self stopFade];
+		fadeCompleteTarget = target;
+		fadeCompleteSelector = selector;
+
+		currentFadeCallbackCount = 0;
+		expectedFadeCallbackCount = [sourcePool.sources count];
+		for(id<SoundSource> source in sourcePool.sources)
+		{
+			[source fadeTo:value duration:duration target:self selector:@selector(onFadeComplete:)];
+		}
+	}
+}
+
+- (void) onFadeComplete:(id<SoundSource>) source
+{
+	// Must always be synchronized
+	@synchronized(self)
+	{
+		currentFadeCallbackCount++;
+		if(currentFadeCallbackCount == expectedFadeCallbackCount)
+		{
+			[fadeCompleteTarget performSelector:fadeCompleteSelector withObject:self];
+		}
+	}
+}
+
+- (void) stopFade
+{
+	// Must always be synchronized
+	@synchronized(self)
+	{
+		for(id<SoundSource> source in sourcePool.sources)
+		{
+			[source stopFade];
+		}
+	}
+}
+
+
 - (void) clear
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		for(id<SoundSource> source in sourcePool.sources)
 		{

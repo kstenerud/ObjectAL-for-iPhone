@@ -30,6 +30,8 @@
 #import "IphoneAudioSupport.h"
 
 
+#define kFadeInterval 0.1
+
 #pragma mark Asynchronous Operations
 
 /**
@@ -248,7 +250,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (id<AVAudioPlayerDelegate>) delegate
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return delegate;
 	}
@@ -256,7 +258,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (void) setDelegate:(id<AVAudioPlayerDelegate>) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		player.delegate = delegate = value;
 	}
@@ -264,7 +266,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (float) gain
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return gain;
 	}
@@ -272,7 +274,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (void) setGain:(float) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		gain = value;
 		if(muted)
@@ -285,7 +287,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (bool) muted
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return muted;
 	}
@@ -293,9 +295,13 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (void) setMuted:(bool) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		muted = value;
+		if(muted)
+		{
+			[self stopFade];
+		}
 		float resultingGain = muted ? 0 : gain;
 		player.volume = resultingGain;
 	}
@@ -303,7 +309,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (NSInteger) numberOfLoops
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return numberOfLoops;
 	}
@@ -311,7 +317,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (void) setNumberOfLoops:(NSInteger) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		player.numberOfLoops = numberOfLoops = value;
 	}
@@ -319,7 +325,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (bool) paused
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return paused;
 	}
@@ -327,18 +333,21 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (void) setPaused:(bool) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		if(paused != value)
 		{
 			paused = value;
-			if(paused)
+			if(!suspended)
 			{
-				[player pause];
-			}
-			else if(playing)
-			{
-				[player play];
+				if(paused)
+				{
+					[player pause];
+				}
+				else if(playing)
+				{
+					[player play];
+				}
 			}
 		}
 	}
@@ -350,7 +359,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (NSTimeInterval) currentTime
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return player.currentTime;
 	}
@@ -358,7 +367,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (void) setCurrentTime:(NSTimeInterval) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		player.currentTime = value;
 	}
@@ -366,7 +375,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (NSTimeInterval) duration
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return player.duration;
 	}
@@ -374,7 +383,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (NSUInteger) numberOfChannels
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return player.numberOfChannels;
 	}
@@ -391,7 +400,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 		return NO;
 	}
 
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		if(suspended)
 		{
@@ -399,6 +408,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 			return NO;
 		}
 		
+		[self stopFade];
+
 		// Only load if it's not the same URL as last time.
 		if(![url isEqual:currentlyLoadedUrl])
 		{
@@ -436,7 +447,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (bool) preloadUrlAsync:(NSURL*) url target:(id) target selector:(SEL) selector
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[operationQueue addOperation:[AsyncPreloadOperation operationWithUrl:url target:target selector:selector]];
 		return NO;
@@ -455,7 +466,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (bool) playUrl:(NSURL*) url loops:(NSInteger) loops
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		if([self preloadUrl:url])
 		{
@@ -498,7 +509,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (bool) play
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		if(suspended)
 		{
@@ -506,6 +517,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 			return NO;
 		}
 		
+		[self stopFade];
 		SIMULATOR_BUG_WORKAROUND_PREPARE_PLAYBACK();
 		player.currentTime = 0;
 		player.volume = muted ? 0 : gain;
@@ -518,8 +530,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (void) stop
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
+		[self stopFade];
 		[player stop];
 		player.currentTime = 0;
 		SIMULATOR_BUG_WORKAROUND_END_PLAYBACK();
@@ -528,10 +541,76 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 	}
 }
 
+- (void) fadeStep:(NSTimer*) timer
+{
+	// Must always be synchronized
+	@synchronized(self)
+	{
+		if(fadeStepAmount != 0)
+		{
+			float newGain = self.gain + fadeStepAmount;
+			if((fadeStepAmount > 0 && newGain >= fadeToValue) ||
+			   (fadeStepAmount < 0 && newGain <= fadeToValue))
+			{
+				newGain = fadeToValue;
+			}
+
+			self.gain = newGain;
+			
+			if(newGain == fadeToValue)
+			{
+				[self stopFade];
+				[fadeCompleteTarget performSelector:fadeCompleteSelector withObject:self];
+			}
+		}
+	}
+}
+
+- (void) fadeTo:(float) value duration:(time_t) duration target:(id) target selector:(SEL) selector
+{
+	// Must always be synchronized
+	@synchronized(self)
+	{
+		[self stopFade];
+		fadeCompleteTarget = target;
+		fadeCompleteSelector = selector;
+		fadeToValue = value;
+
+		float delta = fadeToValue - self.gain;
+		if(0 == delta)
+		{
+			// Handle case where there is no fading to be done.
+			[fadeCompleteTarget performSelector:fadeCompleteSelector withObject:self];
+		}
+		else
+		{
+			fadeStepAmount = delta / duration * kFadeInterval;
+			
+			fadeTimer = [NSTimer scheduledTimerWithTimeInterval:kFadeInterval
+														 target:self
+													   selector:@selector(fadeStep:)
+													   userInfo:nil
+														repeats:YES];
+		}
+	}
+}
+
+- (void) stopFade
+{
+	// Must always be synchronized
+	@synchronized(self)
+	{
+		fadeStepAmount = 0;
+		[fadeTimer invalidate];
+		fadeTimer = nil;
+	}
+}
+
 - (void) clear
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
+		[self stopFade];
 		[currentlyLoadedUrl release];
 		currentlyLoadedUrl = nil;
 		
@@ -549,7 +628,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (bool) meteringEnabled
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return meteringEnabled;
 	}
@@ -557,7 +636,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (void) setMeteringEnabled:(bool) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		meteringEnabled = value;
 		player.meteringEnabled = meteringEnabled;
@@ -566,7 +645,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (void) updateMeters
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[player updateMeters];
 	}
@@ -574,7 +653,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (float) averagePowerForChannel:(NSUInteger)channelNumber
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return [player averagePowerForChannel:channelNumber];
 	}
@@ -582,7 +661,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (float) peakPowerForChannel:(NSUInteger)channelNumber
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return [player peakPowerForChannel:channelNumber];
 	}
@@ -593,7 +672,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (bool) suspended
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return suspended;
 	}
@@ -601,12 +680,19 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (void) setSuspended:(bool) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		if(suspended != value)
 		{
-			// TODO: Anything to be done here?
 			suspended = value;
+			if(suspended)
+			{
+				[player pause];
+			}
+			else if(playing && !paused)
+			{
+				[player play];
+			}
 		}
 	}
 }
@@ -640,7 +726,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (void) audioPlayerDidFinishPlaying:(AVAudioPlayer*) playerIn successfully:(BOOL) flag
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		playing = NO;
 		paused = NO;
@@ -659,7 +745,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (void) simulatorBugWorkaroundRestorePlayer
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		if(nil != simulatorPlayerRef)
 		{
@@ -674,7 +760,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (void) simulatorBugWorkaroundHoldPlayer
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		if(nil != player)
 		{

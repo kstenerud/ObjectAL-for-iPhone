@@ -46,6 +46,21 @@
 	bool paused;
 	ALBuffer* buffer;
 	ALContext* context;
+
+	/** Target to inform when the current fade operation completes. */
+	id fadeCompleteTarget;
+	
+	/** Selector to call when the current fade operation completes. */
+	SEL fadeCompleteSelector;
+	
+	/** The amount to fade on each timer step. */
+	float fadeStepAmount;
+	
+	/** The ultimate value we are fading to. */
+	float fadeToValue;
+	
+	/** The timer corrdinating the fade operation. */
+	NSTimer* fadeTimer;
 }
 
 

@@ -6,6 +6,7 @@
 //
 
 #import "TwoSourceDemo.h"
+#import "CCLayer+Scene.h"
 #import "IphoneAudioSupport.h"
 #import "ImageButton.h"
 #import "MainScene.h"
@@ -16,13 +17,6 @@
 @implementation TwoSourceDemo
 
 #pragma mark Object Management
-
-+(id) scene
-{
-	CCScene *scene = [CCScene node];
-	[scene addChild: [self node]];
-	return scene;
-}
 
 - (id) init
 {

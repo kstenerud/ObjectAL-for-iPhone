@@ -22,6 +22,4 @@
 	ALBuffer* buffer;
 }
 
-+(id) scene;
-
 @end

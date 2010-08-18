@@ -220,6 +220,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(IphoneAudioSupport);
 		allowIpod = YES;
 		honorSilentSwitch = YES;
 		[self updateAudioMode];
+		self.audioSessionActive = YES;
 	}
 	return self;
 }
@@ -236,9 +237,26 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(IphoneAudioSupport);
 
 #pragma mark Properties
 
+- (UInt32) overrideAudioSessionCategory
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		return overrideAudioSessionCategory;
+	}
+}
+
+- (void) setOverrideAudioSessionCategory:(UInt32) value
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		overrideAudioSessionCategory = value;
+		[self updateAudioMode];
+	}	
+}
+
 - (bool) allowIpod
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return allowIpod;
 	}
@@ -246,7 +264,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(IphoneAudioSupport);
 
 - (void) setAllowIpod:(bool) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		allowIpod = value;
 		[self updateAudioMode];
@@ -257,7 +275,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(IphoneAudioSupport);
 
 - (bool) honorSilentSwitch
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return honorSilentSwitch;
 	}
@@ -265,7 +283,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(IphoneAudioSupport);
 
 - (void) setHonorSilentSwitch:(bool) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		honorSilentSwitch = value;
 		[self updateAudioMode];
@@ -438,7 +456,7 @@ done:
 
 - (NSString*) bufferAsyncFromUrl:(NSURL*) url target:(id) target selector:(SEL) selector
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[operationQueue addOperation:[AsyncLoadOperation operationWithTarget:target selector:selector url:url]];
 	}
@@ -513,7 +531,7 @@ done:
 	UInt32 value;
 	UInt32 size = sizeof(value);
 	OSStatus result;
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		result = AudioSessionGetProperty(property, &size, &value);
 	}
@@ -524,7 +542,7 @@ done:
 - (void) setIntProperty:(AudioSessionPropertyID) property value:(UInt32) value
 {
 	OSStatus result;
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		result = AudioSessionSetProperty(property, sizeof(value), &value);
 	}
@@ -533,81 +551,146 @@ done:
 
 - (void) updateAudioMode
 {
+	// Simulator doesn't support setting the audio category.
 #if !TARGET_IPHONE_SIMULATOR
-	// Note: Simulator doesn't support setting the audio category
-	if(honorSilentSwitch)
+	
+	if(0 != overrideAudioSessionCategory)
 	{
-		if(allowIpod)
-		{
-			[self setIntProperty:kAudioSessionProperty_AudioCategory value:kAudioSessionCategory_AmbientSound];
-		}
-		else
-		{
-			[self setIntProperty:kAudioSessionProperty_AudioCategory value:kAudioSessionCategory_SoloAmbientSound];
-		}
+		[self setIntProperty:kAudioSessionProperty_AudioCategory value:overrideAudioSessionCategory];
 	}
 	else
 	{
-		[self setIntProperty:kAudioSessionProperty_AudioCategory value:kAudioSessionCategory_MediaPlayback];
-		if(allowIpod)
+		if(honorSilentSwitch)
 		{
-			[self setIntProperty:kAudioSessionProperty_OverrideCategoryMixWithOthers value:TRUE];
+			if(allowIpod && self.ipodPlaying)
+			{
+				// AmbientSound uses software codec.
+				[self setIntProperty:kAudioSessionProperty_AudioCategory
+							   value:kAudioSessionCategory_AmbientSound];
+			}
+			else
+			{
+				// SoloAmbientSound uses hardware codec.
+				[self setIntProperty:kAudioSessionProperty_AudioCategory
+							   value:kAudioSessionCategory_SoloAmbientSound];
+			}
 		}
 		else
 		{
-			[self setIntProperty:kAudioSessionProperty_OverrideCategoryMixWithOthers value:FALSE];
+			if(allowIpod && self.ipodPlaying)
+			{
+				// Mixing uses software codec.
+				[self setIntProperty:kAudioSessionProperty_OverrideCategoryMixWithOthers
+							   value:TRUE];
+			}
+			else
+			{
+				// Non-mixing uses hardware codec, if available.
+				[self setIntProperty:kAudioSessionProperty_OverrideCategoryMixWithOthers
+							   value:FALSE];
+			}
+
+			// MediaPlayback also allows audio to continue playing when backgrounded.
+			[self setIntProperty:kAudioSessionProperty_AudioCategory
+						   value:kAudioSessionCategory_MediaPlayback];
 		}
 	}
+	
 #endif /* !TARGET_IPHONE_SIMULATOR */
+}
+
+- (bool) audioSessionActive
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		return audioSessionActive;
+	}
+}
+
+- (void) setAudioSessionActive:(bool) value
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		if(value != audioSessionActive)
+		{
+			audioSessionActive = value;
+			
+			if(audioSessionActive)
+			{
+				[self updateAudioMode];
+				REPORT_AUDIOSESSION_CALL(AudioSessionSetActive(YES), @"Error activating audio session");
+				self.suspended = NO;
+			}
+			else
+			{
+				self.suspended = YES;
+
+				REPORT_AUDIOSESSION_CALL(AudioSessionSetActive(NO), @"Error deactivating audio session");
+			}
+		}
+	}
 }
 
 - (bool) suspended
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		return [ObjectAL sharedInstance].suspended && [BackgroundAudio sharedInstance].suspended;
+		return suspended;
 	}
 }
 
-- (void) setSuspended:(bool) suspended
+- (void) setSuspended:(bool) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		[ObjectAL sharedInstance].suspended = suspended;
-		[BackgroundAudio sharedInstance].suspended = suspended;
+		if(value != suspended)
+		{
+			suspended = value;
+			if(suspended)
+			{
+				backgroundAudioWasSuspended = [BackgroundAudio sharedInstance].suspended;
+				objectALWasSuspended = [ObjectAL sharedInstance].suspended;
+				[ObjectAL sharedInstance].suspended = YES;
+				[BackgroundAudio sharedInstance].suspended = YES;
+			}
+			else
+			{
+				if(!backgroundAudioWasSuspended)
+				{
+					[BackgroundAudio sharedInstance].suspended = NO;
+				}
+				if(!objectALWasSuspended)
+				{
+					[ObjectAL sharedInstance].suspended = NO;
+				}
+			}
+		}
 	}
 }
 
 - (void) onInterruptBegin
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		if(handleInterruptions)
 		{
-			if(!self.suspended)
-			{
-				suspendedByInterrupt = YES;
-				self.suspended = YES;
-			}
+			audioSessionWasActive = audioSessionActive;
+			
+			self.audioSessionActive = NO;
 
-			REPORT_AUDIOSESSION_CALL(AudioSessionSetActive(NO), @"Error deactivating audio session");
 		}
 	}
 }
 
 - (void) onInterruptEnd
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		if(handleInterruptions)
 		{
-			[self updateAudioMode];
-			REPORT_AUDIOSESSION_CALL(AudioSessionSetActive(YES), @"Error reactivating audio session");
-			
-			if(suspendedByInterrupt)
+			if(audioSessionWasActive)
 			{
-				suspendedByInterrupt = NO;
-				self.suspended = NO;
+				self.audioSessionActive = YES;
 			}
 		}
 	}

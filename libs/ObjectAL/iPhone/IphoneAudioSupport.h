@@ -32,9 +32,8 @@
 #pragma mark IphoneAudioSupport
 
 /**
- * Provides iphone-specific audio support.
- * Specifically, it can handle suspending and resuming the audio sessions when the current
- * application gets interrupted by phone calls and such.
+ * Provides iphone-specific audio support, including audio file loading, session management and
+ * interrupt handling.
  *
  * <strong>Note:</strong> OpenAL is only able to play PCM (uncompressed) 8 bit or 16 bit (little
  * endian) audio files.  As such, the buffer loading routines will attempt to convert incompatible
@@ -55,11 +54,25 @@
 	/** Operation queue for asynchronous loading. */
 	NSOperationQueue* operationQueue;
 
+	UInt32 overrideAudioSessionCategory;
+
 	bool handleInterruptions;
 	bool allowIpod;
 	bool honorSilentSwitch;
-	/** If true, audio was suspended by an interrupt (such as a phone call) */
-	bool suspendedByInterrupt;
+	
+	bool audioSessionActive;
+
+	/** Marks the overall sound engine as being suspended. */
+	bool suspended;
+	
+	/** If true, BackgoundAudio was already suspended when the interrupt occurred. */
+	bool backgroundAudioWasSuspended;
+	
+	/** If true, ObjectAL was already suspended when the interrupt occurred. */
+	bool objectALWasSuspended;
+	
+	/** If true, the audio session was active when the interrupt occurred. */
+	bool audioSessionWasActive;
 	
 	/** Dictionary mapping audio session error codes to human readable descriptions.
 	 * Key: NSNumber, Value: NSString
@@ -75,13 +88,26 @@
 
 #pragma mark Properties
 
+/** Override for the audio session category selection.
+ * If set to something other than 0, the "allowIpod" and "honorSilentSwitch"
+ * settings will be ignored, and the specified audio session category will be
+ * used instead. <br>
+ *
+ * See the kAudioSessionProperty_AudioCategory property in the Apple developer
+ * documentation for more info.
+ */
+@property(readwrite,assign) UInt32 overrideAudioSessionCategory;
+
 /** If true, allow ipod music to continue playing (default YES) (NOT SUPPORTED ON THE
  * SIMULATOR).
+ * Note: If this is enabled, and another app is playing music when the audio session
+ * becomes active (application start, or after being backgrounded), music track
+ * playback will use the SOFTWARE codecs, NOT hardware.
  */
 @property(readwrite,assign) bool allowIpod;
 
-/** If true, mute when the silent switch is turned on or when the device enters sleep
- * mode (default YES) (NOT SUPPORTED ON THE SIMULATOR).
+/** If true, mute when backgrounded, screen locked, or the ringer switch is
+ * turned off (default YES) (NOT SUPPORTED ON THE SIMULATOR).
  */
 @property(readwrite,assign) bool honorSilentSwitch;
 
@@ -91,6 +117,8 @@
 /** If true, another application (usually iPod) is playing music. */
 @property(readonly) bool ipodPlaying;
 
+/** If true, the audio session is active */
+@property(readwrite,assign) bool audioSessionActive;
 
 #pragma mark Object Management
 

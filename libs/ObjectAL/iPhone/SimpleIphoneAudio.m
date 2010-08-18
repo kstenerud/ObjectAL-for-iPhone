@@ -104,7 +104,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 
 - (NSUInteger) preloadCacheCount
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return [preloadCache count];
 	}
@@ -112,7 +112,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 
 - (bool) preloadCacheEnabled
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return nil != preloadCache;
 	}
@@ -120,7 +120,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 
 - (void) setPreloadCacheEnabled:(bool) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		if(value != self.preloadCacheEnabled)
 		{
@@ -169,7 +169,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 
 - (void) setBgVolume:(float) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[BackgroundAudio sharedInstance].gain = value;
 	}
@@ -192,7 +192,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 
 - (void) setEffectsVolume:(float) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[ObjectAL sharedInstance].currentContext.listener.gain = value;
 	}
@@ -200,7 +200,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 
 - (bool) paused
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return self.effectsPaused && self.bgPaused;
 	}
@@ -208,7 +208,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 
 - (void) setPaused:(bool) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		self.effectsPaused = self.bgPaused = value;
 	}
@@ -226,7 +226,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 
 - (bool) bgMuted
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return bgMuted;
 	}
@@ -234,7 +234,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 
 - (void) setBgMuted:(bool) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		bgMuted = value;
 		[BackgroundAudio sharedInstance].muted = bgMuted | muted;
@@ -243,7 +243,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 
 - (bool) effectsMuted
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return effectsMuted;
 	}
@@ -251,7 +251,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 
 - (void) setEffectsMuted:(bool) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		effectsMuted = value;
 		[ObjectAL sharedInstance].currentContext.listener.muted = effectsMuted | muted;
@@ -260,7 +260,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 
 - (bool) muted
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return muted;
 	}
@@ -268,7 +268,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 
 - (void) setMuted:(bool) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		muted = value;
 		[BackgroundAudio sharedInstance].muted = bgMuted | muted;
@@ -310,7 +310,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 
 - (bool) playBgWithLoop:(bool) loop
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[BackgroundAudio sharedInstance].numberOfLoops = loop ? -1 : 0;
 		return [[BackgroundAudio sharedInstance] play];
@@ -328,7 +328,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 - (ALBuffer*) internalPreloadEffect:(NSString*) filePath
 {
 	ALBuffer* buffer;
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		buffer = [preloadCache objectForKey:filePath];
 	}
@@ -341,7 +341,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 			return nil;
 		}
 
-		SYNCHRONIZED_OP(self)
+		OPTIONALLY_SYNCHRONIZED(self)
 		{
 			[preloadCache setObject:buffer forKey:filePath];
 		}
@@ -367,7 +367,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 		LOG_ERROR(@"filePath was NULL");
 		return;
 	}
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[preloadCache removeObjectForKey:filePath];
 	}
@@ -375,7 +375,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 
 - (void) unloadAllEffects
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[preloadCache removeAllObjects];
 	}

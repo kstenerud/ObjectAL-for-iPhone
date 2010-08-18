@@ -29,6 +29,9 @@
 #import "ObjectAL.h"
 
 
+#define kFadeInterval 0.1
+
+
 @implementation ALSource
 
 #pragma mark Object Management
@@ -71,7 +74,7 @@
 {
 	[context notifySourceDeallocating:self];
 	
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[ALWrapper sourceStop:sourceId];
 		[ALWrapper sourcei:sourceId parameter:AL_BUFFER value:AL_NONE];
@@ -96,7 +99,7 @@
 
 - (ALBuffer*) buffer
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return buffer;
 	}
@@ -104,7 +107,7 @@
 
 - (void) setBuffer:(ALBuffer *) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[self stop];
 		[buffer autorelease];
@@ -125,7 +128,7 @@
 
 - (float) coneInnerAngle
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return [ALWrapper getSourcef:sourceId parameter:AL_CONE_INNER_ANGLE];
 	}
@@ -133,7 +136,7 @@
 
 - (void) setConeInnerAngle:(float) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[ALWrapper sourcef:sourceId parameter:AL_CONE_INNER_ANGLE value:value];
 	}
@@ -141,7 +144,7 @@
 
 - (float) coneOuterAngle
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return [ALWrapper getSourcef:sourceId parameter:AL_CONE_OUTER_ANGLE];
 	}
@@ -149,7 +152,7 @@
 
 - (void) setConeOuterAngle:(float) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[ALWrapper sourcef:sourceId parameter:AL_CONE_OUTER_ANGLE value:value];
 	}
@@ -157,7 +160,7 @@
 
 - (float) coneOuterGain
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return [ALWrapper getSourcef:sourceId parameter:AL_CONE_OUTER_GAIN];
 	}
@@ -165,7 +168,7 @@
 
 - (void) setConeOuterGain:(float) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[ALWrapper sourcef:sourceId parameter:AL_CONE_OUTER_GAIN value:value];
 	}
@@ -176,7 +179,7 @@
 - (ALVector) direction
 {
 	ALVector result;
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[ALWrapper getSource3f:sourceId parameter:AL_DIRECTION v1:&result.x v2:&result.y v3:&result.z];
 	}
@@ -185,7 +188,7 @@
 
 - (void) setDirection:(ALVector) value
 {
-	SYNCHRONIZED_OP_WITH_STRUCT(self)
+	OPTIONALLY_SYNCHRONIZED_STRUCT_OP(self)
 	{
 		[ALWrapper source3f:sourceId parameter:AL_DIRECTION v1:value.x v2:value.y v3:value.z];
 	}
@@ -193,7 +196,7 @@
 
 - (float) gain
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return gain;
 	}
@@ -201,7 +204,7 @@
 
 - (void) setGain:(float) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		gain = value;
 		if(muted)
@@ -216,7 +219,7 @@
 
 - (bool) looping
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return [ALWrapper getSourcei:sourceId parameter:AL_LOOPING];
 	}
@@ -224,7 +227,7 @@
 
 - (void) setLooping:(bool) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[ALWrapper sourcei:sourceId parameter:AL_LOOPING value:value];
 	}
@@ -232,7 +235,7 @@
 
 - (float) maxDistance
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return [ALWrapper getSourcef:sourceId parameter:AL_MAX_DISTANCE];
 	}
@@ -240,7 +243,7 @@
 
 - (void) setMaxDistance:(float) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[ALWrapper sourcef:sourceId parameter:AL_MAX_DISTANCE value:value];
 	}
@@ -248,7 +251,7 @@
 
 - (float) maxGain
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return [ALWrapper getSourcef:sourceId parameter:AL_MAX_GAIN];
 	}
@@ -256,7 +259,7 @@
 
 - (void) setMaxGain:(float) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[ALWrapper sourcef:sourceId parameter:AL_MAX_GAIN value:value];
 	}
@@ -264,7 +267,7 @@
 
 - (float) minGain
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return [ALWrapper getSourcef:sourceId parameter:AL_MIN_GAIN];
 	}
@@ -272,7 +275,7 @@
 
 - (void) setMinGain:(float) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[ALWrapper sourcef:sourceId parameter:AL_MIN_GAIN value:value];
 	}
@@ -280,7 +283,7 @@
 
 - (bool) muted
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return muted;
 	}
@@ -288,9 +291,13 @@
 
 - (void) setMuted:(bool) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		muted = value;
+		if(muted)
+		{
+			[self stopFade];
+		}
 		float resultingGain = muted ? 0 : gain;
 		[ALWrapper sourcef:sourceId parameter:AL_GAIN value:resultingGain];
 	}
@@ -298,7 +305,7 @@
 
 - (float) offsetInBytes
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return [ALWrapper getSourcef:sourceId parameter:AL_BYTE_OFFSET];
 	}
@@ -306,7 +313,7 @@
 
 - (void) setOffsetInBytes:(float) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[ALWrapper sourcef:sourceId parameter:AL_BYTE_OFFSET value:value];
 	}
@@ -314,7 +321,7 @@
 
 - (float) offsetInSamples
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return [ALWrapper getSourcef:sourceId parameter:AL_SAMPLE_OFFSET];
 	}
@@ -322,7 +329,7 @@
 
 - (void) setOffsetInSamples:(float) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[ALWrapper sourcef:sourceId parameter:AL_SAMPLE_OFFSET value:value];
 	}
@@ -330,7 +337,7 @@
 
 - (float) offsetInSeconds
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return [ALWrapper getSourcef:sourceId parameter:AL_SEC_OFFSET];
 	}
@@ -338,7 +345,7 @@
 
 - (void) setOffsetInSeconds:(float) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[ALWrapper sourcef:sourceId parameter:AL_SEC_OFFSET value:value];
 	}
@@ -351,7 +358,7 @@
 
 - (void) setPaused:(bool) shouldPause
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		if(shouldPause)
 		{
@@ -372,7 +379,7 @@
 
 - (float) pitch
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return [ALWrapper getSourcef:sourceId parameter:AL_PITCH];
 	}
@@ -380,7 +387,7 @@
 
 - (void) setPitch:(float) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[ALWrapper sourcef:sourceId parameter:AL_PITCH value:value];
 	}
@@ -394,7 +401,7 @@
 - (ALPoint) position
 {
 	ALPoint result;
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[ALWrapper getSource3f:sourceId parameter:AL_POSITION v1:&result.x v2:&result.y v3:&result.z];
 	}
@@ -403,7 +410,7 @@
 
 - (void) setPosition:(ALPoint) value
 {
-	SYNCHRONIZED_OP_WITH_STRUCT(self)
+	OPTIONALLY_SYNCHRONIZED_STRUCT_OP(self)
 	{
 		[ALWrapper source3f:sourceId parameter:AL_POSITION v1:value.x v2:value.y v3:value.z];
 	}
@@ -421,7 +428,7 @@
 
 - (float) referenceDistance
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return [ALWrapper getSourcef:sourceId parameter:AL_REFERENCE_DISTANCE];
 	}
@@ -429,7 +436,7 @@
 
 - (void) setReferenceDistance:(float) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[ALWrapper sourcef:sourceId parameter:AL_REFERENCE_DISTANCE value:value];
 	}
@@ -437,7 +444,7 @@
 
 - (float) rolloffFactor
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return [ALWrapper getSourcef:sourceId parameter:AL_ROLLOFF_FACTOR];
 	}
@@ -445,7 +452,7 @@
 
 - (void) setRolloffFactor:(float) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[ALWrapper sourcef:sourceId parameter:AL_ROLLOFF_FACTOR value:value];
 	}
@@ -455,7 +462,7 @@
 
 - (int) sourceRelative
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return [ALWrapper getSourcei:sourceId parameter:AL_SOURCE_RELATIVE];
 	}
@@ -463,7 +470,7 @@
 
 - (void) setSourceRelative:(int) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[ALWrapper sourcei:sourceId parameter:AL_SOURCE_RELATIVE value:value];
 	}
@@ -471,7 +478,7 @@
 
 - (int) sourceType
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return [ALWrapper getSourcei:sourceId parameter:AL_SOURCE_TYPE];
 	}
@@ -479,7 +486,7 @@
 
 - (void) setSourceType:(int) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[ALWrapper sourcei:sourceId parameter:AL_SOURCE_TYPE value:value];
 	}
@@ -487,7 +494,7 @@
 
 - (int) state
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return [ALWrapper getSourcei:sourceId parameter:AL_SOURCE_STATE];
 	}
@@ -495,7 +502,7 @@
 
 - (void) setState:(int) value
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[ALWrapper sourcei:sourceId parameter:AL_SOURCE_STATE value:value];
 	}
@@ -504,7 +511,7 @@
 - (ALVector) velocity
 {
 	ALVector result;
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[ALWrapper getSource3f:sourceId parameter:AL_VELOCITY v1:&result.x v2:&result.y v3:&result.z];
 	}
@@ -513,7 +520,7 @@
 
 - (void) setVelocity:(ALVector) value
 {
-	SYNCHRONIZED_OP_WITH_STRUCT(self)
+	OPTIONALLY_SYNCHRONIZED_STRUCT_OP(self)
 	{
 		[ALWrapper source3f:sourceId parameter:AL_VELOCITY v1:value.x v2:value.y v3:value.z];
 	}
@@ -524,8 +531,10 @@
 
 - (void) preload:(ALBuffer*) bufferIn
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
+		[self stopFade];
+
 		if(self.playing || self.paused)
 		{
 			[self stop];
@@ -537,8 +546,10 @@
 
 - (id<SoundSource>) play
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
+		[self stopFade];
+
 		if(self.playing)
 		{
 			if(!interruptible)
@@ -565,8 +576,10 @@
 
 - (id<SoundSource>) play:(ALBuffer*) bufferIn loop:(bool) loop
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
+		[self stopFade];
+
 		if(self.playing)
 		{
 			if(!interruptible)
@@ -586,8 +599,10 @@
 
 - (id<SoundSource>) play:(ALBuffer*) bufferIn gain:(float) gainIn pitch:(float) pitchIn pan:(float) panIn loop:(bool) loopIn
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
+		[self stopFade];
+
 		if(self.playing)
 		{
 			if(!interruptible)
@@ -612,16 +627,83 @@
 
 - (void) stop
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
+		[self stopFade];
 		[ALWrapper sourceStop:sourceId];
 		paused = NO;
 	}
 }
 
+- (void) fadeStep:(NSTimer*) timer
+{
+	// Must always be synchronized
+	@synchronized(self)
+	{
+		if(fadeStepAmount != 0)
+		{
+			float newGain = self.gain + fadeStepAmount;
+			if((fadeStepAmount > 0 && newGain >= fadeToValue) ||
+			   (fadeStepAmount < 0 && newGain <= fadeToValue))
+			{
+				newGain = fadeToValue;
+			}
+			
+			self.gain = newGain;
+			
+			if(newGain == fadeToValue)
+			{
+				[self stopFade];
+				[fadeCompleteTarget performSelector:fadeCompleteSelector withObject:self];
+			}
+		}
+	}
+}
+
+- (void) fadeTo:(float) value duration:(time_t) duration target:(id) target selector:(SEL) selector
+{
+	// Must always be synchronized
+	@synchronized(self)
+	{
+		[self stopFade];
+		fadeCompleteTarget = target;
+		fadeCompleteSelector = selector;
+		fadeToValue = value;
+		
+		float delta = fadeToValue - self.gain;
+		if(0 == delta)
+		{
+			// Handle case where there is no fading to be done.
+			[fadeCompleteTarget performSelector:fadeCompleteSelector withObject:self];
+		}
+		else
+		{
+			fadeStepAmount = delta / duration * kFadeInterval;
+			
+			fadeTimer = [NSTimer scheduledTimerWithTimeInterval:kFadeInterval
+														 target:self
+													   selector:@selector(fadeStep:)
+													   userInfo:nil
+														repeats:YES];
+		}
+	}
+}
+
+- (void) stopFade
+{
+	// Must always be synchronized
+	@synchronized(self)
+	{
+		fadeStepAmount = 0;
+		[fadeTimer invalidate];
+		fadeTimer = nil;
+	}
+}
+
+
 - (void) clear
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[self stop];
 		self.buffer = nil;
@@ -633,7 +715,7 @@
 
 - (bool) queueBuffer:(ALBuffer*) bufferIn
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		if(AL_STATIC == self.state)
 		{
@@ -646,7 +728,7 @@
 
 - (bool) queueBuffers:(NSArray*) buffers
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		if(AL_STATIC == self.state)
 		{
@@ -667,7 +749,7 @@
 
 - (bool) unqueueBuffer:(ALBuffer*) bufferIn
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		ALuint bufferId = bufferIn.bufferId;
 		return [ALWrapper sourceUnqueueBuffers:sourceId numBuffers:1 bufferIds:&bufferId];
@@ -676,7 +758,7 @@
 
 - (bool) unqueueBuffers:(NSArray*) buffers
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		if(AL_STATIC == self.state)
 		{
@@ -699,7 +781,7 @@
 
 - (bool) requestUnreserve:(bool) interrupt
 {
-	SYNCHRONIZED_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		if(self.playing)
 		{

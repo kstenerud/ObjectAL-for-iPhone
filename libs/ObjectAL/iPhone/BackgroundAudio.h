@@ -68,6 +68,21 @@
 	 * sometimes say it's not playing when it actually is.
 	 */
 	bool playing;
+	
+	/** Target to inform when the current fade operation completes. */
+	id fadeCompleteTarget;
+
+	/** Selector to call when the current fade operation completes. */
+	SEL fadeCompleteSelector;
+
+	/** The amount to fade on each timer step. */
+	float fadeStepAmount;
+
+	/** The ultimate value we are fading to. */
+	float fadeToValue;
+
+	/** The timer corrdinating the fade operation. */
+	NSTimer* fadeTimer;
 }
 
 
@@ -291,11 +306,28 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(BackgroundAudio);
  */
 - (bool) play;
 
-/** Stop playing.
+/** Stop playing and stop all operations.
  */
 - (void) stop;
 
-/** Unload and clear all audio data.
+/** Fade to the specified gain value.
+ *
+ * @param gain The gain to fade to.
+ * @param duration The duration of the fade operation.
+ * @param target The target to notify when the fade completes (can be nil).
+ * @param selector The selector to call when the fade completes.  The selector must accept
+ * a single parameter, which will be the object that performed the fade.
+ */
+- (void) fadeTo:(float) gain
+	   duration:(time_t) duration
+		 target:(id) target
+	   selector:(SEL) selector;
+
+/** Stop the currently running fade operation, if any.
+ */
+- (void) stopFade;
+
+/** Unload and clear all audio data, stop playing, and stop all operations.
  */
 - (void) clear;
 

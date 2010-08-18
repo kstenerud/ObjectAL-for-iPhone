@@ -24,6 +24,9 @@
 	{
 		self.touchablePortion = node;
 		
+		node.anchorPoint = ccp(0.5, 0.5);
+		node.position = ccp(node.contentSize.width*0.5, node.contentSize.height*0.5);
+		
 		touchPriority = 0;
 		targetedTouches = YES;
 		swallowTouches = YES;
@@ -97,11 +100,15 @@
 
 - (void) onButtonDown
 {
+	[touchablePortion stopAllActions];
+	[touchablePortion runAction:[CCScaleTo actionWithDuration:0.05 scale:1.2]];
 	buttonWasDown = YES;
 }
 
 - (void) onButtonUp
 {
+	[touchablePortion stopAllActions];
+	[touchablePortion runAction:[CCScaleTo actionWithDuration:0.01 scale:1.0]];
 	buttonWasDown = NO;
 }
 

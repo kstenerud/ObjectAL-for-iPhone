@@ -65,6 +65,18 @@
 	bool interruptible;
 	bool muted;
 	bool paused;
+
+	/** Target to inform when the current fade operation completes. */
+	id fadeCompleteTarget;
+	
+	/** Selector to call when the current fade operation completes. */
+	SEL fadeCompleteSelector;
+	
+	/** The expected number of sources that will callback when fading completes */
+	int expectedFadeCallbackCount;
+
+	/** The actual number of sources that have called back */
+	int currentFadeCallbackCount;
 }
 
 

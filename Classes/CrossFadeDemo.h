@@ -22,6 +22,4 @@
 	ALBuffer* secondBuffer;
 }
 
-+(id) scene;
-
 @end

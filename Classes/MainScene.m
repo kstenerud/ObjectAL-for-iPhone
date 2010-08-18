@@ -6,22 +6,16 @@
 //
 
 #import "MainScene.h"
+#import "CCLayer+Scene.h"
 #import "SingleSourceDemo.h"
 #import "TwoSourceDemo.h"
 #import "VolumePitchPanDemo.h"
 #import "CrossFadeDemo.h"
 #import "PlanetKillerDemo.h"
 #import "ChannelsDemo.h"
-
+#import "FadeDemo.h"
 
 @implementation MainLayer
-
-+(id) scene
-{
-	CCScene *scene = [CCScene node];
-	[scene addChild: [self node]];
-	return scene;
-}
 
 -(id) init
 {
@@ -33,6 +27,7 @@
 						[CCMenuItemLabel itemWithLabel:[CCLabel labelWithString:@"Volume, Pitch, and Pan" fontName:@"Helvetica" fontSize:30] target:self selector:@selector(onFadeAndVolume)],
 						[CCMenuItemLabel itemWithLabel:[CCLabel labelWithString:@"Crossfade" fontName:@"Helvetica" fontSize:30] target:self selector:@selector(onCrossfade)],
 						[CCMenuItemLabel itemWithLabel:[CCLabel labelWithString:@"Channels" fontName:@"Helvetica" fontSize:30] target:self selector:@selector(onChannels)],
+						[CCMenuItemLabel itemWithLabel:[CCLabel labelWithString:@"Fading" fontName:@"Helvetica" fontSize:30] target:self selector:@selector(onFadeDemo)],
 						[CCMenuItemLabel itemWithLabel:[CCLabel labelWithString:@"Planet Killer (SimpleIphoneAudio)" fontName:@"Helvetica" fontSize:30] target:self selector:@selector(onPlanetKiller)],
 						nil];
 		[menu alignItemsVertically];
@@ -69,6 +64,11 @@
 - (void) onChannels
 {
 	[[CCDirector sharedDirector] replaceScene:[ChannelsDemo scene]];
+}
+
+- (void) onFadeDemo
+{
+	[[CCDirector sharedDirector] replaceScene:[FadeDemo scene]];
 }
 
 @end
