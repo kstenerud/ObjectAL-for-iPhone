@@ -660,7 +660,7 @@
 	}
 }
 
-- (void) fadeTo:(float) value duration:(time_t) duration target:(id) target selector:(SEL) selector
+- (void) fadeTo:(float) value duration:(float) duration target:(id) target selector:(SEL) selector
 {
 	// Must always be synchronized
 	@synchronized(self)

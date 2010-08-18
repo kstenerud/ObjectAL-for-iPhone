@@ -150,13 +150,13 @@
 /** Fade to the specified gain value.
  *
  * @param gain The gain to fade to.
- * @param duration The duration of the fade operation.
+ * @param duration The duration of the fade operation in seconds.
  * @param target The target to notify when the fade completes (can be nil).
  * @param selector The selector to call when the fade completes.  The selector must accept
  * a single parameter, which will be the object that performed the fade.
  */
 - (void) fadeTo:(float) gain
-	   duration:(time_t) duration
+	   duration:(float) duration
 		 target:(id) target
 	   selector:(SEL) selector;
 
