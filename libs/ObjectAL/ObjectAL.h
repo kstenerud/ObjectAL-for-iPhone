@@ -125,7 +125,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(ObjectAL);
 
 /** \mainpage ObjectAL for iPhone
  
- Version 1.01 <br> <br>
+ Version 1.1 <br> <br>
  
  Copyright 2009-2010 Karl Stenerud <br><br>
  
@@ -160,7 +160,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(ObjectAL);
    to muddle around with arrays of data, maintain IDs, or pass around pointers to basic types.
 
  - BackgroundAudio provides a simpler interface to AVAudioPlayer, allowing you to play, stop,
-   pause, and mute background music tracks.
+   pause, fade, and mute background music tracks.
  
  - IphoneAudioSupport provides support functionality for audio in iPhone, including automatic
    interrupt handling and audio data loading routines. <br>
@@ -247,8 +247,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(ObjectAL);
 	<li>Copy libs/ObjectAL from this project into your project.  You can simply drag it into the
 		"Groups & Files" section in xcode if you like (be sure to select "Copy items into
 		destination group's folder"). <br/>
-		Alternatively, you can build ObjectAL as a static library (as it's configured to do in this
-		project).<br/><br/>
+		Alternatively, you can build ObjectAL as a static library (as it's configured to do in the
+		ObjectAL demo project).<br/><br/>
 	</li>
 
 	<li>Add the following frameworks to your project:
@@ -359,14 +359,12 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(ObjectAL);
 
 - (void) onGamePause
 {
-	[SimpleIphoneAudio sharedInstance].bgPaused = YES;
-	[SimpleIphoneAudio sharedInstance].muted = YES;
+	[SimpleIphoneAudio sharedInstance].paused = YES;
 }
 
 - (void) onGameResume
 {
-	[SimpleIphoneAudio sharedInstance].muted = NO;
-	[SimpleIphoneAudio sharedInstance].bgPaused = NO;
+	[SimpleIphoneAudio sharedInstance].paused = NO;
 }
 
 - (void) onGameOver
@@ -496,12 +494,12 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(ObjectAL);
 - (void) onGamePause
 {
 	[BackgroundAudio sharedInstance].paused = YES;
-	channel.muted = YES;
+	channel.paused = YES;
 }
 
 - (void) onGameResume
 {
-	channel.muted = NO;
+	channel.paused = NO;
 	[BackgroundAudio sharedInstance].paused = NO;
 }
 
@@ -529,6 +527,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(ObjectAL);
 	// Stop all music and sound effects.
 	[channel stop];
 	[[BackgroundAudio sharedInstance] stop];
+ 
+	// Unload bg music.
+	[[BackgroundAudio] clear];
 }
 
 @end
@@ -544,12 +545,13 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(ObjectAL);
  readable. Really!
  
  The current demos are:
- - <strong>ChannelsDemo</strong>: Demonstrates using audio channels.
- - <strong>CrossFadeDemo</strong>: Demonstrates crossfading between two sources.
- - <strong>PlanetKillerDemo</strong>: Demonstrates using SimpleIphoneAudio in a game setting.
  - <strong>SingleSourceDemo</strong>: Demonstrates using a location based source and a listener.
  - <strong>TwoSourceDemo</strong>: Demonstrates using two location based sources and a listener.
  - <strong>VolumePitchPanDemo</strong>: Demonstrates using gain, pitch, and pan controls.
+ - <strong>CrossFadeDemo</strong>: Demonstrates crossfading between two sources.
+ - <strong>ChannelsDemo</strong>: Demonstrates using audio channels.
+ - <strong>FadeDemo</strong>: Demonstrates realtime fading in BackgroundAudio and ObjectAL.
+ - <strong>PlanetKillerDemo</strong>: Demonstrates using SimpleIphoneAudio in a game setting.
  
  
  
@@ -602,10 +604,23 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(ObjectAL);
  
  
  <br>
+ \subsection simulator_no_sound No OpenAL Sound in Simulator
+
+ Note: As of XCode 3.2.3, this problem doesn't seem to be surfacing anymore.  The workaround
+ code is now disabled by default.  You can re-enable it by setting
+ OBJECTAL_CFG_SIMULATOR_BUG_WORKAROUND to 1 in ObjectALConfig.h.
+
+ There's a bug in the simulator that causes OpenAL-based sounds to stop playing in certain cases
+ when using AVAudioPlayer (BackgroundAudio).  ObjectAL contains code to work around this issue,
+ but it's not a 100% fix.
+ 
+ 
+ <br>
  \subsection simulator_freezing Simulator Freezups
  
  Note: As of XCode 3.2.3, this problem doesn't seem to be surfacing anymore.  The workaround
- code is now disabled by default.
+ code is now disabled by default.  You can re-enable it by setting
+ OBJECTAL_CFG_SIMULATOR_BUG_WORKAROUND to 1 in ObjectALConfig.h.
  
  There's a particularly nasty bug in the simulator's OpenAL and AVAudioPlayer implementation that
  causes the simulator to freeze for 60+ seconds in a very specific case:

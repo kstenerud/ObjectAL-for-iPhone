@@ -75,12 +75,21 @@
 	/** Selector to call when the current fade operation completes. */
 	SEL fadeCompleteSelector;
 
-	/** The amount to fade on each timer step. */
-	float fadeStepAmount;
-
-	/** The ultimate value we are fading to. */
-	float fadeToValue;
-
+	/** The gain we started this fade from. */
+	float fadeStartingGain;
+	
+	/** The gain we are fading to. */
+	float fadeEndingGain;
+	
+	/** The duration of the fade operation. */
+	float fadeDuration;
+	
+	/** A multiplier applied to the elapsed time to give a fade delta. */
+	float fadeDeltaMultiplier;
+	
+	/** The time that this fade operation started. */
+	uint64_t fadeStartTime;
+	
 	/** The timer corrdinating the fade operation. */
 	NSTimer* fadeTimer;
 }
@@ -311,6 +320,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(BackgroundAudio);
 - (void) stop;
 
 /** Fade to the specified gain value.
+ *
+ * Note: By default, fade operations are tuned for fade operations 0.2 seconds and above.  If you
+ * need shorter fade durations, modify kBackgroundAudio_FadeInterval in ObjectALConfig.h.
  *
  * @param gain The gain to fade to.
  * @param duration The duration of the fade operation in seconds.

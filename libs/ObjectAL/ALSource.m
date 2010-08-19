@@ -25,11 +25,9 @@
 //
 
 #import "ALSource.h"
+#import "mach_timing.h"
 #import "ObjectALMacros.h"
 #import "ObjectAL.h"
-
-
-#define kFadeInterval 0.1
 
 
 @implementation ALSource
@@ -640,18 +638,15 @@
 	// Must always be synchronized
 	@synchronized(self)
 	{
-		if(fadeStepAmount != 0)
+		if(0 != fadeStartTime)
 		{
-			float newGain = self.gain + fadeStepAmount;
-			if((fadeStepAmount > 0 && newGain >= fadeToValue) ||
-			   (fadeStepAmount < 0 && newGain <= fadeToValue))
-			{
-				newGain = fadeToValue;
-			}
+			float elapsedTime = mach_absolute_difference_seconds(mach_absolute_time(), fadeStartTime);
+			
+			float newGain = elapsedTime >= fadeDuration ? fadeEndingGain : fadeStartingGain + elapsedTime * fadeDeltaMultiplier;
 			
 			self.gain = newGain;
 			
-			if(newGain == fadeToValue)
+			if(newGain == fadeEndingGain)
 			{
 				[self stopFade];
 				[fadeCompleteTarget performSelector:fadeCompleteSelector withObject:self];
@@ -668,9 +663,11 @@
 		[self stopFade];
 		fadeCompleteTarget = target;
 		fadeCompleteSelector = selector;
-		fadeToValue = value;
+		fadeStartingGain = self.gain;
+		fadeEndingGain = value;
 		
-		float delta = fadeToValue - self.gain;
+		float delta = fadeEndingGain - fadeStartingGain;
+		
 		if(0 == delta)
 		{
 			// Handle case where there is no fading to be done.
@@ -678,9 +675,11 @@
 		}
 		else
 		{
-			fadeStepAmount = delta / duration * kFadeInterval;
+			fadeDuration = duration;
+			fadeDeltaMultiplier = delta / fadeDuration;
+			fadeStartTime = mach_absolute_time();
 			
-			fadeTimer = [NSTimer scheduledTimerWithTimeInterval:kFadeInterval
+			fadeTimer = [NSTimer scheduledTimerWithTimeInterval:kObjectAL_FadeInterval
 														 target:self
 													   selector:@selector(fadeStep:)
 													   userInfo:nil
@@ -694,12 +693,11 @@
 	// Must always be synchronized
 	@synchronized(self)
 	{
-		fadeStepAmount = 0;
+		fadeStartTime = 0;
 		[fadeTimer invalidate];
 		fadeTimer = nil;
 	}
 }
-
 
 - (void) clear
 {

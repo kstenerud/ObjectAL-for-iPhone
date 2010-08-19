@@ -149,6 +149,9 @@
 
 /** Fade to the specified gain value.
  *
+ * Note: By default, fade operations are tuned for fade operations 0.2 seconds and above.  If you
+ * need shorter fade durations, modify kObjectAL_FadeInterval in ObjectALConfig.h.
+ *
  * @param gain The gain to fade to.
  * @param duration The duration of the fade operation in seconds.
  * @param target The target to notify when the fade completes (can be nil).

@@ -26,6 +26,8 @@
 		3918AB1F121ABB520060C2AF /* FadeDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 3918AB1E121ABB520060C2AF /* FadeDemo.m */; };
 		3918AB23121ABBA90060C2AF /* CCLayer+Scene.m in Sources */ = {isa = PBXBuildFile; fileRef = 3918AB22121ABBA90060C2AF /* CCLayer+Scene.m */; };
 		396BFFD1121B03AD00E707BB /* ImageAndLabelButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 396BFFD0121B03AD00E707BB /* ImageAndLabelButton.m */; };
+		3976D8AF121C7325008C277E /* LICENSE.cocos2d in Resources */ = {isa = PBXBuildFile; fileRef = 3976D8AE121C7325008C277E /* LICENSE.cocos2d */; };
+		3976D8D0121C815B008C277E /* mach_timing.c in Sources */ = {isa = PBXBuildFile; fileRef = 3976D8CF121C815B008C277E /* mach_timing.c */; };
 		3987EFCA1210350800781573 /* ColdFunk.wav in Resources */ = {isa = PBXBuildFile; fileRef = 39AD850C121032430049990E /* ColdFunk.wav */; };
 		3987EFCB1210350B00781573 /* Exit.png in Resources */ = {isa = PBXBuildFile; fileRef = 39AD850D121032430049990E /* Exit.png */; };
 		3987EFCC1210350F00781573 /* Ganymede.png in Resources */ = {isa = PBXBuildFile; fileRef = 39AD850E121032430049990E /* Ganymede.png */; };
@@ -298,6 +300,9 @@
 		3918AB22121ABBA90060C2AF /* CCLayer+Scene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CCLayer+Scene.m"; sourceTree = "<group>"; };
 		396BFFCF121B03AD00E707BB /* ImageAndLabelButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageAndLabelButton.h; sourceTree = "<group>"; };
 		396BFFD0121B03AD00E707BB /* ImageAndLabelButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageAndLabelButton.m; sourceTree = "<group>"; };
+		3976D8AE121C7325008C277E /* LICENSE.cocos2d */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE.cocos2d; path = libs/cocos2d/LICENSE.cocos2d; sourceTree = "<group>"; };
+		3976D8CE121C815B008C277E /* mach_timing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mach_timing.h; sourceTree = "<group>"; };
+		3976D8CF121C815B008C277E /* mach_timing.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mach_timing.c; sourceTree = "<group>"; };
 		39AD84B6121031BC0049990E /* libObjectAL.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libObjectAL.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		39AD84BC121031E40049990E /* ALBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALBuffer.h; sourceTree = "<group>"; };
 		39AD84BD121031E40049990E /* ALBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALBuffer.m; sourceTree = "<group>"; };
@@ -370,7 +375,6 @@
 		39AD853B121032E00049990E /* TwoSourceDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwoSourceDemo.m; sourceTree = "<group>"; };
 		39AD853C121032E00049990E /* VolumePitchPanDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VolumePitchPanDemo.h; sourceTree = "<group>"; };
 		39AD853D121032E00049990E /* VolumePitchPanDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VolumePitchPanDemo.m; sourceTree = "<group>"; };
-		504DFC6810AF1739006D82FE /* LICENSE.cocos2d */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.cocos2d; sourceTree = "<group>"; };
 		50674850107A3AF30090963A /* ZAttributedString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZAttributedString.h; sourceTree = "<group>"; };
 		50674851107A3AF30090963A /* ZAttributedString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZAttributedString.m; sourceTree = "<group>"; };
 		50674852107A3AF30090963A /* ZAttributedStringPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZAttributedStringPrivate.h; sourceTree = "<group>"; };
@@ -721,6 +725,8 @@
 				39AD84DD121031E40049990E /* MutableArray-WeakReferences.h */,
 				39AD84DE121031E40049990E /* MutableArray-WeakReferences.m */,
 				39AD84DF121031E40049990E /* SynthesizeSingleton.h */,
+				3976D8CE121C815B008C277E /* mach_timing.h */,
+				3976D8CF121C815B008C277E /* mach_timing.c */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -749,7 +755,7 @@
 		506EDAA3102F461B00A389B3 /* cocos2d Sources */ = {
 			isa = PBXGroup;
 			children = (
-				504DFC6810AF1739006D82FE /* LICENSE.cocos2d */,
+				3976D8AE121C7325008C277E /* LICENSE.cocos2d */,
 				507ED24A11C62F03002ED3FC /* cocos2d */,
 				50F41306106926B2002A0D5E /* FontLabel */,
 			);
@@ -1186,6 +1192,7 @@
 				39AD851F1210326F0049990E /* SliderKnobVertical.png in Resources */,
 				39AD85201210326F0049990E /* SliderTrackHorizontal.png in Resources */,
 				39AD85211210326F0049990E /* SliderTrackVertical.png in Resources */,
+				3976D8AF121C7325008C277E /* LICENSE.cocos2d in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1229,6 +1236,7 @@
 				3918AB1F121ABB520060C2AF /* FadeDemo.m in Sources */,
 				3918AB23121ABBA90060C2AF /* CCLayer+Scene.m in Sources */,
 				396BFFD1121B03AD00E707BB /* ImageAndLabelButton.m in Sources */,
+				3976D8D0121C815B008C277E /* mach_timing.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
