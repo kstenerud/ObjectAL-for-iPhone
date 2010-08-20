@@ -583,7 +583,7 @@ done:
 	{
 		if(honorSilentSwitch)
 		{
-			if(allowIpod && self.ipodPlaying)
+			if(allowIpod && (self.ipodPlaying || !useHardwareIfAvailable))
 			{
 				// AmbientSound uses software codec.
 				[self setIntProperty:kAudioSessionProperty_AudioCategory
