@@ -58,6 +58,7 @@
 
 	bool handleInterruptions;
 	bool allowIpod;
+	bool useHardwareIfAvailable;
 	bool honorSilentSwitch;
 	
 	bool audioSessionActive;
@@ -89,29 +90,59 @@
 #pragma mark Properties
 
 /** Override for the audio session category selection.
- * If set to something other than 0, the "allowIpod" and "honorSilentSwitch"
- * settings will be ignored, and the specified audio session category will be
- * used instead. <br>
+ * If set to something other than 0, the "allowIpod", "useHardwareIfAvailable",
+ * and "honorSilentSwitch" settings will be ignored, and the specified audio session
+ * category will be used instead. <br>
  *
  * See the kAudioSessionProperty_AudioCategory property in the Apple developer
- * documentation for more info.
+ * documentation for more info. <br>
+ *
+ * Default value: 0
  */
 @property(readwrite,assign) UInt32 overrideAudioSessionCategory;
 
-/** If true, allow ipod music to continue playing (default YES) (NOT SUPPORTED ON THE
- * SIMULATOR).
- * Note: If this is enabled, and another app is playing music when the audio session
- * becomes active (application start, or after being backgrounded), music track
- * playback will use the SOFTWARE codecs, NOT hardware.
+/** If YES, allow ipod music to continue playing (NOT SUPPORTED ON THE SIMULATOR).
+ * Note: If this is enabled, and another app is playing music, background audio
+ * playback will use the SOFTWARE codecs, NOT hardware. <br>
+ *
+ * If allowIpod = NO, the application will ALWAYS use hardware decoding. <br>
+ *
+ * @see useHardwareIfAvailable
+ *
+ * Default value: YES
  */
 @property(readwrite,assign) bool allowIpod;
 
+/** Determines what to do if no other application is playing audio and allowIpod = YES
+ * (NOT SUPPORTED ON THE SIMULATOR). <br>
+ *
+ * If NO, the application will ALWAYS use software decoding.  The advantage to this is that
+ * the user can background your application and then start audio playing from another
+ * application.  If useHardwareIfAvailable = YES, the user won't be able to do this. <br>
+ *
+ * If this is set to YES, the application will use hardware decoding if no other application
+ * is currently playing audio. However, no other application will be able to start playing
+ * audio if it wasn't playing already. <br>
+ *
+ * Note: This switch has no effect if allowIpod = NO. <br>
+ *
+ * @see allowIpod
+ *
+ * Default value: YES
+ */
+@property(readwrite,assign) bool useHardwareIfAvailable;
+
 /** If true, mute when backgrounded, screen locked, or the ringer switch is
- * turned off (default YES) (NOT SUPPORTED ON THE SIMULATOR).
+ * turned off (NOT SUPPORTED ON THE SIMULATOR). <br>
+ *
+ * Default value: YES
  */
 @property(readwrite,assign) bool honorSilentSwitch;
 
-/** If true, automatically handle interruptions (default YES) */
+/** If true, automatically handle interruptions. <br>
+ *
+ * Default value: YES
+ */
 @property(readwrite,assign) bool handleInterruptions;
 
 /** If true, another application (usually iPod) is playing music. */

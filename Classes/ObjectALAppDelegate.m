@@ -63,12 +63,24 @@
 }
 
 
-- (void)applicationWillResignActive:(UIApplication *)application {
+- (void)applicationWillResignActive:(UIApplication *)application
+{
 	[[CCDirector sharedDirector] pause];
 }
 
-- (void)applicationDidBecomeActive:(UIApplication *)application {
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
 	[[CCDirector sharedDirector] resume];
+}
+
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
+	[[CCDirector sharedDirector] stopAnimation];
+}
+
+- (void)applicationWillEnterForeground:(UIApplication *)application
+{
+	[[CCDirector sharedDirector] startAnimation];
 }
 
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {

@@ -147,6 +147,16 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 	[IphoneAudioSupport sharedInstance].allowIpod = value;
 }
 
+- (bool) useHardwareIfAvailable
+{
+	return [IphoneAudioSupport sharedInstance].useHardwareIfAvailable;
+}
+
+- (void) setUseHardwareIfAvailable:(bool) value
+{
+	[IphoneAudioSupport sharedInstance].useHardwareIfAvailable = value;
+}
+
 - (bool) bgPaused
 {
 	return [BackgroundAudio sharedInstance].paused;

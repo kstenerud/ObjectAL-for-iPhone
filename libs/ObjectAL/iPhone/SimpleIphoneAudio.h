@@ -61,8 +61,43 @@
 
 #pragma mark Properties
 
-/** If true, allow ipod music to continue playing. */
+/** If YES, allow ipod music to continue playing (NOT SUPPORTED ON THE SIMULATOR).
+ * Note: If this is enabled, and another app is playing music, background audio
+ * playback will use the SOFTWARE codecs, NOT hardware. <br>
+ *
+ * If allowIpod = NO, the application will ALWAYS use hardware decoding. <br>
+ *
+ * @see useHardwareIfAvailable
+ *
+ * Default value: YES
+ */
 @property(readwrite,assign) bool allowIpod;
+
+/** Determines what to do if no other application is playing audio and allowIpod = YES
+ * (NOT SUPPORTED ON THE SIMULATOR). <br>
+ *
+ * If NO, the application will ALWAYS use software decoding.  The advantage to this is that
+ * the user can background your application and then start audio playing from another
+ * application.  If useHardwareIfAvailable = YES, the user won't be able to do this. <br>
+ *
+ * If this is set to YES, the application will use hardware decoding if no other application
+ * is currently playing audio. However, no other application will be able to start playing
+ * audio if it wasn't playing already. <br>
+ *
+ * Note: This switch has no effect if allowIpod = NO. <br>
+ *
+ * @see allowIpod
+ *
+ * Default value: YES
+ */
+@property(readwrite,assign) bool useHardwareIfAvailable;
+
+/** If true, mute when backgrounded, screen locked, or the ringer switch is
+ * turned off (NOT SUPPORTED ON THE SIMULATOR). <br>
+ *
+ * Default value: YES
+ */
+@property(readwrite,assign) bool honorSilentSwitch;
 
 /** Pauses BG music playback */
 @property(readwrite,assign) bool bgPaused;
@@ -84,11 +119,6 @@
 
 /** Master effects gain/volume (0.0 - 1.0) */
 @property(readwrite,assign) float effectsVolume;
-
-/** If true, mute BG music when the silent switch is turned on.
- * (effects are always muted when silent switch is on)
- */
-@property(readwrite,assign) bool honorSilentSwitch;
 
 /** Pauses everything */
 @property(readwrite,assign) bool paused;

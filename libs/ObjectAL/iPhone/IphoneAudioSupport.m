@@ -30,6 +30,9 @@
 #import "BackgroundAudio.h"
 
 
+#define kMaxSessionActivationRetries 20
+
+
 #pragma mark Asynchronous Operations
 
 /**
@@ -218,6 +221,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(IphoneAudioSupport);
 
 		handleInterruptions = YES;
 		allowIpod = YES;
+		useHardwareIfAvailable = YES;
 		honorSilentSwitch = YES;
 		[self updateAudioMode];
 		self.audioSessionActive = YES;
@@ -267,6 +271,23 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(IphoneAudioSupport);
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		allowIpod = value;
+		[self updateAudioMode];
+	}
+}
+
+- (bool) useHardwareIfAvailable
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		return useHardwareIfAvailable;
+	}
+}
+
+- (void) setUseHardwareIfAvailable:(bool) value
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		useHardwareIfAvailable = value;
 		[self updateAudioMode];
 	}
 }
@@ -577,7 +598,11 @@ done:
 		}
 		else
 		{
-			if(allowIpod && self.ipodPlaying)
+			// MediaPlayback also allows audio to continue playing when backgrounded.
+			[self setIntProperty:kAudioSessionProperty_AudioCategory
+						   value:kAudioSessionCategory_MediaPlayback];
+
+			if(allowIpod && (self.ipodPlaying || !useHardwareIfAvailable))
 			{
 				// Mixing uses software codec.
 				[self setIntProperty:kAudioSessionProperty_OverrideCategoryMixWithOthers
@@ -589,10 +614,6 @@ done:
 				[self setIntProperty:kAudioSessionProperty_OverrideCategoryMixWithOthers
 							   value:FALSE];
 			}
-
-			// MediaPlayback also allows audio to continue playing when backgrounded.
-			[self setIntProperty:kAudioSessionProperty_AudioCategory
-						   value:kAudioSessionCategory_MediaPlayback];
 		}
 	}
 	
@@ -607,6 +628,28 @@ done:
 	}
 }
 
+/** Work around for iOS4 bug that causes the session to not activate on the first few attempts
+ * in certain situations.
+ *
+ * @param currentRetryCount The retry attempt number.  It will give up after too many attempts.
+ */ 
+- (void) activateAudioSession:(int) currentRetryCount
+{
+	if(currentRetryCount >= kMaxSessionActivationRetries)
+	{
+		LOG_ERROR(@"Could not activate session after %d retries.", currentRetryCount);
+		return;
+	}
+	
+	OSStatus result = AudioSessionSetActive(YES);
+	REPORT_AUDIOSESSION_CALL(result, @"Error activating audio session");
+	if(noErr != result)
+	{
+		[NSThread sleepForTimeInterval:0.2];
+		[self activateAudioSession:currentRetryCount + 1];
+	}
+}
+
 - (void) setAudioSessionActive:(bool) value
 {
 	OPTIONALLY_SYNCHRONIZED(self)
@@ -618,14 +661,13 @@ done:
 			if(audioSessionActive)
 			{
 				[self updateAudioMode];
-				REPORT_AUDIOSESSION_CALL(AudioSessionSetActive(YES), @"Error activating audio session");
+				[self activateAudioSession:0];
 				self.suspended = NO;
 			}
 			else
 			{
-				self.suspended = YES;
-
 				REPORT_AUDIOSESSION_CALL(AudioSessionSetActive(NO), @"Error deactivating audio session");
+				self.suspended = YES;
 			}
 		}
 	}

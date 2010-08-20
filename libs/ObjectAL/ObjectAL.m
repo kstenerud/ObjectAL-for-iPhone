@@ -154,6 +154,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(ObjectAL);
 			if(suspended)
 			{
 				[ALWrapper makeContextCurrent:nil];
+				/*  alcSuspendContext appears to be a no-op
 				for(ALDevice* device in devices)
 				{
 					for(ALContext* context in device.contexts)
@@ -165,15 +166,18 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(ObjectAL);
 						}
 					}
 				}
+				 */
 			}
 			else
 			{
+				/*
 				for(ALContext* context in suspendedContexts)
 				{
 					[ALWrapper makeContextCurrent:context.context];
 					[context process];
 				}
 				[suspendedContexts removeAllObjects];
+				 */
 				if(nil != currentContext)
 				{
 					[ALWrapper makeContextCurrent:currentContext.context];
