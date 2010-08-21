@@ -1,6 +1,10 @@
 ObjectAL for iPhone
 -------------------
 
+A free, open source audio library which provides a simpler, Objective-C interface to OpenAL and
+AVAudioPlayer for iPhone developers.
+
+
 
 Homepage: http://kstenerud.github.com/ObjectAL-for-iPhone
 
