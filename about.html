@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<HTML xmlns="http://www.w3.org/1999/xhtml">
+
+<HEAD>
+	<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+
+
+	<TITLE>ObjectAL for iPhone</TITLE>
+
+	<LINK href="style.css" type="text/css" rel="stylesheet">
+</HEAD>
+
+<BODY id="about">
+<DIV id="wrapper">
+	<DIV id="main">
+		<DIV id="middle">
+			<DIV id="nav">
+				<UL>
+						<LI id="homenav"><A href="index.html">HOME</A></LI>
+						<LI id="aboutnav"><A href="about.html">ABOUT</A></LI>
+						<LI id="downloadsnav"><A href="downloads.html">DOWNLOAD</A></LI>
+						<LI id="documentationnav"><A href="documentation/index.html">DOCUMENTATION</A></LI>
+						<LI id="githubnav"><A href="http://github.com/kstenerud/ObjectAL-for-iPhone">GITHUB HOME</A></LI>
+				</UL>
+			</DIV>
+		</DIV>
+		<DIV id="content">
+
+<!-- Begin content -->
+
+
+<P class="title">
+	<H1>ObjectAL in a Nutshell</H1>
+</P>
+<BR>
+<H3>OVERVIEW</H3>
+<P>
+ObjectAL for iPhone is designed to be a simpler, more intuitive interface to
+OpenAL and AVAudioPlayer. There are four main parts to ObjectAL for iPhone:
+</P>
+
+<IMG src="ObjectAL-Overview1.png" alt="SimpleIphoneAudio, ObjectAL, IphoneAudioSuport, BackgroundAudio" style="margin: 10px 0 0 0;">
+
+
+<UL>
+	<LI><SPAN class="identifier">ObjectAL</SPAN> gives you full access to the
+		OpenAL system without the hassle of the C API. All OpenAL operations can
+		be performed using first class objects and properties, without needing
+		to muddle around with arrays of data, maintain IDs, or pass around
+		pointers to basic types.</LI>
+
+	<LI><SPAN class="identifier">BackgroundAudio</SPAN> provides a simpler
+		interface to AVAudioPlayer, allowing you to play, stop, pause, fade,
+		and mute background music tracks.</LI>
+
+	<LI><SPAN class="identifier">IphoneAudioSupport</SPAN> provides support
+		functionality for audio in iPhone, including automatic interrupt
+		handling and audio data loading routines. As well, it provides an easy
+		way to configure how the audio session will handle iPod-style music
+		playing and the silent switch.</LI>
+
+	<LI><SPAN class="identifier">SimpleIphoneAudio</SPAN> layers on top of the
+		other three, providing an even simpler interface for playing background
+		 music and sound effects.</LI>
+</UL>
+
+
+
+<BR><BR>
+<H3>OBJECTAL</H3>
+<P>
+ObjectAL follows the same basic principles as the
+<A href="http://connect.creativelabs.com/openal">OpenAL API</A>:
+</P>
+
+<IMG src="ObjectAL-Overview2.png" alt="ObjectAL Components" style="margin: 10px 0 0 0;">
+
+
+<UL>
+	<LI><SPAN class="identifier">ALDevice</SPAN> represents a physical audio
+		device.<BR>
+		Each device can have one or more contexts (ALContext) created on it, and
+		can have multiple buffers (ALBuffer) associated with it.</LI>
+
+	<LI><SPAN class="identifier">ALContext</SPAN> controls the overall sound
+		environment, such as distance model, doppler effect, and speed of sound.<BR>
+		Each context has one listener (ALListener), and can have multiple
+		sources (ALSource) opened on it (up to a maximum of 32 overall on
+		iPhone).</LI>
+
+	<LI><SPAN class="identifier">ALListener</SPAN> represents the listener of
+		sounds originating on its context (one listener per context). It has
+		position, orientation, and velocity.</LI>
+
+	<LI><SPAN class="identifier">ALSource</SPAN> is a sound emitting source that
+		plays sound data from an ALBuffer. It has position, direction, velocity,
+		as well as other properties which determine how the sound is emitted.</LI>
+
+	<LI><SPAN class="identifier">ALBuffer</SPAN> is simply a container for sound
+		data. Only linear PCM is supported directly, but IphoneAudioSupport load
+		methods, and SimpleIphoneAudio effect preload and play methods, will
+		automatically convert any formats that don't require hardware decoding
+		(though conversion results in a longer loading time).</LI>
+
+	<LI><SPAN class="identifier">ChannelSource</SPAN> allows you to reserve a
+		certain number of sources for special purposes.</LI>
+
+	<LI><SPAN class="identifier">ObjectAL</SPAN> provides some overall controls
+		that affect everything, and manages the current context.</LI>
+</UL>
+
+
+<!-- End content -->
+
+</DIV>
+</DIV></DIV>
+<DIV id="footer">
+	<DIV id="footer_nav">
+		<UL>
+			<LI>ObjectAL for iPhone</LI>						   
+		</UL>
+		<P>By Karl Stenerud</P>
+		<P>Released under <A href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache v2.0 license</A></P>
+	</DIV>
+</DIV>
+</BODY></HTML>

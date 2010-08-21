@@ -1,76 +1,85 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<HTML xmlns="http://www.w3.org/1999/xhtml">
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<HEAD>
+	<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<META name="description" content="A free, open source audio library which provides a simpler, Objective-C interface to OpenAL and AVAudioPlayer for iPhone developers">
+	<META name="keywords" content="ObjectAL, iPhone, iPod, iPad, OpenAL, AVAudioPlayer, audio, sound, library, api, development, xcode, SimpleIphoneAudio, IphoneAudioSupport, BackgroundAudio">
 
-	<title>kstenerud/ObjectAL-for-iPhone @ GitHub</title>
-	
-	<style type="text/css">
-		body {
-  		margin-top: 1.0em;
-  		background-color: #0b4aaa;
-		  font-family: "Helvetica,Arial,FreeSans";
-  		color: #ffffff;
-    }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-		h1 { font-size: 3.8em; color: #f4b555; margin-bottom: 3px; }
-		h1 .small { font-size: 0.4em; }
-		h1 a { text-decoration: none }
-		h2 { font-size: 1.5em; color: #f4b555; }
-    h3 { text-align: center; color: #f4b555; }
-    a { color: #f4b555; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-		pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
-	</style>
-	
-</head>
+	<TITLE>ObjectAL for iPhone</TITLE>
 
-<body>
-  <a href="http://github.com/kstenerud/ObjectAL-for-iPhone"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+	<LINK href="style.css" type="text/css" rel="stylesheet">
+</HEAD>
 
-  <div id="container">
+<BODY id="home">
+<DIV id="wrapper">
+	<DIV id="main">
+		<DIV id="middle">
+			<DIV id="nav">
+				<UL>
+						<LI id="homenav"><A href="index.html">HOME</A></LI>
+						<LI id="aboutnav"><A href="about.html">ABOUT</A></LI>
+						<LI id="downloadsnav"><A href="downloads.html">DOWNLOAD</A></LI>
+						<LI id="documentationnav"><A href="documentation/index.html">DOCUMENTATION</A></LI>
+						<LI id="githubnav"><A href="http://github.com/kstenerud/ObjectAL-for-iPhone">GITHUB HOME</A></LI>
+				</UL>
+			</DIV>
+		</DIV>
+		<DIV id="content">
 
-    <div class="download">
-      <a href="http://github.com/kstenerud/ObjectAL-for-iPhone/zipball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
-      <a href="http://github.com/kstenerud/ObjectAL-for-iPhone/tarball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
-    </div>
+<!-- Begin content -->
 
-    <h1><a href="http://github.com/kstenerud/ObjectAL-for-iPhone">ObjectAL-for-iPhone</a>
-      <span class="small">by <a href="http://github.com/kstenerud">kstenerud</a></span></h1>
 
-    <div class="description">
-      An open source iPhone audio / sound engine which provides a cleaner and simpler object-oriented interface to OpenAL and AVAudioPlayer.
-    </div>
+<P class="title">
+	<H1> ObjectAL for iPhone</H1>
+</P>
+<P class="intro">
+A free, open source audio library which provides a simpler, Objective-C
+interface to OpenAL and AVAudioPlayer for iPhone developers.
+</P>
 
-    
 
-    <h2>Download</h2>
-    <p>
-      You can download this project in either
-      <a href="http://github.com/kstenerud/ObjectAL-for-iPhone/zipball/master">zip</a> or
-      <a href="http://github.com/kstenerud/ObjectAL-for-iPhone/tarball/master">tar</a> formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/kstenerud/ObjectAL-for-iPhone</pre>
-    </p>
+<H2><SPAN style="color: #93914D;">2010-09-20</SPAN>&nbsp;&nbsp;ObjectAL 1.1 Released</H2>
+<UL>
+	<LI>Added realtime fading to ObjectAL and BackgroundAudio</LI>
 
-    <div class="footer">
-      get the source code on GitHub : <a href="http://github.com/kstenerud/ObjectAL-for-iPhone">kstenerud/ObjectAL-for-iPhone</a>
-    </div>
+	<LI>Moved "allowIpod", "honorSilentSwitch", and "ipodPlaying" from
+		BackgroundAudio to IphoneAudioSupport</LI>
 
-  </div>
+	<LI>Added new boolean switch "useHardwareIfAvailable" to IphoneAudioSupport</LI>
 
-  
-</body>
-</html>
+	<LI>IphoneAudioSupport now accepts a session category override for traditional
+		kAudioSessionProperty_AudioCategory style category setting. </LI>
+
+	<LI>Added compile-time configuration file ObjectALConfig.h</LI>
+
+	<LI>All library calls are now synchronized (can be disabled in ObjectALConfig.h)</LI>
+
+	<LI>Improved audio session handling</LI>
+
+	<LI>Compatible with CLANG-LLVM 1.5 compiler</LI>
+
+	<LI>Simulator bug workaround now disabled by default</LI>
+
+	<LI>Various bug fixes</LI>
+</UL>
+
+<H2 class="following"><SPAN style="color: #93914D;">2010-06-12</SPAN>&nbsp;&nbsp;ObjectAL 1.0 Released</H2>
+<UL>
+	<LI>First GitHib release of ObjectAL.</LI>
+</UL>
+
+<!-- End content -->
+
+</DIV>
+</DIV></DIV>
+<DIV id="footer">
+	<DIV id="footer_nav">
+		<UL>
+			<LI>ObjectAL for iPhone</LI>						   
+		</UL>
+		<P>By Karl Stenerud</P>
+		<P>Released under <A href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache v2.0 license</A></P>
+	</DIV>
+</DIV>
+</BODY></HTML>
