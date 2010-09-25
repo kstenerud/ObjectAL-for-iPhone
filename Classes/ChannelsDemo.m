@@ -6,13 +6,12 @@
 //
 
 #import "ChannelsDemo.h"
+#import "MainScene.h"
 #import "CCLayer+Scene.h"
 #import "Slider.h"
 #import "ImageButton.h"
 #import "ImageAndLabelButton.h"
-#import "IphoneAudioSupport.h"
-#import "MainScene.h"
-#import "BackgroundAudio.h"
+#import "ObjectAL.h"
 
 
 #pragma mark Private Methods
@@ -39,7 +38,7 @@
 		// Initialize ObjectAL
 		device = [[ALDevice deviceWithDeviceSpecifier:nil] retain];
 		context = [[ALContext contextOnDevice:device attributes:nil] retain];
-		[ObjectAL sharedInstance].currentContext = context;
+		[ObjectALManager sharedInstance].currentContext = context;
 		
 		[IphoneAudioSupport sharedInstance].handleInterruptions = YES;
 		
@@ -49,6 +48,8 @@
 		eightSourceChannel = [[ChannelSource channelWithSources:8] retain];
 
 		buffer = [[[IphoneAudioSupport sharedInstance] bufferFromFile:@"Pew.caf"] retain];
+		
+		backgroundTrack = [[AudioTrack track] retain];
 	}
 	return self;
 }
@@ -66,8 +67,7 @@
 	[context release];
 	[device release];
 
-	// Ditto for BackgroundAudio
-	[[BackgroundAudio sharedInstance] clear];
+	[backgroundTrack release];
 
 	[super dealloc];
 }
@@ -184,7 +184,7 @@
 - (void) onEnterTransitionDidFinish
 {
 	// Loop forever.
-	[[BackgroundAudio sharedInstance] playFile:@"PlanetKiller.mp3" loops:-1];
+	[backgroundTrack playFile:@"PlanetKiller.mp3" loops:-1];
 }
 
 - (void) onExitPressed
@@ -195,7 +195,7 @@
 
 - (void) onBgVolume:(Slider*) slider
 {
-	[BackgroundAudio sharedInstance].gain = slider.value;
+	backgroundTrack.gain = slider.value;
 }
 
 - (void) onEffectsVolume:(Slider*) slider

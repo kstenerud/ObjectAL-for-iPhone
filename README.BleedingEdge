@@ -1,0 +1,16 @@
+The next release will be a major release (2.0).
+
+
+Major changes (incompatible with earlier versions):
+===================================================
+
+- BackgroundAudio has been replaced with AudioTrack and AudioTracks.
+- ObjectAL has been renamed to ObjectALManager.
+- Replaced duration fade methods with audio actions (OALAction).
+
+
+Minor changes:
+==============
+
+- ObjectAL can now be compiled as Objective-C++ if you want.
+- Fixed crash issue when the first attempt to start the audio session fails.

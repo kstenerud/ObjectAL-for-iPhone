@@ -1,10 +1,10 @@
 //
-//  BackgroundAudio.h
+//  AudioTrack.h
 //  ObjectAL
 //
-//  Created by Karl Stenerud on 19/12/09.
+//  Created by Karl Stenerud on 10-08-21.
 //
-// Copyright 2009 Karl Stenerud
+// Copyright 2010 Karl Stenerud
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,22 +24,15 @@
 // Attribution is not required, but appreciated :)
 //
 
-#import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
-#import "SynthesizeSingleton.h"
 
-
-#pragma mark BackgroundAudio
 
 /**
- * Singleton object for playing background audio.
- * Audio will be streamed realtime, and will be decoded in hardware. <br>
- *
- * <strong>Note:</strong> only <strong>ONE</strong> file may be streamed or
- * preloaded at a time (the hardware only supports one file at a time).
- * If you play or preload another file, the one currently playing will stop.
+ * Plays an audio track via AVAudioPlayer.
+ * Unlike AVAudioPlayer, however, it can be re-used to play another file.
+ * Interruptions can be handled by IphoneAudioSupport (enabled by default).
  */
-@interface BackgroundAudio : NSObject <AVAudioPlayerDelegate>
+@interface AudioTrack : NSObject <AVAudioPlayerDelegate>
 {
 	bool meteringEnabled;
 	bool suspended;
@@ -50,19 +43,19 @@
 	float gain;
 	NSInteger numberOfLoops;
 	id<AVAudioPlayerDelegate> delegate; // Weak reference
-
+	
 	/** When the simulator is running (and the playback fix is in use),
 	 * player will be copied to here, and then player set to nil.
 	 * This prevents other code from inadvertently raising the volume
 	 * and starting playback.
 	 */
 	AVAudioPlayer* simulatorPlayerRef;
-
+	
 	/** Operation queue for running asynchronous operations.
 	 * Note: Only one asynchronous operation is allowed at a time.
 	 */
 	NSOperationQueue* operationQueue;
-
+	
 	/** If true, the audio player is currently playing.
 	 * We need to maintain our own value because AVAudioPlayer will
 	 * sometimes say it's not playing when it actually is.
@@ -71,10 +64,10 @@
 	
 	/** Target to inform when the current fade operation completes. */
 	id fadeCompleteTarget;
-
+	
 	/** Selector to call when the current fade operation completes. */
 	SEL fadeCompleteSelector;
-
+	
 	/** The gain we started this fade from. */
 	float fadeStartingGain;
 	
@@ -145,12 +138,11 @@
 
 #pragma mark Object Management
 
-/** Singleton implementation providing "sharedInstance" and "purgeSharedInstance" methods.
+/** Create a new audio track.
  *
- * <b>- (BackgroundAudio*) sharedInstance</b>: Get the shared singleton instance. <br>
- * <b>- (void) purgeSharedInstance</b>: Purge (deallocate) the shared instance.
+ * @return A new audio track.
  */
-SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(BackgroundAudio);
++ (id) track;
 
 
 #pragma mark Playback

@@ -6,12 +6,11 @@
 //
 
 #import "FadeDemo.h"
+#import "MainScene.h"
 #import "CCLayer+Scene.h"
 #import "ImageButton.h"
 #import "ImageAndLabelButton.h"
-#import "BackgroundAudio.h"
-#import "SimpleIphoneAudio.h"
-#import "MainScene.h"
+#import "ObjectAL.h"
 
 #define kSpaceBetweenButtons 50
 
@@ -27,6 +26,9 @@
 {
 	if(nil != (self = [super initWithColor:ccc4(255, 255, 255, 255)]))
 	{
+		// Make sure audio is initialized.
+		[SimpleIphoneAudio sharedInstance];
+
 		[self buildUI];
 	}
 	return self;
@@ -160,21 +162,19 @@
 - (void) onBackgroundPlayStop:(id) sender
 {
 	bgFading.visible = NO;
-	if([BackgroundAudio sharedInstance].playing)
+	if([SimpleIphoneAudio sharedInstance].bgPlaying)
 	{
-		[[BackgroundAudio sharedInstance] stop];
+		[[SimpleIphoneAudio sharedInstance] stopBg];
 	}
 	else
 	{
-		[BackgroundAudio sharedInstance].gain = 1.0;
-		[[BackgroundAudio sharedInstance] playFile:@"ColdFunk.wav" loops:-1];
+		[SimpleIphoneAudio sharedInstance].bgVolume = 1.0;
+		[[SimpleIphoneAudio sharedInstance] playBg:@"ColdFunk.wav" loop:YES];
 	}
 }
 
 - (void) dealloc
 {
-	[[BackgroundAudio sharedInstance] clear];
-
 	// Note: Normally you wouldn't purge SimpleIphoneAudio when leaving a scene.
 	// I'm doing it here to provide a clean slate for the other demos.
 	[SimpleIphoneAudio purgeSharedInstance];
@@ -184,19 +184,25 @@
 
 - (void) onBackgroundFadeOut:(id) sender
 {
-	if([BackgroundAudio sharedInstance].playing)
+	if([SimpleIphoneAudio sharedInstance].bgPlaying)
 	{
 		bgFading.visible = YES;
-		[[BackgroundAudio sharedInstance] fadeTo:0.0 duration:1.0 target:self selector:@selector(onBackgroundFadeComplete:)];
+//		OALAction* action = [OALGainAction actionWithDuration:1.0 endValue:0.0];
+		OALAction* action = [OALGainAction actionWithDuration:1.0 endValue:0.0 function:[OALLogarithmicFunction function]];
+		[action runWithTarget:[SimpleIphoneAudio sharedInstance].backgroundTrack];
+		//[[SimpleIphoneAudio sharedInstance].backgroundTrack fadeTo:0.0 duration:1.0 target:self selector:@selector(onBackgroundFadeComplete:)];
 	}
 }
 
 - (void) onBackgrounFadeIn:(id) sender
 {
-	if([BackgroundAudio sharedInstance].playing)
+	if([SimpleIphoneAudio sharedInstance].bgPlaying)
 	{
 		bgFading.visible = YES;
-		[[BackgroundAudio sharedInstance] fadeTo:1.0 duration:1.0 target:self selector:@selector(onBackgroundFadeComplete:)];
+//		OALAction* action = [OALGainAction actionWithDuration:1.0 endValue:1.0];
+		OALAction* action = [OALGainAction actionWithDuration:1.0 endValue:1.0 function:[OALLogarithmicFunction function]];
+		[action runWithTarget:[SimpleIphoneAudio sharedInstance].backgroundTrack];
+//		[[SimpleIphoneAudio sharedInstance].backgroundTrack fadeTo:1.0 duration:1.0 target:self selector:@selector(onBackgroundFadeComplete:)];
 	}
 }
 
@@ -224,7 +230,9 @@
 	if(nil != source)
 	{
 		oalFading.visible = YES;
-		[source fadeTo:0.0 duration:1.0 target:self selector:@selector(onObjectALFadeComplete:)];
+		OALAction* action = [OALGainAction actionWithDuration:1.0 endValue:0.0];
+		[action runWithTarget:source];
+//		[source fadeTo:0.0 duration:1.0 target:self selector:@selector(onObjectALFadeComplete:)];
 	}
 }
 
@@ -233,7 +241,9 @@
 	if(nil != source)
 	{
 		oalFading.visible = YES;
-		[source fadeTo:1.0 duration:1.0 target:self selector:@selector(onObjectALFadeComplete:)];
+		OALAction* action = [OALGainAction actionWithDuration:1.0 endValue:1.0];
+		[action runWithTarget:source];
+//		[source fadeTo:1.0 duration:1.0 target:self selector:@selector(onObjectALFadeComplete:)];
 	}
 }
 

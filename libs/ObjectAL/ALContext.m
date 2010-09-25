@@ -25,12 +25,10 @@
 //
 
 #import "ALContext.h"
-#import "ObjectALMacros.h"
-#import "ObjectAL.h"
-#import "ALWrapper.h"
-#import "ALDevice.h"
-#import "ALSource.h"
 #import "MutableArray-WeakReferences.h"
+#import "ObjectALMacros.h"
+#import "ALWrapper.h"
+#import "ObjectALManager.h"
 
 
 @implementation ALContext
@@ -121,7 +119,7 @@
 
 		if([attributesIn count] > 0)
 		{
-			attributesList = malloc(sizeof(ALCint) * [attributesIn count]);
+			attributesList = (ALCint*)malloc(sizeof(ALCint) * [attributesIn count]);
 			ALCint* attributePtr = attributesList;
 			for(NSNumber* number in attributesIn)
 			{
@@ -170,9 +168,9 @@
 
 - (void) dealloc
 {
-	if([ObjectAL sharedInstance].currentContext == self)
+	if([ObjectALManager sharedInstance].currentContext == self)
 	{
-		[ObjectAL sharedInstance].currentContext = nil;
+		[ObjectALManager sharedInstance].currentContext = nil;
 	}
 	[device notifyContextDeallocating:self];
 	[sources release];

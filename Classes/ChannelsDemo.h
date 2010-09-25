@@ -25,6 +25,7 @@
  */
 @interface ChannelsDemo : CCColorLayer
 {
+	AudioTrack* backgroundTrack;
 	ALDevice* device;
 	ALContext* context;
 	ChannelSource* oneSourceChannel;

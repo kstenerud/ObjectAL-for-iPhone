@@ -6,6 +6,7 @@
 //
 
 #import "ImageAndLabelButton.h"
+#import "CCNode+ContentSize.h"
 
 
 #pragma mark ImageAndLabelButton
@@ -40,7 +41,7 @@
 	CCNode* node = [CCNode node];
 	[node addChild:sprite];
 	[node addChild:label];
-	node.contentSize = CGSizeMake(label.position.x + label.contentSize.width*0.5, maxHeight);
+	[node setContentSizeFromChildren];
 	
 	return [super initWithTouchablePortion:node target:targetIn selector:selectorIn];
 }

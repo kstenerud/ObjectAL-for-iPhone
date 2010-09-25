@@ -1,10 +1,10 @@
 //
-//  BackgroundAudio.m
+//  AudioTrack.m
 //  ObjectAL
 //
-//  Created by Karl Stenerud on 19/12/09.
+//  Created by Karl Stenerud on 10-08-21.
 //
-// Copyright 2009 Karl Stenerud
+// Copyright 2010 Karl Stenerud
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,7 +24,8 @@
 // Attribution is not required, but appreciated :)
 //
 
-#import "BackgroundAudio.h"
+#import "AudioTrack.h"
+#import "AudioTracks.h"
 #import "mach_timing.h"
 #import <AudioToolbox/AudioToolbox.h>
 #import "ObjectALMacros.h"
@@ -36,8 +37,10 @@
 /**
  * (INTERNAL USE) NSOperation for running an audio operation asynchronously.
  */
-@interface AsyncAudioOperation: NSOperation
+@interface AsyncAudioTrackOperation: NSOperation
 {
+	/** The audio track object to perform the operation on */
+	AudioTrack* audioTrack;
 	/** The URL of the sound file to play */
 	NSURL* url;
 	/** The target to inform when the operation completes */
@@ -48,33 +51,36 @@
 
 /** (INTERNAL USE) Create a new Asynchronous Operation.
  *
+ * @param track the audio track to perform the operation on.
  * @param url the URL containing the sound file.
  * @param target the target to inform when the operation completes.
  * @param selector the selector to call when the operation completes.
  */ 
-+ (id) operationWithUrl:(NSURL*) url target:(id) target selector:(SEL) selector;
++ (id) operationWithTrack:(AudioTrack*) track url:(NSURL*) url target:(id) target selector:(SEL) selector;
 
 /** (INTERNAL USE) Initialize an Asynchronous Operation.
  *
+ * @param track the audio track to perform the operation on.
  * @param url the URL containing the sound file.
  * @param target the target to inform when the operation completes.
  * @param selector the selector to call when the operation completes.
  */ 
-- (id) initWithUrl:(NSURL*) url target:(id) target selector:(SEL) selector;
+- (id) initWithTrack:(AudioTrack*) track url:(NSURL*) url target:(id) target selector:(SEL) selector;
 
 @end
 
-@implementation AsyncAudioOperation
+@implementation AsyncAudioTrackOperation
 
-+ (id) operationWithUrl:(NSURL*) url target:(id) target selector:(SEL) selector
++ (id) operationWithTrack:(AudioTrack*) track url:(NSURL*) url target:(id) target selector:(SEL) selector
 {
-	return [[[self alloc] initWithUrl:url target:target selector:selector] autorelease];
+	return [[[self alloc] initWithTrack:track url:url target:target selector:selector] autorelease];
 }
 
-- (id) initWithUrl:(NSURL*) urlIn target:(id) targetIn selector:(SEL) selectorIn
+- (id) initWithTrack:(AudioTrack*) track url:(NSURL*) urlIn target:(id) targetIn selector:(SEL) selectorIn
 {
 	if(nil != (self = [super init]))
 	{
+		audioTrack = [track retain];
 		url = [urlIn retain];
 		target = targetIn;
 		selector = selectorIn;
@@ -84,6 +90,7 @@
 
 - (void) dealloc
 {
+	[audioTrack release];
 	[url release];
 	
 	[super dealloc];
@@ -95,7 +102,7 @@
 /**
  * (INTERNAL USE) NSOperation for playing an audio file asynchronously.
  */
-@interface AsyncPlayOperation : AsyncAudioOperation
+@interface AsyncAudioTrackPlayOperation : AsyncAudioTrackOperation
 {
 	/** The number of times to loop during playback */
 	NSInteger loops;
@@ -104,52 +111,54 @@
 /**
  * (INTERNAL USE) Create an asynchronous play operation.
  *
+ * @param track the audio track to perform the operation on.
  * @param url The URL of the file to play.
  * @param loops The number of times to loop playback (-1 = forever).
  * @param target The target to inform when playback finishes.
  * @param selector the selector to call when playback finishes.
  * @return a new operation.
  */
-+ (id) operationWithUrl:(NSURL*) url loops:(NSInteger) loops target:(id) target selector:(SEL) selector;
++ (id) operationWithTrack:(AudioTrack*) track url:(NSURL*) url loops:(NSInteger) loops target:(id) target selector:(SEL) selector;
 
 /**
  * (INTERNAL USE) Initialize an asynchronous play operation.
  *
+ * @param track the audio track to perform the operation on.
  * @param url The URL of the file to play.
  * @param loops The number of times to loop playback (-1 = forever).
  * @param target The target to inform when playback finishes.
  * @param selector the selector to call when playback finishes.
  * @return The initialized operation.
  */
-- (id) initWithUrl:(NSURL*) url loops:(NSInteger) loops target:(id) target selector:(SEL) selector;
+- (id) initWithTrack:(AudioTrack*) track url:(NSURL*) url loops:(NSInteger) loops target:(id) target selector:(SEL) selector;
 
 @end
 
 
-@implementation AsyncPlayOperation
+@implementation AsyncAudioTrackPlayOperation
 
-+ (id) operationWithUrl:(NSURL*) url loops:(NSInteger) loops target:(id) target selector:(SEL) selector
++ (id) operationWithTrack:(AudioTrack*) track url:(NSURL*) url loops:(NSInteger) loops target:(id) target selector:(SEL) selector
 {
-	return [[[self alloc] initWithUrl:url loops:loops target:target selector:selector] autorelease];
+	return [[[self alloc] initWithTrack:track url:url loops:loops target:target selector:selector] autorelease];
 }
 
-- (id) initWithUrl:(NSURL*) urlIn loops:(NSInteger) loopsIn target:(id) targetIn selector:(SEL) selectorIn
+- (id) initWithTrack:(AudioTrack*) track url:(NSURL*) urlIn loops:(NSInteger) loopsIn target:(id) targetIn selector:(SEL) selectorIn
 {
-	if(nil != (self = [super initWithUrl:urlIn target:targetIn selector:selectorIn]))
+	if(nil != (self = [super initWithTrack:track url:urlIn target:targetIn selector:selectorIn]))
 	{
 		loops = loopsIn;
 	}
 	return self;
 }
 
-- (id) initWithUrl:(NSURL*) urlIn target:(id) targetIn selector:(SEL) selectorIn
+- (id) initWithTrack:(AudioTrack*) track url:(NSURL*) urlIn target:(id) targetIn selector:(SEL) selectorIn
 {
-	return [self initWithUrl:urlIn loops:0 target:targetIn selector:selectorIn];
+	return [self initWithTrack:track url:urlIn loops:0 target:targetIn selector:selectorIn];
 }
 
 - (void)main
 {
-	[[BackgroundAudio sharedInstance] playUrl:url loops:loops];
+	[audioTrack playUrl:url loops:loops];
 	[target performSelectorOnMainThread:selector withObject:nil waitUntilDone:NO];
 }
 
@@ -159,18 +168,18 @@
 /**
  * (INTERNAL USE) NSOperation for preloading an audio file asynchronously.
  */
-@interface AsyncPreloadOperation : AsyncAudioOperation
+@interface AsyncAudioTrackPreloadOperation : AsyncAudioTrackOperation
 {
 }
 
 @end
 
 
-@implementation AsyncPreloadOperation
+@implementation AsyncAudioTrackPreloadOperation
 
 - (void)main
 {
-	[[BackgroundAudio sharedInstance] preloadUrl:url];
+	[audioTrack preloadUrl:url];
 	[target performSelectorOnMainThread:selector withObject:nil waitUntilDone:NO];
 }
 
@@ -180,9 +189,9 @@
 #pragma mark Private Methods
 
 /**
- * (INTERNAL USE) Private interface to BackgroundAudio.
+ * (INTERNAL USE) Private interface to AudioTrack.
  */
-@interface BackgroundAudio (Private)
+@interface AudioTrack (Private)
 
 #if TARGET_IPHONE_SIMULATOR && OBJECTAL_CFG_SIMULATOR_BUG_WORKAROUND
 
@@ -210,31 +219,38 @@
 @end
 
 #pragma mark -
-#pragma mark BackgroundAudio
+#pragma mark AudioTrack
 
-@implementation BackgroundAudio
+@implementation AudioTrack
 
 #pragma mark Object Management
 
-SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
++ (id) track
+{
+	return [[[self alloc] init] autorelease];
+}
 
 - (id) init
 {
 	if(nil != (self = [super init]))
 	{
-		// Make sure IphoneAudioSupport is initialized.
-		[IphoneAudioSupport sharedInstance];
+		// Make sure AudioTracks is initialized.
+		[AudioTracks sharedInstance];
 		
 		operationQueue = [[NSOperationQueue alloc] init];
 		operationQueue.maxConcurrentOperationCount = 1;
 		gain = 1.0;
 		numberOfLoops = 0;
+		
+		[[AudioTracks sharedInstance] notifyTrackInitializing:self];
 	}
 	return self;
 }
 
 - (void) dealloc
 {
+	[[AudioTracks sharedInstance] notifyTrackDeallocating:self];
+
 	[operationQueue release];
 	[currentlyLoadedUrl release];
 	[player release];
@@ -398,7 +414,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 		LOG_ERROR(@"Cannot open NULL file / url");
 		return NO;
 	}
-
+	
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		if(suspended)
@@ -408,7 +424,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 		}
 		
 		[self stopFade];
-
+		
 		// Only load if it's not the same URL as last time.
 		if(![url isEqual:currentlyLoadedUrl])
 		{
@@ -448,7 +464,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		[operationQueue addOperation:[AsyncPreloadOperation operationWithUrl:url target:target selector:selector]];
+		[operationQueue addOperation:[AsyncAudioTrackPreloadOperation operationWithTrack:self url:url target:target selector:selector]];
 		return NO;
 	}
 }
@@ -493,7 +509,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 
 - (void) playUrlAsync:(NSURL*) url loops:(NSInteger) loops target:(id) target selector:(SEL) selector
 {
-	[operationQueue addOperation:[AsyncPlayOperation operationWithUrl:url loops:loops target:target selector:selector]];
+	[operationQueue addOperation:[AsyncAudioTrackPlayOperation operationWithTrack:self url:url loops:loops target:target selector:selector]];
 }
 
 - (void) playFileAsync:(NSString*) path target:(id) target selector:(SEL) selector
@@ -550,7 +566,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 			float elapsedTime = mach_absolute_difference_seconds(mach_absolute_time(), fadeStartTime);
 			
 			float newGain = elapsedTime >= fadeDuration ? fadeEndingGain : fadeStartingGain + elapsedTime * fadeDeltaMultiplier;
-
+			
 			self.gain = newGain;
 			
 			if(newGain == fadeEndingGain)
@@ -572,7 +588,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 		fadeCompleteSelector = selector;
 		fadeStartingGain = self.gain;
 		fadeEndingGain = value;
-
+		
 		float delta = fadeEndingGain - fadeStartingGain;
 		
 		if(0 == delta)
@@ -586,7 +602,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BackgroundAudio);
 			fadeDeltaMultiplier = delta / fadeDuration;
 			fadeStartTime = mach_absolute_time();
 			
-			fadeTimer = [NSTimer scheduledTimerWithTimeInterval:kBackgroundAudio_FadeInterval
+			fadeTimer = [NSTimer scheduledTimerWithTimeInterval:kAudioTrack_FadeInterval
 														 target:self
 													   selector:@selector(fadeStep:)
 													   userInfo:nil

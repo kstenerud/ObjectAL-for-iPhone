@@ -24,8 +24,16 @@
 // Attribution is not required, but appreciated :)
 //
 
+// Actions
+#import "OALAction.h"
+#import "OALActionManager.h"
+#import "OALFunction.h"
 
-#import "SynthesizeSingleton.h"
+// AudioTrack
+#import "AudioTrack.h"
+#import "AudioTracks.h"
+
+// OpenAL
 #import "ALTypes.h"
 #import "ALBuffer.h"
 #import "ALCaptureDevice.h"
@@ -36,90 +44,11 @@
 #import "ALWrapper.h"
 #import "ChannelSource.h"
 #import "SoundSourcePool.h"
+#import "ObjectALManager.h"
 
-
-#pragma mark ObjectAL
-
-/**
- * Master class for the ObjectAL library.
- * Keeps track of devices that have been opened, and allows high level OpenAL management. <br>
- * The OpenAL 1.1 specification is available at
- * http://connect.creativelabs.com/openal/Documentation <br>
- * Be sure to read through it (especially the part about distance models) as ObjectAL follows the
- * OpenAL object model.
- * Alternatively, you may opt to use SimpleIphoneAudio for your audio needs.
- */
-@interface ObjectAL : NSObject
-{
-	ALContext* currentContext; // WEAK reference
-	
-	/** All opened devices */
-	NSMutableArray* devices;
-
-	/** All suspended contexts */
-	NSMutableArray* suspendedContexts;
-	
-	bool suspended;
-}
-
-#pragma mark Properties
-
-/** List of available playback devices (NSString*). */
-@property(readonly) NSArray* availableDevices;
-
-/** List of available capture devices (NSString*). */
-@property(readonly) NSArray* availableCaptureDevices;
-
-/** The current context (some context operations require the context to be the "current" one). */
-@property(readwrite,assign) ALContext* currentContext;
-
-/** Name of the default capture device. */
-@property(readonly) NSString* defaultCaptureDeviceSpecifier;
-
-/** Name of the default playback device. */
-@property(readonly) NSString* defaultDeviceSpecifier;
-
-/** List of all open devices (ALDevice*). */
-@property(readonly) NSArray* devices;
-
-/** The frequency of the output mixer. */
-@property(readwrite,assign) ALdouble mixerOutputFrequency;
-
-
-#pragma mark Object Management
-
-/** Singleton implementation providing "sharedInstance" and "purgeSharedInstance" methods.
- *
- * <b>- (ObjectAL*) sharedInstance</b>: Get the shared singleton instance. <br>
- * <b>- (void) purgeSharedInstance</b>: Purge (deallocate) the shared instance.
- */
-SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(ObjectAL);
-
-
-#pragma mark Utility
-
-/** Clear all references to sound data from ALL buffers, managed or not.
- */
-- (void) clearAllBuffers;
-
-
-#pragma mark Internal Use
-
-/** (INTERNAL USE) Used by the interrupt handler to suspend ObjectAL
- * (if interrupts are enabled in IphoneAudioSupport).
- */
-@property(readwrite,assign) bool suspended;
-
-/** (INTERNAL USE) Notify that a device is initializing.
- */
-- (void) notifyDeviceInitializing:(ALDevice*) device;
-
-/** (INTERNAL USE) Notify that a device is deallocating.
- */
-- (void) notifyDeviceDeallocating:(ALDevice*) device;
-
-@end
-
+// Other
+#import "IphoneAudioSupport.h"
+#import "SimpleIphoneAudio.h"
 
 
 

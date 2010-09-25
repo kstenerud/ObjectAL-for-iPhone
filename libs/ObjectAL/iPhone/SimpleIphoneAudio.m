@@ -26,8 +26,8 @@
 
 #import "SimpleIphoneAudio.h"
 #import "ObjectALMacros.h"
-#import "BackgroundAudio.h"
 #import "IphoneAudioSupport.h"
+#import "ObjectALManager.h"
 
 // By default, reserve all 32 sources.
 #define kDefaultReservedSources 32
@@ -75,11 +75,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 	{
 		device = [[ALDevice deviceWithDeviceSpecifier:nil] retain];
 		context = [[ALContext contextOnDevice:device attributes:nil] retain];
-		[ObjectAL sharedInstance].currentContext = context;
+		[ObjectALManager sharedInstance].currentContext = context;
 		channel = [[ChannelSource channelWithSources:sources] retain];
 
-		// Make sure BackgroundAudio is initialized.
-		[BackgroundAudio sharedInstance];
+		backgroundTrack = [[AudioTrack track] retain];
 
 		self.preloadCacheEnabled = YES;
 		self.bgVolume = 1.0;
@@ -90,7 +89,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 
 - (void) dealloc
 {
-	[[BackgroundAudio sharedInstance] clear];
+	[backgroundTrack release];
 	[channel stop];
 	[channel release];
 	[preloadCache release];
@@ -157,31 +156,33 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 	[IphoneAudioSupport sharedInstance].useHardwareIfAvailable = value;
 }
 
+@synthesize backgroundTrack;
+
 - (bool) bgPaused
 {
-	return [BackgroundAudio sharedInstance].paused;
+	return backgroundTrack.paused;
 }
 
 - (void) setBgPaused:(bool) value
 {
-	[BackgroundAudio sharedInstance].paused = value;
+	backgroundTrack.paused = value;
 }
 
 - (bool) bgPlaying
 {
-	return [BackgroundAudio sharedInstance].playing;
+	return backgroundTrack.playing;
 }
 
 - (float) bgVolume
 {
-	return [BackgroundAudio sharedInstance].gain;
+	return backgroundTrack.gain;
 }
 
 - (void) setBgVolume:(float) value
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		[BackgroundAudio sharedInstance].gain = value;
+		backgroundTrack.gain = value;
 	}
 }
 
@@ -197,14 +198,14 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 
 - (float) effectsVolume
 {
-	return [ObjectAL sharedInstance].currentContext.listener.gain;
+	return [ObjectALManager sharedInstance].currentContext.listener.gain;
 }
 
 - (void) setEffectsVolume:(float) value
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		[ObjectAL sharedInstance].currentContext.listener.gain = value;
+		[ObjectALManager sharedInstance].currentContext.listener.gain = value;
 	}
 }
 
@@ -247,7 +248,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		bgMuted = value;
-		[BackgroundAudio sharedInstance].muted = bgMuted | muted;
+		backgroundTrack.muted = bgMuted | muted;
 	}
 }
 
@@ -264,7 +265,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		effectsMuted = value;
-		[ObjectAL sharedInstance].currentContext.listener.muted = effectsMuted | muted;
+		[ObjectALManager sharedInstance].currentContext.listener.muted = effectsMuted | muted;
 	}
 }
 
@@ -281,8 +282,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		muted = value;
-		[BackgroundAudio sharedInstance].muted = bgMuted | muted;
-		[ObjectAL sharedInstance].currentContext.listener.muted = effectsMuted | muted;
+		backgroundTrack.muted = bgMuted | muted;
+		[ObjectALManager sharedInstance].currentContext.listener.muted = effectsMuted | muted;
 	}
 }	
 
@@ -295,7 +296,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 		LOG_ERROR(@"filePath was NULL");
 		return NO;
 	}
-	return [[BackgroundAudio sharedInstance] preloadFile:filePath];
+	return [backgroundTrack preloadFile:filePath];
 }
 
 - (bool) playBg:(NSString*) filePath
@@ -310,7 +311,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 		LOG_ERROR(@"filePath was NULL");
 		return NO;
 	}
-	return [[BackgroundAudio sharedInstance] playFile:filePath loops:loop ? -1 : 0];
+	return [backgroundTrack playFile:filePath loops:loop ? -1 : 0];
 }
 
 - (bool) playBg
@@ -322,14 +323,14 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		[BackgroundAudio sharedInstance].numberOfLoops = loop ? -1 : 0;
-		return [[BackgroundAudio sharedInstance] play];
+		backgroundTrack.numberOfLoops = loop ? -1 : 0;
+		return [backgroundTrack play];
 	}
 }
 
 - (void) stopBg
 {
-	[[BackgroundAudio sharedInstance] stop];
+	[backgroundTrack stop];
 }
 
 

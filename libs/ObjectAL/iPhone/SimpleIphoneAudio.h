@@ -26,7 +26,11 @@
 
 #import <Foundation/Foundation.h>
 #import "SynthesizeSingleton.h"
-#import "ObjectAL.h"
+#import "ALDevice.h"
+#import "ALContext.h"
+#import "SoundSource.h"
+#import "ChannelSource.h"
+#import "AudioTrack.h"
 
 
 #pragma mark SimpleIphoneAudio
@@ -53,6 +57,10 @@
 	ChannelSource* channel;
 	/** Cache for preloaded sound samples. */
 	NSMutableDictionary* preloadCache;
+
+	/** Audio track to play background music */
+	AudioTrack* backgroundTrack;
+	
 	bool muted;
 	bool bgMuted;
 	bool effectsMuted;
@@ -98,6 +106,9 @@
  * Default value: YES
  */
 @property(readwrite,assign) bool honorSilentSwitch;
+
+/** Background audio track */
+@property(readonly) AudioTrack* backgroundTrack;
 
 /** Pauses BG music playback */
 @property(readwrite,assign) bool bgPaused;

@@ -14,7 +14,7 @@
 
 @implementation TouchableNode
 
-@synthesize isTouchesEnabled;
+@synthesize isTouchEnabled;
 @synthesize touchPriority;
 @synthesize targetedTouches;
 @synthesize swallowTouches;
@@ -29,7 +29,7 @@
 -(void) registerWithTouchDispatcher
 {
 	[self unregisterWithTouchDispatcher];
-
+	
 	if(targetedTouches)
 	{
 		[[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:touchPriority swallowsTouches:swallowTouches];
@@ -56,7 +56,7 @@
 	{
 		targetedTouches = value;
 		
-		if(isRunning_ && isTouchesEnabled)
+		if(isRunning_ && isTouchEnabled)
 		{
 			[self registerWithTouchDispatcher];
 		}
@@ -69,7 +69,7 @@
 	{
 		swallowTouches = value;
 		
-		if(isRunning_ && isTouchesEnabled)
+		if(isRunning_ && isTouchEnabled)
 		{
 			[self registerWithTouchDispatcher];
 		}
@@ -81,21 +81,21 @@
 	if(touchPriority != value)
 	{
 		touchPriority = value;
-		if(isRunning_ && isTouchesEnabled)
+		if(isRunning_ && isTouchEnabled)
 		{
 			[self registerWithTouchDispatcher];
 		}
 	}
 }
 
--(void) setIsTouchesEnabled:(BOOL)enabled
+-(void) setIsTouchEnabled:(BOOL)enabled
 {
-	if( isTouchesEnabled != enabled )
+	if( isTouchEnabled != enabled )
 	{
-		isTouchesEnabled = enabled;
+		isTouchEnabled = enabled;
 		if( isRunning_ )
 		{
-			if( isTouchesEnabled )
+			if( isTouchEnabled )
 			{
 				[self registerWithTouchDispatcher];
 			}
@@ -109,7 +109,7 @@
 
 - (void)cleanup
 {
-	self.isTouchesEnabled = NO;
+	self.isTouchEnabled = NO;
 }
 
 #pragma mark TouchableNode - Callbacks
@@ -117,7 +117,7 @@
 {
 	// register 'parent' nodes first
 	// since events are propagated in reverse order
-	if (isTouchesEnabled)
+	if (isTouchEnabled)
 	{
 		[self registerWithTouchDispatcher];
 	}
@@ -128,7 +128,7 @@
 
 -(void) onExit
 {
-	if(isTouchesEnabled)
+	if(isTouchEnabled)
 	{
 		[self unregisterWithTouchDispatcher];
 	}

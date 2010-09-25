@@ -12,7 +12,7 @@
  */
 @interface TouchableNode : CCNode <CCStandardTouchDelegate, CCTargetedTouchDelegate>
 {
-	BOOL isTouchesEnabled;
+	BOOL isTouchEnabled;
 	int touchPriority;
 	BOOL targetedTouches;
 	BOOL swallowTouches;
@@ -29,7 +29,7 @@
  Only the touches of this node will be affected. This "method" is not propagated to it's children.
  @since v0.8.1
  */
-@property(nonatomic,nonatomic,assign) BOOL isTouchesEnabled;
+@property(nonatomic,assign) BOOL isTouchEnabled;
 
 - (BOOL) touchHitsSelf:(UITouch*) touch;
 - (BOOL) touch:(UITouch*) touch hitsNode:(CCNode*) node;

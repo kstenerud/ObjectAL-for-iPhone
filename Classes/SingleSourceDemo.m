@@ -6,10 +6,10 @@
 //
 
 #import "SingleSourceDemo.h"
-#import "CCLayer+Scene.h"
-#import "IphoneAudioSupport.h"
-#import "ImageButton.h"
 #import "MainScene.h"
+#import "CCLayer+Scene.h"
+#import "ImageButton.h"
+#import "ObjectAL.h"
 
 
 #pragma mark SingleSourceDemo
@@ -43,7 +43,7 @@
 		// Initialize ObjectAL
 		device = [[ALDevice deviceWithDeviceSpecifier:nil] retain];
 		context = [[ALContext contextOnDevice:device attributes:nil] retain];
-		[ObjectAL sharedInstance].currentContext = context;
+		[ObjectALManager sharedInstance].currentContext = context;
 		
 		[IphoneAudioSupport sharedInstance].handleInterruptions = YES;
 		

@@ -7,6 +7,7 @@
 
 
 #import "cocos2d.h"
+#import "ImageButton.h"
 
 /**
  * Main layer to the ObjectAL demo program.
@@ -16,6 +17,13 @@
  */
 @interface MainLayer : CCLayer
 {
+	NSMutableArray* sceneNames;
+	NSMutableArray* scenes;
+	ImageButton* previousButton;
+	ImageButton* nextButton;
+	
+	CCMenu* menu;
+	CCMenu* oldMenu;
 }
 
 @end

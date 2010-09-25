@@ -27,6 +27,7 @@
 #import <Foundation/Foundation.h>
 #import <OpenAL/al.h>
 #import "SoundSource.h"
+#import "ALBuffer.h"
 
 @class ALContext;
 

@@ -26,7 +26,7 @@
 
 #import <Foundation/Foundation.h>
 #import "SynthesizeSingleton.h"
-#import "ObjectAL.h"
+#import "ALBuffer.h"
 
 
 #pragma mark IphoneAudioSupport

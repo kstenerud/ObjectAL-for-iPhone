@@ -6,12 +6,11 @@
 //
 
 #import "CrossFadeDemo.h"
+#import "MainScene.h"
 #import "CCLayer+Scene.h"
 #import "Slider.h"
 #import "ImageButton.h"
-#import "IphoneAudioSupport.h"
-#import "MainScene.h"
-
+#import "ObjectAL.h"
 
 #pragma mark Private Methods
 
@@ -38,7 +37,7 @@
 		// Initialize ObjectAL
 		device = [[ALDevice deviceWithDeviceSpecifier:nil] retain];
 		context = [[ALContext contextOnDevice:device attributes:nil] retain];
-		[ObjectAL sharedInstance].currentContext = context;
+		[ObjectALManager sharedInstance].currentContext = context;
 		
 		[IphoneAudioSupport sharedInstance].handleInterruptions = YES;
 		
@@ -48,6 +47,9 @@
 		secondSource = [[ALSource source] retain];
 		secondBuffer = [[[IphoneAudioSupport sharedInstance] bufferFromFile:@"HappyAlley.wav"] retain];
 
+		// We'll do an S-Curve fade.
+		fadeFunction = [[OALSCurveFunction function] retain];
+
 		firstSource.gain = 1.0;
 		secondSource.gain = 0.0;
 	}
@@ -56,6 +58,7 @@
 
 - (void) dealloc
 {
+	[fadeFunction release];
 	[firstBuffer release];
 	[firstSource release];
 	[secondBuffer release];
@@ -123,8 +126,8 @@
 
 - (void) onCrossfadeChanged:(Slider*) slider
 {
-	firstSource.gain = 1 - slider.value;
-	secondSource.gain = slider.value;
+	firstSource.gain = [fadeFunction valueForInput:1 - slider.value];
+	secondSource.gain = [fadeFunction valueForInput:slider.value];
 }
 
 

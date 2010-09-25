@@ -27,10 +27,11 @@
 #import "IphoneAudioSupport.h"
 #import "ObjectALMacros.h"
 #import <AudioToolbox/AudioToolbox.h>
-#import "BackgroundAudio.h"
+#import "AudioTracks.h"
+#import "ObjectALManager.h"
 
 
-#define kMaxSessionActivationRetries 20
+#define kMaxSessionActivationRetries 40
 
 
 #pragma mark Asynchronous Operations
@@ -38,51 +39,48 @@
 /**
  * (INTERNAL USE) NSOperation for loading audio files asynchronously.
  */
-@interface AsyncLoadOperation : NSOperation
+@interface AsyncALBufferLoadOperation: NSOperation
 {
-	/** The URL containing the sound data. */
+	/** The URL of the sound file to play */
 	NSURL* url;
-	/** The target to inform when loading is complete. */
+	/** The target to inform when the operation completes */
 	id target;
-	/** The selector to call when loading is complete. */
+	/** The selector to call when the operation completes */
 	SEL selector;
 }
 
-/** (INTERNAL USE) Create an asynchronous load operation.
+/** (INTERNAL USE) Create a new Asynchronous Operation.
  *
- * @param target the target to inform when loading is complete.
- * @param selector the selector to call when loading is complete.
- * @param url the URLcontaining the sound data.
- * @return A new load operation.
- */
-+ (id) operationWithTarget:(id) target selector:(SEL) selector url:(NSURL*) url;
+ * @param url the URL containing the sound file.
+ * @param target the target to inform when the operation completes.
+ * @param selector the selector to call when the operation completes.
+ */ 
++ (id) operationWithUrl:(NSURL*) url target:(id) target selector:(SEL) selector;
 
-/** (INTERNAL USE) Initialize an asynchronous load operation.
+/** (INTERNAL USE) Initialize an Asynchronous Operation.
  *
- * @param target the target to inform when loading is complete.
- * @param selector the selector to call when loading is complete.
- * @param url the URLcontaining the sound data.
- * @return The initialized load operation.
- */
-- (id) initWithTarget:(id) target selector:(SEL) selector url:(NSURL*) url;
+ * @param url the URL containing the sound file.
+ * @param target the target to inform when the operation completes.
+ * @param selector the selector to call when the operation completes.
+ */ 
+- (id) initWithUrl:(NSURL*) url target:(id) target selector:(SEL) selector;
 
 @end
 
+@implementation AsyncALBufferLoadOperation
 
-@implementation AsyncLoadOperation
-
-+ (id) operationWithTarget:(id) target selector:(SEL) selector url:(NSURL*) url
++ (id) operationWithUrl:(NSURL*) url target:(id) target selector:(SEL) selector
 {
-	return [[[self alloc] initWithTarget:target selector:selector url:url] autorelease];
+	return [[[self alloc] initWithUrl:url target:target selector:selector] autorelease];
 }
 
-- (id) initWithTarget:(id) targetIn selector:(SEL) selectorIn url:(NSURL*) urlIn
+- (id) initWithUrl:(NSURL*) urlIn target:(id) targetIn selector:(SEL) selectorIn
 {
 	if(nil != (self = [super init]))
 	{
+		url = [urlIn retain];
 		target = targetIn;
 		selector = selectorIn;
-		url = [urlIn retain];
 	}
 	return self;
 }
@@ -101,6 +99,8 @@
 }
 
 @end
+
+
 
 #pragma mark -
 #pragma mark Private Methods
@@ -223,7 +223,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(IphoneAudioSupport);
 		allowIpod = YES;
 		useHardwareIfAvailable = YES;
 		honorSilentSwitch = YES;
-		[self updateAudioMode];
 		self.audioSessionActive = YES;
 	}
 	return self;
@@ -231,6 +230,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(IphoneAudioSupport);
 
 - (void) dealloc
 {
+	self.audioSessionActive = NO;
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[operationQueue release];
 	[audioSessionErrorCodes release];
@@ -331,12 +331,34 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(IphoneAudioSupport);
 		LOG_ERROR(@"Cannot open NULL file / url");
 		return nil;
 	}
-
+	
+	// Holds any errors that occur.
 	OSStatus error;
+	
+	// Handle to the file we'll be reading from.
 	ExtAudioFileRef fileHandle = nil;
+	
+	// This will hold the data we'll be passing to the OpenAL buffer.
 	void* streamData = nil;
+	
+	// This is the buffer object we'll be returning to the caller.
 	ALBuffer* alBuffer = nil;
-
+	
+	// Local variables that will be used later on.
+	// They need to be pre-declared so that the compiler doesn't throw a hissy fit
+	// over the goto statements if you compile as Objective-C++.
+	SInt64 numFrames;
+	UInt32 numFramesSize = sizeof(numFrames);
+	
+	AudioStreamBasicDescription audioStreamDescription;
+	UInt32 descriptionSize = sizeof(audioStreamDescription);
+	
+	UInt32 streamSizeInBytes;
+	AudioBufferList bufferList;
+	UInt32 numFramesToRead;
+	ALenum audioFormat;
+	
+	
 	// Open the file
 	if(noErr != (error = ExtAudioFileOpenURL((CFURLRef)url, &fileHandle)))
 	{
@@ -345,8 +367,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(IphoneAudioSupport);
 	}
 	
 	// Find out how many frames there are
-	SInt64 numFrames;
-	UInt32 numFramesSize = sizeof(numFrames);
 	if(noErr != (error = ExtAudioFileGetProperty(fileHandle,
 												 kExtAudioFileProperty_FileLengthFrames,
 												 &numFramesSize,
@@ -357,13 +377,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(IphoneAudioSupport);
 	}
 	
 	// Get the audio format
-	AudioStreamBasicDescription audioStreamDescription;
-	UInt32 descriptionSize = sizeof(audioStreamDescription);
-	
 	if(noErr != (error = ExtAudioFileGetProperty(fileHandle,
-											 kExtAudioFileProperty_FileDataFormat,
-											 &descriptionSize,
-											 &audioStreamDescription)))
+												 kExtAudioFileProperty_FileDataFormat,
+												 &descriptionSize,
+												 &audioStreamDescription)))
 	{
 		REPORT_EXTAUDIO_CALL(error, @"Could not get audio format for url %@", url);
 		goto done;
@@ -372,8 +389,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(IphoneAudioSupport);
 	// Specify the new audio format (anything not changed remains the same)
 	audioStreamDescription.mFormatID = kAudioFormatLinearPCM;
 	audioStreamDescription.mFormatFlags = kAudioFormatFlagsNativeEndian |
-									kAudioFormatFlagIsSignedInteger |
-									kAudioFormatFlagIsPacked;
+	kAudioFormatFlagIsSignedInteger |
+	kAudioFormatFlagIsPacked;
 	if(audioStreamDescription.mChannelsPerFrame > 2)
 	{
 		// Don't allow more than 2 channels (stereo)
@@ -395,65 +412,63 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(IphoneAudioSupport);
 	
 	// Set the new audio format
 	if(noErr != (error = ExtAudioFileSetProperty(fileHandle,
-											 kExtAudioFileProperty_ClientDataFormat,
-											 descriptionSize,
-											 &audioStreamDescription)))
+												 kExtAudioFileProperty_ClientDataFormat,
+												 descriptionSize,
+												 &audioStreamDescription)))
 	{
 		REPORT_EXTAUDIO_CALL(error, @"Could not set new audio format for url %@", url);
 		goto done;
 	}
 	
 	// Allocate some memory to hold the data
-	UInt32 numBytes = audioStreamDescription.mBytesPerFrame * numFrames;
-	streamData = malloc(numBytes);
+	streamSizeInBytes = audioStreamDescription.mBytesPerFrame * numFrames;
+	streamData = malloc(streamSizeInBytes);
 	if(nil == streamData)
 	{
-		LOG_ERROR(@"Could not allocate %d bytes for url %@", numBytes, url);
+		LOG_ERROR(@"Could not allocate %d bytes for url %@", streamSizeInBytes, url);
 		goto done;
 	}
 	
 	// Read the data from the file to our buffer, in the new format
-	AudioBufferList bufferList;
 	bufferList.mNumberBuffers = 1;
 	bufferList.mBuffers[0].mNumberChannels = audioStreamDescription.mChannelsPerFrame;
-	bufferList.mBuffers[0].mDataByteSize = numBytes;
+	bufferList.mBuffers[0].mDataByteSize = streamSizeInBytes;
 	bufferList.mBuffers[0].mData = streamData;
 	
-	UInt32 framesToRead = (UInt32) numFrames;
-	if(noErr != (error = ExtAudioFileRead(fileHandle, &framesToRead, &bufferList)))
+	numFramesToRead = (UInt32)numFrames;
+	if(noErr != (error = ExtAudioFileRead(fileHandle, &numFramesToRead, &bufferList)))
 	{
 		REPORT_EXTAUDIO_CALL(error, @"Could not read audio data from url %@", url);
 		goto done;
 	}
 	
-	ALenum format;
 	if(1 == audioStreamDescription.mChannelsPerFrame)
 	{
 		if(8 == audioStreamDescription.mBitsPerChannel)
 		{
-			format = AL_FORMAT_MONO8;
+			audioFormat = AL_FORMAT_MONO8;
 		}
 		else
 		{
-			format = AL_FORMAT_MONO16;
+			audioFormat = AL_FORMAT_MONO16;
 		}
 	}
 	else
 	{
 		if(8 == audioStreamDescription.mBitsPerChannel)
 		{
-			format = AL_FORMAT_STEREO8;
+			audioFormat = AL_FORMAT_STEREO8;
 		}
 		else
 		{
-			format = AL_FORMAT_STEREO16;
+			audioFormat = AL_FORMAT_STEREO16;
 		}
 	}
-
+	
 	alBuffer = [ALBuffer bufferWithName:[url absoluteString]
 								   data:streamData
-								   size:numBytes
-								 format:format
+								   size:streamSizeInBytes
+								 format:audioFormat
 							  frequency:audioStreamDescription.mSampleRate];
 	// ALBuffer is maintaining this memory now.  Make sure we don't free() it.
 	streamData = nil;
@@ -479,7 +494,7 @@ done:
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		[operationQueue addOperation:[AsyncLoadOperation operationWithTarget:target selector:selector url:url]];
+		[operationQueue addOperation:[AsyncALBufferLoadOperation operationWithUrl:url target:target selector:selector]];
 	}
 	return [url absoluteString];
 }
@@ -690,20 +705,20 @@ done:
 			suspended = value;
 			if(suspended)
 			{
-				backgroundAudioWasSuspended = [BackgroundAudio sharedInstance].suspended;
-				objectALWasSuspended = [ObjectAL sharedInstance].suspended;
-				[ObjectAL sharedInstance].suspended = YES;
-				[BackgroundAudio sharedInstance].suspended = YES;
+				backgroundAudioWasSuspended = [AudioTracks sharedInstance].suspended;
+				objectALWasSuspended = [ObjectALManager sharedInstance].suspended;
+				[ObjectALManager sharedInstance].suspended = YES;
+				[AudioTracks sharedInstance].suspended = YES;
 			}
 			else
 			{
 				if(!backgroundAudioWasSuspended)
 				{
-					[BackgroundAudio sharedInstance].suspended = NO;
+					[AudioTracks sharedInstance].suspended = NO;
 				}
 				if(!objectALWasSuspended)
 				{
-					[ObjectAL sharedInstance].suspended = NO;
+					[ObjectALManager sharedInstance].suspended = NO;
 				}
 			}
 		}

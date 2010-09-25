@@ -27,7 +27,8 @@
 #import "ALSource.h"
 #import "mach_timing.h"
 #import "ObjectALMacros.h"
-#import "ObjectAL.h"
+#import "ALWrapper.h"
+#import "ObjectALManager.h"
 
 
 @implementation ALSource
@@ -46,7 +47,7 @@
 
 - (id) init
 {
-	return [self initOnContext:[ObjectAL sharedInstance].currentContext];
+	return [self initOnContext:[ObjectALManager sharedInstance].currentContext];
 }
 
 - (id) initOnContext:(ALContext*) contextIn
@@ -54,12 +55,12 @@
 	if(nil != (self = [super init]))
 	{
 		context = [contextIn retain];
-		@synchronized([ObjectAL sharedInstance])
+		@synchronized([ObjectALManager sharedInstance])
 		{
-			ALContext* oldContext = [ObjectAL sharedInstance].currentContext;
-			[ObjectAL sharedInstance].currentContext = context;
+			ALContext* oldContext = [ObjectALManager sharedInstance].currentContext;
+			[ObjectALManager sharedInstance].currentContext = context;
 			sourceId = [ALWrapper genSource];
-			[ObjectAL sharedInstance].currentContext = oldContext;
+			[ObjectALManager sharedInstance].currentContext = oldContext;
 		}
 		
 		[context notifySourceInitializing:self];
@@ -80,12 +81,12 @@
 
 	[buffer release];
 
-	@synchronized([ObjectAL sharedInstance])
+	@synchronized([ObjectALManager sharedInstance])
 	{
-		ALContext* oldContext = [ObjectAL sharedInstance].currentContext;
-		[ObjectAL sharedInstance].currentContext = context;
+		ALContext* oldContext = [ObjectALManager sharedInstance].currentContext;
+		[ObjectALManager sharedInstance].currentContext = context;
 		[ALWrapper deleteSource:sourceId];
-		[ObjectAL sharedInstance].currentContext = oldContext;
+		[ObjectALManager sharedInstance].currentContext = oldContext;
 	}
 	[context release];
 
@@ -679,7 +680,7 @@
 			fadeDeltaMultiplier = delta / fadeDuration;
 			fadeStartTime = mach_absolute_time();
 			
-			fadeTimer = [NSTimer scheduledTimerWithTimeInterval:kObjectAL_FadeInterval
+			fadeTimer = [NSTimer scheduledTimerWithTimeInterval:0.05
 														 target:self
 													   selector:@selector(fadeStep:)
 													   userInfo:nil
@@ -733,7 +734,7 @@
 			self.buffer = nil;
 		}
 		int numBuffers = [buffers count];
-		ALuint* bufferIds = malloc(sizeof(ALuint) * numBuffers);
+		ALuint* bufferIds = (ALuint*)malloc(sizeof(ALuint) * numBuffers);
 		int i = 0;
 		for(ALBuffer* buf in buffers)
 		{

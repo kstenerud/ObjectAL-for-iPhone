@@ -25,7 +25,8 @@
 //
 
 #import "ALBuffer.h"
-#import "ObjectAL.h"
+#import "ALWrapper.h"
+#import "ObjectALManager.h"
 
 
 @implementation ALBuffer
@@ -44,7 +45,7 @@
 	{
 		self.name = nameIn;
 		bufferId = [ALWrapper genBuffer];
-		device = [[ObjectAL sharedInstance].currentContext.device retain];
+		device = [[ObjectALManager sharedInstance].currentContext.device retain];
 		bufferData = data;
 		format = formatIn;
 

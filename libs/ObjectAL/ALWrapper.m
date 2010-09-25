@@ -447,7 +447,7 @@ BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device)
 			}
 			else
 			{
-				LOG_ERROR(@"Could not make context %@ current.  Pass in a device reference for better diagnostic info.", context);
+				LOG_ERROR(@"Could not make context %d current.  Pass in a device reference for better diagnostic info.", context);
 			}
 			return NO;
 		}
@@ -510,7 +510,7 @@ BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device)
 			}
 			else
 			{
-				LOG_ERROR(@"Could not get device for context %@.  Pass in a device reference for better diagnostic info.", context);
+				LOG_ERROR(@"Could not get device for context %d.  Pass in a device reference for better diagnostic info.", context);
 			}
 		}
 	}

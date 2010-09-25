@@ -1,8 +1,8 @@
 //
-//  ObjectAL.m
+//  ObjectALManager.m
 //  ObjectAL
 //
-//  Created by Karl Stenerud on 15/12/09.
+//  Created by Karl Stenerud on 10-09-25.
 //
 // Copyright 2009 Karl Stenerud
 //
@@ -24,18 +24,21 @@
 // Attribution is not required, but appreciated :)
 //
 
-#import "ObjectAL.h"
+#import "ObjectALManager.h"
 #import "ObjectALMacros.h"
 #import "ALWrapper.h"
 #import "MutableArray-WeakReferences.h"
 #import "IphoneAudioSupport.h"
 
 
-@implementation ObjectAL
+#pragma mark ObjectALManager
+
+@implementation ObjectALManager
+
 
 #pragma mark Object Management
 
-SYNTHESIZE_SINGLETON_FOR_CLASS(ObjectAL);
+SYNTHESIZE_SINGLETON_FOR_CLASS(ObjectALManager);
 
 - (id) init
 {
@@ -55,7 +58,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(ObjectAL);
 	self.currentContext = nil;
 	[suspendedContexts release];
 	[devices release];
-
+	
 	[super dealloc];
 }
 
@@ -87,7 +90,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(ObjectAL);
 		if(context != currentContext)
 		{
 			currentContext = context;
-			[ALWrapper makeContextCurrent:context.context];
+			[ALWrapper makeContextCurrent:currentContext.context deviceReference:currentContext.device.device];
 		}
 	}
 }
@@ -155,32 +158,32 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(ObjectAL);
 			{
 				[ALWrapper makeContextCurrent:nil];
 				/*  alcSuspendContext appears to be a no-op
-				for(ALDevice* device in devices)
-				{
-					for(ALContext* context in device.contexts)
-					{
-						if(!context.suspended)
-						{
-							[suspendedContexts addObject:context];
-							[ALWrapper suspendContext:context.context];
-						}
-					}
-				}
+				 for(ALDevice* device in devices)
+				 {
+				 for(ALContext* context in device.contexts)
+				 {
+				 if(!context.suspended)
+				 {
+				 [suspendedContexts addObject:context];
+				 [ALWrapper suspendContext:context.context];
+				 }
+				 }
+				 }
 				 */
 			}
 			else
 			{
 				/*
-				for(ALContext* context in suspendedContexts)
-				{
-					[ALWrapper makeContextCurrent:context.context];
-					[context process];
-				}
-				[suspendedContexts removeAllObjects];
+				 for(ALContext* context in suspendedContexts)
+				 {
+				 [ALWrapper makeContextCurrent:context.context];
+				 [context process];
+				 }
+				 [suspendedContexts removeAllObjects];
 				 */
 				if(nil != currentContext)
 				{
-					[ALWrapper makeContextCurrent:currentContext.context];
+					[ALWrapper makeContextCurrent:currentContext.context deviceReference:currentContext.device.device];
 				}
 			}
 		}

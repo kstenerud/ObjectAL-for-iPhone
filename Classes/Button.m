@@ -30,7 +30,7 @@
 		touchPriority = 0;
 		targetedTouches = YES;
 		swallowTouches = YES;
-		isTouchesEnabled = YES;
+		isTouchEnabled = YES;
 		
 		target = targetIn;
 		selector = selectorIn;

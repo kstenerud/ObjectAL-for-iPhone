@@ -45,7 +45,7 @@
 		touchPriority = 0;
 		targetedTouches = YES;
 		swallowTouches = YES;
-		isTouchesEnabled = YES;
+		isTouchEnabled = YES;
 		self.isRelativeAnchorPoint = YES;
 		self.anchorPoint = ccp(0.5, 0.5);		
 	}

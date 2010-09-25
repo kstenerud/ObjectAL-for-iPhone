@@ -6,11 +6,11 @@
 //
 
 #import "PlanetKillerDemo.h"
-#import "CCLayer+Scene.h"
-#import "SimpleIphoneAudio.h"
 #import "MainScene.h"
+#import "CCLayer+Scene.h"
 #import "ImageButton.h"
 #import "RNG.h"
+#import "ObjectAL.h"
 
 
 #define SHOOT_SOUND @"Pew.caf"
