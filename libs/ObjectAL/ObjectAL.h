@@ -44,7 +44,7 @@
 #import "ALWrapper.h"
 #import "ChannelSource.h"
 #import "SoundSourcePool.h"
-#import "ObjectALManager.h"
+#import "OpenALManager.h"
 
 // Other
 #import "IphoneAudioSupport.h"

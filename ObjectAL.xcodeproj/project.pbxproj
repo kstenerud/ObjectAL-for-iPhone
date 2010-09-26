@@ -59,8 +59,8 @@
 		396B397E124EDA43009B84A4 /* ALWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 396B3951124EDA43009B84A4 /* ALWrapper.m */; };
 		396B397F124EDA43009B84A4 /* ChannelSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 396B3952124EDA43009B84A4 /* ChannelSource.h */; };
 		396B3980124EDA43009B84A4 /* ChannelSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 396B3953124EDA43009B84A4 /* ChannelSource.m */; };
-		396B3981124EDA43009B84A4 /* ObjectALManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 396B3954124EDA43009B84A4 /* ObjectALManager.h */; };
-		396B3982124EDA43009B84A4 /* ObjectALManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 396B3955124EDA43009B84A4 /* ObjectALManager.m */; };
+		396B3981124EDA43009B84A4 /* OpenALManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 396B3954124EDA43009B84A4 /* OpenALManager.h */; };
+		396B3982124EDA43009B84A4 /* OpenALManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 396B3955124EDA43009B84A4 /* OpenALManager.m */; };
 		396B3983124EDA43009B84A4 /* SoundSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 396B3956124EDA43009B84A4 /* SoundSource.h */; };
 		396B3984124EDA43009B84A4 /* SoundSourcePool.h in Headers */ = {isa = PBXBuildFile; fileRef = 396B3957124EDA43009B84A4 /* SoundSourcePool.h */; };
 		396B3985124EDA43009B84A4 /* SoundSourcePool.m in Sources */ = {isa = PBXBuildFile; fileRef = 396B3958124EDA43009B84A4 /* SoundSourcePool.m */; };
@@ -348,8 +348,8 @@
 		396B3951124EDA43009B84A4 /* ALWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALWrapper.m; sourceTree = "<group>"; };
 		396B3952124EDA43009B84A4 /* ChannelSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChannelSource.h; sourceTree = "<group>"; };
 		396B3953124EDA43009B84A4 /* ChannelSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChannelSource.m; sourceTree = "<group>"; };
-		396B3954124EDA43009B84A4 /* ObjectALManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectALManager.h; sourceTree = "<group>"; };
-		396B3955124EDA43009B84A4 /* ObjectALManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectALManager.m; sourceTree = "<group>"; };
+		396B3954124EDA43009B84A4 /* OpenALManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenALManager.h; sourceTree = "<group>"; };
+		396B3955124EDA43009B84A4 /* OpenALManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenALManager.m; sourceTree = "<group>"; };
 		396B3956124EDA43009B84A4 /* SoundSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundSource.h; sourceTree = "<group>"; };
 		396B3957124EDA43009B84A4 /* SoundSourcePool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundSourcePool.h; sourceTree = "<group>"; };
 		396B3958124EDA43009B84A4 /* SoundSourcePool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundSourcePool.m; sourceTree = "<group>"; };
@@ -696,12 +696,12 @@
 				396B392D124EDA42009B84A4 /* Actions */,
 				396B3934124EDA42009B84A4 /* AudioTrack */,
 				396B3939124EDA42009B84A4 /* iPhone */,
+				396B3942124EDA42009B84A4 /* OpenAL */,
+				396B3959124EDA43009B84A4 /* Support */,
 				396B393E124EDA42009B84A4 /* LICENSE.ObjectAL.txt */,
 				396B393F124EDA42009B84A4 /* ObjectAL.h */,
 				396B3940124EDA42009B84A4 /* ObjectALConfig.h */,
 				396B3941124EDA42009B84A4 /* ObjectALMacros.h */,
-				396B3942124EDA42009B84A4 /* OpenAL */,
-				396B3959124EDA43009B84A4 /* Support */,
 			);
 			name = ObjectAL;
 			path = libs/ObjectAL;
@@ -762,8 +762,8 @@
 				396B3951124EDA43009B84A4 /* ALWrapper.m */,
 				396B3952124EDA43009B84A4 /* ChannelSource.h */,
 				396B3953124EDA43009B84A4 /* ChannelSource.m */,
-				396B3954124EDA43009B84A4 /* ObjectALManager.h */,
-				396B3955124EDA43009B84A4 /* ObjectALManager.m */,
+				396B3954124EDA43009B84A4 /* OpenALManager.h */,
+				396B3955124EDA43009B84A4 /* OpenALManager.m */,
 				396B3956124EDA43009B84A4 /* SoundSource.h */,
 				396B3957124EDA43009B84A4 /* SoundSourcePool.h */,
 				396B3958124EDA43009B84A4 /* SoundSourcePool.m */,
@@ -1079,7 +1079,7 @@
 				396B397C124EDA43009B84A4 /* ALTypes.h in Headers */,
 				396B397D124EDA43009B84A4 /* ALWrapper.h in Headers */,
 				396B397F124EDA43009B84A4 /* ChannelSource.h in Headers */,
-				396B3981124EDA43009B84A4 /* ObjectALManager.h in Headers */,
+				396B3981124EDA43009B84A4 /* OpenALManager.h in Headers */,
 				396B3983124EDA43009B84A4 /* SoundSource.h in Headers */,
 				396B3984124EDA43009B84A4 /* SoundSourcePool.h in Headers */,
 				396B3987124EDA43009B84A4 /* mach_timing.h in Headers */,
@@ -1350,7 +1350,7 @@
 				396B397B124EDA43009B84A4 /* ALSource.m in Sources */,
 				396B397E124EDA43009B84A4 /* ALWrapper.m in Sources */,
 				396B3980124EDA43009B84A4 /* ChannelSource.m in Sources */,
-				396B3982124EDA43009B84A4 /* ObjectALManager.m in Sources */,
+				396B3982124EDA43009B84A4 /* OpenALManager.m in Sources */,
 				396B3985124EDA43009B84A4 /* SoundSourcePool.m in Sources */,
 				396B3986124EDA43009B84A4 /* mach_timing.c in Sources */,
 				396B3989124EDA43009B84A4 /* MutableArray-WeakReferences.m in Sources */,

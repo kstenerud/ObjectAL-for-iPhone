@@ -47,7 +47,7 @@
 		// Initialize ObjectAL
 		device = [[ALDevice deviceWithDeviceSpecifier:nil] retain];
 		context = [[ALContext contextOnDevice:device attributes:nil] retain];
-		[ObjectALManager sharedInstance].currentContext = context;
+		[OpenALManager sharedInstance].currentContext = context;
 		
 		[IphoneAudioSupport sharedInstance].handleInterruptions = YES;
 		

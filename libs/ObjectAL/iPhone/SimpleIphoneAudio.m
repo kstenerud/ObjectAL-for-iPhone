@@ -27,7 +27,7 @@
 #import "SimpleIphoneAudio.h"
 #import "ObjectALMacros.h"
 #import "IphoneAudioSupport.h"
-#import "ObjectALManager.h"
+#import "OpenALManager.h"
 
 // By default, reserve all 32 sources.
 #define kDefaultReservedSources 32
@@ -75,7 +75,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 	{
 		device = [[ALDevice deviceWithDeviceSpecifier:nil] retain];
 		context = [[ALContext contextOnDevice:device attributes:nil] retain];
-		[ObjectALManager sharedInstance].currentContext = context;
+		[OpenALManager sharedInstance].currentContext = context;
 		channel = [[ChannelSource channelWithSources:sources] retain];
 
 		backgroundTrack = [[AudioTrack track] retain];
@@ -198,14 +198,14 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 
 - (float) effectsVolume
 {
-	return [ObjectALManager sharedInstance].currentContext.listener.gain;
+	return [OpenALManager sharedInstance].currentContext.listener.gain;
 }
 
 - (void) setEffectsVolume:(float) value
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		[ObjectALManager sharedInstance].currentContext.listener.gain = value;
+		[OpenALManager sharedInstance].currentContext.listener.gain = value;
 	}
 }
 
@@ -265,7 +265,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		effectsMuted = value;
-		[ObjectALManager sharedInstance].currentContext.listener.muted = effectsMuted | muted;
+		[OpenALManager sharedInstance].currentContext.listener.muted = effectsMuted | muted;
 	}
 }
 
@@ -283,7 +283,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 	{
 		muted = value;
 		backgroundTrack.muted = bgMuted | muted;
-		[ObjectALManager sharedInstance].currentContext.listener.muted = effectsMuted | muted;
+		[OpenALManager sharedInstance].currentContext.listener.muted = effectsMuted | muted;
 	}
 }	
 

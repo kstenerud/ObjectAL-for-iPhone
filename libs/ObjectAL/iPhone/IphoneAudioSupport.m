@@ -28,7 +28,7 @@
 #import "ObjectALMacros.h"
 #import <AudioToolbox/AudioToolbox.h>
 #import "AudioTracks.h"
-#import "ObjectALManager.h"
+#import "OpenALManager.h"
 
 
 #define kMaxSessionActivationRetries 40
@@ -706,8 +706,8 @@ done:
 			if(suspended)
 			{
 				backgroundAudioWasSuspended = [AudioTracks sharedInstance].suspended;
-				objectALWasSuspended = [ObjectALManager sharedInstance].suspended;
-				[ObjectALManager sharedInstance].suspended = YES;
+				objectALWasSuspended = [OpenALManager sharedInstance].suspended;
+				[OpenALManager sharedInstance].suspended = YES;
 				[AudioTracks sharedInstance].suspended = YES;
 			}
 			else
@@ -718,7 +718,7 @@ done:
 				}
 				if(!objectALWasSuspended)
 				{
-					[ObjectALManager sharedInstance].suspended = NO;
+					[OpenALManager sharedInstance].suspended = NO;
 				}
 			}
 		}

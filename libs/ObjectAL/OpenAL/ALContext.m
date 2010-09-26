@@ -28,7 +28,7 @@
 #import "MutableArray-WeakReferences.h"
 #import "ObjectALMacros.h"
 #import "ALWrapper.h"
-#import "ObjectALManager.h"
+#import "OpenALManager.h"
 
 
 @implementation ALContext
@@ -168,9 +168,9 @@
 
 - (void) dealloc
 {
-	if([ObjectALManager sharedInstance].currentContext == self)
+	if([OpenALManager sharedInstance].currentContext == self)
 	{
-		[ObjectALManager sharedInstance].currentContext = nil;
+		[OpenALManager sharedInstance].currentContext = nil;
 	}
 	[device notifyContextDeallocating:self];
 	[sources release];

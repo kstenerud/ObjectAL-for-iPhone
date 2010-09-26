@@ -1,5 +1,5 @@
 //
-//  ObjectALManager.m
+//  OpenALManager.m
 //  ObjectAL
 //
 //  Created by Karl Stenerud on 10-09-25.
@@ -24,21 +24,21 @@
 // Attribution is not required, but appreciated :)
 //
 
-#import "ObjectALManager.h"
+#import "OpenALManager.h"
 #import "ObjectALMacros.h"
 #import "ALWrapper.h"
 #import "MutableArray-WeakReferences.h"
 #import "IphoneAudioSupport.h"
 
 
-#pragma mark ObjectALManager
+#pragma mark OpenALManager
 
-@implementation ObjectALManager
+@implementation OpenALManager
 
 
 #pragma mark Object Management
 
-SYNTHESIZE_SINGLETON_FOR_CLASS(ObjectALManager);
+SYNTHESIZE_SINGLETON_FOR_CLASS(OpenALManager);
 
 - (id) init
 {

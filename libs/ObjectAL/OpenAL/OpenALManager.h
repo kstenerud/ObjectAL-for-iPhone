@@ -1,5 +1,5 @@
 //
-//  ObjectALManager.h
+//  OpenALManager.h
 //  ObjectAL
 //
 //  Created by Karl Stenerud on 10-09-25.
@@ -30,7 +30,7 @@
 #import "ALDevice.h"
 
 
-#pragma mark ObjectALManager
+#pragma mark OpenALManager
 
 /**
  * Master class for the ObjectAL library.
@@ -41,7 +41,7 @@
  * OpenAL object model.
  * Alternatively, you may opt to use SimpleIphoneAudio for your audio needs.
  */
-@interface ObjectALManager : NSObject
+@interface OpenALManager : NSObject
 {
 	ALContext* currentContext; // WEAK reference
 	
@@ -86,7 +86,7 @@
  * <b>- (ObjectAL*) sharedInstance</b>: Get the shared singleton instance. <br>
  * <b>- (void) purgeSharedInstance</b>: Purge (deallocate) the shared instance.
  */
-SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(ObjectALManager);
+SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OpenALManager);
 
 
 #pragma mark Utility

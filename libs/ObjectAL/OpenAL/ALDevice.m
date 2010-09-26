@@ -29,7 +29,7 @@
 #import "ObjectALMacros.h"
 #import "MutableArray-WeakReferences.h"
 #import "IphoneAudioSupport.h"
-#import "ObjectALManager.h"
+#import "OpenALManager.h"
 
 
 @implementation ALDevice
@@ -52,7 +52,7 @@
 		{
 			contexts = [[NSMutableArray mutableArrayUsingWeakReferencesWithCapacity:5] retain];
 			
-			[[ObjectALManager sharedInstance] notifyDeviceInitializing:self];
+			[[OpenALManager sharedInstance] notifyDeviceInitializing:self];
 		}
 	}
 	return self;
@@ -60,7 +60,7 @@
 
 - (void) dealloc
 {
-	[[ObjectALManager sharedInstance] notifyDeviceDeallocating:self];
+	[[OpenALManager sharedInstance] notifyDeviceDeallocating:self];
 	[contexts release];
 	[ALWrapper closeDevice:device];
 

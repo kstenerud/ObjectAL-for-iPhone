@@ -28,7 +28,7 @@
 #import "mach_timing.h"
 #import "ObjectALMacros.h"
 #import "ALWrapper.h"
-#import "ObjectALManager.h"
+#import "OpenALManager.h"
 
 
 @implementation ALSource
@@ -47,7 +47,7 @@
 
 - (id) init
 {
-	return [self initOnContext:[ObjectALManager sharedInstance].currentContext];
+	return [self initOnContext:[OpenALManager sharedInstance].currentContext];
 }
 
 - (id) initOnContext:(ALContext*) contextIn
@@ -55,12 +55,12 @@
 	if(nil != (self = [super init]))
 	{
 		context = [contextIn retain];
-		@synchronized([ObjectALManager sharedInstance])
+		@synchronized([OpenALManager sharedInstance])
 		{
-			ALContext* oldContext = [ObjectALManager sharedInstance].currentContext;
-			[ObjectALManager sharedInstance].currentContext = context;
+			ALContext* oldContext = [OpenALManager sharedInstance].currentContext;
+			[OpenALManager sharedInstance].currentContext = context;
 			sourceId = [ALWrapper genSource];
-			[ObjectALManager sharedInstance].currentContext = oldContext;
+			[OpenALManager sharedInstance].currentContext = oldContext;
 		}
 		
 		[context notifySourceInitializing:self];
@@ -81,12 +81,12 @@
 
 	[buffer release];
 
-	@synchronized([ObjectALManager sharedInstance])
+	@synchronized([OpenALManager sharedInstance])
 	{
-		ALContext* oldContext = [ObjectALManager sharedInstance].currentContext;
-		[ObjectALManager sharedInstance].currentContext = context;
+		ALContext* oldContext = [OpenALManager sharedInstance].currentContext;
+		[OpenALManager sharedInstance].currentContext = context;
 		[ALWrapper deleteSource:sourceId];
-		[ObjectALManager sharedInstance].currentContext = oldContext;
+		[OpenALManager sharedInstance].currentContext = oldContext;
 	}
 	[context release];
 

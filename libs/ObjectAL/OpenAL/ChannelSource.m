@@ -26,7 +26,7 @@
 
 #import "ChannelSource.h"
 #import "ObjectALMacros.h"
-#import "ObjectALManager.h"
+#import "OpenALManager.h"
 
 
 @implementation ChannelSource
@@ -42,7 +42,7 @@
 {
 	if(nil != (self = [super init]))
 	{
-		context = [[ObjectALManager sharedInstance].currentContext retain];
+		context = [[OpenALManager sharedInstance].currentContext retain];
 
 		// Create some OpenAL sound sources
 		sourcePool = [[SoundSourcePool pool] retain];
