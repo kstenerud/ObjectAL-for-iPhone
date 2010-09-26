@@ -44,7 +44,7 @@
 	CCLabel* label;
 	CGPoint position = ccp(20, size.height - 80);
 	
-	label = [CCLabel labelWithString:@"ObjectAL" fontName:@"Helvetica" fontSize:24];
+	label = [CCLabel labelWithString:@"ALSource" fontName:@"Helvetica" fontSize:24];
 	label.anchorPoint = ccp(0, 0.5);
 	label.color = ccBLACK;
 	label.position = position;
@@ -99,7 +99,7 @@
 
 	position = ccp(center.x, size.height - 80);
 
-	label = [CCLabel labelWithString:@"Background" fontName:@"Helvetica" fontSize:24];
+	label = [CCLabel labelWithString:@"AudioTrack" fontName:@"Helvetica" fontSize:24];
 	label.anchorPoint = ccp(0, 0.5);
 	label.color = ccBLACK;
 	label.position = position;
