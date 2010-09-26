@@ -5,7 +5,7 @@ Major changes (incompatible with earlier versions):
 ===================================================
 
 - BackgroundAudio has been replaced with AudioTrack and AudioTracks.
-- ObjectAL has been renamed to ObjectALManager.
+- ObjectAL has been renamed to OpenALManager.
 - Replaced duration fade methods with audio actions (OALAction).
 
 
