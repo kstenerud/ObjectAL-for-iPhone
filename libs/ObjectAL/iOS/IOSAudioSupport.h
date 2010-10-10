@@ -19,7 +19,7 @@
 // limitations under the License.
 //
 // Note: You are NOT required to make the license available from within your
-// iPhone application. Including it in your project is sufficient.
+// iOS application. Including it in your project is sufficient.
 //
 // Attribution is not required, but appreciated :)
 //
@@ -41,11 +41,11 @@
  * prior to adding them to your project. The <strong>afconvert</strong> command line tool is able
  * to do this conversion.
  *
- * Example: convert from a wav file to iPhone compatible, 16 bits per channel, 44100KHz:
+ * Example: convert from a wav file to iOS compatible, 16 bits per channel, 44100KHz:
  *
  * \code afconvert -f caff -d LEI16@@44100 sourcefile.wav destfile.caf \endcode
  *
- * Example: convert from a wav file to iPhone compatible, 8 bits per channel, 22050KHz:
+ * Example: convert from a wav file to iOS compatible, 8 bits per channel, 22050KHz:
  *
  * \code afconvert -f caff -d I8@@22050 sourcefile.wav destfile.caf \endcode
  */

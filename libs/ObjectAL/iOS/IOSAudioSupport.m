@@ -19,7 +19,7 @@
 // limitations under the License.
 //
 // Note: You are NOT required to make the license available from within your
-// iPhone application. Including it in your project is sufficient.
+// iOS application. Including it in your project is sufficient.
 //
 // Attribution is not required, but appreciated :)
 //
@@ -187,7 +187,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(IOSAudioSupport);
 								   @"Unsupported session property", [NSNumber numberWithInt:kAudioSessionUnsupportedPropertyError],
 								   @"Bad session property size", [NSNumber numberWithInt:kAudioSessionBadPropertySizeError],
 								   @"Session is not active", [NSNumber numberWithInt:kAudioSessionNotActiveError], 
-#if 0 // Documented but not implemented on iPhone
+#if 0 // Documented but not implemented on iOS
 								   @"Hardware not available for session", [NSNumber numberWithInt:kAudioSessionNoHardwareError],
 #endif
 #ifdef __IPHONE_3_1

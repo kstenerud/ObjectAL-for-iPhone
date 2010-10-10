@@ -19,7 +19,7 @@
 // limitations under the License.
 //
 // Note: You are NOT required to make the license available from within your
-// iPhone application. Including it in your project is sufficient.
+// iOS application. Including it in your project is sufficient.
 //
 // Attribution is not required, but appreciated :)
 //
@@ -160,7 +160,7 @@
 SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALSimpleAudio);
 
 /** Start OALSimpleAudio with the specified number of reserved sources.
- * Call this initializer if you want to use OALSimpleAudio, but keep some of the iPhone's
+ * Call this initializer if you want to use OALSimpleAudio, but keep some of the device's
  * audio sources (there are 32 in total) for your own use. <br>
  * <strong>Note:</strong> This method must be called ONLY ONCE, <em>BEFORE</em>
  * any attempt is made to access the shared instance.

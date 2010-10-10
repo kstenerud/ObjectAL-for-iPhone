@@ -19,7 +19,7 @@
 // limitations under the License.
 //
 // Note: You are NOT required to make the license available from within your
-// iPhone application. Including it in your project is sufficient.
+// iOS application. Including it in your project is sufficient.
 //
 // Attribution is not required, but appreciated :)
 //

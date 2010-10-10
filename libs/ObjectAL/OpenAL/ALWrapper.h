@@ -19,7 +19,7 @@
 // limitations under the License.
 //
 // Note: You are NOT required to make the license available from within your
-// iPhone application. Including it in your project is sufficient.
+// iOS application. Including it in your project is sufficient.
 //
 // Attribution is not required, but appreciated :)
 //
@@ -919,7 +919,7 @@
 
 #pragma mark Context capture functions
 
-/** *UNSUPPORTED ON IPHONE* Open an audio capture device.
+/** *UNSUPPORTED ON IOS* Open an audio capture device.
  *
  * @param deviceName The name of the device to open (nil = open the default device).
  * @param frequency The sampling frequency to use.
@@ -964,15 +964,15 @@
 			 numSamples:(ALCsizei) numSamples;
 
 
-#pragma mark iPhone extensions
+#pragma mark iOS extensions
 
-/** Get the iPhone's mixer outut data rate.
+/** Get the iOS device's mixer outut data rate.
  *
  * @return The mixer output data rate.
  */
 + (ALdouble) getMixerOutputDataRate;
 
-/** Set the iPhone's mixer output data rate.
+/** Set the iOS device's mixer output data rate.
  *
  * @param frequency The output data rate (frequency).
  */

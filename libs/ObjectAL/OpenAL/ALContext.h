@@ -19,7 +19,7 @@
 // limitations under the License.
 //
 // Note: You are NOT required to make the license available from within your
-// iPhone application. Including it in your project is sufficient.
+// iOS application. Including it in your project is sufficient.
 //
 // Attribution is not required, but appreciated :)
 //
@@ -38,7 +38,7 @@
 /**
  * A context encompasses a single listener and a series of sources.
  * A context is created from a device, and many contexts may be created
- * (though multiple contexts would be unusual in an iPhone app). <br>
+ * (though multiple contexts would be unusual in an iOS app). <br>
  *
  * Note: Some property values are only valid if this context is the current
  * context.

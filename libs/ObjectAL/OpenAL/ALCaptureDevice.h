@@ -19,7 +19,7 @@
 // limitations under the License.
 //
 // Note: You are NOT required to make the license available from within your
-// iPhone application. Including it in your project is sufficient.
+// iOS application. Including it in your project is sufficient.
 //
 // Attribution is not required, but appreciated :)
 //
@@ -32,9 +32,9 @@
 #pragma mark ALCaptureDevice
 
 /**
- * *UNIMPLEMENTED FOR IPHONE* An OpenAL device for capturing sound data.
- * Note: This functionality is NOT implemented in iPhone's OpenAL! <br>
- * This class is a placeholder in case such functionality is added in a future iPhone SDK.
+ * *UNIMPLEMENTED FOR IOS* An OpenAL device for capturing sound data.
+ * Note: This functionality is NOT implemented in iOS OpenAL! <br>
+ * This class is a placeholder in case such functionality is added in a future iOS SDK.
  */
 @interface ALCaptureDevice : NSObject
 {
