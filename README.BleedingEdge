@@ -1,5 +1,7 @@
 The next release will be a major release (2.0).
 
+Class names should be stable now.
+
 
 Major changes (incompatible with earlier versions):
 ===================================================
@@ -18,6 +20,9 @@ New Stuff:
 
 - OALAudioTrack: Allows more than one background audio track to play at a time.
 - OALAction: Allows actions to be performed on audio objects.
+- OALFunction: Allows you to modify how a duration based fade, pan, or pitch gets applied in an action.
+- OALAudioTrack supports duration based fade and pan.
+- SoundSource objects (such as ALSource) support duration based fade, pan, and pitch.
 
 
 Minor changes:
@@ -27,3 +32,5 @@ Minor changes:
 - New demo: Audio Tracks.
 - ObjectAL can now be compiled as Objective-C++ if you want.
 - Fixed crash issue when the first attempt to start the audio session fails.
+- Workaround for compiler bug when compiling for iOS4.1 with LLVM.
+- Fix for SynthesizeSingleton when using a nonstandard init method.
