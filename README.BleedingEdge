@@ -20,6 +20,7 @@ New Stuff:
 
 - OALAudioTrack: Allows more than one background audio track to play at a time.
 - OALAction: Allows actions to be performed on audio objects.
+             You can configure ObjectAL to make all actions subclasses of cocos2d actions in ObjectALConfig.h
 - OALFunction: Allows you to modify how a duration based fade, pan, or pitch gets applied in an action.
 - OALAudioTrack supports duration based fade and pan.
 - SoundSource objects (such as ALSource) support duration based fade, pan, and pitch.
