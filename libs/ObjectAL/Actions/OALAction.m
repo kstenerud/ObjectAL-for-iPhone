@@ -29,6 +29,46 @@
 #import "mach_timing.h"
 
 
+#if OBJECTAL_USE_COCOS2D_ACTIONS
+
+#define COCOS2D_SUBCLASS(CLASS_A)	\
+@implementation CLASS_A	\
+	\
+- (id) init	\
+{	\
+	return [self initWithDuration:0];	\
+}	\
+	\
+- (bool) running	\
+{	\
+	return started && !self.isDone;	\
+}	\
+- (void) runWithTarget:(id) targetIn	\
+{	\
+	if(!started)	\
+	{	\
+		[[CCActionManager sharedManager] addAction:self target:targetIn paused:NO];	\
+	}	\
+}	\
+	\
+- (void) prepareWithTarget:(id) targetIn	\
+{	\
+}	\
+	\
+-(void) startWithTarget:(id) targetIn	\
+{	\
+	[super startWithTarget:targetIn];	\
+	[self prepareWithTarget:targetIn];	\
+	started = YES;	\
+	[self runWithTarget:targetIn];	\
+}	\
+	\
+@end
+
+#endif /* OBJECTAL_USE_COCOS2D_ACTIONS */
+
+
+
 #if !OBJECTAL_USE_COCOS2D_ACTIONS
 
 
@@ -114,46 +154,7 @@
 
 #else /* !OBJECTAL_USE_COCOS2D_ACTIONS */
 
-
-#pragma mark -
-#pragma mark OALAction (Cocos2d version)
-
-@implementation OALAction
-
-
-#pragma mark Properties
-
-- (bool) running
-{
-	return !self.isDone;
-}
-
-
-#pragma mark Functions
-
-- (void) runWithTarget:(id) targetIn
-{
-	if(!started)
-	{
-		[[CCActionManager sharedManager] addAction:self target:targetIn paused:NO];
-	}
-}
-
-- (void) prepareWithTarget:(id) targetIn
-{
-	// Subclasses do stuff here.
-}
-
--(void) startWithTarget:(id) targetIn
-{
-	[super startWithTarget:targetIn];
-	[self prepareWithTarget:targetIn];
-	started = YES;
-	[self runWithTarget:targetIn];
-}
-
-@end
-
+COCOS2D_SUBCLASS(OALAction);
 
 #endif /* !OBJECTAL_USE_COCOS2D_ACTIONS */
 
@@ -440,6 +441,8 @@
 @end
 
 
+#if !OBJECTAL_USE_COCOS2D_ACTIONS
+
 @implementation OALSequentialActions
 
 + (id) actions:(OALAction*) firstAction, ...
@@ -590,6 +593,15 @@
 
 @end
 
+#else /* !OBJECTAL_USE_COCOS2D_ACTIONS */
+
+COCOS2D_SUBCLASS(OALSequentialActions);
+
+#endif /* !OBJECTAL_USE_COCOS2D_ACTIONS */
+
+
+
+#if !OBJECTAL_USE_COCOS2D_ACTIONS
 
 @implementation OALConcurrentActions
 
@@ -714,6 +726,12 @@
 
 @end
 
+#else /* !OBJECTAL_USE_COCOS2D_ACTIONS */
+
+COCOS2D_SUBCLASS(OALConcurrentActions);
+
+#endif /* !OBJECTAL_USE_COCOS2D_ACTIONS */
+
 
 @implementation OALCall
 
@@ -783,9 +801,13 @@
 	return self;
 }
 
+
 - (void) start
 {
+#if !OBJECTAL_USE_COCOS2D_ACTIONS
 	[super start];
+#endif /* !OBJECTAL_USE_COCOS2D_ACTIONS */
+
 	switch(numObjects)
 	{
 		case 2:
@@ -798,6 +820,21 @@
 			[callTarget performSelector:selector];
 	}
 }
+
+#if OBJECTAL_USE_COCOS2D_ACTIONS
+
+-(void) startWithTarget:(id) targetIn
+{
+	[super startWithTarget:targetIn];
+	[self start];
+}
+
+- (void) update:(float) proportionComplete
+{
+	// Nothing to do.
+}
+
+#endif /* OBJECTAL_USE_COCOS2D_ACTIONS */
 
 
 @end

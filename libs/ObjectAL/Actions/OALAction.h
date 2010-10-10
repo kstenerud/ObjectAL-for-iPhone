@@ -29,6 +29,26 @@
 #import "ObjectALConfig.h"
 
 
+#if OBJECTAL_USE_COCOS2D_ACTIONS
+
+#import "cocos2d.h"
+
+#define COCOS2D_SUBCLASS_HEADER(CLASS_A,CLASS_B)	\
+@interface CLASS_A: CLASS_B	\
+{	\
+	bool started;	\
+}	\
+	\
+@property(readonly,nonatomic) bool running;	\
+- (void) runWithTarget:(id) target;	\
+- (void) prepareWithTarget:(id) target;	\
+	\
+@end
+
+#endif /* OBJECTAL_USE_COCOS2D_ACTIONS */
+
+
+
 /* There are two versions of the actions which can be used: ObjectAL and Cocos2d.
  * It's usually more convenient when using Cocos2d to have all actions as part of
  * the Cocos2d action system.  You can set this in ObjectALConfig.h
@@ -110,47 +130,7 @@
 
 #else /* !OBJECTAL_USE_COCOS2D_ACTIONS */
 
-
-#import "cocos2d.h"
-
-#pragma mark -
-#pragma mark OALAction (Cocos2d version)
-
-/**
- * OALAction as a subclass of CCIntervalAction.
- *
- * This version of OALAction gets used if you enabled OBJECTAL_USE_COCOS2D_ACTIONS in ObjectALConfig.
- * @see OBJECTAL_USE_COCOS2D_ACTIONS
- */
-@interface OALAction: CCIntervalAction
-{
-	/** If YES, this action has been started. */
-	bool started;
-}
-
-
-#pragma mark Properties
-
-/** If YES, this action is currently running. */
-@property(readonly,nonatomic) bool running;
-
-
-#pragma mark Functions
-
-/** Run this action on a target.
- *
- * @param target The target to run the action on.
- */
-- (void) runWithTarget:(id) target;
-
-/** Called by runWithTarget to start the action running.
- * Subclasses must ensure that duration is valid when this method returns.
- *
- * @param target The target to run the action on.
- */
-- (void) beginWithTarget:(id) target;
-
-@end
+COCOS2D_SUBCLASS_HEADER(OALAction, CCIntervalAction);
 
 #endif /* !OBJECTAL_USE_COCOS2D_ACTIONS */
 
@@ -358,6 +338,13 @@
 
 @end
 
+#else /* !OBJECTAL_USE_COCOS2D_ACTIONS */
+
+COCOS2D_SUBCLASS_HEADER(OALSequentialActions,CCSequence);
+COCOS2D_SUBCLASS_HEADER(OALConcurrentActions,CCSpawn);
+
+#endif /* !OBJECTAL_USE_COCOS2D_ACTIONS */
+
 
 @interface OALCall: OALAction
 {
@@ -393,5 +380,3 @@
 			   withObject:(id) secondObject;
 
 @end
-
-#endif /* !OBJECTAL_USE_COCOS2D_ACTIONS */
