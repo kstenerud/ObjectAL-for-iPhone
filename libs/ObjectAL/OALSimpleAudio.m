@@ -1,5 +1,5 @@
 //
-//  SimpleAudio.m
+//  OALSimpleAudio.m
 //  ObjectAL
 //
 //  Created by Karl Stenerud on 10-01-14.
@@ -24,9 +24,9 @@
 // Attribution is not required, but appreciated :)
 //
 
-#import "SimpleIphoneAudio.h"
+#import "OALSimpleAudio.h"
 #import "ObjectALMacros.h"
-#import "IphoneAudioSupport.h"
+#import "IOSAudioSupport.h"
 #import "OpenALManager.h"
 
 // By default, reserve all 32 sources.
@@ -36,9 +36,9 @@
 #pragma mark Private Methods
 
 /**
- * (INTERNAL USE) Private interface to SimpleIphoneAudio.
+ * (INTERNAL USE) Private interface to OALSimpleAudio.
  */
-@interface SimpleIphoneAudio (Private)
+@interface OALSimpleAudio (Private)
 
 /** (INTERNAL USE) Preload a sound effect and return the preloaded buffer.
  *
@@ -50,16 +50,16 @@
 @end
 
 #pragma mark -
-#pragma mark SimpleIphoneAudio
+#pragma mark OALSimpleAudio
 
-@implementation SimpleIphoneAudio
+@implementation OALSimpleAudio
 
 #pragma mark Object Management
 
-SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
+SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 
 
-+ (SimpleIphoneAudio*) sharedInstanceWithSources:(int) sources
++ (OALSimpleAudio*) sharedInstanceWithSources:(int) sources
 {
 	return [[[self alloc] initWithSources:sources] autorelease];
 }
@@ -76,9 +76,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 		device = [[ALDevice deviceWithDeviceSpecifier:nil] retain];
 		context = [[ALContext contextOnDevice:device attributes:nil] retain];
 		[OpenALManager sharedInstance].currentContext = context;
-		channel = [[ChannelSource channelWithSources:sources] retain];
+		channel = [[ALChannelSource channelWithSources:sources] retain];
 
-		backgroundTrack = [[AudioTrack track] retain];
+		backgroundTrack = [[OALAudioTrack track] retain];
 
 		self.preloadCacheEnabled = YES;
 		self.bgVolume = 1.0;
@@ -138,22 +138,22 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 
 - (bool) allowIpod
 {
-	return [IphoneAudioSupport sharedInstance].allowIpod;
+	return [IOSAudioSupport sharedInstance].allowIpod;
 }
 
 - (void) setAllowIpod:(bool) value
 {
-	[IphoneAudioSupport sharedInstance].allowIpod = value;
+	[IOSAudioSupport sharedInstance].allowIpod = value;
 }
 
 - (bool) useHardwareIfAvailable
 {
-	return [IphoneAudioSupport sharedInstance].useHardwareIfAvailable;
+	return [IOSAudioSupport sharedInstance].useHardwareIfAvailable;
 }
 
 - (void) setUseHardwareIfAvailable:(bool) value
 {
-	[IphoneAudioSupport sharedInstance].useHardwareIfAvailable = value;
+	[IOSAudioSupport sharedInstance].useHardwareIfAvailable = value;
 }
 
 @synthesize backgroundTrack;
@@ -227,12 +227,12 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 
 - (bool) honorSilentSwitch
 {
-	return [IphoneAudioSupport sharedInstance].honorSilentSwitch;
+	return [IOSAudioSupport sharedInstance].honorSilentSwitch;
 }
 
 - (void) setHonorSilentSwitch:(bool) value
 {
-	[IphoneAudioSupport sharedInstance].honorSilentSwitch = value;
+	[IOSAudioSupport sharedInstance].honorSilentSwitch = value;
 }
 
 - (bool) bgMuted
@@ -314,6 +314,20 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 	return [backgroundTrack playFile:filePath loops:loop ? -1 : 0];
 }
 
+- (bool) playBg:(NSString*) filePath
+		 volume:(float) volume
+			pan:(float) pan
+		   loop:(bool) loop
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		backgroundTrack.gain = volume;
+		backgroundTrack.pan = pan;
+		backgroundTrack.numberOfLoops = loop ? -1 : 0;
+		return [backgroundTrack play];
+	}
+}
+
 - (bool) playBg
 {
 	return [self playBgWithLoop:NO];
@@ -345,7 +359,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 	}
 	if(nil == buffer)
 	{
-		buffer = [[IphoneAudioSupport sharedInstance] bufferFromFile:filePath];
+		buffer = [[IOSAudioSupport sharedInstance] bufferFromFile:filePath];
 		if(nil == buffer)
 		{
 			LOG_ERROR(@"Could not load effect %@", filePath);
@@ -392,17 +406,21 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SimpleIphoneAudio);
 	}
 }
 
-- (id<SoundSource>) playEffect:(NSString*) filePath
+- (id<ALSoundSource>) playEffect:(NSString*) filePath
 {
 	return [self playEffect:filePath volume:1.0 pitch:1.0 pan:0.0 loop:NO];
 }
 
-- (id<SoundSource>) playEffect:(NSString*) filePath loop:(bool) loop
+- (id<ALSoundSource>) playEffect:(NSString*) filePath loop:(bool) loop
 {
 	return [self playEffect:filePath volume:1.0 pitch:1.0 pan:0.0 loop:loop];
 }
 
-- (id<SoundSource>) playEffect:(NSString*) filePath volume:(float) volume pitch:(float) pitch pan:(float) pan loop:(bool) loop
+- (id<ALSoundSource>) playEffect:(NSString*) filePath
+						  volume:(float) volume
+						   pitch:(float) pitch
+							 pan:(float) pan
+							loop:(bool) loop
 {
 	if(nil == filePath)
 	{

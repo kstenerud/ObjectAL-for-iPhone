@@ -72,10 +72,6 @@
 	[planets release];
 	[bullets release];
 
-	// Note: Normally you wouldn't purge SimpleIphoneAudio when leaving a scene.
-	// I'm doing it here to provide a clean slate for the other demos.
-	[SimpleIphoneAudio purgeSharedInstance];
-
 	[super dealloc];
 }
 
@@ -119,7 +115,7 @@
 								[CCCallFuncN actionWithTarget:self selector:@selector(removeBullet:)],
 								nil];
 	[bullet runAction:action];
-	[[SimpleIphoneAudio sharedInstance] playEffect:SHOOT_SOUND];
+	[[OALSimpleAudio sharedInstance] playEffect:SHOOT_SOUND];
 }
 
 
@@ -141,9 +137,9 @@
 
 - (void) onEnterTransitionDidFinish
 {
-	[[SimpleIphoneAudio sharedInstance] preloadEffect:SHOOT_SOUND];
-	[[SimpleIphoneAudio sharedInstance] preloadEffect:EXPLODE_SOUND];
-	[[SimpleIphoneAudio sharedInstance] playBg:@"PlanetKiller.mp3" loop:YES];
+	[[OALSimpleAudio sharedInstance] preloadEffect:SHOOT_SOUND];
+	[[OALSimpleAudio sharedInstance] preloadEffect:EXPLODE_SOUND];
+	[[OALSimpleAudio sharedInstance] playBg:@"PlanetKiller.mp3" loop:YES];
 
 	self.isTouchEnabled = YES;
 	[self schedule:@selector(onAddPlanet) interval:0.2];
@@ -182,7 +178,7 @@
 	{
 		[self removeBullet:bulletToRemove];
 		[self removePlanet:planetToRemove];
-		[[SimpleIphoneAudio sharedInstance] playEffect:EXPLODE_SOUND];
+		[[OALSimpleAudio sharedInstance] playEffect:EXPLODE_SOUND];
 	}
 }
 
@@ -229,7 +225,7 @@
 	[self unschedule:@selector(onAddPlanet)];
 	[self unschedule:@selector(onGameUpdate)];
 	self.isTouchEnabled = NO;
-	[[SimpleIphoneAudio sharedInstance] stopEverything];
+	[[OALSimpleAudio sharedInstance] stopEverything];
 	[[CCDirector sharedDirector] replaceScene:[MainLayer scene]];
 }
 

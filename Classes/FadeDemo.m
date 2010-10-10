@@ -26,9 +26,6 @@
 {
 	if(nil != (self = [super initWithColor:ccc4(255, 255, 255, 255)]))
 	{
-		// Make sure audio is initialized.
-		[SimpleIphoneAudio sharedInstance];
-
 		[self buildUI];
 	}
 	return self;
@@ -159,50 +156,62 @@
 	[self addChild:button z:250];
 }
 
+- (void) onEnterTransitionDidFinish
+{
+	// Initialize the OpenAL device and context here so that it doesn't happen
+	// prematurely.
+	[OALSimpleAudio sharedInstance];
+}
+
 - (void) onBackgroundPlayStop:(id) sender
 {
 	bgFading.visible = NO;
-	if([SimpleIphoneAudio sharedInstance].bgPlaying)
+	if([OALSimpleAudio sharedInstance].bgPlaying)
 	{
-		[[SimpleIphoneAudio sharedInstance] stopBg];
+		[[OALSimpleAudio sharedInstance] stopBg];
 	}
 	else
 	{
-		[SimpleIphoneAudio sharedInstance].bgVolume = 1.0;
-		[[SimpleIphoneAudio sharedInstance] playBg:@"ColdFunk.wav" loop:YES];
+		[OALSimpleAudio sharedInstance].bgVolume = 1.0;
+		[[OALSimpleAudio sharedInstance] playBg:@"ColdFunk.wav" loop:YES];
 	}
-}
-
-- (void) dealloc
-{
-	// Note: Normally you wouldn't purge SimpleIphoneAudio when leaving a scene.
-	// I'm doing it here to provide a clean slate for the other demos.
-	[SimpleIphoneAudio purgeSharedInstance];
-	
-	[super dealloc];
 }
 
 - (void) onBackgroundFadeOut:(id) sender
 {
-	if([SimpleIphoneAudio sharedInstance].bgPlaying)
+	if([OALSimpleAudio sharedInstance].bgPlaying)
 	{
 		bgFading.visible = YES;
-//		OALAction* action = [OALGainAction actionWithDuration:1.0 endValue:0.0];
-		OALAction* action = [OALGainAction actionWithDuration:1.0 endValue:0.0 function:[OALLogarithmicFunction function]];
-		[action runWithTarget:[SimpleIphoneAudio sharedInstance].backgroundTrack];
-		//[[SimpleIphoneAudio sharedInstance].backgroundTrack fadeTo:0.0 duration:1.0 target:self selector:@selector(onBackgroundFadeComplete:)];
+		[[OALSimpleAudio sharedInstance].backgroundTrack fadeTo:0.0 duration:1.0 target:self selector:@selector(onBackgroundFadeComplete:)];
+
+		// Alternatively, you could do this:
+		//   OALAction* action = [OALSequentialActions actions:
+		//						[OALGainAction actionWithDuration:1.0 endValue:0.0],
+		//						[OALCall actionWithCallTarget:self selector:@selector(onBackgroundFadeComplete:)],
+		//						nil];
+		//   [action runWithTarget:[OALSimpleAudio sharedInstance].backgroundTrack];
+		//
+		// You could also specify a function like this:
+		//   [OALGainAction actionWithDuration:1.0 endValue:0.0 function:[OALLogarithmicFunction function]];
 	}
 }
 
 - (void) onBackgrounFadeIn:(id) sender
 {
-	if([SimpleIphoneAudio sharedInstance].bgPlaying)
+	if([OALSimpleAudio sharedInstance].bgPlaying)
 	{
 		bgFading.visible = YES;
-//		OALAction* action = [OALGainAction actionWithDuration:1.0 endValue:1.0];
-		OALAction* action = [OALGainAction actionWithDuration:1.0 endValue:1.0 function:[OALLogarithmicFunction function]];
-		[action runWithTarget:[SimpleIphoneAudio sharedInstance].backgroundTrack];
-//		[[SimpleIphoneAudio sharedInstance].backgroundTrack fadeTo:1.0 duration:1.0 target:self selector:@selector(onBackgroundFadeComplete:)];
+		[[OALSimpleAudio sharedInstance].backgroundTrack fadeTo:1.0 duration:1.0 target:self selector:@selector(onBackgroundFadeComplete:)];
+
+		// Alternatively, you could do this:
+		//   OALAction* action = [OALSequentialActions actions:
+		//						[OALGainAction actionWithDuration:1.0 endValue:1.0],
+		//						[OALCall actionWithCallTarget:self selector:@selector(onBackgroundFadeComplete:)],
+		//						nil];
+		//   [action runWithTarget:[OALSimpleAudio sharedInstance].backgroundTrack];
+		//
+		// You could also specify a function like this:
+		//   [OALGainAction actionWithDuration:1.0 endValue:1.0 function:[OALLogarithmicFunction function]];
 	}
 }
 
@@ -221,7 +230,7 @@
 	}
 	else
 	{
-		source = [[SimpleIphoneAudio sharedInstance] playEffect:@"HappyAlley.wav" loop:YES];
+		source = [[OALSimpleAudio sharedInstance] playEffect:@"HappyAlley.wav" loop:YES];
 	}
 }
 
@@ -230,9 +239,17 @@
 	if(nil != source)
 	{
 		oalFading.visible = YES;
-		OALAction* action = [OALGainAction actionWithDuration:1.0 endValue:0.0];
-		[action runWithTarget:source];
-//		[source fadeTo:0.0 duration:1.0 target:self selector:@selector(onObjectALFadeComplete:)];
+		[source fadeTo:0.0 duration:1.0 target:self selector:@selector(onObjectALFadeComplete:)];
+
+		// Alternatively, you could do this:
+		//   OALAction* action = [OALSequentialActions actions:
+		//						[OALGainAction actionWithDuration:1.0 endValue:0.0],
+		//						[OALCall actionWithCallTarget:self selector:@selector(onObjectALFadeComplete:)],
+		//						nil];
+		//   [action runWithTarget:source];
+		//
+		// You could also specify a function like this:
+		//   [OALGainAction actionWithDuration:1.0 endValue:0.0 function:[OALLogarithmicFunction function]];
 	}
 }
 
@@ -241,9 +258,17 @@
 	if(nil != source)
 	{
 		oalFading.visible = YES;
-		OALAction* action = [OALGainAction actionWithDuration:1.0 endValue:1.0];
-		[action runWithTarget:source];
-//		[source fadeTo:1.0 duration:1.0 target:self selector:@selector(onObjectALFadeComplete:)];
+		[source fadeTo:1.0 duration:1.0 target:self selector:@selector(onObjectALFadeComplete:)];
+		
+		// Alternatively, you could do this:
+		//   OALAction* action = [OALSequentialActions actions:
+		//						[OALGainAction actionWithDuration:1.0 endValue:1.0],
+		//						[OALCall actionWithCallTarget:self selector:@selector(onObjectALFadeComplete:)],
+		//						nil];
+		//   [action runWithTarget:source];
+		//
+		// You could also specify a function like this:
+		//   [OALGainAction actionWithDuration:1.0 endValue:1.0 function:[OALLogarithmicFunction function]];
 	}
 }
 

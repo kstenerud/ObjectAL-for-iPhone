@@ -8,7 +8,7 @@
 #import "cocos2d.h"
 
 /**
- * Pseudo-game to demonstrate SimpleIphoneAudio.
+ * Pseudo-game to demonstrate OALSimpleAudio.
  */
 @interface PlanetKillerDemo : CCColorLayer
 {

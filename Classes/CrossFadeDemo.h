@@ -14,8 +14,6 @@
  */
 @interface CrossFadeDemo : CCColorLayer
 {
-	ALDevice* device;
-	ALContext* context;
 	ALSource* firstSource;
 	ALSource* secondSource;
 	ALBuffer* firstBuffer;

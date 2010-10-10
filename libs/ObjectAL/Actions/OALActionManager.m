@@ -26,6 +26,8 @@
 
 #import "OALActionManager.h"
 #import "mach_timing.h"
+#import "ObjectALMacros.h"
+#import "NSMutableArray+WeakReferences.h"
 
 #if !OBJECTAL_USE_COCOS2D_ACTIONS
 
@@ -43,7 +45,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALActionManager);
 {
 	if(nil != (self = [super init]))
 	{
-		targets = [[NSMutableArray arrayWithCapacity:50] retain];
+		targets = [[NSMutableArray mutableArrayUsingWeakReferencesWithCapacity:50] retain];
 		targetActions = [[NSMutableArray arrayWithCapacity:50] retain];
 		actionsToAdd = [[NSMutableArray arrayWithCapacity:100] retain];
 		actionsToRemove = [[NSMutableArray arrayWithCapacity:100] retain];
@@ -65,12 +67,15 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALActionManager);
 
 - (void) stopAllActions
 {
-	for(NSMutableArray* actions in targetActions)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		[actions makeObjectsPerformSelector:@selector(stop)];
+		for(NSMutableArray* actions in targetActions)
+		{
+			[actions makeObjectsPerformSelector:@selector(stop)];
+		}
+		
+		[actionsToAdd makeObjectsPerformSelector:@selector(stop)];
 	}
-
-	[actionsToAdd makeObjectsPerformSelector:@selector(stop)];
 }
 
 
@@ -78,64 +83,68 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALActionManager);
 
 - (void) step:(NSTimer*) timer
 {
-	// Add new actions
-	for(OALAction* action in actionsToAdd)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(action.running)
+		// Add new actions
+		for(OALAction* action in actionsToAdd)
+		{
+			if(action.running)
+			{
+				NSUInteger index = [targets indexOfObject:action.target];
+				if(NSNotFound == index)
+				{
+					index = [targets count];
+					[targets addObject:action.target];
+					[targetActions addObject:[NSMutableArray arrayWithCapacity:5]];
+				}
+				NSMutableArray* actions = [targetActions objectAtIndex:index];
+				[actions addObject:action];
+			}
+		}
+		[actionsToAdd removeAllObjects];
+		
+		// Remove stopped actions
+		for(OALAction* action in actionsToRemove)
 		{
 			NSUInteger index = [targets indexOfObject:action.target];
-			if(NSNotFound == index)
+			if(NSNotFound != index)
 			{
-				index = [targets count];
-				[targets addObject:action.target];
-				[targetActions addObject:[NSMutableArray arrayWithCapacity:5]];
-			}
-			NSMutableArray* actions = [targetActions objectAtIndex:index];
-			[actions addObject:action];
-		}
-	}
-	[actionsToAdd removeAllObjects];
-
-	// Remove stopped actions
-	for(OALAction* action in actionsToRemove)
-	{
-		NSUInteger index = [targets indexOfObject:action.target];
-		if(NSNotFound != index)
-		{
-			NSMutableArray* actions = [targetActions objectAtIndex:index];
-			[actions removeObject:action];
-			if([actions count] == 0)
-			{
-				[targets removeObjectAtIndex:index];
-				[targetActions removeObjectAtIndex:index];
-
-				// If there are no more actions running, stop the timer.
-				if([targets count] == 0)
+				NSMutableArray* actions = [targetActions objectAtIndex:index];
+				[actions removeObject:action];
+				if([actions count] == 0)
 				{
-					[stepTimer invalidate];
-					stepTimer = nil;
+					[targets removeObjectAtIndex:index];
+					[targetActions removeObjectAtIndex:index];
+					
+					// If there are no more actions running, stop the timer.
+					if([targets count] == 0)
+					{
+						[stepTimer invalidate];
+						stepTimer = nil;
+						break;
+					}
 				}
 			}
 		}
-	}
-	[actionsToRemove removeAllObjects];
-	
-	// Update all remaining actions, if any
-	uint64_t currentTime = mach_absolute_time();
-	for(NSMutableArray* actions in targetActions)
-	{
-		for(OALAction* action in actions)
+		[actionsToRemove removeAllObjects];
+		
+		// Update all remaining actions, if any
+		uint64_t currentTime = mach_absolute_time();
+		for(NSMutableArray* actions in targetActions)
 		{
-			float elapsedTime = mach_absolute_difference_seconds(currentTime, action.startTime);
-			float proportionComplete = elapsedTime / action.duration;
-			if(proportionComplete > 1.0)
+			for(OALAction* action in actions)
 			{
-				proportionComplete = 1.0;
-			}
-			[action update:proportionComplete];
-			if(1.0 == proportionComplete)
-			{
-				[action stop];
+				float elapsedTime = mach_absolute_difference_seconds(currentTime, action.startTime);
+				float proportionComplete = elapsedTime / action.duration;
+				if(proportionComplete < 1.0)
+				{
+					[action update:proportionComplete];
+				}
+				else
+				{
+					[action update:1.0];
+					[action stop];
+				}
 			}
 		}
 	}
@@ -146,22 +155,28 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALActionManager);
 
 - (void) notifyActionStarted:(OALAction*) action
 {
-	[actionsToAdd addObject:action];
-	
-	// Only start the timer if there are actions to perform.
-	if([targets count] == 0)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		stepTimer = [NSTimer scheduledTimerWithTimeInterval:kActionStepInterval
-													 target:self
-												   selector:@selector(step:)
-												   userInfo:nil
-													repeats:YES];
+		[actionsToAdd addObject:action];
+		
+		// Only start the timer if there are actions to perform.
+		if([targets count] == 0 && [actionsToAdd count] == 1)
+		{
+			stepTimer = [NSTimer scheduledTimerWithTimeInterval:kActionStepInterval
+														 target:self
+													   selector:@selector(step:)
+													   userInfo:nil
+														repeats:YES];
+		}
 	}
 }
 
 - (void) notifyActionStopped:(OALAction*) action
 {
-	[actionsToRemove addObject:action];
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		[actionsToRemove addObject:action];
+	}
 }
 
 @end

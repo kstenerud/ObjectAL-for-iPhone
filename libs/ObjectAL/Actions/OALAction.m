@@ -39,6 +39,11 @@
 
 #pragma mark Object Management
 
+- (id) init
+{
+	return [self initWithDuration:0];
+}
+
 - (id) initWithDuration:(float) durationIn
 {
 	if(nil != (self = [super init]))
@@ -61,21 +66,32 @@
 
 - (void) runWithTarget:(id) targetIn
 {
-	NSAssert(!running, @"Error: Action is already running");
-
-	target = targetIn;
-	running = YES;
-	startTime = mach_absolute_time();
+	[self prepareWithTarget:targetIn];
+	[self start];
 	[self update:0];
+
 	if(duration > 0)
 	{
 		[[OALActionManager sharedInstance] notifyActionStarted:self];
+		runningInManager = YES;
 	}
 	else
 	{
-		running = NO;
+		[self stop];
 	}
+}
 
+- (void) prepareWithTarget:(id) targetIn
+{
+	NSAssert(!running, @"Error: Action is already running");
+
+	target = targetIn;
+}
+
+- (void) start
+{
+	running = YES;
+	startTime = mach_absolute_time();
 }
 
 - (void) update:(float) proportionComplete
@@ -85,10 +101,11 @@
 
 - (void) stop
 {
-	if(running)
+	running = NO;
+	if(runningInManager)
 	{
-		running = NO;
 		[[OALActionManager sharedInstance] notifyActionStopped:self];
+		runningInManager = NO;
 	}
 }
 
@@ -122,9 +139,15 @@
 	}
 }
 
+- (void) prepareWithTarget:(id) targetIn
+{
+	// Subclasses do stuff here.
+}
+
 -(void) startWithTarget:(id) targetIn
 {
 	[super startWithTarget:targetIn];
+	[self prepareWithTarget:targetIn];
 	started = YES;
 	[self runWithTarget:targetIn];
 }
@@ -241,9 +264,9 @@
 
 #pragma mark Functions
 
-- (void) runWithTarget:(id) targetIn
+- (void) prepareWithTarget:(id) targetIn
 {
-	target = targetIn;
+	[super prepareWithTarget:targetIn];
 
 	delta = endValue - startValue;
 	
@@ -259,8 +282,6 @@
 		realFunction = function;
 		lowValue = startValue;
 	}
-
-	[super runWithTarget:targetIn];
 }
 
 @end
@@ -294,7 +315,7 @@
 
 #pragma mark Functions
 
-- (void) runWithTarget:(id) targetIn
+- (void) prepareWithTarget:(id) targetIn
 {
 	NSAssert([targetIn respondsToSelector:@selector(gain)]
 			 && [targetIn respondsToSelector:@selector(setGain:)],
@@ -304,8 +325,8 @@
 	{
 		startValue = [(id<OALAction_GainProtocol>)targetIn gain];
 	}
-	
-	[super runWithTarget:targetIn];
+
+	[super prepareWithTarget:targetIn];
 }
 
 - (void) update:(float) proportionComplete
@@ -345,8 +366,8 @@
 
 #pragma mark Functions
 
-- (void) runWithTarget:(id) targetIn
-{
+- (void) prepareWithTarget:(id) targetIn
+{	
 	NSAssert([targetIn respondsToSelector:@selector(pitch)]
 			 && [targetIn respondsToSelector:@selector(setPitch:)],
 			 @"Target does not respond to selectors [pitch] and [setPitch:]");
@@ -355,8 +376,8 @@
 	{
 		startValue = [(id<OALAction_PitchProtocol>)targetIn pitch];
 	}
-	
-	[super runWithTarget:targetIn];
+
+	[super prepareWithTarget:targetIn];
 }
 
 - (void) update:(float) proportionComplete
@@ -396,8 +417,8 @@
 
 #pragma mark Functions
 
-- (void) runWithTarget:(id) targetIn
-{
+- (void) prepareWithTarget:(id) targetIn
+{	
 	NSAssert([targetIn respondsToSelector:@selector(pan)]
 			 && [targetIn respondsToSelector:@selector(setPan:)],
 			 @"Target does not respond to selectors [pan] and [setPan:]");
@@ -406,8 +427,8 @@
 	{
 		startValue = [(id<OALAction_PanProtocol>)targetIn pan];
 	}
-	
-	[super runWithTarget:targetIn];
+
+	[super prepareWithTarget:targetIn];
 }
 
 - (void) update:(float) proportionComplete
@@ -415,5 +436,368 @@
 	[(id<OALAction_PanProtocol>)target setPan:startValue
 	 + [realFunction valueForInput:proportionComplete] * delta];
 }
+
+@end
+
+
+@implementation OALSequentialActions
+
++ (id) actions:(OALAction*) firstAction, ...
+{
+	NSMutableArray* actions = [NSMutableArray arrayWithCapacity:10];
+	va_list params;
+	va_start(params, firstAction);
+	OALAction* action = firstAction;
+
+	while(nil != action)
+	{
+		[actions addObject:action];
+		action = va_arg(params,OALAction*);
+	}
+
+	va_end(params);
+
+	return [[[self alloc] initWithActions:actions] autorelease];
+}
+
++ (id) actionsFromArray:(NSArray*) actions;
+{
+	return [[[self alloc] initWithActions:actions] autorelease];
+}
+
+- (id) initWithActions:(NSArray*) actionsIn
+{
+	if(nil != (self = [super initWithDuration:0]))
+	{
+		if([actionsIn isKindOfClass:[NSMutableArray class]])
+		{
+			actions = [actionsIn retain];
+		}
+		else
+		{
+			actions = [[NSMutableArray arrayWithArray:actionsIn] retain];
+		}
+
+		pDurations = [[NSMutableArray arrayWithCapacity:[actions count]] retain];
+	}
+	return self;
+}
+
+- (void) dealloc
+{
+	[actions release];
+	[pDurations release];
+	[super dealloc];
+}
+
+@synthesize actions;
+
+- (void) prepareWithTarget:(id) targetIn
+{
+	// Calculate the total duration in seconds of all children.
+	duration = 0;
+	for(OALAction* action in actions)
+	{
+		[action prepareWithTarget:targetIn];
+		duration += action.duration;
+	}
+
+	// Calculate the childrens' duration as proportions of the total.
+	[pDurations removeAllObjects];
+	if(0 == duration)
+	{
+		for(OALAction* action in actions)
+		{
+			[pDurations addObject:[NSNumber numberWithFloat:0]];
+		}
+	}
+	else
+	{
+		for(OALAction* action in actions)
+		{
+			[pDurations addObject:[NSNumber numberWithFloat:action.duration/duration]];
+		}
+	}
+
+	// Start at the first action.
+	if([actions count] > 0)
+	{
+		currentAction = [actions objectAtIndex:0];
+		pCurrentActionDuration = [[pDurations objectAtIndex:0] floatValue];
+	}
+	else
+	{
+		// Just in case this is an empty set.
+		currentAction = nil;
+		pCurrentActionDuration = 0;
+	}
+	
+	actionIndex = 0;
+	pLastComplete = 0;
+	pCurrentActionComplete = 0;
+
+	[super prepareWithTarget:targetIn];
+}
+
+- (void) start
+{
+	[currentAction start];
+	[super start];
+}
+
+- (void) stop
+{
+	[currentAction stop];
+	[super stop];
+}
+
+- (void) update:(float) pComplete
+{
+	float pDelta = pComplete - pLastComplete;
+	while(pCurrentActionComplete + pDelta >= pCurrentActionDuration)
+	{
+		if(currentAction.duration > 0)
+		{
+			[currentAction update:1.0];
+		}
+		[currentAction stop];
+		pDelta -= (pCurrentActionDuration - pCurrentActionComplete);
+		actionIndex++;
+		if(actionIndex >= [actions count])
+		{
+			return;
+		}
+		currentAction = [actions objectAtIndex:actionIndex];
+		pCurrentActionDuration = [[pDurations objectAtIndex:actionIndex] floatValue];
+		pCurrentActionComplete = 0;
+		[currentAction start];
+	}
+	
+	if(pComplete >= 1.0)
+	{
+		// Make sure a cumulative rounding error doesn't cause an uncompletable action.
+		[currentAction update:1.0];
+		[currentAction stop];
+	}
+	else
+	{
+		pCurrentActionComplete += pDelta;
+		[currentAction update:pCurrentActionComplete / pCurrentActionDuration];
+	}
+
+	pLastComplete = pComplete;
+}
+
+@end
+
+
+@implementation OALConcurrentActions
+
++ (id) actions:(OALAction*) firstAction, ...
+{
+	NSMutableArray* actions = [NSMutableArray arrayWithCapacity:10];
+	va_list params;
+	va_start(params, firstAction);
+	OALAction* action = firstAction;
+	
+	while(nil != action)
+	{
+		[actions addObject:action];
+		action = va_arg(params,OALAction*);
+	}
+	
+	va_end(params);
+	
+	return [[[self alloc] initWithActions:actions] autorelease];
+}
+
++ (id) actionsFromArray:(NSArray*) actions;
+{
+	return [[[self alloc] initWithActions:actions] autorelease];
+}
+
+- (id) initWithActions:(NSArray*) actionsIn
+{
+	if(nil != (self = [super initWithDuration:0]))
+	{
+		if([actionsIn isKindOfClass:[NSMutableArray class]])
+		{
+			actions = [actionsIn retain];
+		}
+		else
+		{
+			actions = [[NSMutableArray arrayWithArray:actionsIn] retain];
+		}
+		
+		pDurations = [[NSMutableArray arrayWithCapacity:[actions count]] retain];
+		actionsWithDuration = [[NSMutableArray arrayWithCapacity:[actions count]] retain];
+	}
+	return self;
+}
+
+- (void) dealloc
+{
+	[actions release];
+	[pDurations release];
+	[actionsWithDuration release];
+	[super dealloc];
+}
+
+@synthesize actions;
+
+- (void) prepareWithTarget:(id) targetIn
+{
+	[actionsWithDuration removeAllObjects];
+
+	// Calculate the longest duration in seconds of all children.
+	duration = 0;
+	for(OALAction* action in actions)
+	{
+		[action prepareWithTarget:target];
+		if(action.duration > 0)
+		{
+			if(action.duration > duration)
+			{
+				duration = action.duration;
+			}
+
+			// Also keep track of actions with durations.
+			[actionsWithDuration addObject:action];
+		}
+	}
+		
+	// Calculate the childrens' durations as proportions of the total.
+	[pDurations removeAllObjects];
+	for(OALAction* action in actionsWithDuration)
+	{
+		[pDurations addObject:[NSNumber numberWithFloat:action.duration/duration]];
+	}
+	
+	[super prepareWithTarget:targetIn];
+}
+
+- (void) start
+{
+	[actions makeObjectsPerformSelector:@selector(start)];
+	[super start];
+}
+
+- (void) stop
+{
+	[actions makeObjectsPerformSelector:@selector(stop)];
+	[super stop];
+}
+
+- (void) update:(float) proportionComplete
+{
+	if(0 == proportionComplete)
+	{
+		for(OALAction* action in actions)
+		{
+			[action update:0];
+		}
+	}
+	else
+	{
+		for(int i = 0; i < [actionsWithDuration count]; i++)
+		{
+			OALAction* action = [actionsWithDuration objectAtIndex:i];
+			float proportion = proportionComplete / [[pDurations objectAtIndex:i] floatValue];
+			if(proportion > 1.0)
+			{
+				proportion = 1.0;
+			}
+			[action update:proportion];
+		}
+	}
+}
+
+@end
+
+
+@implementation OALCall
+
++ (id) actionWithCallTarget:(id) callTarget
+				   selector:(SEL) selector
+{
+	return [[[self alloc] initWithCallTarget:callTarget selector:selector] autorelease];
+}
+
++ (id) actionWithCallTarget:(id) callTarget
+				   selector:(SEL) selector
+				 withObject:(id) object
+{
+	return [[[self alloc] initWithCallTarget:callTarget
+									selector:selector
+								  withObject:object] autorelease];
+}
+
++ (id) actionWithCallTarget:(id) callTarget
+				   selector:(SEL) selector
+				 withObject:(id) firstObject
+				 withObject:(id) secondObject
+{
+	return [[[self alloc] initWithCallTarget:callTarget
+									selector:selector
+								  withObject:firstObject
+								  withObject:secondObject] autorelease];
+}
+
+- (id) initWithCallTarget:(id) callTargetIn selector:(SEL) selectorIn
+{
+	if(nil != (self = [super init]))
+	{
+		callTarget = callTargetIn;
+		selector = selectorIn;
+	}
+	return self;
+}
+
+- (id) initWithCallTarget:(id) callTargetIn
+				 selector:(SEL) selectorIn
+			   withObject:(id) object
+{
+	if(nil != (self = [super init]))
+	{
+		callTarget = callTargetIn;
+		selector = selectorIn;
+		object1 = object;
+		numObjects = 1;
+	}
+	return self;
+}
+
+- (id) initWithCallTarget:(id) callTargetIn
+				 selector:(SEL) selectorIn
+			   withObject:(id) firstObject
+			   withObject:(id) secondObject
+{
+	if(nil != (self = [super init]))
+	{
+		callTarget = callTargetIn;
+		selector = selectorIn;
+		object1 = firstObject;
+		object2 = secondObject;
+		numObjects = 2;
+	}
+	return self;
+}
+
+- (void) start
+{
+	[super start];
+	switch(numObjects)
+	{
+		case 2:
+			[callTarget performSelector:selector withObject:object1 withObject:object2];
+			break;
+		case 1:
+			[callTarget performSelector:selector withObject:object1];
+			break;
+		default:
+			[callTarget performSelector:selector];
+	}
+}
+
 
 @end

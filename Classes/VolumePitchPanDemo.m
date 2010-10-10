@@ -34,16 +34,6 @@
 	if(nil != (self = [super initWithColor:ccc4(255, 255, 255, 255)]))
 	{
 		[self buildUI];
-		
-		// Initialize ObjectAL
-		device = [[ALDevice deviceWithDeviceSpecifier:nil] retain];
-		context = [[ALContext contextOnDevice:device attributes:nil] retain];
-		[OpenALManager sharedInstance].currentContext = context;
-		
-		[IphoneAudioSupport sharedInstance].handleInterruptions = YES;
-		
-		source = [[ALSource source] retain];
-		buffer = [[[IphoneAudioSupport sharedInstance] bufferFromFile:@"ColdFunk.wav"] retain];
 	}
 	return self;
 }
@@ -52,11 +42,6 @@
 {
 	[buffer release];
 	[source release];
-	
-	// Note: Normally you wouldn't release the context and device when leaving a scene.
-	// I'm doing it here to provide a clean slate for the other demos.
-	[context release];
-	[device release];
 
 	[super dealloc];
 }
@@ -146,6 +131,16 @@
 
 - (void) onEnterTransitionDidFinish
 {
+	// Initialize the OpenAL device and context here so that it doesn't happen
+	// prematurely.
+	
+	// We'll let OALSimpleAudio deal with the device and context.
+	// Since we're not going to use it for playing effects, don't give it any sources.
+	[OALSimpleAudio sharedInstanceWithSources:0];
+	
+	source = [[ALSource source] retain];
+	buffer = [[[IOSAudioSupport sharedInstance] bufferFromFile:@"ColdFunk.wav"] retain];
+	
 	[source play:buffer loop:YES];
 }
 

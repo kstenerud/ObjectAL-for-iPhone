@@ -1,5 +1,5 @@
 //
-//  AudioTrack.m
+//  OALAudioTrack.m
 //  ObjectAL
 //
 //  Created by Karl Stenerud on 10-08-21.
@@ -24,12 +24,12 @@
 // Attribution is not required, but appreciated :)
 //
 
-#import "AudioTrack.h"
-#import "AudioTracks.h"
+#import "OALAudioTrack.h"
+#import "OALAudioTracks.h"
 #import "mach_timing.h"
 #import <AudioToolbox/AudioToolbox.h>
 #import "ObjectALMacros.h"
-#import "IphoneAudioSupport.h"
+#import "IOSAudioSupport.h"
 
 
 #pragma mark Asynchronous Operations
@@ -40,7 +40,7 @@
 @interface AsyncAudioTrackOperation: NSOperation
 {
 	/** The audio track object to perform the operation on */
-	AudioTrack* audioTrack;
+	OALAudioTrack* audioTrack;
 	/** The URL of the sound file to play */
 	NSURL* url;
 	/** The target to inform when the operation completes */
@@ -56,7 +56,7 @@
  * @param target the target to inform when the operation completes.
  * @param selector the selector to call when the operation completes.
  */ 
-+ (id) operationWithTrack:(AudioTrack*) track url:(NSURL*) url target:(id) target selector:(SEL) selector;
++ (id) operationWithTrack:(OALAudioTrack*) track url:(NSURL*) url target:(id) target selector:(SEL) selector;
 
 /** (INTERNAL USE) Initialize an Asynchronous Operation.
  *
@@ -65,18 +65,18 @@
  * @param target the target to inform when the operation completes.
  * @param selector the selector to call when the operation completes.
  */ 
-- (id) initWithTrack:(AudioTrack*) track url:(NSURL*) url target:(id) target selector:(SEL) selector;
+- (id) initWithTrack:(OALAudioTrack*) track url:(NSURL*) url target:(id) target selector:(SEL) selector;
 
 @end
 
 @implementation AsyncAudioTrackOperation
 
-+ (id) operationWithTrack:(AudioTrack*) track url:(NSURL*) url target:(id) target selector:(SEL) selector
++ (id) operationWithTrack:(OALAudioTrack*) track url:(NSURL*) url target:(id) target selector:(SEL) selector
 {
 	return [[[self alloc] initWithTrack:track url:url target:target selector:selector] autorelease];
 }
 
-- (id) initWithTrack:(AudioTrack*) track url:(NSURL*) urlIn target:(id) targetIn selector:(SEL) selectorIn
+- (id) initWithTrack:(OALAudioTrack*) track url:(NSURL*) urlIn target:(id) targetIn selector:(SEL) selectorIn
 {
 	if(nil != (self = [super init]))
 	{
@@ -118,7 +118,7 @@
  * @param selector the selector to call when playback finishes.
  * @return a new operation.
  */
-+ (id) operationWithTrack:(AudioTrack*) track url:(NSURL*) url loops:(NSInteger) loops target:(id) target selector:(SEL) selector;
++ (id) operationWithTrack:(OALAudioTrack*) track url:(NSURL*) url loops:(NSInteger) loops target:(id) target selector:(SEL) selector;
 
 /**
  * (INTERNAL USE) Initialize an asynchronous play operation.
@@ -130,19 +130,19 @@
  * @param selector the selector to call when playback finishes.
  * @return The initialized operation.
  */
-- (id) initWithTrack:(AudioTrack*) track url:(NSURL*) url loops:(NSInteger) loops target:(id) target selector:(SEL) selector;
+- (id) initWithTrack:(OALAudioTrack*) track url:(NSURL*) url loops:(NSInteger) loops target:(id) target selector:(SEL) selector;
 
 @end
 
 
 @implementation AsyncAudioTrackPlayOperation
 
-+ (id) operationWithTrack:(AudioTrack*) track url:(NSURL*) url loops:(NSInteger) loops target:(id) target selector:(SEL) selector
++ (id) operationWithTrack:(OALAudioTrack*) track url:(NSURL*) url loops:(NSInteger) loops target:(id) target selector:(SEL) selector
 {
 	return [[[self alloc] initWithTrack:track url:url loops:loops target:target selector:selector] autorelease];
 }
 
-- (id) initWithTrack:(AudioTrack*) track url:(NSURL*) urlIn loops:(NSInteger) loopsIn target:(id) targetIn selector:(SEL) selectorIn
+- (id) initWithTrack:(OALAudioTrack*) track url:(NSURL*) urlIn loops:(NSInteger) loopsIn target:(id) targetIn selector:(SEL) selectorIn
 {
 	if(nil != (self = [super initWithTrack:track url:urlIn target:targetIn selector:selectorIn]))
 	{
@@ -151,7 +151,7 @@
 	return self;
 }
 
-- (id) initWithTrack:(AudioTrack*) track url:(NSURL*) urlIn target:(id) targetIn selector:(SEL) selectorIn
+- (id) initWithTrack:(OALAudioTrack*) track url:(NSURL*) urlIn target:(id) targetIn selector:(SEL) selectorIn
 {
 	return [self initWithTrack:track url:urlIn loops:0 target:targetIn selector:selectorIn];
 }
@@ -191,7 +191,7 @@
 /**
  * (INTERNAL USE) Private interface to AudioTrack.
  */
-@interface AudioTrack (Private)
+@interface OALAudioTrack (Private)
 
 #if TARGET_IPHONE_SIMULATOR && OBJECTAL_CFG_SIMULATOR_BUG_WORKAROUND
 
@@ -221,7 +221,7 @@
 #pragma mark -
 #pragma mark AudioTrack
 
-@implementation AudioTrack
+@implementation OALAudioTrack
 
 #pragma mark Object Management
 
@@ -234,27 +234,31 @@
 {
 	if(nil != (self = [super init]))
 	{
-		// Make sure AudioTracks is initialized.
-		[AudioTracks sharedInstance];
+		// Make sure OALAudioTracks is initialized.
+		[OALAudioTracks sharedInstance];
 		
 		operationQueue = [[NSOperationQueue alloc] init];
 		operationQueue.maxConcurrentOperationCount = 1;
 		gain = 1.0;
 		numberOfLoops = 0;
 		
-		[[AudioTracks sharedInstance] notifyTrackInitializing:self];
+		[[OALAudioTracks sharedInstance] notifyTrackInitializing:self];
 	}
 	return self;
 }
 
 - (void) dealloc
 {
-	[[AudioTracks sharedInstance] notifyTrackDeallocating:self];
+	[[OALAudioTracks sharedInstance] notifyTrackDeallocating:self];
 
 	[operationQueue release];
 	[currentlyLoadedUrl release];
 	[player release];
 	[simulatorPlayerRef release];
+	[gainAction stop];
+	[gainAction release];
+	[panAction stop];
+	[panAction release];
 	[super dealloc];
 }
 
@@ -276,6 +280,26 @@
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		player.delegate = delegate = value;
+	}
+}
+
+- (float) pan
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		return pan;
+	}
+}
+
+- (void) setPan:(float) value
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		if(isIOS40OrHigher)
+		{
+			pan = value;
+			player.pan = pan;
+		}
 	}
 }
 
@@ -315,7 +339,7 @@
 		muted = value;
 		if(muted)
 		{
-			[self stopFade];
+			[self stopActions];
 		}
 		float resultingGain = muted ? 0 : gain;
 		player.volume = resultingGain;
@@ -388,6 +412,18 @@
 	}
 }
 
+- (NSTimeInterval) deviceCurrentTime
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		if(isIOS40OrHigher)
+		{
+			return player.deviceCurrentTime;
+		}
+		return 0;
+	}
+}
+
 - (NSTimeInterval) duration
 {
 	OPTIONALLY_SYNCHRONIZED(self)
@@ -423,7 +459,7 @@
 			return NO;
 		}
 		
-		[self stopFade];
+		[self stopActions];
 		
 		// Only load if it's not the same URL as last time.
 		if(![url isEqual:currentlyLoadedUrl])
@@ -443,6 +479,12 @@
 			player.numberOfLoops = numberOfLoops;
 			player.meteringEnabled = meteringEnabled;
 			player.delegate = self;
+			isIOS40OrHigher = [player respondsToSelector:@selector(pan)];
+			if(isIOS40OrHigher)
+			{
+				player.pan = pan;
+			}
+
 			
 			[currentlyLoadedUrl release];
 			currentlyLoadedUrl = [url retain];
@@ -457,7 +499,7 @@
 
 - (bool) preloadFile:(NSString*) path
 {
-	return [self preloadUrl:[[IphoneAudioSupport sharedInstance] urlForPath:path]];
+	return [self preloadUrl:[[IOSAudioSupport sharedInstance] urlForPath:path]];
 }
 
 - (bool) preloadUrlAsync:(NSURL*) url target:(id) target selector:(SEL) selector
@@ -471,7 +513,7 @@
 
 - (bool) preloadFileAsync:(NSString*) path target:(id) target selector:(SEL) selector
 {
-	return [self preloadUrlAsync:[[IphoneAudioSupport sharedInstance] urlForPath:path] target:target selector:selector];
+	return [self preloadUrlAsync:[[IOSAudioSupport sharedInstance] urlForPath:path] target:target selector:selector];
 }
 
 - (bool) playUrl:(NSURL*) url
@@ -494,12 +536,12 @@
 
 - (bool) playFile:(NSString*) path
 {
-	return [self playUrl:[[IphoneAudioSupport sharedInstance] urlForPath:path]];
+	return [self playUrl:[[IOSAudioSupport sharedInstance] urlForPath:path]];
 }
 
 - (bool) playFile:(NSString*) path loops:(NSInteger) loops
 {
-	return [self playUrl:[[IphoneAudioSupport sharedInstance] urlForPath:path] loops:loops];
+	return [self playUrl:[[IOSAudioSupport sharedInstance] urlForPath:path] loops:loops];
 }
 
 - (void) playUrlAsync:(NSURL*) url target:(id) target selector:(SEL) selector
@@ -519,7 +561,7 @@
 
 - (void) playFileAsync:(NSString*) path loops:(NSInteger) loops target:(id) target selector:(SEL) selector
 {
-	[self playUrlAsync:[[IphoneAudioSupport sharedInstance] urlForPath:path] loops:loops target:target selector:selector];
+	[self playUrlAsync:[[IOSAudioSupport sharedInstance] urlForPath:path] loops:loops target:target selector:selector];
 }
 
 - (bool) play
@@ -532,7 +574,7 @@
 			return NO;
 		}
 		
-		[self stopFade];
+		[self stopActions];
 		SIMULATOR_BUG_WORKAROUND_PREPARE_PLAYBACK();
 		player.currentTime = 0;
 		player.volume = muted ? 0 : gain;
@@ -543,11 +585,36 @@
 	}
 }
 
+- (bool) playAtTime:(NSTimeInterval) time
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		if(suspended)
+		{
+			LOG_ERROR(@"Could not play: Audio is still suspended");
+			return NO;
+		}
+		
+		if(isIOS40OrHigher)
+		{
+			[self stopActions];
+			SIMULATOR_BUG_WORKAROUND_PREPARE_PLAYBACK();
+			player.currentTime = 0;
+			player.volume = muted ? 0 : gain;
+			player.numberOfLoops = numberOfLoops;
+			paused = NO;
+			playing = [player playAtTime:time];
+			return playing;
+		}
+		return NO;
+	}
+}
+
 - (void) stop
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		[self stopFade];
+		[self stopActions];
 		[player stop];
 		player.currentTime = 0;
 		SIMULATOR_BUG_WORKAROUND_END_PLAYBACK();
@@ -556,58 +623,27 @@
 	}
 }
 
-- (void) fadeStep:(NSTimer*) timer
+- (void) stopActions
 {
-	// Must always be synchronized
-	@synchronized(self)
-	{
-		if(0 != fadeStartTime)
-		{
-			float elapsedTime = mach_absolute_difference_seconds(mach_absolute_time(), fadeStartTime);
-			
-			float newGain = elapsedTime >= fadeDuration ? fadeEndingGain : fadeStartingGain + elapsedTime * fadeDeltaMultiplier;
-			
-			self.gain = newGain;
-			
-			if(newGain == fadeEndingGain)
-			{
-				[self stopFade];
-				[fadeCompleteTarget performSelector:fadeCompleteSelector withObject:self];
-			}
-		}
-	}
+	[self stopFade];
+	[self stopPan];
 }
 
-- (void) fadeTo:(float) value duration:(float) duration target:(id) target selector:(SEL) selector
+
+- (void) fadeTo:(float) value
+	   duration:(float) duration
+		 target:(id) target
+	   selector:(SEL) selector
 {
 	// Must always be synchronized
 	@synchronized(self)
 	{
 		[self stopFade];
-		fadeCompleteTarget = target;
-		fadeCompleteSelector = selector;
-		fadeStartingGain = self.gain;
-		fadeEndingGain = value;
-		
-		float delta = fadeEndingGain - fadeStartingGain;
-		
-		if(0 == delta)
-		{
-			// Handle case where there is no fading to be done.
-			[fadeCompleteTarget performSelector:fadeCompleteSelector withObject:self];
-		}
-		else
-		{
-			fadeDuration = duration;
-			fadeDeltaMultiplier = delta / fadeDuration;
-			fadeStartTime = mach_absolute_time();
-			
-			fadeTimer = [NSTimer scheduledTimerWithTimeInterval:kAudioTrack_FadeInterval
-														 target:self
-													   selector:@selector(fadeStep:)
-													   userInfo:nil
-														repeats:YES];
-		}
+		gainAction = [[OALSequentialActions actions:
+					   [OALGainAction actionWithDuration:duration endValue:value function:[OALGainAction defaultFunction]],
+					   [OALCall actionWithCallTarget:target selector:selector withObject:self],
+					   nil] retain];
+		[gainAction runWithTarget:self];
 	}
 }
 
@@ -616,9 +652,43 @@
 	// Must always be synchronized
 	@synchronized(self)
 	{
-		fadeStartTime = 0;
-		[fadeTimer invalidate];
-		fadeTimer = nil;
+		[gainAction stop];
+		[gainAction release];
+		gainAction = nil;
+	}
+}
+
+- (void) panTo:(float) value
+	  duration:(float) duration
+		target:(id) target
+	  selector:(SEL) selector
+{
+	if(isIOS40OrHigher)
+	{
+		// Must always be synchronized
+		@synchronized(self)
+		{
+			[self stopPan];
+			panAction = [[OALSequentialActions actions:
+						  [OALPanAction actionWithDuration:duration endValue:value function:[OALPanAction defaultFunction]],
+						  [OALCall actionWithCallTarget:target selector:selector withObject:self],
+						  nil] retain];
+			[panAction runWithTarget:self];
+		}
+	}
+}
+
+- (void) stopPan
+{
+	if(isIOS40OrHigher)
+	{
+		// Must always be synchronized
+		@synchronized(self)
+		{
+			[panAction stop];
+			[panAction release];
+			panAction = nil;
+		}
 	}
 }
 
@@ -626,7 +696,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		[self stopFade];
+		[self stopActions];
 		[currentlyLoadedUrl release];
 		currentlyLoadedUrl = nil;
 		

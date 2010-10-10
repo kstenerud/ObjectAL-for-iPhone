@@ -1,5 +1,5 @@
 //
-//  AudioTracks.m
+//  OALAudioTracks.m
 //  ObjectAL
 //
 //  Created by Karl Stenerud on 10-09-18.
@@ -24,26 +24,26 @@
 // Attribution is not required, but appreciated :)
 //
 
-#import "AudioTracks.h"
-#import "MutableArray-WeakReferences.h"
+#import "OALAudioTracks.h"
+#import "NSMutableArray+WeakReferences.h"
 #import "ObjectALMacros.h"
-#import "IphoneAudioSupport.h"
+#import "IOSAudioSupport.h"
 
 
-#pragma mark AudioTracks
+#pragma mark OALAudioTracks
 
-@implementation AudioTracks
+@implementation OALAudioTracks
 
 #pragma mark Object Management
 
-SYNTHESIZE_SINGLETON_FOR_CLASS(AudioTracks);
+SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioTracks);
 
 - (id) init
 {
 	if(nil != (self = [super init]))
 	{
-		// Make sure IphoneAudioSupport is initialized.
-		[IphoneAudioSupport sharedInstance];
+		// Make sure IOSAudioSupport is initialized.
+		[IOSAudioSupport sharedInstance];
 
 		tracks = [[NSMutableArray mutableArrayUsingWeakReferencesWithCapacity:10] retain];
 	}
@@ -74,7 +74,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(AudioTracks);
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		suspended = value;
-		for(AudioTrack* track in tracks)
+		for(OALAudioTrack* track in tracks)
 		{
 			track.suspended = suspended;
 		}
@@ -94,7 +94,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(AudioTracks);
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		paused = value;
-		for(AudioTrack* track in tracks)
+		for(OALAudioTrack* track in tracks)
 		{
 			track.paused = paused;
 		}
@@ -114,7 +114,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(AudioTracks);
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		muted = value;
-		for(AudioTrack* track in tracks)
+		for(OALAudioTrack* track in tracks)
 		{
 			track.muted = muted;
 		}
@@ -124,7 +124,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(AudioTracks);
 
 #pragma mark Internal Use
 
-- (void) notifyTrackInitializing:(AudioTrack*) track
+- (void) notifyTrackInitializing:(OALAudioTrack*) track
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
@@ -132,7 +132,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(AudioTracks);
 	}
 }
 
-- (void) notifyTrackDeallocating:(AudioTrack*) track
+- (void) notifyTrackDeallocating:(OALAudioTrack*) track
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{

@@ -29,7 +29,7 @@
 #import "ALTypes.h"
 
 
-#pragma mark SoundSource
+#pragma mark ALSoundSource
 
 /**
  * Manages all properties relating to an OpenAL sound source.
@@ -39,7 +39,7 @@
  * OpenAL 1.1 Specification and Reference:
  * http://connect.creativelabs.com/openal/Documentation
  */
-@protocol SoundSource
+@protocol ALSoundSource
 
 
 #pragma mark Properties
@@ -118,7 +118,7 @@
  * @param buffer the buffer to play.
  * @return the source playing the sound, or nil if the sound could not be played.
  */
-- (id<SoundSource>) play:(ALBuffer*) buffer;
+- (id<ALSoundSource>) play:(ALBuffer*) buffer;
 
 /** Play a sound, optionally looping.
  *
@@ -126,7 +126,7 @@
  * @param loop If TRUE, the sound will loop until you call "stop" on the returned sound source.
  * @return the source playing the sound, or nil if the sound could not be played.
  */
-- (id<SoundSource>) play:(ALBuffer*) buffer loop:(bool) loop;
+- (id<ALSoundSource>) play:(ALBuffer*) buffer loop:(bool) loop;
 
 /** Play a sound, setting gain, pitch, pan, and looping.
  *
@@ -137,7 +137,7 @@
  * @param loop If TRUE, the sound will loop until you call "stop" on the returned sound source.
  * @return the source playing the sound, or nil if the sound could not be played.
  */
-- (id<SoundSource>) play:(ALBuffer*) buffer
+- (id<ALSoundSource>) play:(ALBuffer*) buffer
 					gain:(float) gain
 				   pitch:(float) pitch
 					 pan:(float) pan
@@ -148,9 +148,6 @@
 - (void) stop;
 
 /** Fade to the specified gain value.
- *
- * Note: By default, fade operations are tuned for fade operations 0.2 seconds and above.  If you
- * need shorter fade durations, modify kObjectAL_FadeInterval in ObjectALConfig.h.
  *
  * @param gain The gain to fade to.
  * @param duration The duration of the fade operation in seconds.
@@ -166,6 +163,44 @@
 /** Stop the currently running fade operation, if any.
  */
 - (void) stopFade;
+
+/** pan to the specified value.
+ *
+ * @param pan The value to pan to.
+ * @param duration The duration of the pan operation in seconds.
+ * @param target The target to notify when the pan completes (can be nil).
+ * @param selector The selector to call when the pan completes.  The selector must accept
+ * a single parameter, which will be the object that performed the pan.
+ */
+- (void) panTo:(float) gain
+	   duration:(float) duration
+		 target:(id) target
+	   selector:(SEL) selector;
+
+/** Stop the currently running pan operation, if any.
+ */
+- (void) stopPan;
+
+/** Gradually change pitch to the specified value.
+ *
+ * @param pitch The value to change pitch to.
+ * @param duration The duration of the pitch operation in seconds.
+ * @param target The target to notify when the pitch change completes (can be nil).
+ * @param selector The selector to call when the pitch change completes.  The selector
+ * must accept a single parameter, which will be the object that performed the pitch change.
+ */
+- (void) pitchTo:(float) pitch
+	   duration:(float) duration
+		 target:(id) target
+	   selector:(SEL) selector;
+
+/** Stop the currently running pitch operation, if any.
+ */
+- (void) stopPitch;
+
+/** Stop any currently running fade, pan, or pitch operations.
+ */
+- (void) stopActions;
 
 
 #pragma mark Utility

@@ -100,7 +100,7 @@ static volatile __CLASSNAME__* _##__CLASSNAME__##_sharedInstance = nil;	\
 	return (__CLASSNAME__*) _##__CLASSNAME__##_sharedInstance;	\
 }	\
 	\
-+ (__CLASSNAME__*) sharedInstance	\
++ (__CLASSNAME__*) sharedInstanceSynch	\
 {	\
 	@synchronized(self)	\
 	{	\
@@ -116,6 +116,11 @@ static volatile __CLASSNAME__* _##__CLASSNAME__##_sharedInstance = nil;	\
 	return (__CLASSNAME__*) _##__CLASSNAME__##_sharedInstance;	\
 }	\
 	\
++ (__CLASSNAME__*) sharedInstance	\
+{	\
+	return [self sharedInstanceSynch]; \
+}	\
+	\
 + (id)allocWithZone:(NSZone*) zone	\
 {	\
 	@synchronized(self)	\
@@ -125,7 +130,8 @@ static volatile __CLASSNAME__* _##__CLASSNAME__##_sharedInstance = nil;	\
 			_##__CLASSNAME__##_sharedInstance = [super allocWithZone:zone];	\
 			if(nil != _##__CLASSNAME__##_sharedInstance)	\
 			{	\
-				method_exchangeImplementations(class_getClassMethod(self, @selector(sharedInstance)), class_getClassMethod(self, @selector(sharedInstanceNoSynch)));	\
+				Method newSharedInstanceMethod = class_getClassMethod(self, @selector(sharedInstanceNoSynch));	\
+				method_setImplementation(class_getClassMethod(self, @selector(sharedInstance)), method_getImplementation(newSharedInstanceMethod));	\
 				method_setImplementation(class_getInstanceMethod(self, @selector(retainCount)), class_getMethodImplementation(self, @selector(retainCountDoNothing)));	\
 				method_setImplementation(class_getInstanceMethod(self, @selector(release)), class_getMethodImplementation(self, @selector(releaseDoNothing)));	\
 				method_setImplementation(class_getInstanceMethod(self, @selector(autorelease)), class_getMethodImplementation(self, @selector(autoreleaseDoNothing)));	\
@@ -139,12 +145,16 @@ static volatile __CLASSNAME__* _##__CLASSNAME__##_sharedInstance = nil;	\
 {	\
 	@synchronized(self)	\
 	{	\
-		method_exchangeImplementations(class_getClassMethod(self, @selector(sharedInstance)), class_getClassMethod(self, @selector(sharedInstanceNoSynch)));	\
-		method_setImplementation(class_getInstanceMethod(self, @selector(retainCount)), class_getMethodImplementation(self, @selector(retainCountDoSomething)));	\
-		method_setImplementation(class_getInstanceMethod(self, @selector(release)), class_getMethodImplementation(self, @selector(releaseDoSomething)));	\
-		method_setImplementation(class_getInstanceMethod(self, @selector(autorelease)), class_getMethodImplementation(self, @selector(autoreleaseDoSomething)));	\
-		[_##__CLASSNAME__##_sharedInstance release];	\
-		_##__CLASSNAME__##_sharedInstance = nil;	\
+		if(nil != _##__CLASSNAME__##_sharedInstance)	\
+		{	\
+			Method newSharedInstanceMethod = class_getClassMethod(self, @selector(sharedInstanceSynch));	\
+			method_setImplementation(class_getClassMethod(self, @selector(sharedInstance)), method_getImplementation(newSharedInstanceMethod));	\
+			method_setImplementation(class_getInstanceMethod(self, @selector(retainCount)), class_getMethodImplementation(self, @selector(retainCountDoSomething)));	\
+			method_setImplementation(class_getInstanceMethod(self, @selector(release)), class_getMethodImplementation(self, @selector(releaseDoSomething)));	\
+			method_setImplementation(class_getInstanceMethod(self, @selector(autorelease)), class_getMethodImplementation(self, @selector(autoreleaseDoSomething)));	\
+			[_##__CLASSNAME__##_sharedInstance release];	\
+			_##__CLASSNAME__##_sharedInstance = nil;	\
+		}	\
 	}	\
 }	\
 	\

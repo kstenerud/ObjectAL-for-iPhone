@@ -46,6 +46,7 @@
 	id target;
 	float duration;
 	bool running;
+	bool runningInManager;
 }
 
 
@@ -81,6 +82,18 @@
  * @param target The target to run the action on.
  */
 - (void) runWithTarget:(id) target;
+
+/** Called by runWithTraget to do any final preparations before running.
+ * Subclasses must ensure that duration is valid when this method returns.
+ *
+ * @param target The target to run the action on.
+ */
+- (void) prepareWithTarget:(id) target;
+
+
+/** Called by runWithTarget to start the action running.
+ */
+- (void) start;
 
 /** Called by OALActionManager to update this action's progress.
  *
@@ -129,6 +142,13 @@
  * @param target The target to run the action on.
  */
 - (void) runWithTarget:(id) target;
+
+/** Called by runWithTarget to start the action running.
+ * Subclasses must ensure that duration is valid when this method returns.
+ *
+ * @param target The target to run the action on.
+ */
+- (void) beginWithTarget:(id) target;
 
 @end
 
@@ -297,3 +317,81 @@
 }
 
 @end
+
+
+/* There are actions in cocos2d that do essentially the same thing as these.
+ */
+#if !OBJECTAL_USE_COCOS2D_ACTIONS
+
+@interface OALSequentialActions: OALAction
+{
+	NSMutableArray* actions;
+	NSMutableArray* pDurations;
+	int actionIndex;
+	float pLastComplete;
+	OALAction* currentAction;
+	float pCurrentActionDuration;
+	float pCurrentActionComplete;
+}
+@property(readwrite,retain) NSMutableArray* actions;
+
++ (id) actions:(OALAction*) action1, ... NS_REQUIRES_NIL_TERMINATION;
++ (id) actionsFromArray:(NSArray*) actions;
+
+- (id) initWithActions:(NSArray*) actions;
+
+@end
+
+
+@interface OALConcurrentActions: OALAction
+{
+	NSMutableArray* actions;
+	NSMutableArray* pDurations;
+	NSMutableArray* actionsWithDuration;
+}
+@property(readwrite,retain) NSMutableArray* actions;
+
++ (id) actions:(OALAction*) action1, ... NS_REQUIRES_NIL_TERMINATION;
++ (id) actionsFromArray:(NSArray*) actions;
+
+- (id) initWithActions:(NSArray*) actions;
+
+@end
+
+
+@interface OALCall: OALAction
+{
+	id callTarget;
+	SEL selector;
+	int numObjects;
+	id object1;
+	id object2;
+}
+
++ (id) actionWithCallTarget:(id) callTarget
+				   selector:(SEL) selector;
+
++ (id) actionWithCallTarget:(id) callTarget
+				   selector:(SEL) selector
+				 withObject:(id) object;
+
++ (id) actionWithCallTarget:(id) callTarget
+				   selector:(SEL) selector
+				 withObject:(id) firstObject
+				 withObject:(id) secondObject;
+
+- (id) initWithCallTarget:(id) callTarget
+				 selector:(SEL) selector;
+
+- (id) initWithCallTarget:(id) callTarget
+				 selector:(SEL) selector
+			   withObject:(id) object;
+
+- (id) initWithCallTarget:(id) callTarget
+				 selector:(SEL) selector
+			   withObject:(id) firstObject
+			   withObject:(id) secondObject;
+
+@end
+
+#endif /* !OBJECTAL_USE_COCOS2D_ACTIONS */

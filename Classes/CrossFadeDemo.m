@@ -34,19 +34,6 @@
 	{
 		[self buildUI];
 
-		// Initialize ObjectAL
-		device = [[ALDevice deviceWithDeviceSpecifier:nil] retain];
-		context = [[ALContext contextOnDevice:device attributes:nil] retain];
-		[OpenALManager sharedInstance].currentContext = context;
-		
-		[IphoneAudioSupport sharedInstance].handleInterruptions = YES;
-		
-		firstSource = [[ALSource source] retain];
-		firstBuffer = [[[IphoneAudioSupport sharedInstance] bufferFromFile:@"ColdFunk.wav"] retain];
-		
-		secondSource = [[ALSource source] retain];
-		secondBuffer = [[[IphoneAudioSupport sharedInstance] bufferFromFile:@"HappyAlley.wav"] retain];
-
 		// We'll do an S-Curve fade.
 		fadeFunction = [[OALSCurveFunction function] retain];
 
@@ -63,11 +50,6 @@
 	[firstSource release];
 	[secondBuffer release];
 	[secondSource release];
-
-	// Note: Normally you wouldn't release the context and device when leaving a scene.
-	// I'm doing it here to provide a clean slate for the other demos.
-	[context release];
-	[device release];
 
 	[super dealloc];
 }
@@ -114,6 +96,19 @@
 
 - (void) onEnterTransitionDidFinish
 {
+	// Initialize the OpenAL device and context here so that it doesn't happen
+	// prematurely.
+	
+	// We'll let OALSimpleAudio deal with the device and context.
+	// Since we're not going to use it for playing effects, don't give it any sources.
+	[OALSimpleAudio sharedInstanceWithSources:0];
+	
+	firstSource = [[ALSource source] retain];
+	firstBuffer = [[[IOSAudioSupport sharedInstance] bufferFromFile:@"ColdFunk.wav"] retain];
+	
+	secondSource = [[ALSource source] retain];
+	secondBuffer = [[[IOSAudioSupport sharedInstance] bufferFromFile:@"HappyAlley.wav"] retain];
+
 	[firstSource play:firstBuffer loop:YES];
 	[secondSource play:secondBuffer loop:YES];
 }

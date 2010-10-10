@@ -26,8 +26,9 @@
 
 #import <Foundation/Foundation.h>
 #import <OpenAL/al.h>
-#import "SoundSource.h"
+#import "ALSoundSource.h"
 #import "ALBuffer.h"
+#import "OALAction.h"
 
 @class ALContext;
 
@@ -38,7 +39,7 @@
  * A source represents an object that emits sound which can be heard by a listener.
  * This source can have position, velocity, and direction.
  */
-@interface ALSource : NSObject <SoundSource>
+@interface ALSource : NSObject <ALSoundSource>
 {
 	unsigned int sourceId;
 	bool interruptible;
@@ -48,29 +49,9 @@
 	ALBuffer* buffer;
 	ALContext* context;
 
-	/** Target to inform when the current fade operation completes. */
-	id fadeCompleteTarget;
-	
-	/** Selector to call when the current fade operation completes. */
-	SEL fadeCompleteSelector;
-	
-	/** The gain we started this fade from. */
-	float fadeStartingGain;
-	
-	/** The gain we are fading to. */
-	float fadeEndingGain;
-	
-	/** The duration of the fade operation. */
-	float fadeDuration;
-	
-	/** A multiplier applied to the elapsed time to give a fade delta. */
-	float fadeDeltaMultiplier;
-	
-	/** The time that this fade operation started. */
-	uint64_t fadeStartTime;
-	
-	/** The timer corrdinating the fade operation. */
-	NSTimer* fadeTimer;
+	OALAction* gainAction;
+	OALAction* panAction;
+	OALAction* pitchAction;
 }
 
 
@@ -135,7 +116,7 @@
  *
  * @return the source playing the sound, or nil if the sound could not be played.
  */
-- (id<SoundSource>) play;
+- (id<ALSoundSource>) play;
 
 
 #pragma mark Queued Playback

@@ -15,8 +15,6 @@
  */
 @interface VolumePitchPanDemo : CCColorLayer
 {
-	ALDevice* device;
-	ALContext* context;
 	ALSource* source;
 	ALBuffer* buffer;
 }

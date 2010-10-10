@@ -73,6 +73,13 @@
 {
 	[context notifySourceDeallocating:self];
 	
+	[gainAction stop];
+	[gainAction release];
+	[panAction stop];
+	[panAction release];
+	[pitchAction stop];
+	[pitchAction release];
+
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[ALWrapper sourceStop:sourceId];
@@ -295,7 +302,7 @@
 		muted = value;
 		if(muted)
 		{
-			[self stopFade];
+			[self stopActions];
 		}
 		float resultingGain = muted ? 0 : gain;
 		[ALWrapper sourcef:sourceId parameter:AL_GAIN value:resultingGain];
@@ -532,7 +539,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		[self stopFade];
+		[self stopActions];
 
 		if(self.playing || self.paused)
 		{
@@ -543,11 +550,11 @@
 	}
 }
 
-- (id<SoundSource>) play
+- (id<ALSoundSource>) play
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		[self stopFade];
+		[self stopActions];
 
 		if(self.playing)
 		{
@@ -568,16 +575,16 @@
 	return self;
 }
 
-- (id<SoundSource>) play:(ALBuffer*) bufferIn
+- (id<ALSoundSource>) play:(ALBuffer*) bufferIn
 {
 	return [self play:bufferIn loop:NO];
 }
 
-- (id<SoundSource>) play:(ALBuffer*) bufferIn loop:(bool) loop
+- (id<ALSoundSource>) play:(ALBuffer*) bufferIn loop:(bool) loop
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		[self stopFade];
+		[self stopActions];
 
 		if(self.playing)
 		{
@@ -596,11 +603,11 @@
 	return self;
 }
 
-- (id<SoundSource>) play:(ALBuffer*) bufferIn gain:(float) gainIn pitch:(float) pitchIn pan:(float) panIn loop:(bool) loopIn
+- (id<ALSoundSource>) play:(ALBuffer*) bufferIn gain:(float) gainIn pitch:(float) pitchIn pan:(float) panIn loop:(bool) loopIn
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		[self stopFade];
+		[self stopActions];
 
 		if(self.playing)
 		{
@@ -628,64 +635,26 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		[self stopFade];
+		[self stopActions];
 		[ALWrapper sourceStop:sourceId];
 		paused = NO;
 	}
 }
 
-- (void) fadeStep:(NSTimer*) timer
-{
-	// Must always be synchronized
-	@synchronized(self)
-	{
-		if(0 != fadeStartTime)
-		{
-			float elapsedTime = mach_absolute_difference_seconds(mach_absolute_time(), fadeStartTime);
-			
-			float newGain = elapsedTime >= fadeDuration ? fadeEndingGain : fadeStartingGain + elapsedTime * fadeDeltaMultiplier;
-			
-			self.gain = newGain;
-			
-			if(newGain == fadeEndingGain)
-			{
-				[self stopFade];
-				[fadeCompleteTarget performSelector:fadeCompleteSelector withObject:self];
-			}
-		}
-	}
-}
-
-- (void) fadeTo:(float) value duration:(float) duration target:(id) target selector:(SEL) selector
+- (void) fadeTo:(float) value
+	   duration:(float) duration
+		 target:(id) target
+	   selector:(SEL) selector
 {
 	// Must always be synchronized
 	@synchronized(self)
 	{
 		[self stopFade];
-		fadeCompleteTarget = target;
-		fadeCompleteSelector = selector;
-		fadeStartingGain = self.gain;
-		fadeEndingGain = value;
-		
-		float delta = fadeEndingGain - fadeStartingGain;
-		
-		if(0 == delta)
-		{
-			// Handle case where there is no fading to be done.
-			[fadeCompleteTarget performSelector:fadeCompleteSelector withObject:self];
-		}
-		else
-		{
-			fadeDuration = duration;
-			fadeDeltaMultiplier = delta / fadeDuration;
-			fadeStartTime = mach_absolute_time();
-			
-			fadeTimer = [NSTimer scheduledTimerWithTimeInterval:0.05
-														 target:self
-													   selector:@selector(fadeStep:)
-													   userInfo:nil
-														repeats:YES];
-		}
+		gainAction = [[OALSequentialActions actions:
+					   [OALGainAction actionWithDuration:duration endValue:value function:[OALGainAction defaultFunction]],
+					   [OALCall actionWithCallTarget:target selector:selector withObject:self],
+					   nil] retain];
+		[gainAction runWithTarget:self];
 	}
 }
 
@@ -694,10 +663,73 @@
 	// Must always be synchronized
 	@synchronized(self)
 	{
-		fadeStartTime = 0;
-		[fadeTimer invalidate];
-		fadeTimer = nil;
+		[gainAction stop];
+		[gainAction release];
+		gainAction = nil;
 	}
+}
+
+- (void) panTo:(float) value
+	   duration:(float) duration
+		 target:(id) target
+	   selector:(SEL) selector
+{
+	// Must always be synchronized
+	@synchronized(self)
+	{
+		[self stopPan];
+		gainAction = [[OALSequentialActions actions:
+					   [OALPanAction actionWithDuration:duration endValue:value function:[OALPanAction defaultFunction]],
+					   [OALCall actionWithCallTarget:target selector:selector withObject:self],
+					   nil] retain];
+		[gainAction runWithTarget:self];
+	}
+}
+
+- (void) stopPan
+{
+	// Must always be synchronized
+	@synchronized(self)
+	{
+		[gainAction stop];
+		[gainAction release];
+		gainAction = nil;
+	}
+}
+
+- (void) pitchTo:(float) value
+	  duration:(float) duration
+		target:(id) target
+	  selector:(SEL) selector
+{
+	// Must always be synchronized
+	@synchronized(self)
+	{
+		[self stopPitch];
+		gainAction = [[OALSequentialActions actions:
+					   [OALPitchAction actionWithDuration:duration endValue:value function:[OALPitchAction defaultFunction]],
+					   [OALCall actionWithCallTarget:target selector:selector withObject:self],
+					   nil] retain];
+		[gainAction runWithTarget:self];
+	}
+}
+
+- (void) stopPitch
+{
+	// Must always be synchronized
+	@synchronized(self)
+	{
+		[gainAction stop];
+		[gainAction release];
+		gainAction = nil;
+	}
+}
+
+- (void) stopActions
+{
+	[self stopFade];
+	[self stopPan];
+	[self stopPitch];
 }
 
 - (void) clear

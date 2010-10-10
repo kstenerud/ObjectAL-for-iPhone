@@ -16,8 +16,7 @@
 @interface SingleSourceDemo : CCLayer
 {
 	CCSprite* rocketShip;
-	ALDevice* device;
-	ALContext* context;
+	CCSprite* planet;
 	ALSource* source;
 	ALBuffer* buffer;
 }

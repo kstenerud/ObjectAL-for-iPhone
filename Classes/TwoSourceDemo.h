@@ -16,8 +16,8 @@
 @interface TwoSourceDemo : CCLayer
 {
 	CCSprite* rocketShip;
-	ALDevice* device;
-	ALContext* context;
+	CCSprite* leftPlanet;
+	CCSprite* rightPlanet;
 	ALSource* leftSource;
 	ALSource* rightSource;
 	ALBuffer* leftBuffer;

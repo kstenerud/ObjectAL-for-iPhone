@@ -24,24 +24,24 @@
 // Attribution is not required, but appreciated :)
 //
 
-#import "SoundSource.h"
+#import "ALSoundSource.h"
 
 
-#pragma mark SoundSourcePool
+#pragma mark ALSoundSourcePool
 
 /**
  * A pool of sound sources, which can be fetched based on availability.
  */
-@interface SoundSourcePool : NSObject
+@interface ALSoundSourcePool : NSObject
 {
-	/** All sources managed by this pool (id<SoundSource>). */
+	/** All sources managed by this pool (id<ALSoundSource>). */
 	NSMutableArray* sources;
 }
 
 
 #pragma mark Properties
 
-/** All sources managed by this pool (id<SoundSource>). */
+/** All sources managed by this pool (id<ALSoundSource>). */
 @property(readonly) NSArray* sources;
 
 
@@ -59,13 +59,13 @@
  *
  * @param source The source to add.
  */
-- (void) addSource:(id<SoundSource>) source;
+- (void) addSource:(id<ALSoundSource>) source;
 
 /** Remove a source from this pool
  *
  * @param source The source to remove.
  */
-- (void) removeSource:(id<SoundSource>) source;
+- (void) removeSource:(id<ALSoundSource>) source;
 
 /** Acquire a free or freeable source from this pool.
  * It first attempts to find a completely free source.
@@ -75,6 +75,6 @@
  * @param attemptToInterrupt If TRUE, attempt to interrupt sources to free them for use.
  * @return The freed sound source, or nil if no sources are freeable.
  */
-- (id<SoundSource>) getFreeSource:(bool) attemptToInterrupt;
+- (id<ALSoundSource>) getFreeSource:(bool) attemptToInterrupt;
 
 @end

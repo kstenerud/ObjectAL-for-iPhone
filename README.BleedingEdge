@@ -4,9 +4,20 @@ The next release will be a major release (2.0).
 Major changes (incompatible with earlier versions):
 ===================================================
 
-- BackgroundAudio has been replaced with AudioTrack and AudioTracks.
+- BackgroundAudio has been replaced with OALAudioTrack and OALAudioTracks.
 - ObjectAL has been renamed to OpenALManager.
-- Replaced duration fade methods with audio actions (OALAction).
+- IphoneAudioSupport has been renamed to IOSAudioSupport.
+- SimpleIphoneAudio has been renamed to OALSimpleAudio.
+- SoundSource has been renamed to ALSoundSource.
+- ChannelSource has been renamed to ALChannelSource.
+- SoundSourcePool has been renamed to ALSoundSourcePool.
+
+
+New Stuff:
+==========
+
+- OALAudioTrack: Allows more than one background audio track to play at a time.
+- OALAction: Allows actions to be performed on audio objects.
 
 
 Minor changes:

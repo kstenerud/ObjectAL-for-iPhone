@@ -1,5 +1,5 @@
 //
-//  IphoneAudioSupport.h
+//  IOSAudioSupport.h
 //  ObjectAL
 //
 //  Created by Karl Stenerud on 19/12/09.
@@ -29,10 +29,10 @@
 #import "ALBuffer.h"
 
 
-#pragma mark IphoneAudioSupport
+#pragma mark IOSAudioSupport
 
 /**
- * Provides iphone-specific audio support, including audio file loading, session management and
+ * Provides iOS-specific audio support, including audio file loading, session management and
  * interrupt handling.
  *
  * <strong>Note:</strong> OpenAL is only able to play PCM (uncompressed) 8 bit or 16 bit (little
@@ -49,7 +49,7 @@
  *
  * \code afconvert -f caff -d I8@@22050 sourcefile.wav destfile.caf \endcode
  */
-@interface IphoneAudioSupport : NSObject
+@interface IOSAudioSupport : NSObject
 {
 	/** Operation queue for asynchronous loading. */
 	NSOperationQueue* operationQueue;
@@ -155,10 +155,10 @@
 
 /** Singleton implementation providing "sharedInstance" and "purgeSharedInstance" methods.
  *
- * <b>- (IphoneAudioSupport*) sharedInstance</b>: Get the shared singleton instance. <br>
+ * <b>- (IOSAudioSupport*) sharedInstance</b>: Get the shared singleton instance. <br>
  * <b>- (void) purgeSharedInstance</b>: Purge (deallocate) the shared instance.
  */
-SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(IphoneAudioSupport);
+SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(IOSAudioSupport);
 
 
 #pragma mark Buffers

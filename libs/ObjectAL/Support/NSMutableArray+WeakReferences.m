@@ -4,7 +4,7 @@
 //  Created by Karl Stenerud on 05/12/09.
 //
 
-#import "MutableArray-WeakReferences.h"
+#import "NSMutableArray+WeakReferences.h"
 
 @implementation NSMutableArray (WeakReferences)
 

@@ -24,12 +24,12 @@
 // Attribution is not required, but appreciated :)
 //
 
-#import "SoundSource.h"
-#import "SoundSourcePool.h"
+#import "ALSoundSource.h"
+#import "ALSoundSourcePool.h"
 #import "ALContext.h"
 
 
-#pragma mark ChannelSource
+#pragma mark ALChannelSource
 
 /**
  * A Sound source composed of other sources.
@@ -38,9 +38,9 @@
  * If all sources are busy when playback is requested, it will attempt to interrupt a source
  * to free it for playback.
  */
-@interface ChannelSource : NSObject <SoundSource>
+@interface ALChannelSource : NSObject <ALSoundSource>
 {
-	SoundSourcePool* sourcePool;
+	ALSoundSourcePool* sourcePool;
 	ALContext* context;
 
 	float pitch;
@@ -77,6 +77,33 @@
 
 	/** The actual number of sources that have called back */
 	int currentFadeCallbackCount;
+	
+
+	/** Target to inform when the current pan operation completes. */
+	id panCompleteTarget;
+	
+	/** Selector to call when the current pan operation completes. */
+	SEL panCompleteSelector;
+	
+	/** The expected number of sources that will callback when panning completes */
+	int expectedPanCallbackCount;
+	
+	/** The actual number of sources that have called back */
+	int currentPanCallbackCount;
+
+
+	
+	/** Target to inform when the current pitch operation completes. */
+	id pitchCompleteTarget;
+	
+	/** Selector to call when the current pitch operation completes. */
+	SEL pitchCompleteSelector;
+	
+	/** The expected number of sources that will callback when pitch op completes */
+	int expectedPitchCallbackCount;
+	
+	/** The actual number of sources that have called back */
+	int currentPitchCallbackCount;
 }
 
 
@@ -86,7 +113,7 @@
 @property(readonly) ALContext* context;
 
 /** All sources being used by this channel.  Do not modify! */
-@property(readonly) SoundSourcePool* sourcePool;
+@property(readonly) ALSoundSourcePool* sourcePool;
 
 
 #pragma mark Object Management

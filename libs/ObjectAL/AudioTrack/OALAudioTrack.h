@@ -1,5 +1,5 @@
 //
-//  AudioTrack.h
+//  OALAudioTrack.h
 //  ObjectAL
 //
 //  Created by Karl Stenerud on 10-08-21.
@@ -25,14 +25,15 @@
 //
 
 #import <AVFoundation/AVFoundation.h>
+#import "OALAction.h"
 
 
 /**
  * Plays an audio track via AVAudioPlayer.
  * Unlike AVAudioPlayer, however, it can be re-used to play another file.
- * Interruptions can be handled by IphoneAudioSupport (enabled by default).
+ * Interruptions can be handled by IOSAudioSupport (enabled by default).
  */
-@interface AudioTrack : NSObject <AVAudioPlayerDelegate>
+@interface OALAudioTrack : NSObject <AVAudioPlayerDelegate>
 {
 	bool meteringEnabled;
 	bool suspended;
@@ -41,6 +42,7 @@
 	bool paused;
 	bool muted;
 	float gain;
+	float pan;
 	NSInteger numberOfLoops;
 	id<AVAudioPlayerDelegate> delegate; // Weak reference
 	
@@ -52,7 +54,7 @@
 	AVAudioPlayer* simulatorPlayerRef;
 	
 	/** Operation queue for running asynchronous operations.
-	 * Note: Only one asynchronous operation is allowed at a time.
+	 * <strong>Note:</strong> Only one asynchronous operation is allowed at a time.
 	 */
 	NSOperationQueue* operationQueue;
 	
@@ -62,29 +64,14 @@
 	 */
 	bool playing;
 	
-	/** Target to inform when the current fade operation completes. */
-	id fadeCompleteTarget;
+	/** Check to see if we are running iOS 4.0 or higher. */
+	bool isIOS40OrHigher;
 	
-	/** Selector to call when the current fade operation completes. */
-	SEL fadeCompleteSelector;
+	/** The current action being applied to gain. */
+	OALAction* gainAction;
 	
-	/** The gain we started this fade from. */
-	float fadeStartingGain;
-	
-	/** The gain we are fading to. */
-	float fadeEndingGain;
-	
-	/** The duration of the fade operation. */
-	float fadeDuration;
-	
-	/** A multiplier applied to the elapsed time to give a fade delta. */
-	float fadeDeltaMultiplier;
-	
-	/** The time that this fade operation started. */
-	uint64_t fadeStartTime;
-	
-	/** The timer corrdinating the fade operation. */
-	NSTimer* fadeTimer;
+	/** The current action being applied to pan. */
+	OALAction* panAction;
 }
 
 
@@ -95,7 +82,7 @@
 
 /** Optional object that will receive notifications for decoding errors,
  * audio interruptions (such as an incoming phone call), and playback completion. <br>
- * Note: BackgroundAudio keeps a WEAK reference to delegate, so make sure you clear it
+ * <strong>Note:</strong> OALAudioTrack keeps a WEAK reference to delegate, so make sure you clear it
  * when your object is going to be deallocated.
  */
 @property(readwrite,assign) id<AVAudioPlayerDelegate> delegate;
@@ -103,12 +90,17 @@
 /** The gain (volume) for playback (0.0 - 1.0, where 1.0 = no attenuation). */
 @property(readwrite,assign) float gain;
 
+/** Pan value (-1.0 = far left, 1.0 = far right).
+ * <strong>Note:</strong> This will have no effect on iOS versions prior to 4.0.
+ */
+@property(readwrite,assign) float pan;
+
 /** If true, background audio is muted */
 @property(readwrite,assign) bool muted;
 
 /** The number of times to loop playback (-1 = forever).
- * Note: This value will be ignored, and get changed when you call the various playXX methods.
- * Only [[BackgroundAudio sharedInstance] play] will use the current value of "numberOfLoops".
+ * <strong>Note:</strong> This value will be ignored, and get changed when you call the various playXX methods.
+ * Only "play" will use the current value of "numberOfLoops".
  */
 @property(readwrite,assign) NSInteger numberOfLoops;
 
@@ -116,8 +108,8 @@
 @property(readwrite,assign) bool paused;
 
 /** Access to the underlying AVAudioPlayer object.
- * WARNING: Be VERY careful when accessing this.  Modifying anything will
- * likely cause it to fall out of sync with BackgroundAudio.
+ * WARNING: Be VERY careful when accessing this, as some methods could cause
+ * it to fall out of sync with OALAudioTrack (particularly play/pause/stop methods).
  */
 @property(readonly) AVAudioPlayer* player;
 
@@ -128,6 +120,22 @@
  * You can set this to change the playback position, whether it is currently playing or not.
  */
 @property(readwrite,assign) NSTimeInterval currentTime;
+
+/** The value of this property increases monotonically while an audio player is playing or paused. <br><br>
+ *
+ * If more than one audio player is connected to the audio output device, device time continues
+ * incrementing as long as at least one of the players is playing or paused. <br><br>
+ *
+ * If the audio output device has no connected audio players that are either playing or paused,
+ * device time reverts to 0. <br><br>
+ *
+ * Use this property to indicate “now” when calling the playAtTime: instance method. By configuring
+ * multiple audio players to play at a specified offset from deviceCurrentTime, you can perform
+ * precise synchronization—as described in the discussion for that method.
+ *
+ * <strong>Note:</strong> This will have no effect on iOS versions prior to 4.0.
+ */
+@property(readonly) NSTimeInterval deviceCurrentTime;
 
 /** The duration, in seconds, of the currently loaded sound. */
 @property(readonly) NSTimeInterval duration;
@@ -150,10 +158,6 @@
 /** Preload the contents of a URL for playback.
  * Once the audio data is preloaded, you can call "play" to play it. <br>
  *
- * <strong>Note:</strong> only <strong>ONE</strong> file may be played or
- * preloaded at a time (the hardware only supports one file at a time).
- * If you play or preload another file, the one currently playing will stop.
- *
  * @param url The URL containing the sound data.
  * @return TRUE if the operation was successful.
  */
@@ -162,10 +166,6 @@
 /** Preload the contents of a file for playback.
  * Once the audio data is preloaded, you can call "play" to play it. <br>
  *
- * <strong>Note:</strong> only <strong>ONE</strong> file may be played or
- * preloaded at a time (the hardware only supports one file at a time).
- * If you play or preload another file, the one currently playing will stop.
- *
  * @param path The file containing the sound data.
  * @return TRUE if the operation was successful.
  */
@@ -173,10 +173,6 @@
 
 /** Asynchronously preload the contents of a URL for playback.
  * Once the audio data is preloaded, you can call "play" to play it. <br>
- *
- * <strong>Note:</strong> only <strong>ONE</strong> file may be played or
- * preloaded at a time (the hardware only supports one file at a time).
- * If you play or preload another file, the one currently playing will stop.
  *
  * @param url The URL containing the sound data.
  * @param target the target to inform when preparation is complete.
@@ -188,10 +184,6 @@
 /** Asynchronously preload the contents of a file for playback.
  * Once the audio data is preloaded, you can call "play" to play it. <br>
  *
- * <strong>Note:</strong> only <strong>ONE</strong> file may be played or
- * preloaded at a time (the hardware only supports one file at a time).
- * If you play or preload another file, the one currently playing will stop.
- *
  * @param path The file containing the sound data.
  * @param target the target to inform when preparation is complete.
  * @param selector the selector to call when preparation is complete.
@@ -201,20 +193,12 @@
 
 /** Play the contents of a URL once.
  *
- * <strong>Note:</strong> only <strong>ONE</strong> file may be played or
- * preloaded at a time (the hardware only supports one file at a time).
- * If you play or preload another file, the one currently playing will stop.
- *
  * @param url The URL containing the sound data.
  * @return TRUE if the operation was successful.
  */
 - (bool) playUrl:(NSURL*) url;
 
 /** Play the contents of a URL and loop the specified number of times.
- *
- * <strong>Note:</strong> only <strong>ONE</strong> file may be played or
- * preloaded at a time (the hardware only supports one file at a time).
- * If you play or preload another file, the one currently playing will stop.
  *
  * @param url The URL containing the sound data.
  * @param loops The number of times to loop playback (-1 = forever)
@@ -224,20 +208,12 @@
 
 /** Play the contents of a file once.
  *
- * <strong>Note:</strong> only <strong>ONE</strong> file may be played or
- * preloaded at a time (the hardware only supports one file at a time).
- * If you play or preload another file, the one currently playing will stop.
- *
  * @param path The file containing the sound data.
  * @return TRUE if the operation was successful.
  */
 - (bool) playFile:(NSString*) path;
 
 /** Play the contents of a file and loop the specified number of times.
- *
- * <strong>Note:</strong> only <strong>ONE</strong> file may be played or
- * preloaded at a time (the hardware only supports one file at a time).
- * If you play or preload another file, the one currently playing will stop.
  *
  * @param path The file containing the sound data.
  * @param loops The number of times to loop playback (-1 = forever)
@@ -247,10 +223,6 @@
 
 /** Play the contents of a URL asynchronously once.
  *
- * <strong>Note:</strong> only <strong>ONE</strong> file may be played or
- * preloaded at a time (the hardware only supports one file at a time).
- * If you play or preload another file, the one currently playing will stop.
- *
  * @param url The URL containing the sound data.
  * @param target the target to inform when playing has started.
  * @param selector the selector to call when playing has started.
@@ -258,10 +230,6 @@
 - (void) playUrlAsync:(NSURL*) url target:(id) target selector:(SEL) selector;
 
 /** Play the contents of a URL asynchronously and loop the specified number of times.
- *
- * <strong>Note:</strong> only <strong>ONE</strong> file may be played or
- * preloaded at a time (the hardware only supports one file at a time).
- * If you play or preload another file, the one currently playing will stop.
  *
  * @param url The URL containing the sound data.
  * @param loops The number of times to loop playback (-1 = forever)
@@ -275,10 +243,6 @@
 
 /** Play the contents of a file asynchronously once.
  *
- * <strong>Note:</strong> only <strong>ONE</strong> file may be played or
- * preloaded at a time (the hardware only supports one file at a time).
- * If you play or preload another file, the one currently playing will stop.
- *
  * @param path The file containing the sound data.
  * @param target the target to inform when playing has started.
  * @param selector the selector to call when playing has started.
@@ -286,10 +250,6 @@
 - (void) playFileAsync:(NSString*) path target:(id) target selector:(SEL) selector;
 
 /** Play the contents of a file asynchronously and loop the specified number of times.
- *
- * <strong>Note:</strong> only <strong>ONE</strong> file may be played or
- * preloaded at a time (the hardware only supports one file at a time).
- * If you play or preload another file, the one currently playing will stop.
  *
  * @param path The file containing the sound data.
  * @param loops The number of times to loop playback (-1 = forever)
@@ -307,14 +267,17 @@
  */
 - (bool) play;
 
+/** Plays a sound asynchronously, starting at a specified point in the audio output device’s timeline.
+ *
+ * <strong>Note:</strong> This will have no effect on iOS versions prior to 4.0.
+ */
+- (bool) playAtTime:(NSTimeInterval) time;
+
 /** Stop playing and stop all operations.
  */
 - (void) stop;
 
 /** Fade to the specified gain value.
- *
- * Note: By default, fade operations are tuned for fade operations 0.2 seconds and above.  If you
- * need shorter fade durations, modify kBackgroundAudio_FadeInterval in ObjectALConfig.h.
  *
  * @param gain The gain to fade to.
  * @param duration The duration of the fade operation in seconds.
@@ -330,6 +293,30 @@
 /** Stop the currently running fade operation, if any.
  */
 - (void) stopFade;
+
+/** Pan to the specified pan value.
+ *
+ * <strong>Note:</strong> This will have no effect on iOS versions prior to 4.0.
+ *
+ * @param pan The value to pan to.
+ * @param duration The duration of the pan operation in seconds.
+ * @param target The target to notify when the pan completes (can be nil).
+ * @param selector The selector to call when the pan completes.  The selector must accept
+ * a single parameter, which will be the object that performed the pan.
+ */
+- (void) panTo:(float) pan
+	   duration:(float) duration
+		 target:(id) target
+	   selector:(SEL) selector;
+
+/** Stop the currently running pan operation, if any.
+ *
+ * <strong>Note:</strong> This will have no effect on iOS versions prior to 4.0.
+ */
+- (void) stopPan;
+
+/** Stop any internal fade or pan actions. */
+- (void) stopActions;
 
 /** Unload and clear all audio data, stop playing, and stop all operations.
  */
@@ -378,7 +365,7 @@
 #pragma mark Internal Use
 
 /** (INTERNAL USE) Used by the interrupt handler to suspend the audio device
- * (if interrupts are enabled in IphoneAudioSupport).
+ * (if interrupts are enabled in IOSAudioSupport).
  */
 @property(readwrite,assign) bool suspended;
 

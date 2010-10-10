@@ -34,22 +34,8 @@
 	if(nil != (self = [super initWithColor:ccc4(255, 255, 255, 255)]))
 	{
 		[self buildUI];
-
-		// Initialize ObjectAL
-		device = [[ALDevice deviceWithDeviceSpecifier:nil] retain];
-		context = [[ALContext contextOnDevice:device attributes:nil] retain];
-		[OpenALManager sharedInstance].currentContext = context;
 		
-		[IphoneAudioSupport sharedInstance].handleInterruptions = YES;
-		
-		oneSourceChannel = [[ChannelSource channelWithSources:1] retain];
-		twoSourceChannel = [[ChannelSource channelWithSources:2] retain];
-		threeSourceChannel = [[ChannelSource channelWithSources:3] retain];
-		eightSourceChannel = [[ChannelSource channelWithSources:8] retain];
-
-		buffer = [[[IphoneAudioSupport sharedInstance] bufferFromFile:@"Pew.caf"] retain];
-		
-		backgroundTrack = [[AudioTrack track] retain];
+		backgroundTrack = [[OALAudioTrack track] retain];
 	}
 	return self;
 }
@@ -61,11 +47,6 @@
 	[threeSourceChannel release];
 	[eightSourceChannel release];
 	[buffer release];
-
-	// Note: Normally you wouldn't release the context and device when leaving a scene.
-	// I'm doing it here to provide a clean slate for the other demos.
-	[context release];
-	[device release];
 
 	[backgroundTrack release];
 
@@ -183,7 +164,25 @@
 
 - (void) onEnterTransitionDidFinish
 {
-	// Loop forever.
+	// Initialize the OpenAL device and context here so that it doesn't happen
+	// prematurely.
+	
+	// We'll let OALSimpleAudio deal with the device and context.
+	// Since we're not going to use it for playing effects, don't give it any sources.
+	[OALSimpleAudio sharedInstanceWithSources:0];
+	
+	OALSimpleAudio* audio = [OALSimpleAudio sharedInstance];
+	NSLog(@"simple audio = %@", audio);
+
+	buffer = [[[IOSAudioSupport sharedInstance] bufferFromFile:@"Pew.caf"] retain];
+
+	// Make some channels to play effects with.
+	oneSourceChannel = [[ALChannelSource channelWithSources:1] retain];
+	twoSourceChannel = [[ALChannelSource channelWithSources:2] retain];
+	threeSourceChannel = [[ALChannelSource channelWithSources:3] retain];
+	eightSourceChannel = [[ALChannelSource channelWithSources:8] retain];
+	
+	// Loop bg track forever.
 	[backgroundTrack playFile:@"PlanetKiller.mp3" loops:-1];
 }
 
@@ -200,7 +199,7 @@
 
 - (void) onEffectsVolume:(Slider*) slider
 {
-	context.listener.gain = slider.value;
+	[OpenALManager sharedInstance].currentContext.listener.gain = slider.value;
 }
 
 - (void) on1SourceChannel:(Slider*) slider

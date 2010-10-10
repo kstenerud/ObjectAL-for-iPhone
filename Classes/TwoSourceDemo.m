@@ -30,11 +30,11 @@
 		rocketShip.position = ccp(center.x, center.y - 50);
 		[self addChild:rocketShip z:20];
 		
-		CCSprite* leftPlanet = [CCSprite spriteWithFile:@"Jupiter.png"];
+		leftPlanet = [CCSprite spriteWithFile:@"Jupiter.png"];
 		leftPlanet.position = ccp(40, center.y);
 		[self addChild:leftPlanet];
 		
-		CCSprite* rightPlanet = [CCSprite spriteWithFile:@"Ganymede.png"];
+		rightPlanet = [CCSprite spriteWithFile:@"Ganymede.png"];
 		rightPlanet.position = ccp(size.width-40, center.y);
 		[self addChild:rightPlanet];
 
@@ -44,33 +44,6 @@
 		[self addChild:button z:250];
 
 		
-		// Initialize ObjectAL
-		device = [[ALDevice deviceWithDeviceSpecifier:nil] retain];
-		context = [[ALContext contextOnDevice:device attributes:nil] retain];
-		[OpenALManager sharedInstance].currentContext = context;
-		
-		[IphoneAudioSupport sharedInstance].handleInterruptions = YES;
-		
-		leftSource = [[ALSource source] retain];
-		leftBuffer = [[[IphoneAudioSupport sharedInstance] bufferFromFile:@"ColdFunk.wav"] retain];
-		
-		rightSource = [[ALSource source] retain];
-		rightBuffer = [[[IphoneAudioSupport sharedInstance] bufferFromFile:@"HappyAlley.wav"] retain];
-		
-		leftSource.position = alpoint(leftPlanet.position.x, leftPlanet.position.y, 0);
-		leftSource.referenceDistance = 50;
-		
-		rightSource.position = alpoint(rightPlanet.position.x, rightPlanet.position.y, 0);
-		rightSource.referenceDistance = 50;
-
-		context.listener.position = alpoint(rocketShip.position.x, rocketShip.position.y, 0);
-		
-		// You can play with different distance models here if you want.
-		// Models are explained in the OpenAL 1.1 specification, available at
-		// http://connect.creativelabs.com/openal/Documentation
-		context.distanceModel = AL_EXPONENT_DISTANCE;
-//		context.distanceModel = AL_LINEAR_DISTANCE;
-//		leftSource.maxDistance = rightSource.maxDistance = 100;
 	}
 	return self;
 }
@@ -82,11 +55,6 @@
 	[rightBuffer release];
 	[rightSource release];
 
-	// Note: Normally you wouldn't release the context and device when leaving a scene.
-	// I'm doing it here to provide a clean slate for the other demos.
-	[context release];
-	[device release];
-
 	[super dealloc];
 }
 
@@ -96,7 +64,7 @@
 - (void) moveShipTo:(CGPoint) position
 {
 	rocketShip.position = position;
-	context.listener.position = alpoint(rocketShip.position.x, rocketShip.position.y, 0);
+	[OpenALManager sharedInstance].currentContext.listener.position = alpoint(rocketShip.position.x, rocketShip.position.y, 0);
 }
 
 
@@ -104,6 +72,35 @@
 
 - (void) onEnterTransitionDidFinish
 {
+	// Initialize the OpenAL device and context here so that it doesn't happen
+	// prematurely.
+	
+	// We'll let OALSimpleAudio deal with the device and context.
+	// Since we're not going to use it for playing effects, don't give it any sources.
+	[OALSimpleAudio sharedInstanceWithSources:0];
+	
+	leftSource = [[ALSource source] retain];
+	leftBuffer = [[[IOSAudioSupport sharedInstance] bufferFromFile:@"ColdFunk.wav"] retain];
+	
+	rightSource = [[ALSource source] retain];
+	rightBuffer = [[[IOSAudioSupport sharedInstance] bufferFromFile:@"HappyAlley.wav"] retain];
+	
+	leftSource.position = alpoint(leftPlanet.position.x, leftPlanet.position.y, 0);
+	leftSource.referenceDistance = 50;
+	
+	rightSource.position = alpoint(rightPlanet.position.x, rightPlanet.position.y, 0);
+	rightSource.referenceDistance = 50;
+	
+	[OpenALManager sharedInstance].currentContext.listener.position = alpoint(rocketShip.position.x, rocketShip.position.y, 0);
+	
+	// You can play with different distance models here if you want.
+	// Models are explained in the OpenAL 1.1 specification, available at
+	// http://connect.creativelabs.com/openal/Documentation
+	[OpenALManager sharedInstance].currentContext.distanceModel = AL_EXPONENT_DISTANCE;
+	//		context.distanceModel = AL_LINEAR_DISTANCE;
+	//		leftSource.maxDistance = rightSource.maxDistance = 100;
+
+	
 	self.isTouchEnabled = YES;
 	[leftSource play:leftBuffer loop:YES];
 	[rightSource play:rightBuffer loop:YES];

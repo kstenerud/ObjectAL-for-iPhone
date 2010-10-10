@@ -25,7 +25,7 @@
 //
 
 #import "ALContext.h"
-#import "MutableArray-WeakReferences.h"
+#import "NSMutableArray+WeakReferences.h"
 #import "ObjectALMacros.h"
 #import "ALWrapper.h"
 #import "OpenALManager.h"

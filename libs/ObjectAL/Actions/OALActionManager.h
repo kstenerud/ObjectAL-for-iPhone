@@ -62,7 +62,7 @@
 
 /** Singleton implementation providing "sharedInstance" and "purgeSharedInstance" methods.
  *
- * <b>- (IphoneAudioSupport*) sharedInstance</b>: Get the shared singleton instance. <br>
+ * <b>- (IOSAudioSupport*) sharedInstance</b>: Get the shared singleton instance. <br>
  * <b>- (void) purgeSharedInstance</b>: Purge (deallocate) the shared instance.
  */
 SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALActionManager);

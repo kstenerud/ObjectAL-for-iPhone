@@ -41,8 +41,6 @@
 		[self addTrack:@"HappyAlley.wav"];
 		[self addTrack:@"PlanetKiller.mp3"];
 
-		[IphoneAudioSupport sharedInstance].handleInterruptions = YES;
-
 		[self buildUI];
 	}
 	return self;
@@ -60,7 +58,7 @@
 - (void) addTrack:(NSString*) filename
 {
 	[audioTrackFiles addObject:filename];
-	[audioTracks addObject:[AudioTrack track]];
+	[audioTracks addObject:[OALAudioTrack track]];
 }
 
 - (void) buildUI
@@ -130,13 +128,16 @@
 	[self addChild:button z:250];
 }
 
+- (void) onEnterTransitionDidFinish
+{
+}
 
 - (void) onPlayStop:(ImageAndLabelButton*) sender
 {
 	int index = [buttons indexOfObject:sender];
 	if(NSNotFound != index)
 	{
-		AudioTrack* track = [audioTracks objectAtIndex:index];
+		OALAudioTrack* track = [audioTracks objectAtIndex:index];
 		if(track.playing)
 		{
 			[track stop];
@@ -153,7 +154,7 @@
 	int index = [sliders indexOfObject:sender];
 	if(NSNotFound != index)
 	{
-		AudioTrack* track = [audioTracks objectAtIndex:index];
+		OALAudioTrack* track = [audioTracks objectAtIndex:index];
 		track.gain = sender.value;
 	}
 }

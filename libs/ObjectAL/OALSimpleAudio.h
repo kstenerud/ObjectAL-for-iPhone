@@ -1,5 +1,5 @@
 //
-//  SimpleAudio.h
+//  OALSimpleAudio.h
 //  ObjectAL
 //
 //  Created by Karl Stenerud on 10-01-14.
@@ -28,25 +28,29 @@
 #import "SynthesizeSingleton.h"
 #import "ALDevice.h"
 #import "ALContext.h"
-#import "SoundSource.h"
-#import "ChannelSource.h"
-#import "AudioTrack.h"
+#import "ALSoundSource.h"
+#import "ALChannelSource.h"
+#import "OALAudioTrack.h"
 
 
-#pragma mark SimpleIphoneAudio
+#pragma mark OALSimpleAudio
 
 /**
- * Very simple and basic interface to the iPhone sound system.
+ * A simpler interface to the iOS sound system.
  *
- * Essentially, it initializes ObjectAL with the default device,
- * a context, and a channel consisting of 32 interruptible sources.
+ * For sound effects, it initializes OpenAL with the default device,
+ * a context, and a channel source consisting of 32 interruptible sources.
  *
- * It also accesses IphoneAudioSupport to turn on automatic interrupt handling.
+ * For background audio, it creates a single OALAudioTrack (you can create more
+ * on your own if you want).
+ *
+ * It also provides access to the more common configuration options available in
+ * IOSAudioSupport.
  *
  * All commands are delegated either to the channel (for sound effects),
- * or to BackgroundAudio (for BG music).
+ * or to the audio track (for BG music).
  */
-@interface SimpleIphoneAudio : NSObject
+@interface OALSimpleAudio : NSObject
 {
 	/** The device we are using */
 	ALDevice* device;
@@ -54,12 +58,12 @@
 	ALContext* context;
 
 	/** The sound channel used by this object. */
-	ChannelSource* channel;
+	ALChannelSource* channel;
 	/** Cache for preloaded sound samples. */
 	NSMutableDictionary* preloadCache;
 
 	/** Audio track to play background music */
-	AudioTrack* backgroundTrack;
+	OALAudioTrack* backgroundTrack;
 	
 	bool muted;
 	bool bgMuted;
@@ -108,7 +112,7 @@
 @property(readwrite,assign) bool honorSilentSwitch;
 
 /** Background audio track */
-@property(readonly) AudioTrack* backgroundTrack;
+@property(readonly) OALAudioTrack* backgroundTrack;
 
 /** Pauses BG music playback */
 @property(readwrite,assign) bool bgPaused;
@@ -150,21 +154,21 @@
 
 /** Singleton implementation providing "sharedInstance" and "purgeSharedInstance" methods.
  *
- * <b>- (SimpleIphoneAudio*) sharedInstance</b>: Get the shared singleton instance. <br>
+ * <b>- (OALSimpleAudio*) sharedInstance</b>: Get the shared singleton instance. <br>
  * <b>- (void) purgeSharedInstance</b>: Purge (deallocate) the shared instance. <br>
  */
-SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(SimpleIphoneAudio);
+SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALSimpleAudio);
 
-/** Start SimpleIphoneAudio with the specified number of reserved sources.
- * Call this initializer if you want to use SimpleIphoneAudio, but keep some of the iPhone's
+/** Start OALSimpleAudio with the specified number of reserved sources.
+ * Call this initializer if you want to use OALSimpleAudio, but keep some of the iPhone's
  * audio sources (there are 32 in total) for your own use. <br>
  * <strong>Note:</strong> This method must be called ONLY ONCE, <em>BEFORE</em>
  * any attempt is made to access the shared instance.
  *
- * @param sources the number of sources SimpleIphoneAudio will reserve for itself.
+ * @param sources the number of sources OALSimpleAudio will reserve for itself.
  * @return The shared instance.
  */
-+ (SimpleIphoneAudio*) sharedInstanceWithSources:(int) sources;
++ (OALSimpleAudio*) sharedInstanceWithSources:(int) sources;
 
 /** (INTERNAL USE) Initialize with the specified number of reserved sources.
  *
@@ -179,8 +183,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(SimpleIphoneAudio);
 /** Preload background music.
  *
  * <strong>Note:</strong> only <strong>ONE</strong> background music
- * file may be played or preloaded at a time (the hardware only supports one
- * file at a time). If you play or preload another file, the one currently playing
+ * file may be played or preloaded at a time via OALSimpleAudio.
+ * If you play or preload another file, the one currently playing
  * will stop.
  *
  * @param path The path containing the background music.
@@ -206,8 +210,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(SimpleIphoneAudio);
  * will load the music and then play, incurring a slight delay. <br>
  *
  * <strong>Note:</strong> only <strong>ONE</strong> background music
- * file may be played or preloaded at a time (the hardware only supports one
- * file at a time). If you play or preload another file, the one currently playing
+ * file may be played or preloaded at a time via OALSimpleAudio.
+ * If you play or preload another file, the one currently playing
  * will stop.
  *
  * @param path The path containing the background music.
@@ -220,8 +224,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(SimpleIphoneAudio);
  * will load the music and then play, incurring a slight delay. <br>
  *
  * <strong>Note:</strong> only <strong>ONE</strong> background music
- * file may be played or preloaded at a time (the hardware only supports one
- * file at a time). If you play or preload another file, the one currently playing
+ * file may be played or preloaded at a time via OALSimpleAudio.
+ * If you play or preload another file, the one currently playing
  * will stop.
  *
  * @param path The path containing the background music.
@@ -229,6 +233,29 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(SimpleIphoneAudio);
  * @return TRUE if the operation was successful.
  */
 - (bool) playBg:(NSString*) path loop:(bool) loop;
+
+/** Play the background music at the specified path.
+ * If the music has not been preloaded, this method
+ * will load the music and then play, incurring a slight delay. <br>
+ *
+ * <strong>Note:</strong> only <strong>ONE</strong> background music
+ * file may be played or preloaded at a time via OALSimpleAudio.
+ * If you play or preload another file, the one currently playing
+ * will stop. <br>
+ *
+ * <strong>Note:</strong> pan will have no effect when running on iOS
+ * versions prior to 4.0.
+ *
+ * @param filePath The path containing the sound data.
+ * @param volume The volume (gain) to play at (0.0 - 1.0).
+ * @param pan Left-right panning (-1.0 = far left, 1.0 = far right) (Only on iOS 4.0+).
+ * @param loop If TRUE, the sound will loop until you call "stopBg".
+ * @return TRUE if the operation was successful.
+ */
+- (bool) playBg:(NSString*) filePath
+		 volume:(float) volume
+			pan:(float) pan
+		   loop:(bool) loop;
 
 /** Stop the background music playback and rewind.
  */
@@ -261,7 +288,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(SimpleIphoneAudio);
  * @param filePath The path containing the sound data.
  * @return The sound source being used for playback, or nil if an error occurred.
  */
-- (id<SoundSource>) playEffect:(NSString*) filePath;
+- (id<ALSoundSource>) playEffect:(NSString*) filePath;
 
 /** Play a sound effect with volume 1.0, pitch 1.0, pan 0.0.  The sound will be loaded and cached
  * if it wasn't already.
@@ -270,7 +297,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(SimpleIphoneAudio);
  * @param loop If TRUE, the sound will loop until you call "stop" on the returned sound source.
  * @return The sound source being used for playback, or nil if an error occurred.
  */
-- (id<SoundSource>) playEffect:(NSString*) filePath loop:(bool) loop;
+- (id<ALSoundSource>) playEffect:(NSString*) filePath loop:(bool) loop;
 
 /** Play a sound effect.  The sound will be loaded and cached if it wasn't already.
  *
@@ -282,7 +309,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(SimpleIphoneAudio);
  * @return The sound source being used for playback, or nil if an error occurred (You'll need to
  *         keep this if you want to be able to stop a looped playback).
  */
-- (id<SoundSource>) playEffect:(NSString*) filePath
+- (id<ALSoundSource>) playEffect:(NSString*) filePath
 						volume:(float) volume
 						 pitch:(float) pitch
 						   pan:(float) pan

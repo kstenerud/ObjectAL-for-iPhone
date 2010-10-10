@@ -30,8 +30,8 @@
 #import "OALFunction.h"
 
 // AudioTrack
-#import "AudioTrack.h"
-#import "AudioTracks.h"
+#import "OALAudioTrack.h"
+#import "OALAudioTracks.h"
 
 // OpenAL
 #import "ALTypes.h"
@@ -42,19 +42,19 @@
 #import "ALListener.h"
 #import "ALSource.h"
 #import "ALWrapper.h"
-#import "ChannelSource.h"
-#import "SoundSourcePool.h"
+#import "ALChannelSource.h"
+#import "ALSoundSourcePool.h"
 #import "OpenALManager.h"
 
 // Other
-#import "IphoneAudioSupport.h"
-#import "SimpleIphoneAudio.h"
+#import "IOSAudioSupport.h"
+#import "OALSimpleAudio.h"
 
 
 
 /** \mainpage ObjectAL for iPhone
  
- Version 1.1 <br> <br>
+ Version 2.0 <br> <br>
  
  Copyright 2009-2010 Karl Stenerud <br><br>
  
@@ -67,7 +67,7 @@
  - \ref audio_formats_sec
  - \ref add_objectal_sec (also, installing the documentation into XCode)
  - \ref configuration_sec
- - \ref use_simpleiphoneaudio_sec
+ - \ref use_iossimpleaudio_sec
  - \ref use_objectal_sec
  - \ref other_examples_sec
  - \ref simulator_issues_sec
@@ -84,32 +84,34 @@
  
  \image html ObjectAL-Overview1.png
 
- - ObjectAL gives you full access to the OpenAL system without the hassle of the C API.
+ - <a class="el" href="index.html#objectal_and_openal_sec">ObjectAL</a>
+   gives you full access to the OpenAL system without the hassle of the C API.
    All OpenAL operations can be performed using first class objects and properties, without needing
    to muddle around with arrays of data, maintain IDs, or pass around pointers to basic types.
 
- - BackgroundAudio provides a simpler interface to AVAudioPlayer, allowing you to play, stop,
+ - AudioTrack provides a simpler interface to AVAudioPlayer, allowing you to play, stop,
    pause, fade, and mute background music tracks.
  
- - IphoneAudioSupport provides support functionality for audio in iPhone, including automatic
+ - IOSAudioSupport provides support functionality for audio in iPhone, including automatic
    interrupt handling and audio data loading routines. <br>
    As well, it provides an easy way to configure how the audio session will handle iPod-style music
    playing and the silent switch.
  
- - SimpleIphoneAudio layers on top of the other three, providing an even simpler interface for
+ - OALSimpleAudio layers on top of the other three, providing an even simpler interface for
    playing background music and sound effects.
   
  
  <br> <br>
  \section objectal_and_openal_sec ObjectAL and OpenAL
  
- ObjectAL follows the same basic principles as the
+ <strong>ObjectAL</strong> follows the same basic principles as the
  <a href="http://connect.creativelabs.com/openal">
  OpenAL API (http://connect.creativelabs.com/openal) </a>.
  
  \image html ObjectAL-Overview2.png
  
- - ObjectAL provides some overall controls that affect everything, and manages the current context.
+ - OpenALManager provides some overall controls that affect everything, and manages the current
+   context.
  
  - ALDevice represents a physical audio device. <br>
    Each device can have one or more contexts (ALContext) created on it, and can have multiple
@@ -129,7 +131,7 @@
  - ChannelSource allows you to reserve a certain number of sources for special purposes.
  
  - ALBuffer is simply a container for sound data.  Only linear PCM is supported directly, but
-   IphoneAudioSupport load methods, and SimpleIphoneAudio effect preload and play methods, will
+   IOSAudioSupport load methods, and OALSimpleAudio effect preload and play methods, will
    automatically convert any formats that don't require hardware decoding (though conversion
    results in a longer loading time).
  
@@ -141,18 +143,18 @@
  Shift) in the <strong>OpenAL Programmer's Guide</strong>, and distance models in section 3 of the
  <strong>OpenAL Specification</strong>. <br>
  Also be sure to read the
- <a href="http://developer.apple.com/iphone/library/technotes/tn2008/tn2199.html#//apple_ref/doc/uid/DTS40007999">
+ <a href="http://developer.apple.com/library/ios/#technotes/tn2008/tn2199.html">
  OpenAL FAQ from Apple</a>.
  
  
  <br> <br>
  \section audio_formats_sec Audio Formats
  According to the
- <a href="http://developer.apple.com/iphone/library/technotes/tn2008/tn2199.html#//apple_ref/doc/uid/DTS40007999">
+ <a href="http://developer.apple.com/library/ios/#technotes/tn2008/tn2199.html">
  OpenAL FAQ from Apple</a>:
  - To use OpenAL for playback, your application typically reads audio data from disk using Extended
    Audio File Services. In this process you convert the on-disk format, as needed, into one of the
-   OpenAL playback formats (IphoneAudioSupport and SimpleIphoneAudio do this for you).
+   OpenAL playback formats (IOSAudioSupport and OALSimpleAudio do this for you).
 
  - The on-disk audio format that your application reads must be PCM (uncompressed) or a compressed
    format that does not use hardware decompression, such as IMA-4.
@@ -161,8 +163,8 @@
    OS X. You can play the following linear PCM variants: mono 8-bit, mono 16-bit, stereo 8-bit, and
    stereo 16-bit.
  
- BackgroundAudio supports all hardware and software decoded formats as
- <a href="http://developer.apple.com/iphone/library/documentation/iphone/conceptual/iphoneosprogrammingguide/AudioandVideoTechnologies/AudioandVideoTechnologies.html">
+ AudioTrack supports all hardware and software decoded formats as
+ <a href="http://developer.apple.com/library/ios/#documentation/AudioVideo/Conceptual/MultimediaPG/UsingAudio/UsingAudio.html">
  specified by Apple here</a>.
 
  
@@ -220,13 +222,14 @@
  <strong>ObjectALConfig.h</strong> contains configuration defines that will affect at a high level
  how ObjectAL behaves.  Look inside <strong>ObjectALConfig.h</strong> to see what can be
  configured, and what each configuration value does. <br>
- The recommended values are fine for most users.
+ The recommended values are fine for most users, but Cocos2D users may want to set
+ OBJECTAL_USE_COCOS2D_ACTIONS so that the audio actions (such as fade) use the Cocos2D action manager.
 
  
  <br> <br>
- \section use_simpleiphoneaudio_sec Using SimpleIphoneAudio
+ \section use_iossimpleaudio_sec Using OALSimpleAudio
  
- By far, the easiest component to use is SimpleIphoneAudio.  You sacrifice some power for
+ By far, the easiest component to use is OALSimpleAudio.  You sacrifice some power for
  ease-of-use, but for many projects it is more than sufficient.
  
  Here is a code example:
@@ -243,7 +246,7 @@
 
 // SomeClass.m
 #import "SomeClass.h"
-#import "SimpleIphoneAudio.h"
+#import "ObjectAL.h"
 
 #define SHOOT_SOUND @"shoot.caf"
 #define EXPLODE_SOUND @"explode.caf"
@@ -259,15 +262,15 @@
 	{
 		// We don't want ipod music to keep playing since
 		// we have our own bg music.
-		[SimpleIphoneAudio sharedInstance].allowIpod = NO;
+		[OALSimpleAudio sharedInstance].allowIpod = NO;
 		
 		// Mute all audio if the silent switch is turned on.
-		[SimpleIphoneAudio sharedInstance].honorSilentSwitch = YES;
+		[OALSimpleAudio sharedInstance].honorSilentSwitch = YES;
 		
 		// This loads the sound effects into memory so that
 		// there's no delay when we tell it to play them.
-		[[SimpleIphoneAudio sharedInstance] preloadEffect:SHOOT_SOUND];
-		[[SimpleIphoneAudio sharedInstance] preloadEffect:EXPLODE_SOUND];
+		[[OALSimpleAudio sharedInstance] preloadEffect:SHOOT_SOUND];
+		[[OALSimpleAudio sharedInstance] preloadEffect:EXPLODE_SOUND];
 	}
 	return self;
 }
@@ -275,7 +278,7 @@
 - (void) dealloc
 {
 	// You might call stopEverything here depending on your needs
-	//[[SimpleIphoneAudio sharedInstance] stopEverything];	
+	//[[OALSimpleAudio sharedInstance] stopEverything];	
 	
 	[super dealloc];
 }
@@ -283,46 +286,46 @@
 - (void) onGameStart
 {
 	// Play the BG music and loop it.
-	[[SimpleIphoneAudio sharedInstance] playBg:INGAME_MUSIC_FILE loop:YES];
+	[[OALSimpleAudio sharedInstance] playBg:INGAME_MUSIC_FILE loop:YES];
 }
 
 - (void) onGamePause
 {
-	[SimpleIphoneAudio sharedInstance].paused = YES;
+	[OALSimpleAudio sharedInstance].paused = YES;
 }
 
 - (void) onGameResume
 {
-	[SimpleIphoneAudio sharedInstance].paused = NO;
+	[OALSimpleAudio sharedInstance].paused = NO;
 }
 
 - (void) onGameOver
 {
 	// Could use stopEverything here if you want
-	[[SimpleIphoneAudio sharedInstance] stopAllEffects];
+	[[OALSimpleAudio sharedInstance] stopAllEffects];
 	
 	// We only play the game over music through once.
-	[[SimpleIphoneAudio sharedInstance] playBg:GAMEOVER_MUSIC_FILE];
+	[[OALSimpleAudio sharedInstance] playBg:GAMEOVER_MUSIC_FILE];
 }
 
 - (void) onShipShotABullet
 {
-	[[SimpleIphoneAudio sharedInstance] playEffect:SHOOT_SOUND];
+	[[OALSimpleAudio sharedInstance] playEffect:SHOOT_SOUND];
 }
 
 - (void) onShipGotHit
 {
-	[[SimpleIphoneAudio sharedInstance] playEffect:EXPLODE_SOUND];
+	[[OALSimpleAudio sharedInstance] playEffect:EXPLODE_SOUND];
 }
 
 - (void) onQuitToMainMenu
 {
 	// Stop all music and sound effects.
-	[[SimpleIphoneAudio sharedInstance] stopEverything];	
+	[[OALSimpleAudio sharedInstance] stopEverything];	
 	
 	// Unload all sound effects and bg music so that it doesn't fill
 	// memory unnecessarily.
-	[[SimpleIphoneAudio sharedInstance] unloadAll];
+	[[OALSimpleAudio sharedInstance] unloadAll];
 }
 
 @end
@@ -330,10 +333,10 @@
  
  
  <br> <br>
- \section use_objectal_sec Using ObjectAL and BackgroundAudio
+ \section use_objectal_sec Using ObjectAL and AudioTrack
  
- ObjectAL and BackgroundAudio offer you much more power, but at the cost of complexity.
- Here's the same thing as above, done using ObjectAL and BackgroundAudio directly:
+ ObjectAL and AudioTrack offer you much more power, but at the cost of complexity.
+ Here's the same thing as above, done using ObjectAL and AudioTrack directly:
  
  \code
 // SomeClass.h
@@ -353,8 +356,6 @@
 
 // SomeClass.m
 #import "SomeClass.h"
-#import "BackgroundAudio.h"
-#import "IphoneAudioSupport.h"
 
 #define SHOOT_SOUND @"shoot.caf"
 #define EXPLODE_SOUND @"explode.caf"
@@ -374,23 +375,23 @@
 		[ObjectAL sharedInstance].currentContext = context;
 		
 		// Deal with interruptions for me!
-		[IphoneAudioSupport sharedInstance].handleInterruptions = YES;
+		[IOSAudioSupport sharedInstance].handleInterruptions = YES;
 		
 		// We don't want ipod music to keep playing since
 		// we have our own bg music.
-		[IphoneAudioSupport sharedInstance].allowIpod = NO;
+		[IOSAudioSupport sharedInstance].allowIpod = NO;
 		
 		// Mute all audio if the silent switch is turned on.
-		[IphoneAudioSupport sharedInstance].honorSilentSwitch = YES;
+		[IOSAudioSupport sharedInstance].honorSilentSwitch = YES;
 		
 		// Take all 32 sources for this channel.
 		// (we probably won't use that many but what the heck!)
 		channel = [[ChannelSource channelWithSources:32] retain];
 		
 		// Preload the buffers so we don't have to load and play them later.
-		shootBuffer = [[[IphoneAudioSupport sharedInstance]
+		shootBuffer = [[[IOSAudioSupport sharedInstance]
 						bufferFromFile:SHOOT_SOUND] retain];
-		explosionBuffer = [[[IphoneAudioSupport sharedInstance]
+		explosionBuffer = [[[IOSAudioSupport sharedInstance]
 							bufferFromFile:EXPLODE_SOUND] retain];
 	}
 	return self;
@@ -479,8 +480,9 @@
  - <strong>VolumePitchPanDemo</strong>: Demonstrates using gain, pitch, and pan controls.
  - <strong>CrossFadeDemo</strong>: Demonstrates crossfading between two sources.
  - <strong>ChannelsDemo</strong>: Demonstrates using audio channels.
- - <strong>FadeDemo</strong>: Demonstrates realtime fading in BackgroundAudio and ObjectAL.
- - <strong>PlanetKillerDemo</strong>: Demonstrates using SimpleIphoneAudio in a game setting.
+ - <strong>FadeDemo</strong>: Demonstrates realtime fading with AudioTrack and ALSource.
+ - <strong>AudioTrackDemo</strong>: Demonstrates using multiple AudioTrack objects.
+ - <strong>PlanetKillerDemo</strong>: Demonstrates using OALSimpleAudio in a game setting.
  
  
  
@@ -498,7 +500,7 @@
  \subsection simulator_limitations Simulator Limitations
  
  The simulator does not support setting audio modes, so setting allowIpod or honorSilentSwitch
- in IphoneAudioSupport will have no effect in the simulator.
+ in IOSAudioSupport will have no effect in the simulator.
  
  
  <br>
@@ -540,7 +542,7 @@
  OBJECTAL_CFG_SIMULATOR_BUG_WORKAROUND to 1 in ObjectALConfig.h.
 
  There's a bug in the simulator that causes OpenAL-based sounds to stop playing in certain cases
- when using AVAudioPlayer (BackgroundAudio).  ObjectAL contains code to work around this issue,
+ when using AVAudioPlayer (AudioTrack).  ObjectAL contains code to work around this issue,
  but it's not a 100% fix.
  
  
@@ -554,14 +556,14 @@
  There's a particularly nasty bug in the simulator's OpenAL and AVAudioPlayer implementation that
  causes the simulator to freeze for 60+ seconds in a very specific case:
  
- If you use BackgroundAudio to play background music, then stop the music,
+ If you use AudioTrack to play background music, then stop the music,
  then close the current OpenAL context, the simulator will freeze (a real device won't).
  
  This is not really a huge problem, however, since you really should be making a sound manager
- singleton object (what SimpleIphoneAudio is, basically) to handle the ALDevice and ALContext
+ singleton object (what OALSimpleAudio is, basically) to handle the ALDevice and ALContext
  (which will in 99.9% of cases last for the entire duration of your program).
  
- If you absolutely must close the current OpenAL context, start BackgroundAudio playing at 0
- volume first.
+ If you absolutely must close the current OpenAL context, start any AudioTrack objects playing
+ at 0 volume first.
  
  */

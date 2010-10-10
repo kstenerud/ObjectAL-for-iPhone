@@ -40,19 +40,6 @@
 #define kActionStepInterval (1.0/30)
 
 
-/** Sets the interval between fade steps when fading using an AudioTrack.
- * Lower values offer better accuracy, but take up more processing time because they
- * fire more often. <br>
- * Generally, you want at least 4 steps in a fade operation, so for fade durations
- * of 0.2 and above, an interval of 0.05 is fine.  For anything lower, you'll want to
- * lower the interval. <br>
- * Note: The NSTimer documentation states that a timer will typically have a resolution
- * of around 0.05 to 0.1, though in practice smaller values seem to work fine. <br>
- * Recommended value: 0.05
- */
-#define kAudioTrack_FadeInterval 0.05
-
-
 /** When this option is enabled, all critical ObjectAL operations will be wrapped in
  * synchronized blocks.
  * Turning this off can improve performance a bit if your application makes heavy

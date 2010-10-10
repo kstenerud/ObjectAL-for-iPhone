@@ -1,5 +1,5 @@
 //
-//  AudioTracks.h
+//  OALAudioTracks.h
 //  ObjectAL
 //
 //  Created by Karl Stenerud on 10-09-18.
@@ -24,16 +24,16 @@
 // Attribution is not required, but appreciated :)
 //
 
-#import "AudioTrack.h"
+#import "OALAudioTrack.h"
 #import "SynthesizeSingleton.h"
 
 
-#pragma mark AudioTracks
+#pragma mark OALAudioTracks
 
 /**
  * Keeps track of all AudioTrack objects.
  */
-@interface AudioTracks : NSObject
+@interface OALAudioTracks : NSObject
 {
 	/** All instantiated audio tracks. */
 	NSMutableArray* tracks;
@@ -61,20 +61,20 @@
 
 /** Singleton implementation providing "sharedInstance" and "purgeSharedInstance" methods.
  *
- * <b>- (BackgroundAudio*) sharedInstance</b>: Get the shared singleton instance. <br>
+ * <b>- (OALAudioTracks*) sharedInstance</b>: Get the shared singleton instance. <br>
  * <b>- (void) purgeSharedInstance</b>: Purge (deallocate) the shared instance.
  */
-SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(AudioTracks);
+SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALAudioTracks);
 
 
 #pragma mark Internal Use
 
 /** (INTERNAL USE) Notify that a track is initializing.
  */
-- (void) notifyTrackInitializing:(AudioTrack*) track;
+- (void) notifyTrackInitializing:(OALAudioTrack*) track;
 
 /** (INTERNAL USE) Notify that a track is deallocating.
  */
-- (void) notifyTrackDeallocating:(AudioTrack*) track;
+- (void) notifyTrackDeallocating:(OALAudioTrack*) track;
 
 @end

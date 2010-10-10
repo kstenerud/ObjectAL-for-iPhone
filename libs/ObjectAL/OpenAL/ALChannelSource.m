@@ -24,12 +24,12 @@
 // Attribution is not required, but appreciated :)
 //
 
-#import "ChannelSource.h"
+#import "ALChannelSource.h"
 #import "ObjectALMacros.h"
 #import "OpenALManager.h"
 
 
-@implementation ChannelSource
+@implementation ALChannelSource
 
 #pragma mark Object Management
 
@@ -45,14 +45,14 @@
 		context = [[OpenALManager sharedInstance].currentContext retain];
 
 		// Create some OpenAL sound sources
-		sourcePool = [[SoundSourcePool pool] retain];
+		sourcePool = [[ALSoundSourcePool pool] retain];
 		for(int i = 0; i < numSources; i++)
 		{
 			[sourcePool addSource:[ALSource source]];
 		}
 		
 		// Set this channel's properties from the OpenAL sound source defaults
-		id<SoundSource> firstSource = [sourcePool.sources objectAtIndex:0];
+		id<ALSoundSource> firstSource = (0 == [sourcePool.sources count]) ? 0 : [sourcePool.sources objectAtIndex:0];
 		pitch = firstSource.pitch;
 		gain = firstSource.gain;
 		maxDistance = firstSource.maxDistance;
@@ -96,7 +96,7 @@
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		coneInnerAngle = value;
-		for(id<SoundSource> source in sourcePool.sources)
+		for(id<ALSoundSource> source in sourcePool.sources)
 		{
 			source.coneInnerAngle = value;
 		}
@@ -116,7 +116,7 @@
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		coneOuterAngle = value;
-		for(id<SoundSource> source in sourcePool.sources)
+		for(id<ALSoundSource> source in sourcePool.sources)
 		{
 			source.coneOuterAngle = value;
 		}
@@ -136,7 +136,7 @@
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		coneOuterGain = value;
-		for(id<SoundSource> source in sourcePool.sources)
+		for(id<ALSoundSource> source in sourcePool.sources)
 		{
 			source.coneOuterGain = value;
 		}
@@ -158,7 +158,7 @@
 	OPTIONALLY_SYNCHRONIZED_STRUCT_OP(self)
 	{
 		direction = value;
-		for(id<SoundSource> source in sourcePool.sources)
+		for(id<ALSoundSource> source in sourcePool.sources)
 		{
 			source.direction = value;
 		}
@@ -178,7 +178,7 @@
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		gain = value;
-		for(id<SoundSource> source in sourcePool.sources)
+		for(id<ALSoundSource> source in sourcePool.sources)
 		{
 			source.gain = value;
 		}
@@ -198,7 +198,7 @@
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		interruptible = value;
-		for(id<SoundSource> source in sourcePool.sources)
+		for(id<ALSoundSource> source in sourcePool.sources)
 		{
 			source.interruptible = value;
 		}
@@ -218,7 +218,7 @@
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		looping = value;
-		for(id<SoundSource> source in sourcePool.sources)
+		for(id<ALSoundSource> source in sourcePool.sources)
 		{
 			source.looping = value;
 		}
@@ -238,7 +238,7 @@
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		maxDistance = value;
-		for(id<SoundSource> source in sourcePool.sources)
+		for(id<ALSoundSource> source in sourcePool.sources)
 		{
 			source.maxDistance = value;
 		}
@@ -258,7 +258,7 @@
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		maxGain = value;
-		for(id<SoundSource> source in sourcePool.sources)
+		for(id<ALSoundSource> source in sourcePool.sources)
 		{
 			source.maxGain = value;
 		}
@@ -278,7 +278,7 @@
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		minGain = value;
-		for(id<SoundSource> source in sourcePool.sources)
+		for(id<ALSoundSource> source in sourcePool.sources)
 		{
 			source.minGain = value;
 		}
@@ -298,7 +298,7 @@
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		muted = value;
-		for(id<SoundSource> source in sourcePool.sources)
+		for(id<ALSoundSource> source in sourcePool.sources)
 		{
 			source.muted = value;
 		}
@@ -318,7 +318,7 @@
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		paused = value;
-		for(id<SoundSource> source in sourcePool.sources)
+		for(id<ALSoundSource> source in sourcePool.sources)
 		{
 			source.paused = value;
 		}
@@ -338,7 +338,7 @@
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		pitch = value;
-		for(id<SoundSource> source in sourcePool.sources)
+		for(id<ALSoundSource> source in sourcePool.sources)
 		{
 			source.pitch = value;
 		}
@@ -349,7 +349,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		for(id<SoundSource> source in sourcePool.sources)
+		for(id<ALSoundSource> source in sourcePool.sources)
 		{
 			if(source.playing)
 			{
@@ -373,7 +373,7 @@
 	OPTIONALLY_SYNCHRONIZED_STRUCT_OP(self)
 	{
 		position = value;
-		for(id<SoundSource> source in sourcePool.sources)
+		for(id<ALSoundSource> source in sourcePool.sources)
 		{
 			source.position = value;
 		}
@@ -403,7 +403,7 @@
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		referenceDistance = value;
-		for(id<SoundSource> source in sourcePool.sources)
+		for(id<ALSoundSource> source in sourcePool.sources)
 		{
 			source.referenceDistance = value;
 		}
@@ -423,7 +423,7 @@
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		rolloffFactor = value;
-		for(id<SoundSource> source in sourcePool.sources)
+		for(id<ALSoundSource> source in sourcePool.sources)
 		{
 			source.rolloffFactor = value;
 		}
@@ -443,7 +443,7 @@
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		sourceRelative = value;
-		for(id<SoundSource> source in sourcePool.sources)
+		for(id<ALSoundSource> source in sourcePool.sources)
 		{
 			source.sourceRelative = value;
 		}
@@ -463,7 +463,7 @@
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		sourceType = value;
-		for(id<SoundSource> source in sourcePool.sources)
+		for(id<ALSoundSource> source in sourcePool.sources)
 		{
 			source.sourceType = value;
 		}
@@ -485,7 +485,7 @@
 	OPTIONALLY_SYNCHRONIZED_STRUCT_OP(self)
 	{
 		velocity = value;
-		for(id<SoundSource> source in sourcePool.sources)
+		for(id<ALSoundSource> source in sourcePool.sources)
 		{
 			source.velocity = value;
 		}
@@ -495,36 +495,36 @@
 
 #pragma mark Playback
 
-- (id<SoundSource>) play
+- (id<ALSoundSource>) play
 {
 	// Do nothing.
 	LOG_WARNING(@"\"play\" does nothing in ChannelSource.  Use \"play:(ALBuffer*) buffer loop:(bool) loop\" instead.");
 	return nil;
 }
 
-- (id<SoundSource>) play:(ALBuffer*) buffer
+- (id<ALSoundSource>) play:(ALBuffer*) buffer
 {
 	return [self play:buffer loop:NO];
 }
 
-- (id<SoundSource>) play:(ALBuffer*) buffer loop:(bool) loop
+- (id<ALSoundSource>) play:(ALBuffer*) buffer loop:(bool) loop
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		// Try to find a free source for playback.
 		// If this channel is not interruptible, it will not attempt to interrupt its contained sources.
-		id<SoundSource> soundSource = [sourcePool getFreeSource:interruptible];
+		id<ALSoundSource> soundSource = [sourcePool getFreeSource:interruptible];
 		return [soundSource play:buffer loop:loop];
 	}
 }
 
-- (id<SoundSource>) play:(ALBuffer*) buffer gain:(float) gainIn pitch:(float) pitchIn pan:(float) panIn loop:(bool) loop
+- (id<ALSoundSource>) play:(ALBuffer*) buffer gain:(float) gainIn pitch:(float) pitchIn pan:(float) panIn loop:(bool) loop
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		// Try to find a free source for playback.
 		// If this channel is not interruptible, it will not attempt to interrupt its contained sources.
-		id<SoundSource> soundSource = [sourcePool getFreeSource:interruptible];
+		id<ALSoundSource> soundSource = [sourcePool getFreeSource:interruptible];
 		return [soundSource play:buffer gain:gainIn pitch:pitchIn pan:panIn loop:loop];
 	}
 }
@@ -533,7 +533,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		for(id<SoundSource> source in sourcePool.sources)
+		for(id<ALSoundSource> source in sourcePool.sources)
 		{
 			[source stop];
 		}
@@ -551,14 +551,14 @@
 
 		currentFadeCallbackCount = 0;
 		expectedFadeCallbackCount = [sourcePool.sources count];
-		for(id<SoundSource> source in sourcePool.sources)
+		for(id<ALSoundSource> source in sourcePool.sources)
 		{
 			[source fadeTo:value duration:duration target:self selector:@selector(onFadeComplete:)];
 		}
 	}
 }
 
-- (void) onFadeComplete:(id<SoundSource>) source
+- (void) onFadeComplete:(id<ALSoundSource>) source
 {
 	// Must always be synchronized
 	@synchronized(self)
@@ -576,10 +576,96 @@
 	// Must always be synchronized
 	@synchronized(self)
 	{
-		for(id<SoundSource> source in sourcePool.sources)
+		[sourcePool.sources makeObjectsPerformSelector:@selector(stopFade)];
+	}
+}
+
+- (void) panTo:(float) value duration:(float) duration target:(id) target selector:(SEL) selector
+{
+	// Must always be synchronized
+	@synchronized(self)
+	{
+		[self stopPan];
+		panCompleteTarget = target;
+		panCompleteSelector = selector;
+		
+		currentPanCallbackCount = 0;
+		expectedPanCallbackCount = [sourcePool.sources count];
+		for(id<ALSoundSource> source in sourcePool.sources)
 		{
-			[source stopFade];
+			[source panTo:value duration:duration target:self selector:@selector(onPanComplete:)];
 		}
+	}
+}
+
+- (void) onPanComplete:(id<ALSoundSource>) source
+{
+	// Must always be synchronized
+	@synchronized(self)
+	{
+		currentPanCallbackCount++;
+		if(currentPanCallbackCount == expectedPanCallbackCount)
+		{
+			[panCompleteTarget performSelector:panCompleteSelector withObject:self];
+		}
+	}
+}
+
+- (void) stopPan
+{
+	// Must always be synchronized
+	@synchronized(self)
+	{
+		[sourcePool.sources makeObjectsPerformSelector:@selector(stopPan)];
+	}
+}
+
+- (void) pitchTo:(float) value duration:(float) duration target:(id) target selector:(SEL) selector
+{
+	// Must always be synchronized
+	@synchronized(self)
+	{
+		[self stopPitch];
+		pitchCompleteTarget = target;
+		pitchCompleteSelector = selector;
+		
+		currentPitchCallbackCount = 0;
+		expectedPitchCallbackCount = [sourcePool.sources count];
+		for(id<ALSoundSource> source in sourcePool.sources)
+		{
+			[source pitchTo:value duration:duration target:self selector:@selector(onPitchComplete:)];
+		}
+	}
+}
+
+- (void) onPitchComplete:(id<ALSoundSource>) source
+{
+	// Must always be synchronized
+	@synchronized(self)
+	{
+		currentPitchCallbackCount++;
+		if(currentPitchCallbackCount == expectedPitchCallbackCount)
+		{
+			[pitchCompleteTarget performSelector:pitchCompleteSelector withObject:self];
+		}
+	}
+}
+
+- (void) stopPitch
+{
+	// Must always be synchronized
+	@synchronized(self)
+	{
+		[sourcePool.sources makeObjectsPerformSelector:@selector(stopPitch)];
+	}
+}
+
+- (void) stopActions
+{
+	// Must always be synchronized
+	@synchronized(self)
+	{
+		[sourcePool.sources makeObjectsPerformSelector:@selector(stopActions)];
 	}
 }
 
@@ -588,7 +674,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		for(id<SoundSource> source in sourcePool.sources)
+		for(id<ALSoundSource> source in sourcePool.sources)
 		{
 			[source clear];
 		}

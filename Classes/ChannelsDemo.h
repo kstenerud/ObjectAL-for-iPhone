@@ -9,7 +9,7 @@
 #import "ObjectAL.h"
 
 /**
- * Demonstrates the use of channels, and BackgroundAudio.
+ * Demonstrates the use of channels, and audio tracks.
  *
  * A channel reserves audio sources and by default does not allow playback interruption.
  * In creating a channel, you can ensure exclusive access to that channel's sources, which is
@@ -25,13 +25,11 @@
  */
 @interface ChannelsDemo : CCColorLayer
 {
-	AudioTrack* backgroundTrack;
-	ALDevice* device;
-	ALContext* context;
-	ChannelSource* oneSourceChannel;
-	ChannelSource* twoSourceChannel;
-	ChannelSource* threeSourceChannel;
-	ChannelSource* eightSourceChannel;
+	OALAudioTrack* backgroundTrack;
+	ALChannelSource* oneSourceChannel;
+	ALChannelSource* twoSourceChannel;
+	ALChannelSource* threeSourceChannel;
+	ALChannelSource* eightSourceChannel;
 	ALBuffer* buffer;
 }
 

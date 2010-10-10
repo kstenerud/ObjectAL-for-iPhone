@@ -77,7 +77,7 @@
 
 /** Singleton implementation providing "sharedInstance" and "purgeSharedInstance" methods.
  *
- * <b>- (BackgroundAudio*) sharedInstance</b>: Get the shared singleton instance. <br>
+ * <b>- (OALLinearFunction*) sharedInstance</b>: Get the shared singleton instance. <br>
  * <b>- (void) purgeSharedInstance</b>: Purge (deallocate) the shared instance.
  */
 SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALLinearFunction);
@@ -120,7 +120,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALLinearFunction);
 
 /** Singleton implementation providing "sharedInstance" and "purgeSharedInstance" methods.
  *
- * <b>- (BackgroundAudio*) sharedInstance</b>: Get the shared singleton instance. <br>
+ * <b>- (OALSCurveFunction*) sharedInstance</b>: Get the shared singleton instance. <br>
  * <b>- (void) purgeSharedInstance</b>: Purge (deallocate) the shared instance.
  */
 SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALSCurveFunction);
@@ -162,7 +162,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALSCurveFunction);
 
 /** Singleton implementation providing "sharedInstance" and "purgeSharedInstance" methods.
  *
- * <b>- (BackgroundAudio*) sharedInstance</b>: Get the shared singleton instance. <br>
+ * <b>- (OALExponentialFunction*) sharedInstance</b>: Get the shared singleton instance. <br>
  * <b>- (void) purgeSharedInstance</b>: Purge (deallocate) the shared instance.
  */
 SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALExponentialFunction);
@@ -204,7 +204,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALExponentialFunction);
 
 /** Singleton implementation providing "sharedInstance" and "purgeSharedInstance" methods.
  *
- * <b>- (BackgroundAudio*) sharedInstance</b>: Get the shared singleton instance. <br>
+ * <b>- (OALLogarithmicFunction*) sharedInstance</b>: Get the shared singleton instance. <br>
  * <b>- (void) purgeSharedInstance</b>: Purge (deallocate) the shared instance.
  */
 SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALLogarithmicFunction);

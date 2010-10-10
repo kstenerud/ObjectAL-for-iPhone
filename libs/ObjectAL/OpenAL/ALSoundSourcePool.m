@@ -24,7 +24,7 @@
 // Attribution is not required, but appreciated :)
 //
 
-#import "SoundSourcePool.h"
+#import "ALSoundSourcePool.h"
 #import "ObjectALMacros.h"
 
 
@@ -33,7 +33,7 @@
 /**
  * Private interface to SoundSourcePool.
  */
-@interface SoundSourcePool (Private)
+@interface ALSoundSourcePool (Private)
 
 /** Move a source to the head of the list.
  *
@@ -47,7 +47,7 @@
 #pragma mark -
 #pragma mark SoundSourcePool
 
-@implementation SoundSourcePool
+@implementation ALSoundSourcePool
 
 #pragma mark Object Management
 
@@ -79,7 +79,7 @@
 
 #pragma mark Source Management
 
-- (void) addSource:(id<SoundSource>) source
+- (void) addSource:(id<ALSoundSource>) source
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
@@ -87,7 +87,7 @@
 	}
 }
 
-- (void) removeSource:(id<SoundSource>) source
+- (void) removeSource:(id<ALSoundSource>) source
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
@@ -106,14 +106,14 @@
 	}
 }
 
-- (id<SoundSource>) getFreeSource:(bool) attemptToInterrupt
+- (id<ALSoundSource>) getFreeSource:(bool) attemptToInterrupt
 {
 	int index = 0;
 	
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		// Try to find any free source.
-		for(id<SoundSource> source in sources)
+		for(id<ALSoundSource> source in sources)
 		{
 			if(!source.playing)
 			{
@@ -127,7 +127,7 @@
 		{
 			// Try to forcibly free a source.
 			index = 0;
-			for(id<SoundSource> source in sources)
+			for(id<ALSoundSource> source in sources)
 			{
 				if(!source.playing || source.interruptible)
 				{

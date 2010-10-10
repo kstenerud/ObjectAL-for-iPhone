@@ -30,7 +30,7 @@
 		rocketShip.position = ccp(center.x, center.y - 50);
 		[self addChild:rocketShip z:20];
 
-		CCSprite* planet = [CCSprite spriteWithFile:@"Jupiter.png"];
+		planet = [CCSprite spriteWithFile:@"Jupiter.png"];
 		planet.position = center;
 		[self addChild:planet];
 		
@@ -38,23 +38,6 @@
 		button.anchorPoint = ccp(1,1);
 		button.position = ccp(size.width, size.height);
 		[self addChild:button z:250];
-
-
-		// Initialize ObjectAL
-		device = [[ALDevice deviceWithDeviceSpecifier:nil] retain];
-		context = [[ALContext contextOnDevice:device attributes:nil] retain];
-		[OpenALManager sharedInstance].currentContext = context;
-		
-		[IphoneAudioSupport sharedInstance].handleInterruptions = YES;
-		
-		source = [[ALSource source] retain];
-		buffer = [[[IphoneAudioSupport sharedInstance] bufferFromFile:@"ColdFunk.wav"] retain];
-		
-		source.position = alpoint(planet.position.x, planet.position.y, 0);
-		//		source.maxDistance = 300;
-		source.referenceDistance = 50;
-		
-		context.listener.position = alpoint(rocketShip.position.x, rocketShip.position.y, 0);
 	}
 	return self;
 }
@@ -65,11 +48,6 @@
 	[source release];
 	[buffer release];
 
-	// Note: Normally you wouldn't release the context and device when leaving a scene.
-	// I'm doing it here to provide a clean slate for the other demos.
-	[context release];
-	[device release];
-
 	[super dealloc];
 }
 
@@ -79,7 +57,7 @@
 - (void) moveShipTo:(CGPoint) position
 {
 	rocketShip.position = position;
-	context.listener.position = alpoint(rocketShip.position.x, rocketShip.position.y, 0);
+	[OpenALManager sharedInstance].currentContext.listener.position = alpoint(rocketShip.position.x, rocketShip.position.y, 0);
 }
 
 
@@ -87,6 +65,22 @@
 
 - (void) onEnterTransitionDidFinish
 {
+	// Initialize the OpenAL device and context here so that it doesn't happen
+	// prematurely.
+	
+	// We'll let OALSimpleAudio deal with the device and context.
+	// Since we're not going to use it for playing effects, don't give it any sources.
+	[OALSimpleAudio sharedInstanceWithSources:0];
+	
+	source = [[ALSource source] retain];
+	buffer = [[[IOSAudioSupport sharedInstance] bufferFromFile:@"ColdFunk.wav"] retain];
+	
+	source.position = alpoint(planet.position.x, planet.position.y, 0);
+	//		source.maxDistance = 300;
+	source.referenceDistance = 50;
+	
+	[OpenALManager sharedInstance].currentContext.listener.position = alpoint(rocketShip.position.x, rocketShip.position.y, 0);
+	
 	self.isTouchEnabled = YES;
 	[source play:buffer loop:YES];
 }

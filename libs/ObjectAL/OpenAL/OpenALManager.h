@@ -39,7 +39,7 @@
  * http://connect.creativelabs.com/openal/Documentation <br>
  * Be sure to read through it (especially the part about distance models) as ObjectAL follows the
  * OpenAL object model.
- * Alternatively, you may opt to use SimpleIphoneAudio for your audio needs.
+ * Alternatively, you may opt to use OALSimpleAudio for your audio needs.
  */
 @interface OpenALManager : NSObject
 {
@@ -99,7 +99,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OpenALManager);
 #pragma mark Internal Use
 
 /** (INTERNAL USE) Used by the interrupt handler to suspend ObjectAL
- * (if interrupts are enabled in IphoneAudioSupport).
+ * (if interrupts are enabled in IOSAudioSupport).
  */
 @property(readwrite,assign) bool suspended;
 

@@ -1,5 +1,5 @@
 //
-//  IphoneAudioSupport.m
+//  IOSAudioSupport.m
 //  ObjectAL
 //
 //  Created by Karl Stenerud on 19/12/09.
@@ -24,10 +24,10 @@
 // Attribution is not required, but appreciated :)
 //
 
-#import "IphoneAudioSupport.h"
+#import "IOSAudioSupport.h"
 #import "ObjectALMacros.h"
 #import <AudioToolbox/AudioToolbox.h>
-#import "AudioTracks.h"
+#import "OALAudioTracks.h"
 #import "OpenALManager.h"
 
 
@@ -94,7 +94,7 @@
 
 - (void)main
 {
-	ALBuffer* buffer = [[IphoneAudioSupport sharedInstance] bufferFromUrl:url];
+	ALBuffer* buffer = [[IOSAudioSupport sharedInstance] bufferFromUrl:url];
 	[target performSelectorOnMainThread:selector withObject:buffer waitUntilDone:NO];
 }
 
@@ -106,9 +106,9 @@
 #pragma mark Private Methods
 
 /**
- * (INTERNAL USE) Private methods for IphoneAudioSupport. 
+ * (INTERNAL USE) Private methods for IOSAudioSupport. 
  */
-@interface IphoneAudioSupport (Private)
+@interface IOSAudioSupport (Private)
 
 /** (INTERNAL USE) Log an error if the specified AudioSession error code indicates an error.
  *
@@ -168,13 +168,13 @@ static void interruptListenerCallback(void* inUserData, UInt32 interruptionState
 @end
 
 #pragma mark -
-#pragma mark IphoneAudioSupport
+#pragma mark IOSAudioSupport
 
-@implementation IphoneAudioSupport
+@implementation IOSAudioSupport
 
 #pragma mark Object Management
 
-SYNTHESIZE_SINGLETON_FOR_CLASS(IphoneAudioSupport);
+SYNTHESIZE_SINGLETON_FOR_CLASS(IOSAudioSupport);
 
 - (id) init
 {
@@ -705,16 +705,16 @@ done:
 			suspended = value;
 			if(suspended)
 			{
-				backgroundAudioWasSuspended = [AudioTracks sharedInstance].suspended;
+				backgroundAudioWasSuspended = [OALAudioTracks sharedInstance].suspended;
 				objectALWasSuspended = [OpenALManager sharedInstance].suspended;
 				[OpenALManager sharedInstance].suspended = YES;
-				[AudioTracks sharedInstance].suspended = YES;
+				[OALAudioTracks sharedInstance].suspended = YES;
 			}
 			else
 			{
 				if(!backgroundAudioWasSuspended)
 				{
-					[AudioTracks sharedInstance].suspended = NO;
+					[OALAudioTracks sharedInstance].suspended = NO;
 				}
 				if(!objectALWasSuspended)
 				{
@@ -755,7 +755,7 @@ done:
 
 static void interruptListenerCallback(void* inUserData, UInt32 interruptionState)
 {
-	IphoneAudioSupport* handler = (IphoneAudioSupport*) inUserData;
+	IOSAudioSupport* handler = (IOSAudioSupport*) inUserData;
 	switch(interruptionState)
 	{
 		case kAudioSessionBeginInterruption:

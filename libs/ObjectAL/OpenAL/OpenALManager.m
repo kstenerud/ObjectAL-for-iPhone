@@ -27,8 +27,8 @@
 #import "OpenALManager.h"
 #import "ObjectALMacros.h"
 #import "ALWrapper.h"
-#import "MutableArray-WeakReferences.h"
-#import "IphoneAudioSupport.h"
+#import "NSMutableArray+WeakReferences.h"
+#import "IOSAudioSupport.h"
 
 
 #pragma mark OpenALManager
@@ -44,8 +44,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OpenALManager);
 {
 	if(nil != (self = [super init]))
 	{
-		// Make sure IphoneAudioSupport is initialized.
-		[IphoneAudioSupport sharedInstance];
+		// Make sure IOSAudioSupport is initialized.
+		[IOSAudioSupport sharedInstance];
 		
 		devices = [[NSMutableArray mutableArrayUsingWeakReferencesWithCapacity:5] retain];
 		suspendedContexts = [[NSMutableArray mutableArrayUsingWeakReferencesWithCapacity:30] retain];

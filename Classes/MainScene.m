@@ -101,7 +101,7 @@ static int startIndex = 0;
 	[self addScene:[ChannelsDemo class] named:@"Channels"];
 	[self addScene:[FadeDemo class] named:@"Fading"];
 	[self addScene:[AudioTrackDemo class] named:@"Audio Tracks"];
-	[self addScene:[PlanetKillerDemo class] named:@"Planet Killer (SimpleIphoneAudio)"];
+	[self addScene:[PlanetKillerDemo class] named:@"Planet Killer (OALSimpleAudio)"];
 }
 
 - (void) addScene:(Class) sceneClass named:(NSString*) name
@@ -110,6 +110,12 @@ static int startIndex = 0;
 	[scenes addObject:sceneClass];
 }
 
+- (void) onEnterTransitionDidFinish
+{
+	// Make sure OALSimpleAudio isn't initialized from another demo
+	// when returning to the main scene.
+	[OALSimpleAudio purgeSharedInstance];
+}
 
 - (void) setStartIndex:(int) newIndex
 {
