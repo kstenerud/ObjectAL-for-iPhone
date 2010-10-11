@@ -49,8 +49,13 @@
 	ALBuffer* buffer;
 	ALContext* context;
 
+	/** Current action operating on the gain control. */
 	OALAction* gainAction;
+
+	/** Current action operating on the pan control. */
 	OALAction* panAction;
+
+	/** Current action operating on the pitch control. */
 	OALAction* pitchAction;
 }
 

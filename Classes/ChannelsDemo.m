@@ -171,8 +171,8 @@
 	// Since we're not going to use it for playing effects, don't give it any sources.
 	[OALSimpleAudio sharedInstanceWithSources:0];
 	
-	OALSimpleAudio* audio = [OALSimpleAudio sharedInstance];
-
+	// This is the only sound that gets played.  Notice that a single
+	// buffer can be played by multiple sources simultaneously.
 	buffer = [[[OALAudioSupport sharedInstance] bufferFromFile:@"Pew.caf"] retain];
 
 	// Make some channels to play effects with.
@@ -181,7 +181,7 @@
 	threeSourceChannel = [[ALChannelSource channelWithSources:3] retain];
 	eightSourceChannel = [[ALChannelSource channelWithSources:8] retain];
 	
-	// Loop bg track forever.
+	// Load and loop bg track forever.
 	[backgroundTrack playFile:@"PlanetKiller.mp3" loops:-1];
 }
 

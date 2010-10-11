@@ -29,6 +29,8 @@
 #import "ObjectALMacros.h"
 #import "ALWrapper.h"
 #import "OpenALManager.h"
+#import "OALAudioActions.h"
+#import "OALUtilityActions.h"
 
 
 @implementation ALSource
@@ -652,7 +654,7 @@
 		[self stopFade];
 		gainAction = [[OALSequentialActions actions:
 					   [OALGainAction actionWithDuration:duration endValue:value function:[OALGainAction defaultFunction]],
-					   [OALCall actionWithCallTarget:target selector:selector withObject:self],
+					   [OALCallAction actionWithCallTarget:target selector:selector withObject:self],
 					   nil] retain];
 		[gainAction runWithTarget:self];
 	}
@@ -680,7 +682,7 @@
 		[self stopPan];
 		gainAction = [[OALSequentialActions actions:
 					   [OALPanAction actionWithDuration:duration endValue:value function:[OALPanAction defaultFunction]],
-					   [OALCall actionWithCallTarget:target selector:selector withObject:self],
+					   [OALCallAction actionWithCallTarget:target selector:selector withObject:self],
 					   nil] retain];
 		[gainAction runWithTarget:self];
 	}
@@ -708,7 +710,7 @@
 		[self stopPitch];
 		gainAction = [[OALSequentialActions actions:
 					   [OALPitchAction actionWithDuration:duration endValue:value function:[OALPitchAction defaultFunction]],
-					   [OALCall actionWithCallTarget:target selector:selector withObject:self],
+					   [OALCallAction actionWithCallTarget:target selector:selector withObject:self],
 					   nil] retain];
 		[gainAction runWithTarget:self];
 	}

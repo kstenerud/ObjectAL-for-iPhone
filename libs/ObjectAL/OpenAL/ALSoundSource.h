@@ -172,7 +172,7 @@
  * @param selector The selector to call when the pan completes.  The selector must accept
  * a single parameter, which will be the object that performed the pan.
  */
-- (void) panTo:(float) gain
+- (void) panTo:(float) pan
 	   duration:(float) duration
 		 target:(id) target
 	   selector:(SEL) selector;

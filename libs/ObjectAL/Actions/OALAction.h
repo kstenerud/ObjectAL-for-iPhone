@@ -32,8 +32,13 @@
 
 #if OBJECTAL_USE_COCOS2D_ACTIONS
 
+#pragma mark Cocos2d Subclassing
+
 #import "cocos2d.h"
 
+/** Generates common code required to subclass from a cocos2d action
+ * while maintaining the functionality of an OALAction.
+ */
 #define COCOS2D_SUBCLASS_HEADER(CLASS_A,CLASS_B)	\
 @interface CLASS_A: CLASS_B	\
 {	\
@@ -43,6 +48,46 @@
 @property(readonly,nonatomic) bool running;	\
 - (void) runWithTarget:(id) target;	\
 - (void) prepareWithTarget:(id) target;	\
+	\
+@end
+
+
+
+/** Generates common code required to subclass from a cocos2d action
+ * while maintaining the functionality of an OALAction.
+ */
+#define COCOS2D_SUBCLASS(CLASS_A)	\
+@implementation CLASS_A	\
+	\
+- (id) init	\
+{	\
+	return [self initWithDuration:0];	\
+}	\
+	\
+- (bool) running	\
+{	\
+	return started && !self.isDone;	\
+}	\
+	\
+- (void) runWithTarget:(id) targetIn	\
+{	\
+	if(!started)	\
+	{	\
+		[[CCActionManager sharedManager] addAction:self target:targetIn paused:NO];	\
+	}	\
+}	\
+	\
+- (void) prepareWithTarget:(id) targetIn	\
+{	\
+}	\
+	\
+-(void) startWithTarget:(id) targetIn	\
+{	\
+	[super startWithTarget:targetIn];	\
+	[self prepareWithTarget:targetIn];	\
+	started = YES;	\
+	[self runWithTarget:targetIn];	\
+}	\
 	\
 @end
 
@@ -56,6 +101,7 @@
  */
 #if !OBJECTAL_USE_COCOS2D_ACTIONS
 
+#pragma mark -
 #pragma mark OALAction (ObjectAL version)
 
 /**
@@ -67,6 +113,8 @@
 	id target;
 	float duration;
 	bool running;
+	
+	/** If TRUE, this action is running via OALActionManager. */
 	bool runningInManager;
 }
 
@@ -251,196 +299,5 @@ COCOS2D_SUBCLASS_HEADER(OALAction, CCIntervalAction);
 /** Get the function that this action would use by default if none was specified. */
 + (id<OALFunction,NSObject>) defaultFunction;
 
-
-@end
-
-
-#pragma mark -
-#pragma mark OALGainAction
-
-/**
- * A function-based action that modifies the target's gain.
- * The target's gain poperty is assumed to be a float, accepting values
- * from 0.0 (no sound) to 1.0 (max gain).
- */
-@interface OALGainAction: OALFunctionAction
-{
-}
-
-@end
-
-
-#pragma mark -
-#pragma mark OALPitchAction
-
-/**
- * A function-based action that modifies the target's pitch.
- * The target's pitch property is assumed to be a float, with
- * 1.0 representing normal pitch, and lower values giving lower pitch.
- */
-@interface OALPitchAction: OALFunctionAction
-{
-}
-
-@end
-
-
-#pragma mark -
-#pragma mark OALPanAction
-
-/**
- * A function-based action that modifies the target's pan.
- * The target's pan property is assumed to be a float, accepting values
- * from -1.0 (max left) to 1.0 (max right).
- */
-@interface OALPanAction: OALFunctionAction
-{
-}
-
-@end
-
-@interface OALPlaceAction : OALAction
-{
-	ALPoint position;
-}
-@property(readwrite,assign) ALPoint position;
-
-+ (id) actionWithPosition:(ALPoint) position;
-
-- (id) initWithPosition:(ALPoint) position;
-
-@end
-
-
-
-@interface OALMoveToAction : OALAction
-{
-	float unitsPerSecond;
-	ALPoint startPoint;
-	ALPoint position;
-	ALPoint delta;
-}
-@property(readwrite,assign) ALPoint position;
-@property(readwrite,assign) float unitsPerSecond;
-
-+ (id) actionWithDuration:(float) duration position:(ALPoint) position;
-+ (id) actionWithUnitsPerSecond:(float) unitsPerSecond position:(ALPoint) position;
-
-- (id) initWithDuration:(float) duration position:(ALPoint) position;
-- (id) initWithUnitsPerSecond:(float) unitsPerSecond position:(ALPoint) position;
-
-@end
-
-
-@interface OALMoveByAction : OALAction
-{
-	float unitsPerSecond;
-	ALPoint startPoint;
-	ALPoint delta;
-}
-@property(readwrite,assign) ALPoint delta;
-@property(readwrite,assign) float unitsPerSecond;
-
-+ (id) actionWithDuration:(float) duration delta:(ALPoint) delta;
-+ (id) actionWithUnitsPerSecond:(float) unitsPerSecond delta:(ALPoint) delta;
-
-- (id) initWithDuration:(float) duration delta:(ALPoint) delta;
-- (id) initWithUnitsPerSecond:(float) unitsPerSecond delta:(ALPoint) delta;
-
-@end
-
-
-
-@interface OALTargetedAction: OALAction
-{
-	id forcedTarget;
-	OALAction* action;
-}
-
-+ (id) actionWithTarget:(id) target action:(OALAction*) action;
-- (id) initWithTarget:(id) target action:(OALAction*) action;
-
-@end
-
-
-/* There are actions in cocos2d that do essentially the same thing as these.
- */
-#if !OBJECTAL_USE_COCOS2D_ACTIONS
-
-@interface OALSequentialActions: OALAction
-{
-	NSMutableArray* actions;
-	NSMutableArray* pDurations;
-	int actionIndex;
-	float pLastComplete;
-	OALAction* currentAction;
-	float pCurrentActionDuration;
-	float pCurrentActionComplete;
-}
-@property(readwrite,retain) NSMutableArray* actions;
-
-+ (id) actions:(OALAction*) action1, ... NS_REQUIRES_NIL_TERMINATION;
-+ (id) actionsFromArray:(NSArray*) actions;
-
-- (id) initWithActions:(NSArray*) actions;
-
-@end
-
-
-@interface OALConcurrentActions: OALAction
-{
-	NSMutableArray* actions;
-	NSMutableArray* pDurations;
-	NSMutableArray* actionsWithDuration;
-}
-@property(readwrite,retain) NSMutableArray* actions;
-
-+ (id) actions:(OALAction*) action1, ... NS_REQUIRES_NIL_TERMINATION;
-+ (id) actionsFromArray:(NSArray*) actions;
-
-- (id) initWithActions:(NSArray*) actions;
-
-@end
-
-#else /* !OBJECTAL_USE_COCOS2D_ACTIONS */
-
-COCOS2D_SUBCLASS_HEADER(OALSequentialActions,CCSequence);
-COCOS2D_SUBCLASS_HEADER(OALConcurrentActions,CCSpawn);
-
-#endif /* !OBJECTAL_USE_COCOS2D_ACTIONS */
-
-
-@interface OALCall: OALAction
-{
-	id callTarget;
-	SEL selector;
-	int numObjects;
-	id object1;
-	id object2;
-}
-
-+ (id) actionWithCallTarget:(id) callTarget
-				   selector:(SEL) selector;
-
-+ (id) actionWithCallTarget:(id) callTarget
-				   selector:(SEL) selector
-				 withObject:(id) object;
-
-+ (id) actionWithCallTarget:(id) callTarget
-				   selector:(SEL) selector
-				 withObject:(id) firstObject
-				 withObject:(id) secondObject;
-
-- (id) initWithCallTarget:(id) callTarget
-				 selector:(SEL) selector;
-
-- (id) initWithCallTarget:(id) callTarget
-				 selector:(SEL) selector
-			   withObject:(id) object;
-
-- (id) initWithCallTarget:(id) callTarget
-				 selector:(SEL) selector
-			   withObject:(id) firstObject
-			   withObject:(id) secondObject;
 
 @end

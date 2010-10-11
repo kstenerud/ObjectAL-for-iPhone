@@ -104,6 +104,10 @@
 		39B034531262430E00AC27C9 /* OALSimpleAudio.h in Headers */ = {isa = PBXBuildFile; fileRef = 39B034511262430E00AC27C9 /* OALSimpleAudio.h */; };
 		39B034541262430E00AC27C9 /* OALSimpleAudio.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B034521262430E00AC27C9 /* OALSimpleAudio.m */; };
 		39B0373D1262A32D00AC27C9 /* ObjectALMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 39B0373C1262A32D00AC27C9 /* ObjectALMacros.h */; };
+		39B037EE1262DAF700AC27C9 /* OALUtilityActions.h in Headers */ = {isa = PBXBuildFile; fileRef = 39B037EC1262DAF700AC27C9 /* OALUtilityActions.h */; };
+		39B037EF1262DAF700AC27C9 /* OALUtilityActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B037ED1262DAF700AC27C9 /* OALUtilityActions.m */; };
+		39B037F21262DAFE00AC27C9 /* OALAudioActions.h in Headers */ = {isa = PBXBuildFile; fileRef = 39B037F01262DAFE00AC27C9 /* OALAudioActions.h */; };
+		39B037F31262DAFE00AC27C9 /* OALAudioActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B037F11262DAFE00AC27C9 /* OALAudioActions.m */; };
 		505574581045D68500A31725 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 506EDBA4102F4C9F00A389B3 /* AVFoundation.framework */; };
 		505574591045D68500A31725 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC6640020F83B3EA000B3E49 /* AudioToolbox.framework */; };
 		5055745A1045D68500A31725 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCCBF1B60F6022AE0040855A /* CoreGraphics.framework */; };
@@ -410,6 +414,10 @@
 		39B034511262430E00AC27C9 /* OALSimpleAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALSimpleAudio.h; sourceTree = "<group>"; };
 		39B034521262430E00AC27C9 /* OALSimpleAudio.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALSimpleAudio.m; sourceTree = "<group>"; };
 		39B0373C1262A32D00AC27C9 /* ObjectALMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectALMacros.h; sourceTree = "<group>"; };
+		39B037EC1262DAF700AC27C9 /* OALUtilityActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALUtilityActions.h; sourceTree = "<group>"; };
+		39B037ED1262DAF700AC27C9 /* OALUtilityActions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALUtilityActions.m; sourceTree = "<group>"; };
+		39B037F01262DAFE00AC27C9 /* OALAudioActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALAudioActions.h; sourceTree = "<group>"; };
+		39B037F11262DAFE00AC27C9 /* OALAudioActions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALAudioActions.m; sourceTree = "<group>"; };
 		50674850107A3AF30090963A /* ZAttributedString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZAttributedString.h; sourceTree = "<group>"; };
 		50674851107A3AF30090963A /* ZAttributedString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZAttributedString.m; sourceTree = "<group>"; };
 		50674852107A3AF30090963A /* ZAttributedStringPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZAttributedStringPrivate.h; sourceTree = "<group>"; };
@@ -719,8 +727,12 @@
 				396B392F124EDA42009B84A4 /* OALAction.m */,
 				396B3930124EDA42009B84A4 /* OALActionManager.h */,
 				396B3931124EDA42009B84A4 /* OALActionManager.m */,
+				39B037F01262DAFE00AC27C9 /* OALAudioActions.h */,
+				39B037F11262DAFE00AC27C9 /* OALAudioActions.m */,
 				396B3932124EDA42009B84A4 /* OALFunction.h */,
 				396B3933124EDA42009B84A4 /* OALFunction.m */,
+				39B037EC1262DAF700AC27C9 /* OALUtilityActions.h */,
+				39B037ED1262DAF700AC27C9 /* OALUtilityActions.m */,
 			);
 			path = Actions;
 			sourceTree = "<group>";
@@ -1090,6 +1102,8 @@
 				39B0340A12623AA800AC27C9 /* OALAudioSupport.h in Headers */,
 				39B034531262430E00AC27C9 /* OALSimpleAudio.h in Headers */,
 				39B0373D1262A32D00AC27C9 /* ObjectALMacros.h in Headers */,
+				39B037EE1262DAF700AC27C9 /* OALUtilityActions.h in Headers */,
+				39B037F21262DAFE00AC27C9 /* OALAudioActions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1367,6 +1381,8 @@
 				396B3989124EDA43009B84A4 /* NSMutableArray+WeakReferences.m in Sources */,
 				39B0340B12623AA800AC27C9 /* OALAudioSupport.m in Sources */,
 				39B034541262430E00AC27C9 /* OALSimpleAudio.m in Sources */,
+				39B037EF1262DAF700AC27C9 /* OALUtilityActions.m in Sources */,
+				39B037F31262DAFE00AC27C9 /* OALAudioActions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

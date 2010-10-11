@@ -25,11 +25,13 @@
 //
 
 #import "OALAudioTrack.h"
-#import "OALAudioTracks.h"
 #import "mach_timing.h"
 #import <AudioToolbox/AudioToolbox.h>
-#import "ObjectALMacros.h"
+#import "OALAudioActions.h"
+#import "OALAudioTracks.h"
 #import "OALAudioSupport.h"
+#import "OALUtilityActions.h"
+#import "ObjectALMacros.h"
 
 
 #pragma mark Asynchronous Operations
@@ -641,7 +643,7 @@
 		[self stopFade];
 		gainAction = [[OALSequentialActions actions:
 					   [OALGainAction actionWithDuration:duration endValue:value function:[OALGainAction defaultFunction]],
-					   [OALCall actionWithCallTarget:target selector:selector withObject:self],
+					   [OALCallAction actionWithCallTarget:target selector:selector withObject:self],
 					   nil] retain];
 		[gainAction runWithTarget:self];
 	}
@@ -671,7 +673,7 @@
 			[self stopPan];
 			panAction = [[OALSequentialActions actions:
 						  [OALPanAction actionWithDuration:duration endValue:value function:[OALPanAction defaultFunction]],
-						  [OALCall actionWithCallTarget:target selector:selector withObject:self],
+						  [OALCallAction actionWithCallTarget:target selector:selector withObject:self],
 						  nil] retain];
 			[panAction runWithTarget:self];
 		}
