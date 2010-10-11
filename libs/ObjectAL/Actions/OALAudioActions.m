@@ -68,7 +68,7 @@
 	[super prepareWithTarget:targetIn];
 }
 
-- (void) update:(float) proportionComplete
+- (void) updateCompletion:(float) proportionComplete
 {
 	[(id<OALAction_GainProtocol>)target setGain:lowValue
 	 + [realFunction valueForInput:proportionComplete] * delta];
@@ -119,7 +119,7 @@
 	[super prepareWithTarget:targetIn];
 }
 
-- (void) update:(float) proportionComplete
+- (void) updateCompletion:(float) proportionComplete
 {
 	[(id<OALAction_PitchProtocol>)target setPitch:startValue
 	 + [realFunction valueForInput:proportionComplete] * delta];
@@ -170,7 +170,7 @@
 	[super prepareWithTarget:targetIn];
 }
 
-- (void) update:(float) proportionComplete
+- (void) updateCompletion:(float) proportionComplete
 {
 	[(id<OALAction_PanProtocol>)target setPan:startValue
 	 + [realFunction valueForInput:proportionComplete] * delta];
@@ -201,7 +201,7 @@
 
 + (id) actionWithPosition:(ALPoint) position
 {
-	return [[[self alloc] initWithPosition:position] autorelease];
+	return [[(OALPlaceAction*)[self alloc] initWithPosition:position] autorelease];
 }
 
 - (id) initWithPosition:(ALPoint) positionIn
@@ -229,9 +229,9 @@
 	[super prepareWithTarget:targetIn];
 }
 
-- (void) start
+- (void) updateCompletion:(float) proportionComplete
 {
-	[super start];
+	[super updateCompletion:proportionComplete];
 	[(id<OALAction_PositionProtocol>)target setPosition:position];
 }
 
@@ -248,7 +248,7 @@
 
 + (id) actionWithDuration:(float) duration position:(ALPoint) position
 {
-	return [[[self alloc] initWithDuration:duration position:position] autorelease];
+	return [[(OALMoveToAction*)[self alloc] initWithDuration:duration position:position] autorelease];
 }
 
 + (id) actionWithUnitsPerSecond:(float) unitsPerSecond position:(ALPoint) position
@@ -298,7 +298,7 @@
 	}
 }
 
-- (void) update:(float) proportionComplete
+- (void) updateCompletion:(float) proportionComplete
 {
 	[(id<OALAction_PositionProtocol>)target setPosition:
 	 ALPointMake(startPoint.x + delta.x*proportionComplete,
@@ -368,7 +368,7 @@
 	}
 }
 
-- (void) update:(float) proportionComplete
+- (void) updateCompletion:(float) proportionComplete
 {
 	[(id<OALAction_PositionProtocol>)target setPosition:
 	 ALPointMake(startPoint.x + delta.x*proportionComplete,

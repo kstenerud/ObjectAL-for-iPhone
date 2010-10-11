@@ -48,6 +48,8 @@
 @property(readonly,nonatomic) bool running;	\
 - (void) runWithTarget:(id) target;	\
 - (void) prepareWithTarget:(id) target;	\
+- (void) stopAction;	\
+- (void) updateCompletion:(float) proportionComplete;	\
 	\
 @end
 
@@ -64,9 +66,23 @@
 	return [self initWithDuration:0];	\
 }	\
 	\
+-(void) startWithTarget:(id) targetIn	\
+{	\
+	[super startWithTarget:targetIn];	\
+	[self prepareWithTarget:targetIn];	\
+	started = YES;	\
+	[self runWithTarget:targetIn];	\
+}	\
+	\
+- (void) update:(float) proportionComplete	\
+{	\
+	[super update:proportionComplete];	\
+	[self updateCompletion:proportionComplete];	\
+}	\
+	\
 - (bool) running	\
 {	\
-	return started && !self.isDone;	\
+	return !self.isDone;	\
 }	\
 	\
 - (void) runWithTarget:(id) targetIn	\
@@ -77,19 +93,10 @@
 	}	\
 }	\
 	\
-- (void) prepareWithTarget:(id) targetIn	\
+- (void) stopAction	\
 {	\
+	[[CCActionManager sharedManager] removeAction:self];	\
 }	\
-	\
--(void) startWithTarget:(id) targetIn	\
-{	\
-	[super startWithTarget:targetIn];	\
-	[self prepareWithTarget:targetIn];	\
-	started = YES;	\
-	[self runWithTarget:targetIn];	\
-}	\
-	\
-@end
 
 #endif /* OBJECTAL_USE_COCOS2D_ACTIONS */
 
@@ -162,17 +169,17 @@
 
 /** Called by runWithTarget to start the action running.
  */
-- (void) start;
+- (void) startAction;
 
 /** Called by OALActionManager to update this action's progress.
  *
  * @param proportionComplete The proportion of this action's duration that has elapsed.
  */
-- (void) update:(float) proportionComplete;
+- (void) updateCompletion:(float) proportionComplete;
 
 /** Stop this action.
  */
-- (void) stop;
+- (void) stopAction;
 
 @end
 

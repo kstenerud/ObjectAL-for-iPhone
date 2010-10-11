@@ -67,8 +67,8 @@
 - (void) runWithTarget:(id) targetIn
 {
 	[self prepareWithTarget:targetIn];
-	[self start];
-	[self update:0];
+	[self startAction];
+	[self updateCompletion:0];
 
 	if(duration > 0)
 	{
@@ -77,7 +77,7 @@
 	}
 	else
 	{
-		[self stop];
+		[self stopAction];
 	}
 }
 
@@ -88,18 +88,18 @@
 	target = targetIn;
 }
 
-- (void) start
+- (void) startAction
 {
 	running = YES;
 	startTime = mach_absolute_time();
 }
 
-- (void) update:(float) proportionComplete
+- (void) updateCompletion:(float) proportionComplete
 {
 	// Subclasses will override this.
 }
 
-- (void) stop
+- (void) stopAction
 {
 	running = NO;
 	if(runningInManager)
@@ -114,7 +114,56 @@
 
 #else /* !OBJECTAL_USE_COCOS2D_ACTIONS */
 
-COCOS2D_SUBCLASS(OALAction);
+//COCOS2D_SUBCLASS(OALAction);
+
+@implementation OALAction
+
+- (id) init
+{
+	return [self initWithDuration:0];
+}
+
+-(void) startWithTarget:(id) targetIn
+{
+	[super startWithTarget:targetIn];
+	[self prepareWithTarget:targetIn];
+	started = YES;
+	[self runWithTarget:targetIn];
+}
+
+- (void) update:(float) proportionComplete	
+{
+	// The only difference is that I don't call [super update:] here.
+	[self updateCompletion:proportionComplete];
+}
+
+- (bool) running
+{
+	return !self.isDone;
+}
+
+- (void) runWithTarget:(id) targetIn
+{
+	if(!started)
+	{
+		[[CCActionManager sharedManager] addAction:self target:targetIn paused:NO];
+	}
+}
+
+- (void) stopAction
+{
+	[[CCActionManager sharedManager] removeAction:self];
+}
+
+- (void) prepareWithTarget:(id) targetIn
+{
+}
+
+- (void) updateCompletion:(float) proportionComplete
+{
+}
+
+@end
 
 #endif /* !OBJECTAL_USE_COCOS2D_ACTIONS */
 

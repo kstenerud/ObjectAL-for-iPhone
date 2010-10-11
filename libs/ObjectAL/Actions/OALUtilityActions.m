@@ -36,7 +36,7 @@
 
 + (id) actionWithTarget:(id) target action:(OALAction*) action
 {
-	return [[[self alloc] initWithTarget:target action:action] autorelease];
+	return [[(OALTargetedAction*)[self alloc] initWithTarget:target action:action] autorelease];
 }
 
 - (id) initWithTarget:(id) targetIn action:(OALAction*) actionIn
@@ -69,22 +69,26 @@
 	[action prepareWithTarget:forcedTarget];
 }
 
-- (void) start
+#if !OBJECTAL_USE_COCOS2D_ACTIONS
+
+- (void) startAction
 {
-	[super start];
-	[action start];
+	[super startAction];
+	[action startAction];
 }
 
-- (void) stop
+#endif /* !OBJECTAL_USE_COCOS2D_ACTIONS */
+
+- (void) stopAction
 {
-	[super stop];
-	[action stop];
+	[super stopAction];
+	[action stopAction];
 }
 
-- (void) update:(float) proportionComplete
+- (void) updateCompletion:(float) proportionComplete
 {
-	[super update:proportionComplete];
-	[action update:proportionComplete];
+	[super updateCompletion:proportionComplete];
+	[action updateCompletion:proportionComplete];
 }
 
 @end
@@ -203,28 +207,28 @@
 	[super prepareWithTarget:targetIn];
 }
 
-- (void) start
+- (void) startAction
 {
-	[currentAction start];
-	[super start];
+	[currentAction startAction];
+	[super startAction];
 }
 
-- (void) stop
+- (void) stopAction
 {
-	[currentAction stop];
-	[super stop];
+	[currentAction stopAction];
+	[super stopAction];
 }
 
-- (void) update:(float) pComplete
+- (void) updateCompletion:(float) pComplete
 {
 	float pDelta = pComplete - pLastComplete;
 	while(pCurrentActionComplete + pDelta >= pCurrentActionDuration)
 	{
 		if(currentAction.duration > 0)
 		{
-			[currentAction update:1.0];
+			[currentAction updateCompletion:1.0];
 		}
-		[currentAction stop];
+		[currentAction stopAction];
 		pDelta -= (pCurrentActionDuration - pCurrentActionComplete);
 		actionIndex++;
 		if(actionIndex >= [actions count])
@@ -234,19 +238,19 @@
 		currentAction = [actions objectAtIndex:actionIndex];
 		pCurrentActionDuration = [[pDurations objectAtIndex:actionIndex] floatValue];
 		pCurrentActionComplete = 0;
-		[currentAction start];
+		[currentAction startAction];
 	}
 	
 	if(pComplete >= 1.0)
 	{
 		// Make sure a cumulative rounding error doesn't cause an uncompletable action.
-		[currentAction update:1.0];
-		[currentAction stop];
+		[currentAction updateCompletion:1.0];
+		[currentAction stopAction];
 	}
 	else
 	{
 		pCurrentActionComplete += pDelta;
-		[currentAction update:pCurrentActionComplete / pCurrentActionDuration];
+		[currentAction updateCompletion:pCurrentActionComplete / pCurrentActionDuration];
 	}
 	
 	pLastComplete = pComplete;
@@ -256,7 +260,17 @@
 
 #else /* !OBJECTAL_USE_COCOS2D_ACTIONS */
 
-COCOS2D_SUBCLASS(OALSequentialActions);
+COCOS2D_SUBCLASS(OALSequentialActions)
+
+- (void) prepareWithTarget:(id) targetIn
+{
+}
+
+- (void) updateCompletion:(float) proportionComplete
+{
+}
+
+@end
 
 #endif /* !OBJECTAL_USE_COCOS2D_ACTIONS */
 
@@ -361,25 +375,25 @@ COCOS2D_SUBCLASS(OALSequentialActions);
 	[super prepareWithTarget:targetIn];
 }
 
-- (void) start
+- (void) startAction
 {
-	[actions makeObjectsPerformSelector:@selector(start)];
-	[super start];
+	[actions makeObjectsPerformSelector:@selector(startAction)];
+	[super startAction];
 }
 
-- (void) stop
+- (void) stopAction
 {
-	[actions makeObjectsPerformSelector:@selector(stop)];
-	[super stop];
+	[actions makeObjectsPerformSelector:@selector(stopAction)];
+	[super stopAction];
 }
 
-- (void) update:(float) proportionComplete
+- (void) updateCompletion:(float) proportionComplete
 {
 	if(0 == proportionComplete)
 	{
 		for(OALAction* action in actions)
 		{
-			[action update:0];
+			[action updateCompletion:0];
 		}
 	}
 	else
@@ -392,7 +406,7 @@ COCOS2D_SUBCLASS(OALSequentialActions);
 			{
 				proportion = 1.0;
 			}
-			[action update:proportion];
+			[action updateCompletion:proportion];
 		}
 	}
 }
@@ -401,7 +415,17 @@ COCOS2D_SUBCLASS(OALSequentialActions);
 
 #else /* !OBJECTAL_USE_COCOS2D_ACTIONS */
 
-COCOS2D_SUBCLASS(OALConcurrentActions);
+COCOS2D_SUBCLASS(OALConcurrentActions)
+
+- (void) prepareWithTarget:(id) targetIn
+{
+}
+
+- (void) updateCompletion:(float) proportionComplete
+{
+}
+
+@end
 
 #endif /* !OBJECTAL_USE_COCOS2D_ACTIONS */
 
@@ -483,10 +507,10 @@ COCOS2D_SUBCLASS(OALConcurrentActions);
 
 #pragma mark Functions
 
-- (void) start
+- (void) startAction
 {
 #if !OBJECTAL_USE_COCOS2D_ACTIONS
-	[super start];
+	[super startAction];
 #endif /* !OBJECTAL_USE_COCOS2D_ACTIONS */
 	
 	switch(numObjects)
@@ -507,12 +531,7 @@ COCOS2D_SUBCLASS(OALConcurrentActions);
 -(void) startWithTarget:(id) targetIn
 {
 	[super startWithTarget:targetIn];
-	[self start];
-}
-
-- (void) update:(float) proportionComplete
-{
-	// Nothing to do.
+	[self startAction];
 }
 
 #endif /* OBJECTAL_USE_COCOS2D_ACTIONS */

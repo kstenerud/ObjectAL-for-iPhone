@@ -75,11 +75,11 @@
 {
 	[context notifySourceDeallocating:self];
 	
-	[gainAction stop];
+	[gainAction stopAction];
 	[gainAction release];
-	[panAction stop];
+	[panAction stopAction];
 	[panAction release];
-	[pitchAction stop];
+	[pitchAction stopAction];
 	[pitchAction release];
 
 	OPTIONALLY_SYNCHRONIZED(self)
@@ -665,7 +665,7 @@
 	// Must always be synchronized
 	@synchronized(self)
 	{
-		[gainAction stop];
+		[gainAction stopAction];
 		[gainAction release];
 		gainAction = nil;
 	}
@@ -693,7 +693,7 @@
 	// Must always be synchronized
 	@synchronized(self)
 	{
-		[gainAction stop];
+		[gainAction stopAction];
 		[gainAction release];
 		gainAction = nil;
 	}
@@ -721,7 +721,7 @@
 	// Must always be synchronized
 	@synchronized(self)
 	{
-		[gainAction stop];
+		[gainAction stopAction];
 		[gainAction release];
 		gainAction = nil;
 	}

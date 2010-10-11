@@ -279,6 +279,10 @@
 
 - (void) onExitPressed
 {
+	// These are needed when using cocos2d actions since the its action engine is less forgiving.
+	[[OALSimpleAudio sharedInstance].backgroundTrack stopActions];
+	[source stopActions];
+	
 	self.isTouchEnabled = NO;
 	[[CCDirector sharedDirector] replaceScene:[MainLayer scene]];
 }

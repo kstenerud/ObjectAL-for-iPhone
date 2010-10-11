@@ -71,10 +71,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALActionManager);
 	{
 		for(NSMutableArray* actions in targetActions)
 		{
-			[actions makeObjectsPerformSelector:@selector(stop)];
+			[actions makeObjectsPerformSelector:@selector(stopAction)];
 		}
 		
-		[actionsToAdd makeObjectsPerformSelector:@selector(stop)];
+		[actionsToAdd makeObjectsPerformSelector:@selector(stopAction)];
 	}
 }
 
@@ -138,12 +138,12 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALActionManager);
 				float proportionComplete = elapsedTime / action.duration;
 				if(proportionComplete < 1.0)
 				{
-					[action update:proportionComplete];
+					[action updateCompletion:proportionComplete];
 				}
 				else
 				{
-					[action update:1.0];
-					[action stop];
+					[action updateCompletion:1.0];
+					[action stopAction];
 				}
 			}
 		}

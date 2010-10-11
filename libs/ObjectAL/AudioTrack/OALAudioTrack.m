@@ -257,9 +257,9 @@
 	[currentlyLoadedUrl release];
 	[player release];
 	[simulatorPlayerRef release];
-	[gainAction stop];
+	[gainAction stopAction];
 	[gainAction release];
-	[panAction stop];
+	[panAction stopAction];
 	[panAction release];
 	[super dealloc];
 }
@@ -654,7 +654,7 @@
 	// Must always be synchronized
 	@synchronized(self)
 	{
-		[gainAction stop];
+		[gainAction stopAction];
 		[gainAction release];
 		gainAction = nil;
 	}
@@ -687,7 +687,7 @@
 		// Must always be synchronized
 		@synchronized(self)
 		{
-			[panAction stop];
+			[panAction stopAction];
 			[panAction release];
 			panAction = nil;
 		}
