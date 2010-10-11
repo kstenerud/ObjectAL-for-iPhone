@@ -28,7 +28,7 @@
 #import "ALWrapper.h"
 #import "ObjectALMacros.h"
 #import "NSMutableArray+WeakReferences.h"
-#import "IOSAudioSupport.h"
+#import "OALAudioSupport.h"
 #import "OpenALManager.h"
 
 
@@ -45,8 +45,8 @@
 {
 	if(nil != (self = [super init]))
 	{
-		// Make sure IOSAudioSupport is initialized.
-		[IOSAudioSupport sharedInstance];
+		// Make sure OALAudioSupport is initialized.
+		[OALAudioSupport sharedInstance];
 
 		if(nil != (device = [ALWrapper openDevice:deviceSpecifier]))
 		{

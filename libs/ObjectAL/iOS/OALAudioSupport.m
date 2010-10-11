@@ -1,5 +1,5 @@
 //
-//  IOSAudioSupport.m
+//  OALAudioSupport.m
 //  ObjectAL
 //
 //  Created by Karl Stenerud on 19/12/09.
@@ -24,7 +24,7 @@
 // Attribution is not required, but appreciated :)
 //
 
-#import "IOSAudioSupport.h"
+#import "OALAudioSupport.h"
 #import "ObjectALMacros.h"
 #import <AudioToolbox/AudioToolbox.h>
 #import "OALAudioTracks.h"
@@ -94,7 +94,7 @@
 
 - (void)main
 {
-	ALBuffer* buffer = [[IOSAudioSupport sharedInstance] bufferFromUrl:url];
+	ALBuffer* buffer = [[OALAudioSupport sharedInstance] bufferFromUrl:url];
 	[target performSelectorOnMainThread:selector withObject:buffer waitUntilDone:NO];
 }
 
@@ -106,9 +106,9 @@
 #pragma mark Private Methods
 
 /**
- * (INTERNAL USE) Private methods for IOSAudioSupport. 
+ * (INTERNAL USE) Private methods for OALAudioSupport. 
  */
-@interface IOSAudioSupport (Private)
+@interface OALAudioSupport (Private)
 
 /** (INTERNAL USE) Log an error if the specified AudioSession error code indicates an error.
  *
@@ -168,13 +168,13 @@ static void interruptListenerCallback(void* inUserData, UInt32 interruptionState
 @end
 
 #pragma mark -
-#pragma mark IOSAudioSupport
+#pragma mark OALAudioSupport
 
-@implementation IOSAudioSupport
+@implementation OALAudioSupport
 
 #pragma mark Object Management
 
-SYNTHESIZE_SINGLETON_FOR_CLASS(IOSAudioSupport);
+SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSupport);
 
 - (id) init
 {
@@ -755,7 +755,7 @@ done:
 
 static void interruptListenerCallback(void* inUserData, UInt32 interruptionState)
 {
-	IOSAudioSupport* handler = (IOSAudioSupport*) inUserData;
+	OALAudioSupport* handler = (OALAudioSupport*) inUserData;
 	switch(interruptionState)
 	{
 		case kAudioSessionBeginInterruption:

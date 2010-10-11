@@ -104,10 +104,10 @@
 	[OALSimpleAudio sharedInstanceWithSources:0];
 	
 	firstSource = [[ALSource source] retain];
-	firstBuffer = [[[IOSAudioSupport sharedInstance] bufferFromFile:@"ColdFunk.wav"] retain];
+	firstBuffer = [[[OALAudioSupport sharedInstance] bufferFromFile:@"ColdFunk.wav"] retain];
 	
 	secondSource = [[ALSource source] retain];
-	secondBuffer = [[[IOSAudioSupport sharedInstance] bufferFromFile:@"HappyAlley.wav"] retain];
+	secondBuffer = [[[OALAudioSupport sharedInstance] bufferFromFile:@"HappyAlley.wav"] retain];
 
 	[firstSource play:firstBuffer loop:YES];
 	[secondSource play:secondBuffer loop:YES];

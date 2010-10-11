@@ -27,6 +27,7 @@
 #import <Foundation/Foundation.h>
 #import "OALFunction.h"
 #import "ObjectALConfig.h"
+#import "ALTypes.h"
 
 
 #if OBJECTAL_USE_COCOS2D_ACTIONS
@@ -259,8 +260,8 @@ COCOS2D_SUBCLASS_HEADER(OALAction, CCIntervalAction);
 
 /**
  * A function-based action that modifies the target's gain.
- * The target's gain is assumed to be a float, accepting values from 0.0 (no sound)
- * to 1.0 (max gain).
+ * The target's gain poperty is assumed to be a float, accepting values
+ * from 0.0 (no sound) to 1.0 (max gain).
  */
 @interface OALGainAction: OALFunctionAction
 {
@@ -274,8 +275,8 @@ COCOS2D_SUBCLASS_HEADER(OALAction, CCIntervalAction);
 
 /**
  * A function-based action that modifies the target's pitch.
- * The target's pitch is assumed to be a float, with 1.0 representing
- * normal pitch, and lower values giving lower pitch.
+ * The target's pitch property is assumed to be a float, with
+ * 1.0 representing normal pitch, and lower values giving lower pitch.
  */
 @interface OALPitchAction: OALFunctionAction
 {
@@ -289,12 +290,75 @@ COCOS2D_SUBCLASS_HEADER(OALAction, CCIntervalAction);
 
 /**
  * A function-based action that modifies the target's pan.
- * The target's pan is assumed to be a float, accepting values from -1.0 (max left)
- * to 1.0 (max right).
+ * The target's pan property is assumed to be a float, accepting values
+ * from -1.0 (max left) to 1.0 (max right).
  */
 @interface OALPanAction: OALFunctionAction
 {
 }
+
+@end
+
+@interface OALPlaceAction : OALAction
+{
+	ALPoint position;
+}
+@property(readwrite,assign) ALPoint position;
+
++ (id) actionWithPosition:(ALPoint) position;
+
+- (id) initWithPosition:(ALPoint) position;
+
+@end
+
+
+
+@interface OALMoveToAction : OALAction
+{
+	float unitsPerSecond;
+	ALPoint startPoint;
+	ALPoint position;
+	ALPoint delta;
+}
+@property(readwrite,assign) ALPoint position;
+@property(readwrite,assign) float unitsPerSecond;
+
++ (id) actionWithDuration:(float) duration position:(ALPoint) position;
++ (id) actionWithUnitsPerSecond:(float) unitsPerSecond position:(ALPoint) position;
+
+- (id) initWithDuration:(float) duration position:(ALPoint) position;
+- (id) initWithUnitsPerSecond:(float) unitsPerSecond position:(ALPoint) position;
+
+@end
+
+
+@interface OALMoveByAction : OALAction
+{
+	float unitsPerSecond;
+	ALPoint startPoint;
+	ALPoint delta;
+}
+@property(readwrite,assign) ALPoint delta;
+@property(readwrite,assign) float unitsPerSecond;
+
++ (id) actionWithDuration:(float) duration delta:(ALPoint) delta;
++ (id) actionWithUnitsPerSecond:(float) unitsPerSecond delta:(ALPoint) delta;
+
+- (id) initWithDuration:(float) duration delta:(ALPoint) delta;
+- (id) initWithUnitsPerSecond:(float) unitsPerSecond delta:(ALPoint) delta;
+
+@end
+
+
+
+@interface OALTargetedAction: OALAction
+{
+	id forcedTarget;
+	OALAction* action;
+}
+
++ (id) actionWithTarget:(id) target action:(OALAction*) action;
+- (id) initWithTarget:(id) target action:(OALAction*) action;
 
 @end
 

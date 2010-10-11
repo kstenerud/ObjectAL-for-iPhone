@@ -99,7 +99,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OpenALManager);
 #pragma mark Internal Use
 
 /** (INTERNAL USE) Used by the interrupt handler to suspend ObjectAL
- * (if interrupts are enabled in IOSAudioSupport).
+ * (if interrupts are enabled in OALAudioSupport).
  */
 @property(readwrite,assign) bool suspended;
 

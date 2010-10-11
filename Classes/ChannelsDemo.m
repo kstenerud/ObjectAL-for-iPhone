@@ -174,7 +174,7 @@
 	OALSimpleAudio* audio = [OALSimpleAudio sharedInstance];
 	NSLog(@"simple audio = %@", audio);
 
-	buffer = [[[IOSAudioSupport sharedInstance] bufferFromFile:@"Pew.caf"] retain];
+	buffer = [[[OALAudioSupport sharedInstance] bufferFromFile:@"Pew.caf"] retain];
 
 	// Make some channels to play effects with.
 	oneSourceChannel = [[ALChannelSource channelWithSources:1] retain];

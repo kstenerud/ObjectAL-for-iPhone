@@ -25,17 +25,21 @@
 //
 
 
+/** Determines how ObjectAL's actions are implemented.
+ * If this is set to 1, ObjectAL's actions will inherit from cocos2d actions,
+ * which allows them to be used directly in the cocos2d action manager.
+ */
 #define OBJECTAL_USE_COCOS2D_ACTIONS 0
 
-/** Sets the interval between fade steps when fading using ObjectAL sources.
+/** Sets the interval in seconds between steps when performing actions with OALAction subclasses.
  * Lower values offer better accuracy, but take up more processing time because they
  * fire more often. <br>
- * Generally, you want at least 4 steps in a fade operation, so for fade durations
- * of 0.2 and above, an interval of 0.05 is fine.  For anything lower, you'll want to
- * lower the interval. <br>
+ * Generally, you want at least 4-5 steps in an audio operation, so for durations
+ * of 0.2 and above, an interval of 1/30 is fine.  For anything lower, you'll want a
+ * smaller interval. <br>
  * Note: The NSTimer documentation states that a timer will typically have a resolution
  * of around 0.05 to 0.1, though in practice smaller values seem to work fine. <br>
- * Recommended value: 0.05
+ * Recommended value: 1.0/30
  */
 #define kActionStepInterval (1.0/30)
 

@@ -116,3 +116,13 @@ static inline ALOrientation alorientation(const float atX,
 	ALOrientation orientation = { {atX, atY, atZ}, {upX,upY,upZ} };
 	return orientation;
 }
+
+static inline ALPoint ALPointMake(float x, float y, float z)
+{
+	ALPoint p;
+	p.x = x;
+	p.y = y;
+	p.z = z;
+
+	return p;
+}

@@ -60,7 +60,7 @@
 	[OALSimpleAudio purgeSharedInstance];
 
 	// We want interruptions handled automatically so we don't have to worry about them.
-	[IOSAudioSupport sharedInstance].handleInterruptions = YES;
+	[OALAudioSupport sharedInstance].handleInterruptions = YES;
 
 	[[CCDirector sharedDirector] runWithScene: [MainLayer scene]];
 }

@@ -29,7 +29,7 @@
 #import "mach_timing.h"
 #import <AudioToolbox/AudioToolbox.h>
 #import "ObjectALMacros.h"
-#import "IOSAudioSupport.h"
+#import "OALAudioSupport.h"
 
 
 #pragma mark Asynchronous Operations
@@ -499,7 +499,7 @@
 
 - (bool) preloadFile:(NSString*) path
 {
-	return [self preloadUrl:[[IOSAudioSupport sharedInstance] urlForPath:path]];
+	return [self preloadUrl:[[OALAudioSupport sharedInstance] urlForPath:path]];
 }
 
 - (bool) preloadUrlAsync:(NSURL*) url target:(id) target selector:(SEL) selector
@@ -513,7 +513,7 @@
 
 - (bool) preloadFileAsync:(NSString*) path target:(id) target selector:(SEL) selector
 {
-	return [self preloadUrlAsync:[[IOSAudioSupport sharedInstance] urlForPath:path] target:target selector:selector];
+	return [self preloadUrlAsync:[[OALAudioSupport sharedInstance] urlForPath:path] target:target selector:selector];
 }
 
 - (bool) playUrl:(NSURL*) url
@@ -536,12 +536,12 @@
 
 - (bool) playFile:(NSString*) path
 {
-	return [self playUrl:[[IOSAudioSupport sharedInstance] urlForPath:path]];
+	return [self playUrl:[[OALAudioSupport sharedInstance] urlForPath:path]];
 }
 
 - (bool) playFile:(NSString*) path loops:(NSInteger) loops
 {
-	return [self playUrl:[[IOSAudioSupport sharedInstance] urlForPath:path] loops:loops];
+	return [self playUrl:[[OALAudioSupport sharedInstance] urlForPath:path] loops:loops];
 }
 
 - (void) playUrlAsync:(NSURL*) url target:(id) target selector:(SEL) selector
@@ -561,7 +561,7 @@
 
 - (void) playFileAsync:(NSString*) path loops:(NSInteger) loops target:(id) target selector:(SEL) selector
 {
-	[self playUrlAsync:[[IOSAudioSupport sharedInstance] urlForPath:path] loops:loops target:target selector:selector];
+	[self playUrlAsync:[[OALAudioSupport sharedInstance] urlForPath:path] loops:loops target:target selector:selector];
 }
 
 - (bool) play

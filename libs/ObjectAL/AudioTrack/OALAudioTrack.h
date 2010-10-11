@@ -31,7 +31,7 @@
 /**
  * Plays an audio track via AVAudioPlayer.
  * Unlike AVAudioPlayer, however, it can be re-used to play another file.
- * Interruptions can be handled by IOSAudioSupport (enabled by default).
+ * Interruptions can be handled by OALAudioSupport (enabled by default).
  */
 @interface OALAudioTrack : NSObject <AVAudioPlayerDelegate>
 {
@@ -365,7 +365,7 @@
 #pragma mark Internal Use
 
 /** (INTERNAL USE) Used by the interrupt handler to suspend the audio device
- * (if interrupts are enabled in IOSAudioSupport).
+ * (if interrupts are enabled in OALAudioSupport).
  */
 @property(readwrite,assign) bool suspended;
 

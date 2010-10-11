@@ -27,7 +27,7 @@
 #import "OALAudioTracks.h"
 #import "NSMutableArray+WeakReferences.h"
 #import "ObjectALMacros.h"
-#import "IOSAudioSupport.h"
+#import "OALAudioSupport.h"
 
 
 #pragma mark OALAudioTracks
@@ -42,8 +42,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioTracks);
 {
 	if(nil != (self = [super init]))
 	{
-		// Make sure IOSAudioSupport is initialized.
-		[IOSAudioSupport sharedInstance];
+		// Make sure OALAudioSupport is initialized.
+		[OALAudioSupport sharedInstance];
 
 		tracks = [[NSMutableArray mutableArrayUsingWeakReferencesWithCapacity:10] retain];
 	}

@@ -441,6 +441,216 @@ COCOS2D_SUBCLASS(OALAction);
 @end
 
 
+@protocol OALAction_PositionProtocol
+
+@property(readwrite,assign) ALPoint position;
+
+@end
+
+
+@implementation OALPlaceAction
+
++ (id) actionWithPosition:(ALPoint) position
+{
+	return [[[self alloc] initWithPosition:position] autorelease];
+}
+
+- (id) initWithPosition:(ALPoint) positionIn
+{
+	if(nil != (self = [super init]))
+	{
+		position = positionIn;
+	}
+	return self;
+}
+
+@synthesize position;
+
+- (void) prepareWithTarget:(id) targetIn
+{	
+	NSAssert([targetIn respondsToSelector:@selector(setPosition:)],
+			 @"Target does not respond to selector [setPosition:]");
+	
+	[super prepareWithTarget:targetIn];
+}
+
+- (void) start
+{
+	[super start];
+	[(id<OALAction_PositionProtocol>)target setPosition:position];
+}
+
+@end
+
+
+
+@implementation OALMoveToAction
+
++ (id) actionWithDuration:(float) duration position:(ALPoint) position
+{
+	return [[[self alloc] initWithDuration:duration position:position] autorelease];
+}
+
++ (id) actionWithUnitsPerSecond:(float) unitsPerSecond position:(ALPoint) position
+{
+	return [[[self alloc] initWithUnitsPerSecond:unitsPerSecond position:position] autorelease];
+}
+
+- (id) initWithDuration:(float) durationIn position:(ALPoint) positionIn
+{
+	if(nil != (self = [super initWithDuration:durationIn]))
+	{
+		position = positionIn;
+	}
+	return self;
+}
+
+- (id) initWithUnitsPerSecond:(float) unitsPerSecondIn position:(ALPoint) positionIn
+{
+	if(nil != (self = [super init]))
+	{
+		position = positionIn;
+		unitsPerSecond = unitsPerSecondIn;
+	}
+	return self;
+}
+
+@synthesize position;
+@synthesize unitsPerSecond;
+
+- (void) prepareWithTarget:(id) targetIn
+{
+	NSAssert([targetIn respondsToSelector:@selector(setPosition:)],
+			 @"Target does not respond to selector [setPosition:]");
+
+	[super prepareWithTarget:targetIn];
+	startPoint = [(id<OALAction_PositionProtocol>)targetIn position];
+	delta = ALPointMake(position.x-startPoint.x, position.y-startPoint.y, position.z - startPoint.z);
+	if(unitsPerSecond > 0)
+	{
+		duration = sqrtf(delta.x * delta.x + delta.y * delta.y + delta.z * delta.z) / unitsPerSecond;
+	}
+}
+
+- (void) update:(float) proportionComplete
+{
+	[(id<OALAction_PositionProtocol>)target setPosition:
+	 ALPointMake(startPoint.x + delta.x*proportionComplete,
+				 startPoint.y + delta.y*proportionComplete,
+				 startPoint.z + delta.z*proportionComplete)];
+}
+
+@end
+
+
+@implementation OALMoveByAction
+
++ (id) actionWithDuration:(float) duration delta:(ALPoint) delta
+{
+	return [[[self alloc] initWithDuration:duration delta:delta] autorelease];
+}
+
++ (id) actionWithUnitsPerSecond:(float) unitsPerSecond delta:(ALPoint) delta
+{
+	return [[[self alloc] initWithUnitsPerSecond:unitsPerSecond delta:delta] autorelease];
+}
+
+- (id) initWithDuration:(float) durationIn delta:(ALPoint) deltaIn
+{
+	if(nil != (self = [super initWithDuration:durationIn]))
+	{
+		delta = deltaIn;
+	}
+	return self;
+}
+
+- (id) initWithUnitsPerSecond:(float) unitsPerSecondIn delta:(ALPoint) deltaIn
+{
+	if(nil != (self = [super init]))
+	{
+		delta = deltaIn;
+		unitsPerSecond = unitsPerSecondIn;
+	}
+	return self;
+}
+
+@synthesize delta;
+@synthesize unitsPerSecond;
+
+- (void) prepareWithTarget:(id) targetIn
+{
+	NSAssert([targetIn respondsToSelector:@selector(setPosition:)],
+			 @"Target does not respond to selector [setPosition:]");
+	
+	[super prepareWithTarget:targetIn];
+	startPoint = [(id<OALAction_PositionProtocol>)targetIn position];
+	if(unitsPerSecond > 0)
+	{
+		duration = sqrtf(delta.x * delta.x + delta.y * delta.y + delta.z * delta.z) / unitsPerSecond;
+	}
+}
+
+- (void) update:(float) proportionComplete
+{
+	[(id<OALAction_PositionProtocol>)target setPosition:
+	 ALPointMake(startPoint.x + delta.x*proportionComplete,
+				 startPoint.y + delta.y*proportionComplete,
+				 startPoint.z + delta.z*proportionComplete)];
+}
+
+@end
+
+
+@implementation OALTargetedAction
+
++ (id) actionWithTarget:(id) target action:(OALAction*) action
+{
+	return [[[self alloc] initWithTarget:target action:action] autorelease];
+}
+
+- (id) initWithTarget:(id) targetIn action:(OALAction*) actionIn
+{
+	if(nil != (self = [super initWithDuration:actionIn.duration]))
+	{
+		forcedTarget = targetIn; // Weak reference
+		action = [actionIn retain];
+	}
+	return self;
+}
+
+- (void) dealloc
+{
+	[action release];
+	[super dealloc];
+}
+
+- (void) prepareWithTarget:(id) targetIn
+{
+	[super prepareWithTarget:forcedTarget];
+	[action prepareWithTarget:forcedTarget];
+}
+
+- (void) start
+{
+	[super start];
+	[action start];
+}
+
+- (void) stop
+{
+	[super stop];
+	[action stop];
+}
+
+- (void) update:(float) proportionComplete
+{
+	[super update:proportionComplete];
+	[action update:proportionComplete];
+}
+
+@end
+
+
 #if !OBJECTAL_USE_COCOS2D_ACTIONS
 
 @implementation OALSequentialActions

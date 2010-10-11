@@ -80,10 +80,10 @@
 	[OALSimpleAudio sharedInstanceWithSources:0];
 	
 	leftSource = [[ALSource source] retain];
-	leftBuffer = [[[IOSAudioSupport sharedInstance] bufferFromFile:@"ColdFunk.wav"] retain];
+	leftBuffer = [[[OALAudioSupport sharedInstance] bufferFromFile:@"ColdFunk.wav"] retain];
 	
 	rightSource = [[ALSource source] retain];
-	rightBuffer = [[[IOSAudioSupport sharedInstance] bufferFromFile:@"HappyAlley.wav"] retain];
+	rightBuffer = [[[OALAudioSupport sharedInstance] bufferFromFile:@"HappyAlley.wav"] retain];
 	
 	leftSource.position = alpoint(leftPlanet.position.x, leftPlanet.position.y, 0);
 	leftSource.referenceDistance = 50;

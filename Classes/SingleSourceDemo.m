@@ -73,7 +73,7 @@
 	[OALSimpleAudio sharedInstanceWithSources:0];
 	
 	source = [[ALSource source] retain];
-	buffer = [[[IOSAudioSupport sharedInstance] bufferFromFile:@"ColdFunk.wav"] retain];
+	buffer = [[[OALAudioSupport sharedInstance] bufferFromFile:@"ColdFunk.wav"] retain];
 	
 	source.position = alpoint(planet.position.x, planet.position.y, 0);
 	//		source.maxDistance = 300;

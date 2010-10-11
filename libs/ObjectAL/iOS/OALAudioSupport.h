@@ -1,5 +1,5 @@
 //
-//  IOSAudioSupport.h
+//  OALAudioSupport.h
 //  ObjectAL
 //
 //  Created by Karl Stenerud on 19/12/09.
@@ -29,7 +29,7 @@
 #import "ALBuffer.h"
 
 
-#pragma mark IOSAudioSupport
+#pragma mark OALAudioSupport
 
 /**
  * Provides iOS-specific audio support, including audio file loading, session management and
@@ -49,7 +49,7 @@
  *
  * \code afconvert -f caff -d I8@@22050 sourcefile.wav destfile.caf \endcode
  */
-@interface IOSAudioSupport : NSObject
+@interface OALAudioSupport : NSObject
 {
 	/** Operation queue for asynchronous loading. */
 	NSOperationQueue* operationQueue;
@@ -155,10 +155,10 @@
 
 /** Singleton implementation providing "sharedInstance" and "purgeSharedInstance" methods.
  *
- * <b>- (IOSAudioSupport*) sharedInstance</b>: Get the shared singleton instance. <br>
+ * <b>- (OALAudioSupport*) sharedInstance</b>: Get the shared singleton instance. <br>
  * <b>- (void) purgeSharedInstance</b>: Purge (deallocate) the shared instance.
  */
-SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(IOSAudioSupport);
+SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALAudioSupport);
 
 
 #pragma mark Buffers

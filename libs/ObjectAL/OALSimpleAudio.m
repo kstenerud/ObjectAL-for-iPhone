@@ -26,7 +26,7 @@
 
 #import "OALSimpleAudio.h"
 #import "ObjectALMacros.h"
-#import "IOSAudioSupport.h"
+#import "OALAudioSupport.h"
 #import "OpenALManager.h"
 
 // By default, reserve all 32 sources.
@@ -138,22 +138,22 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 
 - (bool) allowIpod
 {
-	return [IOSAudioSupport sharedInstance].allowIpod;
+	return [OALAudioSupport sharedInstance].allowIpod;
 }
 
 - (void) setAllowIpod:(bool) value
 {
-	[IOSAudioSupport sharedInstance].allowIpod = value;
+	[OALAudioSupport sharedInstance].allowIpod = value;
 }
 
 - (bool) useHardwareIfAvailable
 {
-	return [IOSAudioSupport sharedInstance].useHardwareIfAvailable;
+	return [OALAudioSupport sharedInstance].useHardwareIfAvailable;
 }
 
 - (void) setUseHardwareIfAvailable:(bool) value
 {
-	[IOSAudioSupport sharedInstance].useHardwareIfAvailable = value;
+	[OALAudioSupport sharedInstance].useHardwareIfAvailable = value;
 }
 
 @synthesize backgroundTrack;
@@ -227,12 +227,12 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 
 - (bool) honorSilentSwitch
 {
-	return [IOSAudioSupport sharedInstance].honorSilentSwitch;
+	return [OALAudioSupport sharedInstance].honorSilentSwitch;
 }
 
 - (void) setHonorSilentSwitch:(bool) value
 {
-	[IOSAudioSupport sharedInstance].honorSilentSwitch = value;
+	[OALAudioSupport sharedInstance].honorSilentSwitch = value;
 }
 
 - (bool) bgMuted
@@ -359,7 +359,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 	}
 	if(nil == buffer)
 	{
-		buffer = [[IOSAudioSupport sharedInstance] bufferFromFile:filePath];
+		buffer = [[OALAudioSupport sharedInstance] bufferFromFile:filePath];
 		if(nil == buffer)
 		{
 			LOG_ERROR(@"Could not load effect %@", filePath);

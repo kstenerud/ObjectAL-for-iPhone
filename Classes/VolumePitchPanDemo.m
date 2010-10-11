@@ -139,7 +139,7 @@
 	[OALSimpleAudio sharedInstanceWithSources:0];
 	
 	source = [[ALSource source] retain];
-	buffer = [[[IOSAudioSupport sharedInstance] bufferFromFile:@"ColdFunk.wav"] retain];
+	buffer = [[[OALAudioSupport sharedInstance] bufferFromFile:@"ColdFunk.wav"] retain];
 	
 	[source play:buffer loop:YES];
 }

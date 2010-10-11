@@ -47,7 +47,7 @@
 #import "OpenALManager.h"
 
 // Other
-#import "IOSAudioSupport.h"
+#import "OALAudioSupport.h"
 #import "OALSimpleAudio.h"
 
 
@@ -89,10 +89,10 @@
    All OpenAL operations can be performed using first class objects and properties, without needing
    to muddle around with arrays of data, maintain IDs, or pass around pointers to basic types.
 
- - AudioTrack provides a simpler interface to AVAudioPlayer, allowing you to play, stop,
+ - OALAudioTrack provides a simpler interface to AVAudioPlayer, allowing you to play, stop,
    pause, fade, and mute background music tracks.
  
- - IOSAudioSupport provides support functionality for audio in iPhone, including automatic
+ - OALAudioSupport provides support functionality for audio in iPhone, including automatic
    interrupt handling and audio data loading routines. <br>
    As well, it provides an easy way to configure how the audio session will handle iPod-style music
    playing and the silent switch.
@@ -131,7 +131,7 @@
  - ChannelSource allows you to reserve a certain number of sources for special purposes.
  
  - ALBuffer is simply a container for sound data.  Only linear PCM is supported directly, but
-   IOSAudioSupport load methods, and OALSimpleAudio effect preload and play methods, will
+   OALAudioSupport load methods, and OALSimpleAudio effect preload and play methods, will
    automatically convert any formats that don't require hardware decoding (though conversion
    results in a longer loading time).
  
@@ -154,7 +154,7 @@
  OpenAL FAQ from Apple</a>:
  - To use OpenAL for playback, your application typically reads audio data from disk using Extended
    Audio File Services. In this process you convert the on-disk format, as needed, into one of the
-   OpenAL playback formats (IOSAudioSupport and OALSimpleAudio do this for you).
+   OpenAL playback formats (OALAudioSupport and OALSimpleAudio do this for you).
 
  - The on-disk audio format that your application reads must be PCM (uncompressed) or a compressed
    format that does not use hardware decompression, such as IMA-4.
@@ -375,23 +375,23 @@
 		[ObjectAL sharedInstance].currentContext = context;
 		
 		// Deal with interruptions for me!
-		[IOSAudioSupport sharedInstance].handleInterruptions = YES;
+		[OALAudioSupport sharedInstance].handleInterruptions = YES;
 		
 		// We don't want ipod music to keep playing since
 		// we have our own bg music.
-		[IOSAudioSupport sharedInstance].allowIpod = NO;
+		[OALAudioSupport sharedInstance].allowIpod = NO;
 		
 		// Mute all audio if the silent switch is turned on.
-		[IOSAudioSupport sharedInstance].honorSilentSwitch = YES;
+		[OALAudioSupport sharedInstance].honorSilentSwitch = YES;
 		
 		// Take all 32 sources for this channel.
 		// (we probably won't use that many but what the heck!)
 		channel = [[ChannelSource channelWithSources:32] retain];
 		
 		// Preload the buffers so we don't have to load and play them later.
-		shootBuffer = [[[IOSAudioSupport sharedInstance]
+		shootBuffer = [[[OALAudioSupport sharedInstance]
 						bufferFromFile:SHOOT_SOUND] retain];
-		explosionBuffer = [[[IOSAudioSupport sharedInstance]
+		explosionBuffer = [[[OALAudioSupport sharedInstance]
 							bufferFromFile:EXPLODE_SOUND] retain];
 	}
 	return self;
@@ -500,7 +500,7 @@
  \subsection simulator_limitations Simulator Limitations
  
  The simulator does not support setting audio modes, so setting allowIpod or honorSilentSwitch
- in IOSAudioSupport will have no effect in the simulator.
+ in OALAudioSupport will have no effect in the simulator.
  
  
  <br>

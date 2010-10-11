@@ -45,7 +45,7 @@
  * on your own if you want).
  *
  * It also provides access to the more common configuration options available in
- * IOSAudioSupport.
+ * OALAudioSupport.
  *
  * All commands are delegated either to the channel (for sound effects),
  * or to the audio track (for BG music).
