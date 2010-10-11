@@ -172,7 +172,6 @@
 	[OALSimpleAudio sharedInstanceWithSources:0];
 	
 	OALSimpleAudio* audio = [OALSimpleAudio sharedInstance];
-	NSLog(@"simple audio = %@", audio);
 
 	buffer = [[[OALAudioSupport sharedInstance] bufferFromFile:@"Pew.caf"] retain];
 
