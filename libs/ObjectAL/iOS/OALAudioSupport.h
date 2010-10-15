@@ -25,6 +25,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <AVFoundation/AVFoundation.h>
 #import "SynthesizeSingleton.h"
 #import "ALBuffer.h"
 
@@ -62,6 +63,9 @@
 	bool honorSilentSwitch;
 	
 	bool audioSessionActive;
+	
+	/** Delegate for interruptions */
+	id<AVAudioSessionDelegate> audioSessionDelegate;
 
 	/** Marks the overall sound engine as being suspended. */
 	bool suspended;
@@ -144,6 +148,7 @@
  * Default value: YES
  */
 @property(readwrite,assign) bool handleInterruptions;
+@property(readwrite,assign) id<AVAudioSessionDelegate> audioSessionDelegate;
 
 /** If true, another application (usually iPod) is playing music. */
 @property(readonly) bool ipodPlaying;

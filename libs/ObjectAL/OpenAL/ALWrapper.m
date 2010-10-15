@@ -828,11 +828,11 @@ BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device)
 
 + (ALuint) genSource
 {
-	uint sourceId;
+	ALuint sourceId;
 	@synchronized(self)
 	{
 		[self genSources:&sourceId numSources:1];
-		sourceId = CHECK_AL_CALL() ? sourceId : AL_INVALID;
+		sourceId = CHECK_AL_CALL() ? sourceId : (ALuint)AL_INVALID;
 	}
 	return sourceId;
 }
@@ -1136,11 +1136,11 @@ BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device)
 
 + (ALuint) genBuffer
 {
-	uint bufferId;
+	ALuint bufferId;
 	@synchronized(self)
 	{
 		[self genBuffers:&bufferId numBuffers:1];
-		bufferId = CHECK_AL_CALL() ? bufferId : AL_INVALID;
+		bufferId = CHECK_AL_CALL() ? bufferId : (ALuint)AL_INVALID;
 	}
 	return bufferId;
 }
