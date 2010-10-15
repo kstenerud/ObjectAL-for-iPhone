@@ -78,16 +78,6 @@
 	
 	/** If true, the audio session was active when the interrupt occurred. */
 	bool audioSessionWasActive;
-	
-	/** Dictionary mapping audio session error codes to human readable descriptions.
-	 * Key: NSNumber, Value: NSString
-	 */
-	NSDictionary* audioSessionErrorCodes;
-
-	/** Dictionary mapping ExtAudio error codes to human readable descriptions.
-	 * Key: NSNumber, Value: NSString
-	 */
-	NSDictionary* extAudioErrorCodes;
 }
 
 
@@ -228,6 +218,26 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALAudioSupport);
  * @param path the path to get a URL for.
  * @return the corresponding URL, or nil if one couldn't be gemerated.
  */
-- (NSURL*) urlForPath:(NSString*) path;
++ (NSURL*) urlForPath:(NSString*) path;
+
+/** Log an error if the specified AudioSession error code indicates an error.
+ *
+ * @param errorCode: The error code returned from an OS call.
+ * @param function: The function name where the error occurred.
+ * @param description: A printf-style description of what happened.
+ */
++ (void) logAudioSessionError:(OSStatus)errorCode
+					 function:(const char*) function
+				  description:(NSString*) description, ...;
+
+/** Log an error if the specified ExtAudio error code indicates an error.
+ *
+ * @param errorCode: The error code returned from an OS call.
+ * @param function: The function name where the error occurred.
+ * @param description: A printf-style description of what happened.
+ */
++ (void) logExtAudioError:(OSStatus)errorCode
+				 function:(const char*) function
+			  description:(NSString*) description, ...;
 
 @end

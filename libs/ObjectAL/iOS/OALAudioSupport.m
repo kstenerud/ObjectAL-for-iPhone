@@ -33,6 +33,16 @@
 
 #define kMaxSessionActivationRetries 40
 
+/** Dictionary mapping audio session error codes to human readable descriptions.
+ * Key: NSNumber, Value: NSString
+ */
+NSDictionary* audioSessionErrorCodes = nil;
+
+/** Dictionary mapping ExtAudio error codes to human readable descriptions.
+ * Key: NSNumber, Value: NSString
+ */
+NSDictionary* extAudioErrorCodes = nil;
+
 
 #pragma mark Asynchronous Operations
 
@@ -110,26 +120,6 @@
  */
 @interface OALAudioSupport (Private)
 
-/** (INTERNAL USE) Log an error if the specified AudioSession error code indicates an error.
- *
- * @param errorCode: The error code returned from an OS call.
- * @param function: The function name where the error occurred.
- * @param description: A printf-style description of what happened.
- */
-- (void) logAudioSessionError:(OSStatus)errorCode
-					 function:(const char*) function
-				  description:(NSString*) description, ...;
-
-/** (INTERNAL USE) Log an error if the specified ExtAudio error code indicates an error.
- *
- * @param errorCode: The error code returned from an OS call.
- * @param function: The function name where the error occurred.
- * @param description: A printf-style description of what happened.
- */
-- (void) logExtAudioError:(OSStatus)errorCode
-				 function:(const char*) function
-			  description:(NSString*) description, ...;
-
 /** (INTERNAL USE) Used by the interrupt handler to suspend audio
  * (if interrupts are enabled).
  */
@@ -180,42 +170,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSupport);
 {
 	if(nil != (self = [super init]))
 	{
-		audioSessionErrorCodes = [[NSDictionary dictionaryWithObjectsAndKeys:
-								   @"Session not initialized", [NSNumber numberWithInt:kAudioSessionNotInitialized],
-								   @"Session already initialized", [NSNumber numberWithInt:kAudioSessionAlreadyInitialized],
-								   @"Sesion initialization error", [NSNumber numberWithInt:kAudioSessionInitializationError],
-								   @"Unsupported session property", [NSNumber numberWithInt:kAudioSessionUnsupportedPropertyError],
-								   @"Bad session property size", [NSNumber numberWithInt:kAudioSessionBadPropertySizeError],
-								   @"Session is not active", [NSNumber numberWithInt:kAudioSessionNotActiveError], 
-#if 0 // Documented but not implemented on iOS
-								   @"Hardware not available for session", [NSNumber numberWithInt:kAudioSessionNoHardwareError],
-#endif
-#ifdef __IPHONE_3_1
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_3_1
-								   @"No session category set", [NSNumber numberWithInt:kAudioSessionNoCategorySet],
-								   @"Incompatible session category",[NSNumber numberWithInt:kAudioSessionIncompatibleCategory],
-#endif /* __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_3_1 */
-#endif /* __IPHONE_3_1 */
-								  nil] retain];
-
-		extAudioErrorCodes = [[NSDictionary dictionaryWithObjectsAndKeys:
-#ifdef __IPHONE_3_1
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_3_1
-							   @"Write function interrupted - last buffer written", [NSNumber numberWithInt:kExtAudioFileError_CodecUnavailableInputConsumed],
-							   @"Write function interrupted - last buffer not written", [NSNumber numberWithInt:kExtAudioFileError_CodecUnavailableInputNotConsumed],
-#endif /* __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_3_1 */
-#endif /* __IPHONE_3_1 */
-							   @"Invalid property", [NSNumber numberWithInt:kExtAudioFileError_InvalidProperty],
-							   @"Invalid property size", [NSNumber numberWithInt:kExtAudioFileError_InvalidPropertySize],
-							   @"Non-PCM client format", [NSNumber numberWithInt:kExtAudioFileError_NonPCMClientFormat],
-							   @"Wrong number of channels for format", [NSNumber numberWithInt:kExtAudioFileError_InvalidChannelMap],
-							   @"Invalid operation order", [NSNumber numberWithInt:kExtAudioFileError_InvalidOperationOrder],
-							   @"Invalid data format", [NSNumber numberWithInt:kExtAudioFileError_InvalidDataFormat],
-							   @"Max packet size unknown", [NSNumber numberWithInt:kExtAudioFileError_MaxPacketSizeUnknown],
-							   @"Seek offset out of bounds", [NSNumber numberWithInt:kExtAudioFileError_InvalidSeek],
-							   @"Async write too large", [NSNumber numberWithInt:kExtAudioFileError_AsyncWriteTooLarge],
-							   @"Async write could not be completed in time", [NSNumber numberWithInt:kExtAudioFileError_AsyncWriteBufferOverflow],
-							   nil] retain];
 		operationQueue = [[NSOperationQueue alloc] init];
 		REPORT_AUDIOSESSION_CALL(AudioSessionInitialize(NULL, NULL, interruptListenerCallback, self), @"Failed to initialize audio session");
 
@@ -235,7 +189,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSupport);
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[operationQueue release];
 	[audioSessionErrorCodes release];
+	audioSessionErrorCodes = nil;
 	[extAudioErrorCodes release];
+	extAudioErrorCodes = nil;
 	[super dealloc];
 }
 
@@ -323,7 +279,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSupport);
 
 - (ALBuffer*) bufferFromFile:(NSString*) filePath
 {
-	return [self bufferFromUrl:[self urlForPath:filePath]];
+	return [self bufferFromUrl:[OALAudioSupport urlForPath:filePath]];
 }
 
 - (ALBuffer*) bufferFromUrl:(NSURL*) url
@@ -489,7 +445,7 @@ done:
 
 - (NSString*) bufferAsyncFromFile:(NSString*) filePath target:(id) target selector:(SEL) selector
 {
-	return [self bufferAsyncFromUrl:[self urlForPath:filePath] target:target selector:selector];
+	return [self bufferAsyncFromUrl:[OALAudioSupport urlForPath:filePath] target:target selector:selector];
 }
 
 - (NSString*) bufferAsyncFromUrl:(NSURL*) url target:(id) target selector:(SEL) selector
@@ -502,12 +458,32 @@ done:
 }
 
 
-#pragma mark Internal Utility
+#pragma mark Audio Error Utility
 
-- (void) logAudioSessionError:(OSStatus)errorCode function:(const char*) function description:(NSString*) description, ...
++ (void) logAudioSessionError:(OSStatus)errorCode function:(const char*) function description:(NSString*) description, ...
 {
 	if(noErr != errorCode)
 	{
+		if(nil == audioSessionErrorCodes){
+			audioSessionErrorCodes = [[NSDictionary dictionaryWithObjectsAndKeys:
+									   @"Session not initialized", [NSNumber numberWithInt:kAudioSessionNotInitialized],
+									   @"Session already initialized", [NSNumber numberWithInt:kAudioSessionAlreadyInitialized],
+									   @"Sesion initialization error", [NSNumber numberWithInt:kAudioSessionInitializationError],
+									   @"Unsupported session property", [NSNumber numberWithInt:kAudioSessionUnsupportedPropertyError],
+									   @"Bad session property size", [NSNumber numberWithInt:kAudioSessionBadPropertySizeError],
+									   @"Session is not active", [NSNumber numberWithInt:kAudioSessionNotActiveError], 
+#if 0 // Documented but not implemented on iOS
+									   @"Hardware not available for session", [NSNumber numberWithInt:kAudioSessionNoHardwareError],
+#endif
+#ifdef __IPHONE_3_1
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_3_1
+									   @"No session category set", [NSNumber numberWithInt:kAudioSessionNoCategorySet],
+									   @"Incompatible session category",[NSNumber numberWithInt:kAudioSessionIncompatibleCategory],
+#endif /* __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_3_1 */
+#endif /* __IPHONE_3_1 */
+									   nil] retain];			
+		}
+		
 		NSString* errorString = [audioSessionErrorCodes objectForKey:[NSNumber numberWithInt:errorCode]];
 		if(nil == errorString)
 		{
@@ -521,10 +497,31 @@ done:
 	}
 }
 
-- (void) logExtAudioError:(OSStatus)errorCode function:(const char*) function description:(NSString*) description, ...
++ (void) logExtAudioError:(OSStatus)errorCode function:(const char*) function description:(NSString*) description, ...
 {
 	if(noErr != errorCode)
 	{
+		if(nil == extAudioErrorCodes){
+			extAudioErrorCodes = [[NSDictionary dictionaryWithObjectsAndKeys:
+#ifdef __IPHONE_3_1
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_3_1
+								   @"Write function interrupted - last buffer written", [NSNumber numberWithInt:kExtAudioFileError_CodecUnavailableInputConsumed],
+								   @"Write function interrupted - last buffer not written", [NSNumber numberWithInt:kExtAudioFileError_CodecUnavailableInputNotConsumed],
+#endif /* __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_3_1 */
+#endif /* __IPHONE_3_1 */
+								   @"Invalid property", [NSNumber numberWithInt:kExtAudioFileError_InvalidProperty],
+								   @"Invalid property size", [NSNumber numberWithInt:kExtAudioFileError_InvalidPropertySize],
+								   @"Non-PCM client format", [NSNumber numberWithInt:kExtAudioFileError_NonPCMClientFormat],
+								   @"Wrong number of channels for format", [NSNumber numberWithInt:kExtAudioFileError_InvalidChannelMap],
+								   @"Invalid operation order", [NSNumber numberWithInt:kExtAudioFileError_InvalidOperationOrder],
+								   @"Invalid data format", [NSNumber numberWithInt:kExtAudioFileError_InvalidDataFormat],
+								   @"Max packet size unknown", [NSNumber numberWithInt:kExtAudioFileError_MaxPacketSizeUnknown],
+								   @"Seek offset out of bounds", [NSNumber numberWithInt:kExtAudioFileError_InvalidSeek],
+								   @"Async write too large", [NSNumber numberWithInt:kExtAudioFileError_AsyncWriteTooLarge],
+								   @"Async write could not be completed in time", [NSNumber numberWithInt:kExtAudioFileError_AsyncWriteBufferOverflow],
+								   nil] retain];			
+		}
+		
 		NSString* errorString = [extAudioErrorCodes objectForKey:[NSNumber numberWithInt:errorCode]];
 		if(nil == errorString)
 		{
@@ -538,10 +535,9 @@ done:
 	}
 }
 
-
 #pragma mark Utility
 
-- (NSURL*) urlForPath:(NSString*) path
++ (NSURL*) urlForPath:(NSString*) path
 {
 	if(nil == path)
 	{
