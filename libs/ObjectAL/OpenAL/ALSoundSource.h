@@ -39,7 +39,7 @@
  * OpenAL 1.1 Specification and Reference:
  * http://connect.creativelabs.com/openal/Documentation
  */
-@protocol ALSoundSource
+@protocol ALSoundSource <NSObject>
 
 
 #pragma mark Properties
@@ -58,6 +58,7 @@
 
 /** Gain (volume) (OpenAL property). */
 @property(readwrite,assign) float gain;
+@property(readwrite,assign) float volume;
 
 /** If true, this source may be interrupted when resources are low. */
 @property(readwrite,assign) bool interruptible;

@@ -33,7 +33,6 @@
 #import "OALUtilityActions.h"
 #import "ObjectALMacros.h"
 
-
 #pragma mark Asynchronous Operations
 
 /**
@@ -161,7 +160,7 @@
 - (void)main
 {
 	[audioTrack playUrl:url loops:loops];
-	[target performSelectorOnMainThread:selector withObject:nil waitUntilDone:NO];
+	[target performSelectorOnMainThread:selector withObject:audioTrack waitUntilDone:NO];
 }
 
 @end
@@ -182,7 +181,7 @@
 - (void)main
 {
 	[audioTrack preloadUrl:url];
-	[target performSelectorOnMainThread:selector withObject:nil waitUntilDone:NO];
+	[target performSelectorOnMainThread:selector withObject:audioTrack waitUntilDone:NO];
 }
 
 @end
@@ -241,8 +240,9 @@
 		
 		operationQueue = [[NSOperationQueue alloc] init];
 		operationQueue.maxConcurrentOperationCount = 1;
-		gain = 1.0;
+		gain = 1.0f;
 		numberOfLoops = 0;
+		currentTime = 0.0;
 		
 		[[OALAudioTracks sharedInstance] notifyTrackInitializing:self];
 	}
@@ -281,7 +281,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		player.delegate = delegate = value;
+		delegate = value;
 	}
 }
 
@@ -305,12 +305,22 @@
 	}
 }
 
+- (float) volume
+{
+	return self.gain;
+}
+
 - (float) gain
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		return gain;
 	}
+}
+
+- (void) setVolume:(float) value
+{
+	self.gain = value;
 }
 
 - (void) setGain:(float) value
@@ -384,10 +394,14 @@
 				if(paused)
 				{
 					[player pause];
+					if(playing)
+						[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:OALAudioTrackStoppedPlayingNotification object:self] waitUntilDone:NO];
 				}
 				else if(playing)
 				{
-					[player play];
+					playing = [player play];
+					if(playing)
+						[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:OALAudioTrackStartedPlayingNotification object:self] waitUntilDone:NO];
 				}
 			}
 		}
@@ -410,7 +424,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		player.currentTime = value;
+		currentTime = value;
 	}
 }
 
@@ -461,14 +475,23 @@
 			return NO;
 		}
 		
+		// Only load if it's not the same URL as last time.
+		if([[url absoluteString] isEqualToString:[currentlyLoadedUrl absoluteString]])
+		{
+			return NO;
+		}
+		
 		[self stopActions];
 		
 		// Only load if it's not the same URL as last time.
-		if(![url isEqual:currentlyLoadedUrl])
-		{
+		//if(![[url absoluteString] isEqualToString:[currentlyLoadedUrl absoluteString]])
+		//{
 			SIMULATOR_BUG_WORKAROUND_PREPARE_PLAYBACK();
 			[player stop];
 			[player release];
+		if(playing)
+			[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:OALAudioTrackStoppedPlayingNotification object:self] waitUntilDone:NO];
+		
 			NSError* error;
 			player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
 			if(nil != error)
@@ -486,16 +509,21 @@
 			{
 				player.pan = pan;
 			}
-
 			
 			[currentlyLoadedUrl release];
 			currentlyLoadedUrl = [url retain];
-		}
+		//}
 		
-		player.currentTime = 0;
+		player.currentTime = currentTime;
 		playing = NO;
 		paused = NO;
-		return [player prepareToPlay];
+		BOOL allOK = [player prepareToPlay];
+		if(!allOK){
+			LOG_ERROR(@"Failed to prepareToPlay: %@", url);
+		}else{
+			[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:OALAudioTrackSourceChangedNotification object:self] waitUntilDone:NO];
+		}
+		return allOK;
 	}
 }
 
@@ -578,11 +606,13 @@
 		
 		[self stopActions];
 		SIMULATOR_BUG_WORKAROUND_PREPARE_PLAYBACK();
-		player.currentTime = 0;
+		player.currentTime = currentTime;
 		player.volume = muted ? 0 : gain;
 		player.numberOfLoops = numberOfLoops;
 		paused = NO;
 		playing = [player play];
+		if(playing)
+			[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:OALAudioTrackStartedPlayingNotification object:self] waitUntilDone:NO];
 		return playing;
 	}
 }
@@ -601,11 +631,14 @@
 		{
 			[self stopActions];
 			SIMULATOR_BUG_WORKAROUND_PREPARE_PLAYBACK();
-			player.currentTime = 0;
+			player.currentTime = currentTime;
 			player.volume = muted ? 0 : gain;
 			player.numberOfLoops = numberOfLoops;
 			paused = NO;
 			playing = [player playAtTime:time];
+			if(playing){
+				[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:OALAudioTrackStartedPlayingNotification object:self] waitUntilDone:NO];
+			}
 			return playing;
 		}
 		return NO;
@@ -618,6 +651,10 @@
 	{
 		[self stopActions];
 		[player stop];
+		if(playing)
+			[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:OALAudioTrackStoppedPlayingNotification object:self] waitUntilDone:NO];
+		
+		self.currentTime = 0;
 		player.currentTime = 0;
 		SIMULATOR_BUG_WORKAROUND_END_PLAYBACK();
 		paused = NO;
@@ -704,6 +741,10 @@
 		
 		[player stop];
 		[player release];
+		if(playing)
+			[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:OALAudioTrackStoppedPlayingNotification object:self] waitUntilDone:NO];
+		
+		self.currentTime = 0;
 		player = nil;
 		playing = NO;
 		paused = NO;
@@ -776,10 +817,14 @@
 			if(suspended)
 			{
 				[player pause];
+				if(playing)
+					[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:OALAudioTrackStoppedPlayingNotification object:self] waitUntilDone:NO];
 			}
 			else if(playing && !paused)
 			{
-				[player play];
+				playing = [player play];
+				if(playing)
+					[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:OALAudioTrackStartedPlayingNotification object:self] waitUntilDone:NO];
 			}
 		}
 	}
@@ -788,13 +833,25 @@
 #pragma mark -
 #pragma mark AVAudioPlayerDelegate
 
+#if TARGET_OS_IPHONE
 - (void) audioPlayerBeginInterruption:(AVAudioPlayer*) playerIn
 {
+	currentTime = self.currentTime;
 	if([delegate respondsToSelector:@selector(audioPlayerBeginInterruption:)])
 	{
 		[delegate audioPlayerBeginInterruption:playerIn];
 	}
 }
+
+#if defined(__MAC_10_7) || defined(__IPHONE_4_0)
+- (void)audioPlayerEndInterruption:(AVAudioPlayer *)playerIn withFlags:(NSUInteger)flags
+{
+	if([delegate respondsToSelector:@selector(audioPlayerEndInterruption:withFlags:)])
+	{
+		[delegate audioPlayerEndInterruption:playerIn withFlags:flags];
+	}
+}
+#endif
 
 - (void) audioPlayerEndInterruption:(AVAudioPlayer*) playerIn
 {
@@ -803,6 +860,7 @@
 		[delegate audioPlayerEndInterruption:playerIn];
 	}
 }
+#endif //TARGET_OS_IPHONE
 
 - (void) audioPlayerDecodeErrorDidOccur:(AVAudioPlayer*) playerIn error:(NSError*) error
 {
@@ -818,12 +876,15 @@
 	{
 		playing = NO;
 		paused = NO;
+		self.currentTime = 0;
 		SIMULATOR_BUG_WORKAROUND_END_PLAYBACK();
 	}
 	if([delegate respondsToSelector:@selector(audioPlayerDidFinishPlaying:successfully:)])
 	{
 		[delegate audioPlayerDidFinishPlaying:playerIn successfully:flag];
 	}
+	
+	[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:OALAudioTrackFinishedPlayingNotification object:self] waitUntilDone:NO];
 }
 
 #pragma mark -

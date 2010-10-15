@@ -77,12 +77,12 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 		context = [[ALContext contextOnDevice:device attributes:nil] retain];
 		[OpenALManager sharedInstance].currentContext = context;
 		channel = [[ALChannelSource channelWithSources:sources] retain];
-
+		
 		backgroundTrack = [[OALAudioTrack track] retain];
 
 		self.preloadCacheEnabled = YES;
-		self.bgVolume = 1.0;
-		self.effectsVolume = 1.0;
+		self.bgVolume = 1.0f;
+		self.effectsVolume = 1.0f;
 	}
 	return self;
 }
@@ -289,6 +289,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 
 #pragma mark Background Music
 
+- (NSURL *) backgroundTrackURL
+{
+	return [backgroundTrack currentlyLoadedUrl];
+}
+
 - (bool) preloadBg:(NSString*) filePath
 {
 	if(nil == filePath)
@@ -296,7 +301,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 		LOG_ERROR(@"filePath was NULL");
 		return NO;
 	}
-	return [backgroundTrack preloadFile:filePath];
+	BOOL result = [backgroundTrack preloadFile:filePath];
+	if(result){
+		backgroundTrack.numberOfLoops = 0;
+	}
+	return result;
 }
 
 - (bool) playBg:(NSString*) filePath
@@ -323,8 +332,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 	{
 		backgroundTrack.gain = volume;
 		backgroundTrack.pan = pan;
-		backgroundTrack.numberOfLoops = loop ? -1 : 0;
-		return [backgroundTrack play];
+		return [backgroundTrack playFile:filePath loops:loop ? -1 : 0];
 	}
 }
 
@@ -375,15 +383,52 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 	return buffer;
 }
 
-- (void) preloadEffect:(NSString*) filePath
+- (ALBuffer*) preloadEffect:(NSString*) filePath
 {
 	if(nil == filePath)
 	{
 		LOG_ERROR(@"filePath was NULL");
+		return nil;
+	}
+	return [self internalPreloadEffect:filePath];
+}
+
+#if NS_BLOCKS_AVAILABLE
+- (void) preloadEffects:(NSArray*) filePaths progressBlock:(void (^)(uint progress, uint successCount, uint total)) progressBlock completionBlock:(void (^)(uint successCount, uint total)) completionBlock
+{
+	uint total					= [filePaths count];
+	if(total < 1){
+		LOG_ERROR(@"Preload effects: No files to process");
 		return;
 	}
-	[self internalPreloadEffect:filePath];
+	
+	__block uint successCount	= 0;
+	
+	[filePaths enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+		NSLog(@"OAL preloading: %@", obj);
+		ALBuffer *result = [self preloadEffect:(NSString *)obj];
+		if(!result){
+			LOG_WARNING(@"%@ failed to preload.", obj);
+		}else{
+			successCount++;
+		}
+		uint cnt = idx+1;
+		dispatch_async(dispatch_get_main_queue(), ^{
+			progressBlock(cnt, successCount, total);
+		});
+		if(cnt == total){
+			dispatch_async(dispatch_get_main_queue(), ^{
+				completionBlock(successCount, total);
+			});
+		}
+	}];
 }
+#else
+- (void) preloadEffects:(NSArray*) filePaths progressInvocation:(NSInvocation *) progressInvocation completionInvocation:(NSInvocation *) completionInvocation
+{
+	
+}
+#endif
 
 - (void) unloadEffect:(NSString*) filePath
 {
@@ -408,12 +453,12 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 
 - (id<ALSoundSource>) playEffect:(NSString*) filePath
 {
-	return [self playEffect:filePath volume:1.0 pitch:1.0 pan:0.0 loop:NO];
+	return [self playEffect:filePath volume:1.0f pitch:1.0f pan:0.0f loop:NO];
 }
 
 - (id<ALSoundSource>) playEffect:(NSString*) filePath loop:(bool) loop
 {
-	return [self playEffect:filePath volume:1.0 pitch:1.0 pan:0.0 loop:loop];
+	return [self playEffect:filePath volume:1.0f pitch:1.0f pan:0.0f loop:loop];
 }
 
 - (id<ALSoundSource>) playEffect:(NSString*) filePath

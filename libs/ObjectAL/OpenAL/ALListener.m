@@ -43,7 +43,7 @@
 	if(nil != (self = [super init]))
 	{
 		context = contextIn;
-		gain = 1.0;
+		gain = 1.0f;
 	}
 	return self;
 }

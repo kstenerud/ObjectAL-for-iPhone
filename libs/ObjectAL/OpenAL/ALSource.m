@@ -202,6 +202,16 @@
 	}
 }
 
+- (float) volume
+{
+	return self.gain;
+}
+
+- (void) setVolume:(float) value
+{
+	self.gain = value;
+}
+
 - (float) gain
 {
 	OPTIONALLY_SYNCHRONIZED(self)

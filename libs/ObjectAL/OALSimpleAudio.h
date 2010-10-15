@@ -61,7 +61,7 @@
 	ALChannelSource* channel;
 	/** Cache for preloaded sound samples. */
 	NSMutableDictionary* preloadCache;
-
+	
 	/** Audio track to play background music */
 	OALAudioTrack* backgroundTrack;
 	
@@ -110,6 +110,9 @@
  * Default value: YES
  */
 @property(readwrite,assign) bool honorSilentSwitch;
+
+/** Background audio URL */
+@property(readonly) NSURL* backgroundTrackURL;
 
 /** Background audio track */
 @property(readonly) OALAudioTrack* backgroundTrack;
@@ -268,7 +271,17 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALSimpleAudio);
  *
  * @param filePath The path containing the sound data.
  */
-- (void) preloadEffect:(NSString*) filePath;
+- (ALBuffer*) preloadEffect:(NSString*) filePath;
+
+/** Asynchronous preload and cache multiple sound effects for later playback.
+ *
+ * @param filePaths An NSArray of NSStrings with the paths containing the sound data.
+ */
+#if NS_BLOCKS_AVAILABLE
+- (void) preloadEffects:(NSArray*) filePaths progressBlock:(void (^)(uint progress, uint successCount, uint total)) progressBlock completionBlock:(void (^)(uint successCount, uint total)) completionBlock;
+#else
+- (void) preloadEffects:(NSArray*) filePaths progressInvocation:(NSInvocation *) progressInvocation completionInvocation:(NSInvocation *) completionInvocation;
+#endif
 
 /** Unload a preloaded effect.
  *
