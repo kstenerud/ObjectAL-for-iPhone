@@ -33,7 +33,7 @@ h2.following {
 }
 
 h3 {
-	font: bold 13px helvetica, 'Trebuchet MS', 'lucida grande', 'lucida sans', verdana, arial, sans-serif;
+	font: bold 14px helvetica, 'Trebuchet MS', 'lucida grande', 'lucida sans', verdana, arial, sans-serif;
 	line-height: 20px;
 	color: #413824;
 	margin: 0 0 8px 0px;
@@ -46,10 +46,10 @@ h3.following {
 }
 
 h4 {
-	font: bold 15px helvetica, 'Trebuchet MS', 'lucida grande', 'lucida sans', verdana, arial, sans-serif;
+	font: bold 14px helvetica, 'Trebuchet MS', 'lucida grande', 'lucida sans', verdana, arial, sans-serif;
 	line-height: 20px;
 	color: #413824;
-	margin: 0 auto;
+	margin: 18px 0 0 0;
 	padding: 0;
 }
 
