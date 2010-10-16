@@ -45,28 +45,52 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 <div class="contents">
 <h1>Class List</h1>Here are the classes, structs, unions and interfaces with brief descriptions:<table>
-  <tr><td class="indexkey"><a class="el" href="interface_a_l_buffer.html">ALBuffer</a></td><td class="indexvalue">A buffer for audio data that will be played via a <a class="el" href="protocol_sound_source-p.html" title="Manages all properties relating to an OpenAL sound source.">SoundSource</a> </td></tr>
-  <tr><td class="indexkey"><a class="el" href="interface_a_l_capture_device.html">ALCaptureDevice</a></td><td class="indexvalue">*UNIMPLEMENTED FOR IPHONE* An OpenAL device for capturing sound data </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interface_a_l_buffer.html">ALBuffer</a></td><td class="indexvalue">A buffer for audio data that will be played via a SoundSource </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interface_a_l_capture_device.html">ALCaptureDevice</a></td><td class="indexvalue">*UNIMPLEMENTED FOR IOS* An OpenAL device for capturing sound data </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interface_a_l_channel_source.html">ALChannelSource</a></td><td class="indexvalue">A Sound source composed of other sources </td></tr>
   <tr><td class="indexkey"><a class="el" href="interface_a_l_context.html">ALContext</a></td><td class="indexvalue">A context encompasses a single listener and a series of sources </td></tr>
   <tr><td class="indexkey"><a class="el" href="interface_a_l_device.html">ALDevice</a></td><td class="indexvalue">A device is a logical mapping to an audio device through the OpenAL implementation </td></tr>
   <tr><td class="indexkey"><a class="el" href="interface_a_l_listener.html">ALListener</a></td><td class="indexvalue">The listener represents the user who is listening to sounds in 3D space </td></tr>
   <tr><td class="indexkey"><a class="el" href="struct_a_l_orientation.html">ALOrientation</a></td><td class="indexvalue">Represents an orientation, consisting of an "at" vector (representing the "forward" direction), and the "up" vector (representing "up" for the subject) </td></tr>
-  <tr><td class="indexkey"><a class="el" href="struct_a_l_point.html">ALPoint</a></td><td class="indexvalue">Represents a 3-dimensional point for certain <a class="el" href="interface_object_a_l.html" title="Master class for the ObjectAL library.">ObjectAL</a> properties </td></tr>
+  <tr><td class="indexkey"><a class="el" href="struct_a_l_point.html">ALPoint</a></td><td class="indexvalue">Represents a 3-dimensional point for certain ObjectAL properties </td></tr>
+  <tr><td class="indexkey"><a class="el" href="protocol_a_l_sound_source-p.html">&lt;ALSoundSource&gt;</a></td><td class="indexvalue">Manages all properties relating to an OpenAL sound source </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interface_a_l_sound_source_pool.html">ALSoundSourcePool</a></td><td class="indexvalue">A pool of sound sources, which can be fetched based on availability </td></tr>
   <tr><td class="indexkey"><a class="el" href="interface_a_l_source.html">ALSource</a></td><td class="indexvalue">A source represents an object that emits sound which can be heard by a listener </td></tr>
-  <tr><td class="indexkey"><a class="el" href="struct_a_l_vector.html">ALVector</a></td><td class="indexvalue">Represents a 3-dimensional vector for certain <a class="el" href="interface_object_a_l.html" title="Master class for the ObjectAL library.">ObjectAL</a> properties </td></tr>
+  <tr><td class="indexkey"><a class="el" href="struct_a_l_vector.html">ALVector</a></td><td class="indexvalue">Represents a 3-dimensional vector for certain ObjectAL properties </td></tr>
   <tr><td class="indexkey"><a class="el" href="interface_a_l_wrapper.html">ALWrapper</a></td><td class="indexvalue">A thin wrapper around the C OpenAL API, with a few convenience methods thrown in </td></tr>
-  <tr><td class="indexkey"><a class="el" href="interface_async_audio_operation.html">AsyncAudioOperation</a></td><td class="indexvalue">(INTERNAL USE) NSOperation for running an audio operation asynchronously </td></tr>
-  <tr><td class="indexkey"><a class="el" href="interface_async_load_operation.html">AsyncLoadOperation</a></td><td class="indexvalue">(INTERNAL USE) NSOperation for loading audio files asynchronously </td></tr>
-  <tr><td class="indexkey"><a class="el" href="interface_async_play_operation.html">AsyncPlayOperation</a></td><td class="indexvalue">(INTERNAL USE) NSOperation for playing an audio file asynchronously </td></tr>
-  <tr><td class="indexkey"><a class="el" href="interface_async_preload_operation.html">AsyncPreloadOperation</a></td><td class="indexvalue">(INTERNAL USE) NSOperation for preloading an audio file asynchronously </td></tr>
-  <tr><td class="indexkey"><a class="el" href="interface_background_audio.html">BackgroundAudio</a></td><td class="indexvalue">Singleton object for playing background audio </td></tr>
-  <tr><td class="indexkey"><a class="el" href="interface_channel_source.html">ChannelSource</a></td><td class="indexvalue">A Sound source composed of other sources </td></tr>
-  <tr><td class="indexkey"><a class="el" href="interface_iphone_audio_support.html">IphoneAudioSupport</a></td><td class="indexvalue">Provides iphone-specific audio support, including audio file loading, session management and interrupt handling </td></tr>
   <tr><td class="indexkey"><a class="el" href="class_n_s_mutable_array.html">NSMutableArray</a></td><td class="indexvalue"></td></tr>
-  <tr><td class="indexkey"><a class="el" href="interface_object_a_l.html">ObjectAL</a></td><td class="indexvalue">Master class for the <a class="el" href="interface_object_a_l.html" title="Master class for the ObjectAL library.">ObjectAL</a> library </td></tr>
-  <tr><td class="indexkey"><a class="el" href="interface_simple_iphone_audio.html">SimpleIphoneAudio</a></td><td class="indexvalue">Very simple and basic interface to the iPhone sound system </td></tr>
-  <tr><td class="indexkey"><a class="el" href="protocol_sound_source-p.html">&lt;SoundSource&gt;</a></td><td class="indexvalue">Manages all properties relating to an OpenAL sound source </td></tr>
-  <tr><td class="indexkey"><a class="el" href="interface_sound_source_pool.html">SoundSourcePool</a></td><td class="indexvalue">A pool of sound sources, which can be fetched based on availability </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interface_o_a_l___async_a_l_buffer_load_operation.html">OAL_AsyncALBufferLoadOperation</a></td><td class="indexvalue">(INTERNAL USE) NSOperation for loading audio files asynchronously </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interface_o_a_l___async_audio_track_operation.html">OAL_AsyncAudioTrackOperation</a></td><td class="indexvalue">(INTERNAL USE) NSOperation for running an audio operation asynchronously </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interface_o_a_l___async_audio_track_play_operation.html">OAL_AsyncAudioTrackPlayOperation</a></td><td class="indexvalue">(INTERNAL USE) NSOperation for playing an audio file asynchronously </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interface_o_a_l___async_audio_track_preload_operation.html">OAL_AsyncAudioTrackPreloadOperation</a></td><td class="indexvalue">(INTERNAL USE) NSOperation for preloading an audio file asynchronously </td></tr>
+  <tr><td class="indexkey"><a class="el" href="protocol_o_a_l___gain_protocol-p.html">&lt;OAL_GainProtocol&gt;</a></td><td class="indexvalue">(INTERNAL USE) Protocol to keep the compiler happy </td></tr>
+  <tr><td class="indexkey"><a class="el" href="protocol_o_a_l___pan_protocol-p.html">&lt;OAL_PanProtocol&gt;</a></td><td class="indexvalue">(INTERNAL USE) Protocol to keep the compiler happy </td></tr>
+  <tr><td class="indexkey"><a class="el" href="protocol_o_a_l___pitch_protocol-p.html">&lt;OAL_PitchProtocol&gt;</a></td><td class="indexvalue">(INTERNAL USE) Protocol to keep the compiler happy </td></tr>
+  <tr><td class="indexkey"><a class="el" href="protocol_o_a_l___position_protocol-p.html">&lt;OAL_PositionProtocol&gt;</a></td><td class="indexvalue">(INTERNAL USE) Protocol to keep the compiler happy </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interface_o_a_l_action.html">OALAction</a></td><td class="indexvalue">Represents an action that can be performed on an object </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interface_o_a_l_action_manager.html">OALActionManager</a></td><td class="indexvalue">Manages all ObjectAL actions </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interface_o_a_l_audio_support.html">OALAudioSupport</a></td><td class="indexvalue">Provides iOS-specific audio support, including audio file loading, session management and interrupt handling </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interface_o_a_l_audio_track.html">OALAudioTrack</a></td><td class="indexvalue">Plays an audio track via AVAudioPlayer </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interface_o_a_l_audio_tracks.html">OALAudioTracks</a></td><td class="indexvalue">Keeps track of all AudioTrack objects </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interface_o_a_l_call_action.html">OALCallAction</a></td><td class="indexvalue">Calls a selector on a target </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interface_o_a_l_concurrent_actions.html">OALConcurrentActions</a></td><td class="indexvalue">A set of actions that get run concurrently </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interface_o_a_l_exponential_function.html">OALExponentialFunction</a></td><td class="indexvalue">Changes slowly at the start, and quickly at the end </td></tr>
+  <tr><td class="indexkey"><a class="el" href="protocol_o_a_l_function-p.html">&lt;OALFunction&gt;</a></td><td class="indexvalue">A function takes a value from 0.0 to 1.0 and returns another value from 0.0 to 1.0 </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interface_o_a_l_function_action.html">OALFunctionAction</a></td><td class="indexvalue">An action that applies a function to the proportionComplete parameter in [update] before applying the result to the target </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interface_o_a_l_gain_action.html">OALGainAction</a></td><td class="indexvalue">A function-based action that modifies the target's gain </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interface_o_a_l_linear_function.html">OALLinearFunction</a></td><td class="indexvalue">Function that changes at a constant rate </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interface_o_a_l_logarithmic_function.html">OALLogarithmicFunction</a></td><td class="indexvalue">Changes quickly at the start, and slowly at the end </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interface_o_a_l_move_by_action.html">OALMoveByAction</a></td><td class="indexvalue">Moves the target from its current position by the specified delta over time in 3D space </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interface_o_a_l_move_to_action.html">OALMoveToAction</a></td><td class="indexvalue">Moves the target from its current position to the specified position over time in 3D space </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interface_o_a_l_pan_action.html">OALPanAction</a></td><td class="indexvalue">A function-based action that modifies the target's pan </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interface_o_a_l_pitch_action.html">OALPitchAction</a></td><td class="indexvalue">A function-based action that modifies the target's pitch </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interface_o_a_l_place_action.html">OALPlaceAction</a></td><td class="indexvalue">Places the target at the specified position </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interface_o_a_l_reverse_function.html">OALReverseFunction</a></td><td class="indexvalue">Returns the reverse of another function </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interface_o_a_l_s_curve_function.html">OALSCurveFunction</a></td><td class="indexvalue">Changes slowly at the start, quickly at the midpoint, then slowly again at the end </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interface_o_a_l_sequential_actions.html">OALSequentialActions</a></td><td class="indexvalue">A set of actions that get run in sequence </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interface_o_a_l_simple_audio.html">OALSimpleAudio</a></td><td class="indexvalue">A simpler interface to the ObjectAL sound library </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interface_o_a_l_targeted_action.html">OALTargetedAction</a></td><td class="indexvalue">Ignores whatever target it was invoked upon and applies the specified action on the target specified at creation time </td></tr>
+  <tr><td class="indexkey"><a class="el" href="interface_open_a_l_manager.html">OpenALManager</a></td><td class="indexvalue">Manager class for OpenAL objects (ObjectAL) </td></tr>
 </table>
 </div>
 <!--- window showing the filter options -->
@@ -83,7 +107,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Fri Aug 20 21:18:19 2010 for ObjectAL by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Sat Oct 16 12:14:23 2010 for ObjectAL by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

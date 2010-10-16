@@ -44,7 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
 </div>
 <div class="contents">
-<h1>ALSource Class Reference</h1><!-- doxytag: class="ALSource" --><!-- doxytag: inherits="SoundSource-p" -->
+<h1>ALSource Class Reference</h1><!-- doxytag: class="ALSource" --><!-- doxytag: inherits="ALSoundSource-p" -->
 <p>A source represents an object that emits sound which can be heard by a listener.  
 <a href="#_details">More...</a></p>
 
@@ -55,7 +55,7 @@ Inheritance diagram for ALSource:</div>
  <div class="center">
   <img src="interface_a_l_source.gif" usemap="#ALSource_map" alt=""/>
   <map id="ALSource_map" name="ALSource_map">
-<area href="protocol_sound_source-p.html" alt="&lt;SoundSource&gt;" shape="rect" coords="0,0,103,24"/>
+<area href="protocol_a_l_sound_source-p.html" alt="&lt;ALSoundSource&gt;" shape="rect" coords="0,0,119,24"/>
 </map>
  </div>
 </div>
@@ -65,8 +65,8 @@ Inheritance diagram for ALSource:</div>
 <tr><td colspan="2"><h2>Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(id)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_a_l_source.html#aaf2394abbd4baa0004433d36be82317f">initOnContext:</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Initialize a new source on the specified context.  <a href="#aaf2394abbd4baa0004433d36be82317f"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">(id&lt; <a class="el" href="protocol_sound_source-p.html">SoundSource</a> &gt;)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_a_l_source.html#ad9344bc914fb99c9b2ea477940ae3fe8">play</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Play the currently attached buffer.  <a href="#ad9344bc914fb99c9b2ea477940ae3fe8"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(id&lt; <a class="el" href="protocol_a_l_sound_source-p.html">ALSoundSource</a> &gt;)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_a_l_source.html#a8881f387eb530ed3041e285ff5a4a27a">play</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Play the currently attached buffer.  <a href="#a8881f387eb530ed3041e285ff5a4a27a"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(bool)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_a_l_source.html#a9eb1c0dcca9603983a013b305f51d894">queueBuffer:</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add a buffer to the buffer queue.  <a href="#a9eb1c0dcca9603983a013b305f51d894"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(bool)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_a_l_source.html#af76036fb78d2c9aa9a4920556832c142">queueBuffers:</a></td></tr>
@@ -89,22 +89,12 @@ Inheritance diagram for ALSource:</div>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">If true, this source is muted.  <a href="#a3e3ec0df2d187e9104ce8a3c6beda12c"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_a_l_source.html#a33ce9fe642a7c1e3cb40c04baf9206a9">paused</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">If true, this source is currently paused.  <a href="#a33ce9fe642a7c1e3cb40c04baf9206a9"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">id&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_a_l_source.html#a11d86fb7388a007b9163ac5c02a920e5">fadeCompleteTarget</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Target to inform when the current fade operation completes.  <a href="#a11d86fb7388a007b9163ac5c02a920e5"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">SEL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_a_l_source.html#ac3cffced4de0179966b68992dda9babe">fadeCompleteSelector</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Selector to call when the current fade operation completes.  <a href="#ac3cffced4de0179966b68992dda9babe"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_a_l_source.html#a8d54dad35bebe315bdeadf91b7ad4eee">fadeStartingGain</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">The gain we started this fade from.  <a href="#a8d54dad35bebe315bdeadf91b7ad4eee"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_a_l_source.html#a6af41884a8f7fa490bcba401fe5a4e20">fadeEndingGain</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">The gain we are fading to.  <a href="#a6af41884a8f7fa490bcba401fe5a4e20"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_a_l_source.html#ae8b1d270e71f27e12929c9e84f45108d">fadeDuration</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">The duration of the fade operation.  <a href="#ae8b1d270e71f27e12929c9e84f45108d"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_a_l_source.html#a639994a5ea3affc2bbc2f5916a7bc557">fadeDeltaMultiplier</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">A multiplier applied to the elapsed time to give a fade delta.  <a href="#a639994a5ea3affc2bbc2f5916a7bc557"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">uint64_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_a_l_source.html#a81074fb45be145c5a3a11bc3cf90ac48">fadeStartTime</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">The time that this fade operation started.  <a href="#a81074fb45be145c5a3a11bc3cf90ac48"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">NSTimer *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_a_l_source.html#a7eb36d48a7a1f9aadf5effaab7b61e6e">fadeTimer</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">The timer corrdinating the fade operation.  <a href="#a7eb36d48a7a1f9aadf5effaab7b61e6e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="interface_o_a_l_action.html">OALAction</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_a_l_source.html#ab508956fe29ba8fb369ab039c1794552">gainAction</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Current action operating on the gain control.  <a href="#ab508956fe29ba8fb369ab039c1794552"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="interface_o_a_l_action.html">OALAction</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_a_l_source.html#a8f7a8e572b57b79cf91f53dad8d02122">panAction</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Current action operating on the pan control.  <a href="#a8f7a8e572b57b79cf91f53dad8d02122"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="interface_o_a_l_action.html">OALAction</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_a_l_source.html#a97090c55f163d987333035d318a52a26">pitchAction</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Current action operating on the pitch control.  <a href="#a97090c55f163d987333035d318a52a26"></a><br/></td></tr>
 <tr><td colspan="2"><h2>Properties</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="interface_a_l_buffer.html">ALBuffer</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_a_l_source.html#ad8eadbc1f76cd670cd2ec1c65971d4cf">buffer</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">The sound buffer this source is attached to (set to nil to detach the currently attached buffer).  <a href="#ad8eadbc1f76cd670cd2ec1c65971d4cf"></a><br/></td></tr>
@@ -156,12 +146,12 @@ Inheritance diagram for ALSource:</div>
 
 </div>
 </div>
-<a class="anchor" id="ad9344bc914fb99c9b2ea477940ae3fe8"></a><!-- doxytag: member="ALSource::play" ref="ad9344bc914fb99c9b2ea477940ae3fe8" args="()" -->
+<a class="anchor" id="a8881f387eb530ed3041e285ff5a4a27a"></a><!-- doxytag: member="ALSource::play" ref="a8881f387eb530ed3041e285ff5a4a27a" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">- (id&lt; <a class="el" href="protocol_sound_source-p.html">SoundSource</a> &gt;) play </td>
+          <td class="memname">- (id&lt; <a class="el" href="protocol_a_l_sound_source-p.html">ALSoundSource</a> &gt;) play </td>
           <td></td>
           <td class="paramname"></td>
           <td>&nbsp;</td>
@@ -332,126 +322,6 @@ Inheritance diagram for ALSource:</div>
 </div>
 </div>
 <hr/><h2>Member Data Documentation</h2>
-<a class="anchor" id="ac3cffced4de0179966b68992dda9babe"></a><!-- doxytag: member="ALSource::fadeCompleteSelector" ref="ac3cffced4de0179966b68992dda9babe" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">- (SEL) <a class="el" href="interface_a_l_source.html#ac3cffced4de0179966b68992dda9babe">fadeCompleteSelector</a><code> [protected]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Selector to call when the current fade operation completes. </p>
-
-</div>
-</div>
-<a class="anchor" id="a11d86fb7388a007b9163ac5c02a920e5"></a><!-- doxytag: member="ALSource::fadeCompleteTarget" ref="a11d86fb7388a007b9163ac5c02a920e5" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">- (id) <a class="el" href="interface_a_l_source.html#a11d86fb7388a007b9163ac5c02a920e5">fadeCompleteTarget</a><code> [protected]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Target to inform when the current fade operation completes. </p>
-
-</div>
-</div>
-<a class="anchor" id="a639994a5ea3affc2bbc2f5916a7bc557"></a><!-- doxytag: member="ALSource::fadeDeltaMultiplier" ref="a639994a5ea3affc2bbc2f5916a7bc557" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">- (float) <a class="el" href="interface_a_l_source.html#a639994a5ea3affc2bbc2f5916a7bc557">fadeDeltaMultiplier</a><code> [protected]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>A multiplier applied to the elapsed time to give a fade delta. </p>
-
-</div>
-</div>
-<a class="anchor" id="ae8b1d270e71f27e12929c9e84f45108d"></a><!-- doxytag: member="ALSource::fadeDuration" ref="ae8b1d270e71f27e12929c9e84f45108d" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">- (float) <a class="el" href="interface_a_l_source.html#ae8b1d270e71f27e12929c9e84f45108d">fadeDuration</a><code> [protected]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>The duration of the fade operation. </p>
-
-</div>
-</div>
-<a class="anchor" id="a6af41884a8f7fa490bcba401fe5a4e20"></a><!-- doxytag: member="ALSource::fadeEndingGain" ref="a6af41884a8f7fa490bcba401fe5a4e20" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">- (float) <a class="el" href="interface_a_l_source.html#a6af41884a8f7fa490bcba401fe5a4e20">fadeEndingGain</a><code> [protected]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>The gain we are fading to. </p>
-
-</div>
-</div>
-<a class="anchor" id="a8d54dad35bebe315bdeadf91b7ad4eee"></a><!-- doxytag: member="ALSource::fadeStartingGain" ref="a8d54dad35bebe315bdeadf91b7ad4eee" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">- (float) <a class="el" href="interface_a_l_source.html#a8d54dad35bebe315bdeadf91b7ad4eee">fadeStartingGain</a><code> [protected]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>The gain we started this fade from. </p>
-
-</div>
-</div>
-<a class="anchor" id="a81074fb45be145c5a3a11bc3cf90ac48"></a><!-- doxytag: member="ALSource::fadeStartTime" ref="a81074fb45be145c5a3a11bc3cf90ac48" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">- (uint64_t) <a class="el" href="interface_a_l_source.html#a81074fb45be145c5a3a11bc3cf90ac48">fadeStartTime</a><code> [protected]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>The time that this fade operation started. </p>
-
-</div>
-</div>
-<a class="anchor" id="a7eb36d48a7a1f9aadf5effaab7b61e6e"></a><!-- doxytag: member="ALSource::fadeTimer" ref="a7eb36d48a7a1f9aadf5effaab7b61e6e" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">- (NSTimer*) <a class="el" href="interface_a_l_source.html#a7eb36d48a7a1f9aadf5effaab7b61e6e">fadeTimer</a><code> [protected]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>The timer corrdinating the fade operation. </p>
-
-</div>
-</div>
 <a class="anchor" id="a3d968ad2948da0b69435773de2144750"></a><!-- doxytag: member="ALSource::gain" ref="a3d968ad2948da0b69435773de2144750" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -465,7 +335,22 @@ Inheritance diagram for ALSource:</div>
 
 <p>Gain (volume) (OpenAL property). </p>
 
-<p>Reimplemented from <a class="el" href="protocol_sound_source-p.html#a8fd3ed5169a1cbc32785d0fdbee3f963">&lt;SoundSource&gt;</a>.</p>
+<p>Reimplemented from <a class="el" href="protocol_a_l_sound_source-p.html#add3d9235cb71d2be72d9d75f9a0c6224">&lt;ALSoundSource&gt;</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab508956fe29ba8fb369ab039c1794552"></a><!-- doxytag: member="ALSource::gainAction" ref="ab508956fe29ba8fb369ab039c1794552" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (<a class="el" href="interface_o_a_l_action.html">OALAction</a>*) <a class="el" href="interface_a_l_source.html#ab508956fe29ba8fb369ab039c1794552">gainAction</a><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Current action operating on the gain control. </p>
 
 </div>
 </div>
@@ -482,7 +367,7 @@ Inheritance diagram for ALSource:</div>
 
 <p>If true, this source may be interrupted when resources are low. </p>
 
-<p>Reimplemented from <a class="el" href="protocol_sound_source-p.html#a7bb78f14bc79324644229a366075be55">&lt;SoundSource&gt;</a>.</p>
+<p>Reimplemented from <a class="el" href="protocol_a_l_sound_source-p.html#a264be1d81620c567c0fcda4b67986c3c">&lt;ALSoundSource&gt;</a>.</p>
 
 </div>
 </div>
@@ -499,7 +384,22 @@ Inheritance diagram for ALSource:</div>
 
 <p>If true, this source is muted. </p>
 
-<p>Reimplemented from <a class="el" href="protocol_sound_source-p.html#a966483d7828fbb3a056e03a0f74a4e97">&lt;SoundSource&gt;</a>.</p>
+<p>Reimplemented from <a class="el" href="protocol_a_l_sound_source-p.html#af35f23cd59f49f865ad579deca6e9a6e">&lt;ALSoundSource&gt;</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8f7a8e572b57b79cf91f53dad8d02122"></a><!-- doxytag: member="ALSource::panAction" ref="a8f7a8e572b57b79cf91f53dad8d02122" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (<a class="el" href="interface_o_a_l_action.html">OALAction</a>*) <a class="el" href="interface_a_l_source.html#a8f7a8e572b57b79cf91f53dad8d02122">panAction</a><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Current action operating on the pan control. </p>
 
 </div>
 </div>
@@ -516,7 +416,22 @@ Inheritance diagram for ALSource:</div>
 
 <p>If true, this source is currently paused. </p>
 
-<p>Reimplemented from <a class="el" href="protocol_sound_source-p.html#a0e930b270bd9702c9986e243ca272700">&lt;SoundSource&gt;</a>.</p>
+<p>Reimplemented from <a class="el" href="protocol_a_l_sound_source-p.html#a2697572a22a1b9107d80a1d686e16894">&lt;ALSoundSource&gt;</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a97090c55f163d987333035d318a52a26"></a><!-- doxytag: member="ALSource::pitchAction" ref="a97090c55f163d987333035d318a52a26" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (<a class="el" href="interface_o_a_l_action.html">OALAction</a>*) <a class="el" href="interface_a_l_source.html#a97090c55f163d987333035d318a52a26">pitchAction</a><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Current action operating on the pitch control. </p>
 
 </div>
 </div>
@@ -675,7 +590,7 @@ Inheritance diagram for ALSource:</div>
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Fri Aug 20 21:18:19 2010 for ObjectAL by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Sat Oct 16 12:14:23 2010 for ObjectAL by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

@@ -91,6 +91,19 @@ Here is a list of all documented class members with links to the class documenta
 <li>initOnDevice:outputFrequency:refreshIntervals:synchronousContext:monoSources:stereoSources:
 : <a class="el" href="interface_a_l_context.html#a1a2a5ca227667708b6a8345284ee3e2b">ALContext</a>
 </li>
+<li>initWithActions:
+: <a class="el" href="interface_o_a_l_sequential_actions.html#a9edb41c8e8d882d6274ad52979c9a2e6">OALSequentialActions</a>
+, <a class="el" href="interface_o_a_l_concurrent_actions.html#a2e26d987e30995013a6fdd9dfb6d7373">OALConcurrentActions</a>
+</li>
+<li>initWithCallTarget:selector:
+: <a class="el" href="interface_o_a_l_call_action.html#ae68361ecc902efbb8c3de7b60c86accc">OALCallAction</a>
+</li>
+<li>initWithCallTarget:selector:withObject:
+: <a class="el" href="interface_o_a_l_call_action.html#a7ba7c3c3c0733f20367967f869fa91e5">OALCallAction</a>
+</li>
+<li>initWithCallTarget:selector:withObject:withObject:
+: <a class="el" href="interface_o_a_l_call_action.html#a7d179af89880d8fd033dbeca8a819612">OALCallAction</a>
+</li>
 <li>initWithContext:
 : <a class="el" href="interface_a_l_listener.html#a1c0e6af38782e50e051d1199956fc4b9">ALListener</a>
 </li>
@@ -100,35 +113,71 @@ Here is a list of all documented class members with links to the class documenta
 <li>initWithDeviceSpecifier:frequency:format:bufferSize:
 : <a class="el" href="interface_a_l_capture_device.html#aed4b2ea0c3be869bfbce71769f339505">ALCaptureDevice</a>
 </li>
+<li>initWithDuration:
+: <a class="el" href="interface_o_a_l_action.html#a2f805a674243bf5b88bdcd7dc8ee1244">OALAction</a>
+</li>
+<li>initWithDuration:delta:
+: <a class="el" href="interface_o_a_l_move_by_action.html#a4ab05cf99750230b88b49df5ecaa89e9">OALMoveByAction</a>
+</li>
+<li>initWithDuration:endValue:
+: <a class="el" href="interface_o_a_l_function_action.html#a604f157655e1e62224bed8a28ddee2b0">OALFunctionAction</a>
+</li>
+<li>initWithDuration:endValue:function:
+: <a class="el" href="interface_o_a_l_function_action.html#a19675a8f09c8f227e9973a2dd38afe5f">OALFunctionAction</a>
+</li>
+<li>initWithDuration:position:
+: <a class="el" href="interface_o_a_l_move_to_action.html#a01592bec469b372c93fa633cfacecdc8">OALMoveToAction</a>
+</li>
+<li>initWithDuration:startValue:endValue:function:
+: <a class="el" href="interface_o_a_l_function_action.html#ab1f5c160b28f8fcee241cc3b70c3ddcc">OALFunctionAction</a>
+</li>
+<li>initWithFunction:
+: <a class="el" href="interface_o_a_l_reverse_function.html#a5294ee167d5c1a550abc16fc126bacff">OALReverseFunction</a>
+</li>
 <li>initWithName:data:size:format:frequency:
 : <a class="el" href="interface_a_l_buffer.html#a3d14829b6b14a25416a429ebb68d57d8">ALBuffer</a>
 </li>
+<li>initWithPosition:
+: <a class="el" href="interface_o_a_l_place_action.html#ae4ecda4dc09e50c870290126e01dc2c8">OALPlaceAction</a>
+</li>
 <li>initWithSources:
-: <a class="el" href="interface_channel_source.html#a18241e1ac13873eb150908f42a12ad05">ChannelSource</a>
-, <a class="el" href="interface_simple_iphone_audio.html#a5cceb763990ffd3811449f3e41ecc636">SimpleIphoneAudio</a>
+: <a class="el" href="interface_o_a_l_simple_audio.html#ac06b863b88196d286fec9965f00d8bbe">OALSimpleAudio</a>
+, <a class="el" href="interface_a_l_channel_source.html#a1e1e54ed8f595492aa2c7088f06e005f">ALChannelSource</a>
 </li>
-<li>initWithTarget:selector:url:
-: <a class="el" href="interface_async_load_operation.html#affb8a8c9cd36068716d5bb44e5c7810d">AsyncLoadOperation</a>
+<li>initWithTarget:action:
+: <a class="el" href="interface_o_a_l_targeted_action.html#a148b797b2756c4ea6902714131cbef6d">OALTargetedAction</a>
 </li>
-<li>initWithUrl:loops:target:selector:
-: <a class="el" href="interface_async_play_operation.html#ae1ca4668f99d2d13bb1b07345c76a17d">AsyncPlayOperation</a>
+<li>initWithTrack:url:loops:target:selector:
+: <a class="el" href="interface_o_a_l___async_audio_track_play_operation.html#afff0c021f8bc56f81f8dc6bcf62600c6">OAL_AsyncAudioTrackPlayOperation</a>
+</li>
+<li>initWithTrack:url:seekTime:target:selector:
+: <a class="el" href="interface_o_a_l___async_audio_track_operation.html#a51c82c255b96bac1cd045e2928505d24">OAL_AsyncAudioTrackOperation</a>
+</li>
+<li>initWithUnitsPerSecond:delta:
+: <a class="el" href="interface_o_a_l_move_by_action.html#ae01f8abc836de7488444f4bebab514ee">OALMoveByAction</a>
+</li>
+<li>initWithUnitsPerSecond:position:
+: <a class="el" href="interface_o_a_l_move_to_action.html#a642aabb54b56fed5d22759ea250a3e7c">OALMoveToAction</a>
 </li>
 <li>initWithUrl:target:selector:
-: <a class="el" href="interface_async_audio_operation.html#aaf329476948c13ea03af63c9f6a6297d">AsyncAudioOperation</a>
+: <a class="el" href="interface_o_a_l___async_a_l_buffer_load_operation.html#a0e675cddfd653447ab33fb044e98cc20">OAL_AsyncALBufferLoadOperation</a>
 </li>
 <li>internalPreloadEffect:
-: <a class="el" href="interface_simple_iphone_audio.html#a05c866cc2e84bb47a7577751dad656d6">SimpleIphoneAudio</a>
+: <a class="el" href="interface_o_a_l_simple_audio.html#a1db9b3e6c7fda21a537a0ec5213fc9a7">OALSimpleAudio</a>
 </li>
 <li>interruptible
-: <a class="el" href="protocol_sound_source-p.html#a7bb78f14bc79324644229a366075be55">&lt;SoundSource&gt;</a>
-, <a class="el" href="interface_channel_source.html#a5819b5bfd3ade633549682b8ed14cd85">ChannelSource</a>
-, <a class="el" href="interface_a_l_source.html#a75e01c33a7c4938a1f6a8f02504df5a2">ALSource</a>
+: <a class="el" href="interface_a_l_source.html#a75e01c33a7c4938a1f6a8f02504df5a2">ALSource</a>
+, <a class="el" href="protocol_a_l_sound_source-p.html#a264be1d81620c567c0fcda4b67986c3c">&lt;ALSoundSource&gt;</a>
+, <a class="el" href="interface_a_l_channel_source.html#ad45f9dc6deb69a206998507d6558cbf8">ALChannelSource</a>
 </li>
 <li>interruptListenerCallback
-: <a class="el" href="interface_iphone_audio_support.html#acc7e2c86eb05f0616aac89411668457d">IphoneAudioSupport</a>
+: <a class="el" href="interface_o_a_l_audio_support.html#ad1d15cdbc14dcb251a77ad4da9e57faa">OALAudioSupport</a>
+</li>
+<li>ipodDucking
+: <a class="el" href="interface_o_a_l_audio_support.html#a74168de0ff081969e2615159887bfbd6">OALAudioSupport</a>
 </li>
 <li>ipodPlaying
-: <a class="el" href="interface_iphone_audio_support.html#ac8500ce2a297cb192b9491c64de4d4bf">IphoneAudioSupport</a>
+: <a class="el" href="interface_o_a_l_audio_support.html#a525b02ea8ee9cd9a8914ab59dd614760">OALAudioSupport</a>
 </li>
 <li>isBuffer:
 : <a class="el" href="interface_a_l_wrapper.html#abac391fdd86353dcc489ebb67b43f2db">ALWrapper</a>
@@ -138,12 +187,15 @@ Here is a list of all documented class members with links to the class documenta
 </li>
 <li>isExtensionPresent:
 : <a class="el" href="interface_a_l_capture_device.html#ac53cd4310cea62b952bb2c2443fb5999">ALCaptureDevice</a>
-, <a class="el" href="interface_a_l_device.html#a56c30cad57503b0564db94b4d6d697b3">ALDevice</a>
 , <a class="el" href="interface_a_l_context.html#a19388aed029b7c71002f686b4d0e2721">ALContext</a>
 , <a class="el" href="interface_a_l_wrapper.html#a1277df676d9b925fb18e36bd2a096122">ALWrapper</a>
+, <a class="el" href="interface_a_l_device.html#a56c30cad57503b0564db94b4d6d697b3">ALDevice</a>
 </li>
 <li>isExtensionPresent:name:
 : <a class="el" href="interface_a_l_wrapper.html#a7c3db99df0099dc51508791e7d1d6276">ALWrapper</a>
+</li>
+<li>isIOS40OrHigher
+: <a class="el" href="interface_o_a_l_audio_track.html#a41e6e826b72d568340259c51ab8124c5">OALAudioTrack</a>
 </li>
 <li>isSource:
 : <a class="el" href="interface_a_l_wrapper.html#a0bab4cd6c5fb189cdc9c935486972aae">ALWrapper</a>
@@ -164,7 +216,7 @@ Here is a list of all documented class members with links to the class documenta
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Fri Aug 20 21:18:19 2010 for ObjectAL by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Sat Oct 16 12:14:23 2010 for ObjectAL by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

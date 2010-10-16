@@ -22,6 +22,10 @@
           <Path>interface_a_l_capture_device.html</Path>
          </Node>
          <Node>
+          <Name>ALChannelSource</Name>
+          <Path>interface_a_l_channel_source.html</Path>
+         </Node>
+         <Node>
           <Name>ALContext</Name>
           <Path>interface_a_l_context.html</Path>
          </Node>
@@ -42,6 +46,14 @@
           <Path>struct_a_l_point.html</Path>
          </Node>
          <Node>
+          <Name>&lt;ALSoundSource&gt;</Name>
+          <Path>protocol_a_l_sound_source-p.html</Path>
+         </Node>
+         <Node>
+          <Name>ALSoundSourcePool</Name>
+          <Path>interface_a_l_sound_source_pool.html</Path>
+         </Node>
+         <Node>
           <Name>ALSource</Name>
           <Path>interface_a_l_source.html</Path>
          </Node>
@@ -54,52 +66,136 @@
           <Path>interface_a_l_wrapper.html</Path>
          </Node>
          <Node>
-          <Name>AsyncAudioOperation</Name>
-          <Path>interface_async_audio_operation.html</Path>
-         </Node>
-         <Node>
-          <Name>AsyncLoadOperation</Name>
-          <Path>interface_async_load_operation.html</Path>
-         </Node>
-         <Node>
-          <Name>AsyncPlayOperation</Name>
-          <Path>interface_async_play_operation.html</Path>
-         </Node>
-         <Node>
-          <Name>AsyncPreloadOperation</Name>
-          <Path>interface_async_preload_operation.html</Path>
-         </Node>
-         <Node>
-          <Name>BackgroundAudio</Name>
-          <Path>interface_background_audio.html</Path>
-         </Node>
-         <Node>
-          <Name>ChannelSource</Name>
-          <Path>interface_channel_source.html</Path>
-         </Node>
-         <Node>
-          <Name>IphoneAudioSupport</Name>
-          <Path>interface_iphone_audio_support.html</Path>
-         </Node>
-         <Node>
           <Name>NSMutableArray</Name>
           <Path>class_n_s_mutable_array.html</Path>
          </Node>
          <Node>
-          <Name>ObjectAL</Name>
-          <Path>interface_object_a_l.html</Path>
+          <Name>OAL_AsyncALBufferLoadOperation</Name>
+          <Path>interface_o_a_l___async_a_l_buffer_load_operation.html</Path>
          </Node>
          <Node>
-          <Name>SimpleIphoneAudio</Name>
-          <Path>interface_simple_iphone_audio.html</Path>
+          <Name>OAL_AsyncAudioTrackOperation</Name>
+          <Path>interface_o_a_l___async_audio_track_operation.html</Path>
          </Node>
          <Node>
-          <Name>&lt;SoundSource&gt;</Name>
-          <Path>protocol_sound_source-p.html</Path>
+          <Name>OAL_AsyncAudioTrackPlayOperation</Name>
+          <Path>interface_o_a_l___async_audio_track_play_operation.html</Path>
          </Node>
          <Node>
-          <Name>SoundSourcePool</Name>
-          <Path>interface_sound_source_pool.html</Path>
+          <Name>OAL_AsyncAudioTrackPreloadOperation</Name>
+          <Path>interface_o_a_l___async_audio_track_preload_operation.html</Path>
+         </Node>
+         <Node>
+          <Name>&lt;OAL_GainProtocol&gt;</Name>
+          <Path>protocol_o_a_l___gain_protocol-p.html</Path>
+         </Node>
+         <Node>
+          <Name>&lt;OAL_PanProtocol&gt;</Name>
+          <Path>protocol_o_a_l___pan_protocol-p.html</Path>
+         </Node>
+         <Node>
+          <Name>&lt;OAL_PitchProtocol&gt;</Name>
+          <Path>protocol_o_a_l___pitch_protocol-p.html</Path>
+         </Node>
+         <Node>
+          <Name>&lt;OAL_PositionProtocol&gt;</Name>
+          <Path>protocol_o_a_l___position_protocol-p.html</Path>
+         </Node>
+         <Node>
+          <Name>OALAction</Name>
+          <Path>interface_o_a_l_action.html</Path>
+         </Node>
+         <Node>
+          <Name>OALActionManager</Name>
+          <Path>interface_o_a_l_action_manager.html</Path>
+         </Node>
+         <Node>
+          <Name>OALAudioSupport</Name>
+          <Path>interface_o_a_l_audio_support.html</Path>
+         </Node>
+         <Node>
+          <Name>OALAudioTrack</Name>
+          <Path>interface_o_a_l_audio_track.html</Path>
+         </Node>
+         <Node>
+          <Name>OALAudioTracks</Name>
+          <Path>interface_o_a_l_audio_tracks.html</Path>
+         </Node>
+         <Node>
+          <Name>OALCallAction</Name>
+          <Path>interface_o_a_l_call_action.html</Path>
+         </Node>
+         <Node>
+          <Name>OALConcurrentActions</Name>
+          <Path>interface_o_a_l_concurrent_actions.html</Path>
+         </Node>
+         <Node>
+          <Name>OALExponentialFunction</Name>
+          <Path>interface_o_a_l_exponential_function.html</Path>
+         </Node>
+         <Node>
+          <Name>&lt;OALFunction&gt;</Name>
+          <Path>protocol_o_a_l_function-p.html</Path>
+         </Node>
+         <Node>
+          <Name>OALFunctionAction</Name>
+          <Path>interface_o_a_l_function_action.html</Path>
+         </Node>
+         <Node>
+          <Name>OALGainAction</Name>
+          <Path>interface_o_a_l_gain_action.html</Path>
+         </Node>
+         <Node>
+          <Name>OALLinearFunction</Name>
+          <Path>interface_o_a_l_linear_function.html</Path>
+         </Node>
+         <Node>
+          <Name>OALLogarithmicFunction</Name>
+          <Path>interface_o_a_l_logarithmic_function.html</Path>
+         </Node>
+         <Node>
+          <Name>OALMoveByAction</Name>
+          <Path>interface_o_a_l_move_by_action.html</Path>
+         </Node>
+         <Node>
+          <Name>OALMoveToAction</Name>
+          <Path>interface_o_a_l_move_to_action.html</Path>
+         </Node>
+         <Node>
+          <Name>OALPanAction</Name>
+          <Path>interface_o_a_l_pan_action.html</Path>
+         </Node>
+         <Node>
+          <Name>OALPitchAction</Name>
+          <Path>interface_o_a_l_pitch_action.html</Path>
+         </Node>
+         <Node>
+          <Name>OALPlaceAction</Name>
+          <Path>interface_o_a_l_place_action.html</Path>
+         </Node>
+         <Node>
+          <Name>OALReverseFunction</Name>
+          <Path>interface_o_a_l_reverse_function.html</Path>
+         </Node>
+         <Node>
+          <Name>OALSCurveFunction</Name>
+          <Path>interface_o_a_l_s_curve_function.html</Path>
+         </Node>
+         <Node>
+          <Name>OALSequentialActions</Name>
+          <Path>interface_o_a_l_sequential_actions.html</Path>
+         </Node>
+         <Node>
+          <Name>OALSimpleAudio</Name>
+          <Path>interface_o_a_l_simple_audio.html</Path>
+         </Node>
+         <Node>
+          <Name>OALTargetedAction</Name>
+          <Path>interface_o_a_l_targeted_action.html</Path>
+         </Node>
+         <Node>
+          <Name>OpenALManager</Name>
+          <Path>interface_open_a_l_manager.html</Path>
          </Node>
         </Subnodes>
        </Node>
@@ -136,6 +232,24 @@
           <Path>struct_a_l_point.html</Path>
          </Node>
          <Node>
+          <Name>&lt;ALSoundSource&gt;</Name>
+          <Path>protocol_a_l_sound_source-p.html</Path>
+          <Subnodes>
+           <Node>
+            <Name>ALChannelSource</Name>
+            <Path>interface_a_l_channel_source.html</Path>
+           </Node>
+           <Node>
+            <Name>ALSource</Name>
+            <Path>interface_a_l_source.html</Path>
+           </Node>
+          </Subnodes>
+         </Node>
+         <Node>
+          <Name>ALSoundSourcePool</Name>
+          <Path>interface_a_l_sound_source_pool.html</Path>
+         </Node>
+         <Node>
           <Name>ALVector</Name>
           <Path>struct_a_l_vector.html</Path>
          </Node>
@@ -144,60 +258,144 @@
           <Path>interface_a_l_wrapper.html</Path>
          </Node>
          <Node>
-          <Name>AsyncAudioOperation</Name>
-          <Path>interface_async_audio_operation.html</Path>
-          <Subnodes>
-           <Node>
-            <Name>AsyncPlayOperation</Name>
-            <Path>interface_async_play_operation.html</Path>
-           </Node>
-           <Node>
-            <Name>AsyncPreloadOperation</Name>
-            <Path>interface_async_preload_operation.html</Path>
-           </Node>
-          </Subnodes>
-         </Node>
-         <Node>
-          <Name>AsyncLoadOperation</Name>
-          <Path>interface_async_load_operation.html</Path>
-         </Node>
-         <Node>
-          <Name>BackgroundAudio</Name>
-          <Path>interface_background_audio.html</Path>
-         </Node>
-         <Node>
-          <Name>IphoneAudioSupport</Name>
-          <Path>interface_iphone_audio_support.html</Path>
-         </Node>
-         <Node>
           <Name>NSMutableArray</Name>
           <Path>class_n_s_mutable_array.html</Path>
          </Node>
          <Node>
-          <Name>ObjectAL</Name>
-          <Path>interface_object_a_l.html</Path>
+          <Name>OAL_AsyncALBufferLoadOperation</Name>
+          <Path>interface_o_a_l___async_a_l_buffer_load_operation.html</Path>
          </Node>
          <Node>
-          <Name>SimpleIphoneAudio</Name>
-          <Path>interface_simple_iphone_audio.html</Path>
-         </Node>
-         <Node>
-          <Name>&lt;SoundSource&gt;</Name>
-          <Path>protocol_sound_source-p.html</Path>
+          <Name>OAL_AsyncAudioTrackOperation</Name>
+          <Path>interface_o_a_l___async_audio_track_operation.html</Path>
           <Subnodes>
            <Node>
-            <Name>ALSource</Name>
-            <Path>interface_a_l_source.html</Path>
+            <Name>OAL_AsyncAudioTrackPlayOperation</Name>
+            <Path>interface_o_a_l___async_audio_track_play_operation.html</Path>
            </Node>
            <Node>
-            <Name>ChannelSource</Name>
-            <Path>interface_channel_source.html</Path>
+            <Name>OAL_AsyncAudioTrackPreloadOperation</Name>
+            <Path>interface_o_a_l___async_audio_track_preload_operation.html</Path>
            </Node>
           </Subnodes>
          </Node>
          <Node>
-          <Name>SoundSourcePool</Name>
-          <Path>interface_sound_source_pool.html</Path>
+          <Name>&lt;OAL_GainProtocol&gt;</Name>
+          <Path>protocol_o_a_l___gain_protocol-p.html</Path>
+         </Node>
+         <Node>
+          <Name>&lt;OAL_PanProtocol&gt;</Name>
+          <Path>protocol_o_a_l___pan_protocol-p.html</Path>
+         </Node>
+         <Node>
+          <Name>&lt;OAL_PitchProtocol&gt;</Name>
+          <Path>protocol_o_a_l___pitch_protocol-p.html</Path>
+         </Node>
+         <Node>
+          <Name>&lt;OAL_PositionProtocol&gt;</Name>
+          <Path>protocol_o_a_l___position_protocol-p.html</Path>
+         </Node>
+         <Node>
+          <Name>OALAction</Name>
+          <Path>interface_o_a_l_action.html</Path>
+          <Subnodes>
+           <Node>
+            <Name>OALCallAction</Name>
+            <Path>interface_o_a_l_call_action.html</Path>
+           </Node>
+           <Node>
+            <Name>OALConcurrentActions</Name>
+            <Path>interface_o_a_l_concurrent_actions.html</Path>
+           </Node>
+           <Node>
+            <Name>OALFunctionAction</Name>
+            <Path>interface_o_a_l_function_action.html</Path>
+            <Subnodes>
+             <Node>
+              <Name>OALGainAction</Name>
+              <Path>interface_o_a_l_gain_action.html</Path>
+             </Node>
+             <Node>
+              <Name>OALPanAction</Name>
+              <Path>interface_o_a_l_pan_action.html</Path>
+             </Node>
+             <Node>
+              <Name>OALPitchAction</Name>
+              <Path>interface_o_a_l_pitch_action.html</Path>
+             </Node>
+            </Subnodes>
+           </Node>
+           <Node>
+            <Name>OALMoveByAction</Name>
+            <Path>interface_o_a_l_move_by_action.html</Path>
+           </Node>
+           <Node>
+            <Name>OALMoveToAction</Name>
+            <Path>interface_o_a_l_move_to_action.html</Path>
+           </Node>
+           <Node>
+            <Name>OALPlaceAction</Name>
+            <Path>interface_o_a_l_place_action.html</Path>
+           </Node>
+           <Node>
+            <Name>OALSequentialActions</Name>
+            <Path>interface_o_a_l_sequential_actions.html</Path>
+           </Node>
+           <Node>
+            <Name>OALTargetedAction</Name>
+            <Path>interface_o_a_l_targeted_action.html</Path>
+           </Node>
+          </Subnodes>
+         </Node>
+         <Node>
+          <Name>OALActionManager</Name>
+          <Path>interface_o_a_l_action_manager.html</Path>
+         </Node>
+         <Node>
+          <Name>OALAudioSupport</Name>
+          <Path>interface_o_a_l_audio_support.html</Path>
+         </Node>
+         <Node>
+          <Name>OALAudioTrack</Name>
+          <Path>interface_o_a_l_audio_track.html</Path>
+         </Node>
+         <Node>
+          <Name>OALAudioTracks</Name>
+          <Path>interface_o_a_l_audio_tracks.html</Path>
+         </Node>
+         <Node>
+          <Name>&lt;OALFunction&gt;</Name>
+          <Path>protocol_o_a_l_function-p.html</Path>
+          <Subnodes>
+           <Node>
+            <Name>OALExponentialFunction</Name>
+            <Path>interface_o_a_l_exponential_function.html</Path>
+           </Node>
+           <Node>
+            <Name>OALLinearFunction</Name>
+            <Path>interface_o_a_l_linear_function.html</Path>
+           </Node>
+           <Node>
+            <Name>OALLogarithmicFunction</Name>
+            <Path>interface_o_a_l_logarithmic_function.html</Path>
+           </Node>
+           <Node>
+            <Name>OALReverseFunction</Name>
+            <Path>interface_o_a_l_reverse_function.html</Path>
+           </Node>
+           <Node>
+            <Name>OALSCurveFunction</Name>
+            <Path>interface_o_a_l_s_curve_function.html</Path>
+           </Node>
+          </Subnodes>
+         </Node>
+         <Node>
+          <Name>OALSimpleAudio</Name>
+          <Path>interface_o_a_l_simple_audio.html</Path>
+         </Node>
+         <Node>
+          <Name>OpenALManager</Name>
+          <Path>interface_open_a_l_manager.html</Path>
          </Node>
         </Subnodes>
        </Node>

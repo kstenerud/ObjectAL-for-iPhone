@@ -83,11 +83,16 @@ Here is a list of all documented class members with links to the class documenta
 
 <h3><a class="anchor" id="index_g">- g -</a></h3><ul>
 <li>gain
-: <a class="el" href="interface_a_l_listener.html#ad847827d586c1f269ffd47d68d2cd35b">ALListener</a>
+: <a class="el" href="protocol_o_a_l___gain_protocol-p.html#ac603037d4ab2c6d4f6cc430fad12147b">&lt;OAL_GainProtocol&gt;</a>
+, <a class="el" href="interface_o_a_l_audio_track.html#a078b12ce22450ed543b9b28df978f3c1">OALAudioTrack</a>
+, <a class="el" href="interface_a_l_listener.html#ad847827d586c1f269ffd47d68d2cd35b">ALListener</a>
+, <a class="el" href="protocol_a_l_sound_source-p.html#add3d9235cb71d2be72d9d75f9a0c6224">&lt;ALSoundSource&gt;</a>
+, <a class="el" href="interface_a_l_channel_source.html#a654f7a57cdf7f69c174da114bcb2ba5b">ALChannelSource</a>
 , <a class="el" href="interface_a_l_source.html#a3d968ad2948da0b69435773de2144750">ALSource</a>
-, <a class="el" href="interface_background_audio.html#a1eea1bae3a6660d32e8a688c07432dac">BackgroundAudio</a>
-, <a class="el" href="protocol_sound_source-p.html#a8fd3ed5169a1cbc32785d0fdbee3f963">&lt;SoundSource&gt;</a>
-, <a class="el" href="interface_channel_source.html#a34b35e9756305be40ba6dc007caf44f6">ChannelSource</a>
+</li>
+<li>gainAction
+: <a class="el" href="interface_a_l_source.html#ab508956fe29ba8fb369ab039c1794552">ALSource</a>
+, <a class="el" href="interface_o_a_l_audio_track.html#a9b92c339c474b4b1207e54053aed6288">OALAudioTrack</a>
 </li>
 <li>genBuffer
 : <a class="el" href="interface_a_l_wrapper.html#a1a7f66ef1d1dea26ff3821b535539bf9">ALWrapper</a>
@@ -149,11 +154,14 @@ Here is a list of all documented class members with links to the class documenta
 <li>getFloat:
 : <a class="el" href="interface_a_l_wrapper.html#a722e589389b493d9687e5ef548e4a1cb">ALWrapper</a>
 </li>
+<li>getFloatProperty:
+: <a class="el" href="interface_o_a_l_audio_support.html#ad378172b96b684d0747a0d5a2ed30211">OALAudioSupport</a>
+</li>
 <li>getFloatv:values:
 : <a class="el" href="interface_a_l_wrapper.html#aa327db39259a54ee2b770725d9e13f97">ALWrapper</a>
 </li>
 <li>getFreeSource:
-: <a class="el" href="interface_sound_source_pool.html#aad44fec5b5ab6443f176d5256d1c9920">SoundSourcePool</a>
+: <a class="el" href="interface_a_l_sound_source_pool.html#a5389ccb1f1826702087a5f1955f32f2b">ALSoundSourcePool</a>
 </li>
 <li>getInteger:
 : <a class="el" href="interface_a_l_wrapper.html#a65cf353152aaf6c27d04b5b78c1aa6d3">ALWrapper</a>
@@ -168,7 +176,7 @@ Here is a list of all documented class members with links to the class documenta
 : <a class="el" href="interface_a_l_wrapper.html#aebb94e5fb37418b7ab1b6a551ccada66">ALWrapper</a>
 </li>
 <li>getIntProperty:
-: <a class="el" href="interface_iphone_audio_support.html#aa7358ae4af5f86a3465fe4f01fdc8172">IphoneAudioSupport</a>
+: <a class="el" href="interface_o_a_l_audio_support.html#a08a487a8f3eb93284d58ac16ab25bbb4">OALAudioSupport</a>
 </li>
 <li>getListener3f:v1:v2:v3:
 : <a class="el" href="interface_a_l_wrapper.html#a017ae0f8ba738a6c18f0ff37c5b4f72a">ALWrapper</a>
@@ -198,9 +206,9 @@ Here is a list of all documented class members with links to the class documenta
 : <a class="el" href="interface_a_l_wrapper.html#a49404e3543bc4a5226f106edf4b5f126">ALWrapper</a>
 </li>
 <li>getProcAddress:
-: <a class="el" href="interface_a_l_capture_device.html#a3f0860cdc48931e45499139d0fe4b94a">ALCaptureDevice</a>
+: <a class="el" href="interface_a_l_context.html#abd86ec4491e80d02238cf075a129ae23">ALContext</a>
 , <a class="el" href="interface_a_l_device.html#ab11563821b94f051e78d6b1d60fc970f">ALDevice</a>
-, <a class="el" href="interface_a_l_context.html#abd86ec4491e80d02238cf075a129ae23">ALContext</a>
+, <a class="el" href="interface_a_l_capture_device.html#a3f0860cdc48931e45499139d0fe4b94a">ALCaptureDevice</a>
 , <a class="el" href="interface_a_l_wrapper.html#a7f6b023c85891fcea41b12873c96ddda">ALWrapper</a>
 </li>
 <li>getProcAddress:name:
@@ -236,6 +244,9 @@ Here is a list of all documented class members with links to the class documenta
 <li>getString:attribute:
 : <a class="el" href="interface_a_l_wrapper.html#a42b6458a4b0c48a1293efe02a3a470e9">ALWrapper</a>
 </li>
+<li>getStringProperty:
+: <a class="el" href="interface_o_a_l_audio_support.html#a866ea9d4b6771d03fadec810281c9eab">OALAudioSupport</a>
+</li>
 </ul>
 </div>
 <!--- window showing the filter options -->
@@ -252,7 +263,7 @@ Here is a list of all documented class members with links to the class documenta
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Fri Aug 20 21:18:19 2010 for ObjectAL by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Sat Oct 16 12:14:23 2010 for ObjectAL by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

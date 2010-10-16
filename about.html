@@ -51,17 +51,17 @@ OpenAL and AVAudioPlayer. There are four main parts to ObjectAL for iPhone:
 		to muddle around with arrays of data, maintain IDs, or pass around
 		pointers to basic types.</LI>
 
-	<LI><SPAN class="identifier">BackgroundAudio</SPAN> provides a simpler
+	<LI><SPAN class="identifier">OALAudioTrack</SPAN> provides a simpler
 		interface to AVAudioPlayer, allowing you to play, stop, pause, fade,
 		and mute background music tracks.</LI>
 
-	<LI><SPAN class="identifier">IphoneAudioSupport</SPAN> provides support
-		functionality for audio in iPhone, including automatic interrupt
+	<LI><SPAN class="identifier">OALAudioSupport</SPAN> provides support
+		functionality for audio in iOS devices, including automatic interrupt
 		handling and audio data loading routines. As well, it provides an easy
 		way to configure how the audio session will handle iPod-style music
 		playing and the silent switch.</LI>
 
-	<LI><SPAN class="identifier">SimpleIphoneAudio</SPAN> layers on top of the
+	<LI><SPAN class="identifier">OALSimpleAudio</SPAN> layers on top of the
 		other three, providing an even simpler interface for playing background
 		 music and sound effects.</LI>
 </UL>
@@ -104,10 +104,10 @@ ObjectAL follows the same basic principles as the
 		automatically convert any formats that don't require hardware decoding
 		(though conversion results in a longer loading time).</LI>
 
-	<LI><SPAN class="identifier">ChannelSource</SPAN> allows you to reserve a
+	<LI><SPAN class="identifier">ALChannelSource</SPAN> allows you to reserve a
 		certain number of sources for special purposes.</LI>
 
-	<LI><SPAN class="identifier">ObjectAL</SPAN> provides some overall controls
+	<LI><SPAN class="identifier">OpenALManager</SPAN> provides some overall controls
 		that affect everything, and manages the current context.</LI>
 </UL>
 
