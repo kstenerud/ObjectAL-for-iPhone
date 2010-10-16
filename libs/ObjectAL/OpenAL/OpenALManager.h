@@ -33,7 +33,7 @@
 #pragma mark OpenALManager
 
 /**
- * Master class for the ObjectAL library.
+ * Manager class for OpenAL objects (ObjectAL).
  * Keeps track of devices that have been opened, and allows high level OpenAL management. <br>
  * The OpenAL 1.1 specification is available at
  * http://connect.creativelabs.com/openal/Documentation <br>

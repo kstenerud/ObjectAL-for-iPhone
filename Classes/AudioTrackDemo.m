@@ -84,7 +84,7 @@
 	[self addChild:label];
 	
 	
-	for(int i = 0; i < [audioTracks count]; i++)
+	for(uint i = 0; i < [audioTracks count]; i++)
 	{
 		label = [CCLabel labelWithString:[audioTrackFiles objectAtIndex:i] fontName:@"Helvetica" fontSize:24];
 		label.color = ccBLACK;
@@ -105,7 +105,7 @@
 													target:self
 											  moveSelector:@selector(onChangeVolume:)
 											  dropSelector:@selector(onChangeVolume:)];
-		slider.scale = 1.8;
+		slider.scale = 1.8f;
 		[sliders addObject:slider];
 		[self addChild:slider];
 

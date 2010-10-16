@@ -70,6 +70,7 @@
 	[self startAction];
 	[self updateCompletion:0];
 
+	// Only add this action to the manager if it has a duration.
 	if(duration > 0)
 	{
 		[[OALActionManager sharedInstance] notifyActionStarted:self];
@@ -77,6 +78,7 @@
 	}
 	else
 	{
+		// If there's no duration, the action has completed.
 		[self stopAction];
 	}
 }
@@ -114,8 +116,6 @@
 
 #else /* !OBJECTAL_USE_COCOS2D_ACTIONS */
 
-//COCOS2D_SUBCLASS(OALAction);
-
 @implementation OALAction
 
 - (id) init
@@ -133,7 +133,8 @@
 
 - (void) update:(float) proportionComplete	
 {
-	// The only difference is that I don't call [super update:] here.
+	// The only difference from COCOS2D_SUBCLASS() is that
+	// I don't call [super update:] here.
 	[self updateCompletion:proportionComplete];
 }
 

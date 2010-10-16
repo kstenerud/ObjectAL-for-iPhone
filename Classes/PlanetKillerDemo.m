@@ -44,6 +44,10 @@
 		CGSize size = [[CCDirector sharedDirector] winSize];
 		CGPoint center = ccp(size.width/2, size.height/2);
 
+		CCLabel* label = [CCLabel labelWithString:@"Tap the screen to shoot!" fontName:@"Helvetica" fontSize:18];
+		label.position = ccp(size.width/2, size.height-20);
+		[self addChild:label];
+		
 		ImageButton* button = [ImageButton buttonWithImageFile:@"Exit.png" target:self selector:@selector(onExitPressed)];
 		button.anchorPoint = ccp(1,1);
 		button.position = ccp(size.width, size.height);
@@ -99,13 +103,13 @@
 	CGSize size = [[CCDirector sharedDirector] winSize];
 	CGPoint center = ccp(size.width/2, size.height/2);
 	
-	CGPoint initialPoint = ccp(center.x + sin(angleInRadians)*50,
-							   center.y + cos(angleInRadians)*50);
-	CGPoint endPoint = ccp(center.x + sin(angleInRadians)*300,
-						   center.y + cos(angleInRadians)*300);
+	CGPoint initialPoint = ccp(center.x + sinf(angleInRadians)*50.0f,
+							   center.y + cosf(angleInRadians)*50.0f);
+	CGPoint endPoint = ccp(center.x + sinf(angleInRadians)*300.0f,
+						   center.y + cosf(angleInRadians)*300.0f);
 	
 	CCSprite* bullet = [CCSprite spriteWithFile:@"Ganymede.png"];
-	bullet.scale = 0.3;
+	bullet.scale = 0.3f;
 	bullet.position = initialPoint;
 	[self addChild:bullet];
 	[bullets addObject:bullet];
@@ -142,7 +146,7 @@
 	[[OALSimpleAudio sharedInstance] playBg:@"PlanetKiller.mp3" loop:YES];
 
 	self.isTouchEnabled = YES;
-	[self schedule:@selector(onAddPlanet) interval:0.2];
+	[self schedule:@selector(onAddPlanet) interval:0.2f];
 	[self schedule:@selector(onGameUpdate)];
 }
 
@@ -191,8 +195,8 @@
 	float rangeX = (innerPlanetRect.origin.x - outerPlanetRect.origin.x) * 2;
 	float rangeY = (innerPlanetRect.origin.y - outerPlanetRect.origin.y) * 2;
 	
-	float randomX = [[RNG sharedInstance] randomNumberFrom:0 to:rangeX];
-	float randomY = [[RNG sharedInstance] randomNumberFrom:0 to:rangeY];
+	float randomX = [[RNG sharedInstance] randomNumberFrom:0 to:(int)rangeX];
+	float randomY = [[RNG sharedInstance] randomNumberFrom:0 to:(int)rangeY];
 	
 	CGPoint position = ccp(randomX+outerPlanetRect.origin.x, randomY+outerPlanetRect.origin.y);
 	if(position.x > innerPlanetRect.origin.x)
@@ -243,10 +247,10 @@
 		CGSize size = [[CCDirector sharedDirector] winSize];
 		CGPoint center = ccp(size.width/2, size.height/2);
 		
-		float angle = M_PI/2 - atan((location.y - center.y) / (location.x - center.x));
+		float angle = (float)M_PI/2 - atanf((location.y - center.y) / (location.x - center.x));
 		if(location.x < center.x)
 		{
-			angle = M_PI + angle;
+			angle = (float)M_PI + angle;
 		}
 		
 		[self shoot:angle];
@@ -267,10 +271,10 @@
 		CGSize size = [[CCDirector sharedDirector] winSize];
 		CGPoint center = ccp(size.width/2, size.height/2);
 		
-		float angle = M_PI/2 - atan((location.y - center.y) / (location.x - center.x));
+		float angle = (float)M_PI/2 - atanf((location.y - center.y) / (location.x - center.x));
 		if(location.x < center.x)
 		{
-			angle = M_PI + angle;
+			angle = (float)M_PI + angle;
 		}
 		
 		[self pointTo:angle];

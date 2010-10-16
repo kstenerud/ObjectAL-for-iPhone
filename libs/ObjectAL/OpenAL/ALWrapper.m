@@ -60,6 +60,21 @@
  */
 + (NSArray*) decodeSpaceSeparatedStringList:(const ALCchar*) source;
 
+/** Check the OpenAL error status and log an error message if necessary.
+ *
+ * @param contextInfo Contextual information to add when logging an error.
+ * @return TRUE if the operation was successful (no error).
+ */
+BOOL checkIfSuccessful(const char* contextInfo);
+
+/** Check the OpenAL error status and log an error message if necessary.
+ *
+ * @param contextInfo Contextual information to add when logging an error.
+ * @param device The device to check for errors on.
+ * @return TRUE if the operation was successful (no error).
+ */
+BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device);
+
 @end
 
 #pragma mark -
@@ -68,7 +83,11 @@
 
 typedef ALdouble AL_APIENTRY (*alcMacOSXGetMixerOutputRateProcPtr)();
 typedef ALvoid AL_APIENTRY (*alcMacOSXMixerOutputRateProcPtr) (const ALdouble value);
-typedef ALvoid	AL_APIENTRY	(*alBufferDataStaticProcPtr) (const ALint bid, ALenum format, const ALvoid* data, ALsizei size, ALsizei freq);
+typedef ALvoid AL_APIENTRY (*alBufferDataStaticProcPtr) (const ALint bid,
+														 ALenum format,
+														 const ALvoid* data,
+														 ALsizei size,
+														 ALsizei freq);
 
 static alcMacOSXGetMixerOutputRateProcPtr alcGetMacOSXMixerOutputRate = NULL;
 static alcMacOSXMixerOutputRateProcPtr alcMacOSXMixerOutputRate = NULL;
@@ -78,34 +97,23 @@ static alBufferDataStaticProcPtr alBufferDataStatic = NULL;
 #pragma mark -
 #pragma mark Error Handling
 
-/** Check the OpenAL error status and log an error message if necessary.
- *
- * @param contextInfo Contextual information to add when logging an error.
- * @return TRUE if the operation was successful (no error).
- */
 BOOL checkIfSuccessful(const char* contextInfo)
 {
 	ALenum error = alGetError();
 	if(AL_NO_ERROR != error)
 	{
-		LOG_ERROR_CONTEXT(contextInfo, @"%s (error code 0x%08x)", alGetString(error), error);
+		OAL_LOG_ERROR_CONTEXT(contextInfo, @"%s (error code 0x%08x)", alGetString(error), error);
 		return NO;
 	}
 	return YES;
 }
 
-/** Check the OpenAL error status and log an error message if necessary.
- *
- * @param contextInfo Contextual information to add when logging an error.
- * @param device The device to check for errors on.
- * @return TRUE if the operation was successful (no error).
- */
 BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device)
 {
 	ALenum error = alcGetError(device);
 	if(ALC_NO_ERROR != error)
 	{
-		LOG_ERROR_CONTEXT(contextInfo, @"%s (error code 0x%08x)", alcGetString(device, error), error);
+		OAL_LOG_ERROR_CONTEXT(contextInfo, @"%s (error code 0x%08x)", alcGetString(device, error), error);
 		return NO;
 	}
 	return YES;
@@ -247,7 +255,7 @@ BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device)
 		device = alcOpenDevice([deviceName UTF8String]);
 		if(NULL == device)
 		{
-			LOG_ERROR(@"Could not open device %@", deviceName);
+			OAL_LOG_ERROR(@"Could not open device %@", deviceName);
 		}
 	}
 	return device;
@@ -365,7 +373,7 @@ BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device)
 		result = alcCaptureOpenDevice([deviceName UTF8String], frequency, format, bufferSize);
 		if(nil == result)
 		{
-			LOG_ERROR(@"Could not open capture device %@", deviceName);
+			OAL_LOG_ERROR(@"Could not open capture device %@", deviceName);
 		}
 	}
 	return result;
@@ -447,7 +455,7 @@ BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device)
 			}
 			else
 			{
-				LOG_ERROR(@"Could not make context %d current.  Pass in a device reference for better diagnostic info.", context);
+				OAL_LOG_ERROR(@"Could not make context %d current.  Pass in a device reference for better diagnostic info.", context);
 			}
 			return NO;
 		}
@@ -510,7 +518,7 @@ BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device)
 			}
 			else
 			{
-				LOG_ERROR(@"Could not get device for context %d.  Pass in a device reference for better diagnostic info.", context);
+				OAL_LOG_ERROR(@"Could not get device for context %d.  Pass in a device reference for better diagnostic info.", context);
 			}
 		}
 	}
@@ -1336,7 +1344,7 @@ BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device)
 		alcGetMacOSXMixerOutputRate = (alcMacOSXGetMixerOutputRateProcPtr) alcGetProcAddress(NULL, (const ALCchar*) "alcMacOSXGetMixerOutputRate");
 		if(NULL == alcGetMacOSXMixerOutputRate)
 		{
-			LOG_ERROR(@"Could not get proc pointer for \"alcMacOSXMixerOutputRate\".");
+			OAL_LOG_ERROR(@"Could not get proc pointer for \"alcMacOSXMixerOutputRate\".");
 		}
 	}
 	
@@ -1356,7 +1364,7 @@ BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device)
 		alcMacOSXMixerOutputRate = (alcMacOSXMixerOutputRateProcPtr) alcGetProcAddress(NULL, (const ALCchar*) "alcMacOSXMixerOutputRate");
 		if(NULL == alcMacOSXMixerOutputRate)
 		{
-			LOG_ERROR(@"Could not get proc pointer for \"alcMacOSXMixerOutputRate\".");
+			OAL_LOG_ERROR(@"Could not get proc pointer for \"alcMacOSXMixerOutputRate\".");
 		}
 	}
 	
@@ -1370,7 +1378,7 @@ BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device)
 		alBufferDataStatic = (alBufferDataStaticProcPtr) alcGetProcAddress(NULL, (const ALCchar*) "alBufferDataStatic");
 		if(NULL == alBufferDataStatic)
 		{
-			LOG_ERROR(@"Could not get proc pointer for \"alBufferDataStatic\".");
+			OAL_LOG_ERROR(@"Could not get proc pointer for \"alBufferDataStatic\".");
 		}
 	}
 	

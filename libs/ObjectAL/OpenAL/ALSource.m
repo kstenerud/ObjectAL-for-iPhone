@@ -663,7 +663,7 @@
 	{
 		[self stopFade];
 		gainAction = [[OALSequentialActions actions:
-					   [OALGainAction actionWithDuration:duration endValue:value function:[OALGainAction defaultFunction]],
+					   [OALGainAction actionWithDuration:duration endValue:value],
 					   [OALCallAction actionWithCallTarget:target selector:selector withObject:self],
 					   nil] retain];
 		[gainAction runWithTarget:self];
@@ -691,7 +691,7 @@
 	{
 		[self stopPan];
 		gainAction = [[OALSequentialActions actions:
-					   [OALPanAction actionWithDuration:duration endValue:value function:[OALPanAction defaultFunction]],
+					   [OALPanAction actionWithDuration:duration endValue:value],
 					   [OALCallAction actionWithCallTarget:target selector:selector withObject:self],
 					   nil] retain];
 		[gainAction runWithTarget:self];
@@ -719,7 +719,7 @@
 	{
 		[self stopPitch];
 		gainAction = [[OALSequentialActions actions:
-					   [OALPitchAction actionWithDuration:duration endValue:value function:[OALPitchAction defaultFunction]],
+					   [OALPitchAction actionWithDuration:duration endValue:value],
 					   [OALCallAction actionWithCallTarget:target selector:selector withObject:self],
 					   nil] retain];
 		[gainAction runWithTarget:self];

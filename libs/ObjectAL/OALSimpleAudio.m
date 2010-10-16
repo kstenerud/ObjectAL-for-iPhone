@@ -303,7 +303,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 {
 	if(nil == filePath)
 	{
-		LOG_ERROR(@"filePath was NULL");
+		OAL_LOG_ERROR(@"filePath was NULL");
 		return NO;
 	}
 	BOOL result = [backgroundTrack preloadFile:filePath seekTime:seekTime];
@@ -322,7 +322,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 {
 	if(nil == filePath)
 	{
-		LOG_ERROR(@"filePath was NULL");
+		OAL_LOG_ERROR(@"filePath was NULL");
 		return NO;
 	}
 	return [backgroundTrack playFile:filePath loops:loop ? -1 : 0];
@@ -375,7 +375,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 		buffer = [[OALAudioSupport sharedInstance] bufferFromFile:filePath];
 		if(nil == buffer)
 		{
-			LOG_ERROR(@"Could not load effect %@", filePath);
+			OAL_LOG_ERROR(@"Could not load effect %@", filePath);
 			return nil;
 		}
 
@@ -392,44 +392,56 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 {
 	if(nil == filePath)
 	{
-		LOG_ERROR(@"filePath was NULL");
+		OAL_LOG_ERROR(@"filePath was NULL");
 		return nil;
 	}
 	return [self internalPreloadEffect:filePath];
 }
 
 #if NS_BLOCKS_AVAILABLE
-- (void) preloadEffects:(NSArray*) filePaths progressBlock:(void (^)(uint progress, uint successCount, uint total)) progressBlock completionBlock:(void (^)(uint successCount, uint total)) completionBlock
+- (void) preloadEffects:(NSArray*) filePaths
+		  progressBlock:(void (^)(uint progress, uint successCount, uint total)) progressBlock
+		completionBlock:(void (^)(uint successCount, uint total)) completionBlock
 {
 	uint total					= [filePaths count];
-	if(total < 1){
-		LOG_ERROR(@"Preload effects: No files to process");
+	if(total < 1)
+	{
+		OAL_LOG_ERROR(@"Preload effects: No files to process");
 		return;
 	}
 	
 	__block uint successCount	= 0;
 	
-	[filePaths enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-		NSLog(@"OAL preloading: %@", obj);
-		ALBuffer *result = [self preloadEffect:(NSString *)obj];
-		if(!result){
-			LOG_WARNING(@"%@ failed to preload.", obj);
-		}else{
-			successCount++;
-		}
-		uint cnt = idx+1;
-		dispatch_async(dispatch_get_main_queue(), ^{
-			progressBlock(cnt, successCount, total);
-		});
-		if(cnt == total){
-			dispatch_async(dispatch_get_main_queue(), ^{
-				completionBlock(successCount, total);
-			});
-		}
-	}];
+	[filePaths enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
+	 {
+		 NSLog(@"OAL preloading: %@", obj);
+		 ALBuffer *result = [self preloadEffect:(NSString *)obj];
+		 if(!result)
+		 {
+			 OAL_LOG_WARNING(@"%@ failed to preload.", obj);
+		 }
+		 else
+		 {
+			 successCount++;
+		 }
+		 uint cnt = idx+1;
+		 dispatch_async(dispatch_get_main_queue(), ^
+		 {
+			 progressBlock(cnt, successCount, total);
+		 });
+		 if(cnt == total)
+		 {
+			 dispatch_async(dispatch_get_main_queue(), ^
+			 {
+				 completionBlock(successCount, total);
+			 });
+		 }
+	 }];
 }
 #else
-- (void) preloadEffects:(NSArray*) filePaths progressInvocation:(NSInvocation *) progressInvocation completionInvocation:(NSInvocation *) completionInvocation
+- (void) preloadEffects:(NSArray*) filePaths
+	 progressInvocation:(NSInvocation *) progressInvocation
+   completionInvocation:(NSInvocation *) completionInvocation
 {
 	
 }
@@ -439,7 +451,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 {
 	if(nil == filePath)
 	{
-		LOG_ERROR(@"filePath was NULL");
+		OAL_LOG_ERROR(@"filePath was NULL");
 		return;
 	}
 	OPTIONALLY_SYNCHRONIZED(self)
@@ -474,7 +486,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 {
 	if(nil == filePath)
 	{
-		LOG_ERROR(@"filePath was NULL");
+		OAL_LOG_ERROR(@"filePath was NULL");
 		return NO;
 	}
 	ALBuffer* buffer = [self internalPreloadEffect:filePath];

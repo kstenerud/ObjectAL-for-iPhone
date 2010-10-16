@@ -32,9 +32,9 @@
 		knob = knobIn;
 		[self addChild:knob z:20];
 
-		scaleUpAction = [[CCScaleBy actionWithDuration:0.1 scale:1.2] retain];
-		scaleDownAction = [[CCSequence actionOne:[CCScaleBy actionWithDuration:0.02 scale:1.1]
-											 two:[CCScaleTo actionWithDuration:0.05 scaleX:knob.scaleX scaleY:knob.scaleY]] retain];
+		scaleUpAction = [[CCScaleBy actionWithDuration:0.1f scale:1.2f] retain];
+		scaleDownAction = [[CCSequence actionOne:[CCScaleBy actionWithDuration:0.02f scale:1.1f]
+											 two:[CCScaleTo actionWithDuration:0.05f scaleX:knob.scaleX scaleY:knob.scaleY]] retain];
 
 		CGSize knobSize = CGSizeMake(knob.contentSize.width * knob.scaleX, knob.contentSize.height * knob.scaleY);
 		CGSize trackSize = CGSizeMake(track.contentSize.width * track.scaleX, track.contentSize.height * track.scaleY);

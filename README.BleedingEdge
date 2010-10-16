@@ -24,6 +24,7 @@ New Stuff:
 - OALFunction: Allows you to modify how a duration based fade, pan, or pitch gets applied in an action.
 - OALAudioTrack supports duration based fade and pan.
 - SoundSource objects (such as ALSource) support duration based fade, pan, and pitch.
+- OALAudioSupport has new properties "hardwareMuted" "hardwareVolume", "audioRoute", and "ipodDucking".
 
 
 Minor changes:
@@ -31,6 +32,7 @@ Minor changes:
 
 - Changed the file layout.
 - New demo: Audio Tracks.
+- New demo: Hardware Monitoring.
 - ObjectAL can now be compiled as Objective-C++ if you want.
 - Fixed crash issue when the first attempt to start the audio session fails.
 - Workaround for compiler bug when compiling for iOS4.1 with LLVM.

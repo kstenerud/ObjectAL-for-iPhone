@@ -46,7 +46,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(RNG);
 {
 	double probability = rand() / 2147483648.0;
 	double range = maxValue - minValue + 1;
-	return range * probability + minValue;
+	return (int)(range * probability + minValue);
 }
 
 - (int) randomNumberFrom: (int) minValue to: (int) maxValue except:(int) exceptValue

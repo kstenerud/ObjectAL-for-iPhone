@@ -49,7 +49,7 @@ NSDictionary* extAudioErrorCodes = nil;
 /**
  * (INTERNAL USE) NSOperation for loading audio files asynchronously.
  */
-@interface AsyncALBufferLoadOperation: NSOperation
+@interface OAL_AsyncALBufferLoadOperation: NSOperation
 {
 	/** The URL of the sound file to play */
 	NSURL* url;
@@ -77,7 +77,7 @@ NSDictionary* extAudioErrorCodes = nil;
 
 @end
 
-@implementation AsyncALBufferLoadOperation
+@implementation OAL_AsyncALBufferLoadOperation
 
 + (id) operationWithUrl:(NSURL*) url target:(id) target selector:(SEL) selector
 {
@@ -132,6 +132,20 @@ NSDictionary* extAudioErrorCodes = nil;
  */
 - (UInt32) getIntProperty:(AudioSessionPropertyID) property;
 
+/** (INTERNAL USE) Get an AudioSession property.
+ *
+ * @param property The property to get.
+ * @return The property's value.
+ */
+- (Float32) getFloatProperty:(AudioSessionPropertyID) property;
+
+/** (INTERNAL USE) Get an AudioSession property.
+ *
+ * @param property The property to get.
+ * @return The property's value.
+ */
+- (NSString*) getStringProperty:(AudioSessionPropertyID) property;
+
 /** (INTERNAL USE) Set an AudioSession property.
  *
  * @param property The property to set.
@@ -176,6 +190,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSupport);
 		handleInterruptions = YES;
 		audioSessionDelegate = nil;
 		allowIpod = YES;
+		ipodDucking = NO;
 		useHardwareIfAvailable = YES;
 		honorSilentSwitch = YES;
 		self.audioSessionActive = YES;
@@ -232,6 +247,23 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSupport);
 	}
 }
 
+- (bool) ipodDucking
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		return ipodDucking;
+	}
+}
+
+- (void) setIpodDucking:(bool) value
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		ipodDucking = value;
+		[self updateAudioMode];
+	}
+}
+
 - (bool) useHardwareIfAvailable
 {
 	OPTIONALLY_SYNCHRONIZED(self)
@@ -274,6 +306,25 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSupport);
 	return 0 != [self getIntProperty:kAudioSessionProperty_OtherAudioIsPlaying];
 }
 
+- (NSString*) audioRoute
+{
+#if !TARGET_IPHONE_SIMULATOR
+	return [self getStringProperty:kAudioSessionProperty_AudioRoute];
+#else /* !TARGET_IPHONE_SIMULATOR */
+	return nil;
+#endif /* !TARGET_IPHONE_SIMULATOR */
+}
+
+- (float) hardwareVolume
+{
+	return [self getFloatProperty:kAudioSessionProperty_CurrentHardwareOutputVolume];
+}
+
+- (bool) hardwareMuted
+{
+	return [[self audioRoute] isEqualToString:@""];
+}
+
 
 #pragma mark Buffers
 
@@ -286,7 +337,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSupport);
 {
 	if(nil == url)
 	{
-		LOG_ERROR(@"Cannot open NULL file / url");
+		OAL_LOG_ERROR(@"Cannot open NULL file / url");
 		return nil;
 	}
 	
@@ -352,7 +403,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSupport);
 	if(audioStreamDescription.mChannelsPerFrame > 2)
 	{
 		// Don't allow more than 2 channels (stereo)
-		LOG_WARNING(@"Audio stream for url %@ contains %d channels. Capping at 2.", url, audioStreamDescription.mChannelsPerFrame);
+		OAL_LOG_WARNING(@"Audio stream for url %@ contains %d channels. Capping at 2.", url, audioStreamDescription.mChannelsPerFrame);
 		audioStreamDescription.mChannelsPerFrame = 2;
 	}
 	// Convert to 8 or 16 bit as necessary
@@ -383,7 +434,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSupport);
 	streamData = malloc(streamSizeInBytes);
 	if(nil == streamData)
 	{
-		LOG_ERROR(@"Could not allocate %d bytes for url %@", streamSizeInBytes, url);
+		OAL_LOG_ERROR(@"Could not allocate %d bytes for url %@", streamSizeInBytes, url);
 		goto done;
 	}
 	
@@ -427,7 +478,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSupport);
 								   data:streamData
 								   size:streamSizeInBytes
 								 format:audioFormat
-							  frequency:(float)audioStreamDescription.mSampleRate];
+							  frequency:(ALsizei)audioStreamDescription.mSampleRate];
 	// ALBuffer is maintaining this memory now.  Make sure we don't free() it.
 	streamData = nil;
 	
@@ -452,7 +503,7 @@ done:
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		[operationQueue addOperation:[AsyncALBufferLoadOperation operationWithUrl:url target:target selector:selector]];
+		[operationQueue addOperation:[OAL_AsyncALBufferLoadOperation operationWithUrl:url target:target selector:selector]];
 	}
 	return [url absoluteString];
 }
@@ -493,7 +544,7 @@ done:
 		va_start(args, description);
 		description = [[[NSString alloc] initWithFormat:description arguments:args] autorelease];
 		va_end(args);
-		LOG_ERROR_CONTEXT(function, @"%@ (error code 0x%08x: %@)", description, errorCode, errorString);
+		OAL_LOG_ERROR_CONTEXT(function, @"%@ (error code 0x%08x: %@)", description, errorCode, errorString);
 	}
 }
 
@@ -531,7 +582,7 @@ done:
 		va_start(args, description);
 		description = [[[NSString alloc] initWithFormat:description arguments:args] autorelease];
 		va_end(args);
-		LOG_ERROR_CONTEXT(function, @"%@ (error code 0x%08x: %@)", description, errorCode, errorString);
+		OAL_LOG_ERROR_CONTEXT(function, @"%@ (error code 0x%08x: %@)", description, errorCode, errorString);
 	}
 }
 
@@ -549,7 +600,7 @@ done:
 		fullPath = [[NSBundle mainBundle] pathForResource:[[path pathComponents] lastObject] ofType:nil];
 		if(nil == fullPath)
 		{
-			LOG_ERROR(@"Could not find full path of file %@", path);
+			OAL_LOG_ERROR(@"Could not find full path of file %@", path);
 			return nil;
 		}
 	}
@@ -562,7 +613,7 @@ done:
 
 - (UInt32) getIntProperty:(AudioSessionPropertyID) property
 {
-	UInt32 value;
+	UInt32 value = 0;
 	UInt32 size = sizeof(value);
 	OSStatus result;
 	OPTIONALLY_SYNCHRONIZED(self)
@@ -571,6 +622,37 @@ done:
 	}
 	REPORT_AUDIOSESSION_CALL(result, @"Failed to get int property %08x", property);
 	return value;
+}
+
+- (Float32) getFloatProperty:(AudioSessionPropertyID) property
+{
+	Float32 value = 0;
+	UInt32 size = sizeof(value);
+	OSStatus result;
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		result = AudioSessionGetProperty(property, &size, &value);
+	}
+	REPORT_AUDIOSESSION_CALL(result, @"Failed to get float property %08x", property);
+	return value;
+}
+
+- (NSString*) getStringProperty:(AudioSessionPropertyID) property
+{
+	CFStringRef value;
+	UInt32 size = sizeof(value);
+	OSStatus result;
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		result = AudioSessionGetProperty(property, &size, &value);
+	}
+	REPORT_AUDIOSESSION_CALL(result, @"Failed to get string property %08x", property);
+	if(noErr == result)
+	{
+		[(NSString*)value autorelease];
+		return (NSString*)value;
+	}
+	return nil;
 }
 
 - (void) setIntProperty:(AudioSessionPropertyID) property value:(UInt32) value
@@ -601,6 +683,8 @@ done:
 				// AmbientSound uses software codec.
 				[self setIntProperty:kAudioSessionProperty_AudioCategory
 							   value:kAudioSessionCategory_AmbientSound];
+				[self setIntProperty:kAudioSessionProperty_OtherMixableAudioShouldDuck
+							   value:ipodDucking];
 			}
 			else
 			{
@@ -620,6 +704,8 @@ done:
 				// Mixing uses software codec.
 				[self setIntProperty:kAudioSessionProperty_OverrideCategoryMixWithOthers
 							   value:TRUE];
+				[self setIntProperty:kAudioSessionProperty_OtherMixableAudioShouldDuck
+							   value:ipodDucking];
 			}
 			else
 			{
@@ -650,7 +736,7 @@ done:
 {
 	if(currentRetryCount >= kMaxSessionActivationRetries)
 	{
-		LOG_ERROR(@"Could not activate session after %d retries.", currentRetryCount);
+		OAL_LOG_ERROR(@"Could not activate session after %d retries.", currentRetryCount);
 		return;
 	}
 	
@@ -734,7 +820,8 @@ done:
 			self.audioSessionActive = NO;
 		}
 		
-		if(audioSessionDelegate && [audioSessionDelegate respondsToSelector:@selector(beginInterruption)]){
+		if(audioSessionDelegate && [audioSessionDelegate respondsToSelector:@selector(beginInterruption)])
+		{
 			[audioSessionDelegate beginInterruption];
 		}
 	}
@@ -750,9 +837,12 @@ done:
 		}
 		
 		if(audioSessionDelegate){
-			if([audioSessionDelegate respondsToSelector:@selector(endInterruptionWithFlags:)]){
+			if([audioSessionDelegate respondsToSelector:@selector(endInterruptionWithFlags:)])
+			{
 				[audioSessionDelegate endInterruptionWithFlags:AVAudioSessionInterruptionFlags_ShouldResume];
-			}else if([audioSessionDelegate respondsToSelector:@selector(endInterruption)]){
+			}
+			else if([audioSessionDelegate respondsToSelector:@selector(endInterruption)])
+			{
 				[audioSessionDelegate endInterruption];
 			}
 		}

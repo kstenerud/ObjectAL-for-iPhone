@@ -237,8 +237,9 @@
  Here is a code example:
  
  \code
-// SomeClass.h
-@interface SomeClass : NSObject
+// OALSimpleAudioSample.h
+
+@interface OALSimpleAudioSample : NSObject
 {
 	// No objects to keep track of...
 }
@@ -246,8 +247,9 @@
 @end
 
 
-// SomeClass.m
-#import "SomeClass.h"
+// OALSimpleAudioSample.m
+
+#import "OALSimpleAudioSample.h"
 #import "ObjectAL.h"
 
 #define SHOOT_SOUND @"shoot.caf"
@@ -256,7 +258,7 @@
 #define INGAME_MUSIC_FILE @"bg_music.mp3"
 #define GAMEOVER_MUSIC_FILE @"gameover_music.mp3"
 
-@implementation SomeClass
+@implementation OALSimpleAudioSample
 
 - (id) init
 {
@@ -275,14 +277,6 @@
 		[[OALSimpleAudio sharedInstance] preloadEffect:EXPLODE_SOUND];
 	}
 	return self;
-}
-
-- (void) dealloc
-{
-	// You might call stopEverything here depending on your needs
-	//[[OALSimpleAudio sharedInstance] stopEverything];	
-	
-	[super dealloc];
 }
 
 - (void) onGameStart
@@ -327,7 +321,7 @@
 	
 	// Unload all sound effects and bg music so that it doesn't fill
 	// memory unnecessarily.
-	[[OALSimpleAudio sharedInstance] unloadAll];
+	[[OALSimpleAudio sharedInstance] unloadAllEffects];
 }
 
 @end
@@ -335,29 +329,36 @@
  
  
  <br> <br>
- \section use_objectal_sec Using ObjectAL and AudioTrack
+ \section use_objectal_sec Using the OpenAL Objects and OALAudioTrack
  
- ObjectAL and AudioTrack offer you much more power, but at the cost of complexity.
- Here's the same thing as above, done using ObjectAL and AudioTrack directly:
+ The OpenAL objects and OALAudioTrack offer you much more power at the cost
+ of complexity.
+ Here's the same thing as above, done using ObjectAL and OALAudioTrack directly:
  
  \code
-// SomeClass.h
+// OpenALAudioTrackSample.h
+
 #import "ObjectAL.h"
 
-@interface SomeClass : NSObject
+@interface OpenALAudioTrackSample : NSObject
 {
+	// Sound Effects
 	ALDevice* device;
 	ALContext* context;
-	ChannelSource* channel;
+	ALChannelSource* channel;
 	ALBuffer* shootBuffer;	
-	ALBuffer* explosionBuffer;	
+	ALBuffer* explosionBuffer;
+	
+	// Background Music
+	OALAudioTrack* musicTrack;
 }
 
 @end
 
 
-// SomeClass.m
-#import "SomeClass.h"
+// OpenALAudioTrackSample.m
+
+#import "OpenALAudioTrackSample.h"
 
 #define SHOOT_SOUND @"shoot.caf"
 #define EXPLODE_SOUND @"explode.caf"
@@ -365,7 +366,7 @@
 #define INGAME_MUSIC_FILE @"bg_music.mp3"
 #define GAMEOVER_MUSIC_FILE @"gameover_music.mp3"
 
-@implementation SomeClass
+@implementation OpenALAudioTrackSample
 
 - (id) init
 {
@@ -374,7 +375,7 @@
 		// Create the device and context.
 		device = [[ALDevice deviceWithDeviceSpecifier:nil] retain];
 		context = [[ALContext contextOnDevice:device attributes:nil] retain];
-		[ObjectAL sharedInstance].currentContext = context;
+		[OpenALManager sharedInstance].currentContext = context;
 		
 		// Deal with interruptions for me!
 		[OALAudioSupport sharedInstance].handleInterruptions = YES;
@@ -388,19 +389,24 @@
 		
 		// Take all 32 sources for this channel.
 		// (we probably won't use that many but what the heck!)
-		channel = [[ChannelSource channelWithSources:32] retain];
+		channel = [[ALChannelSource channelWithSources:32] retain];
 		
 		// Preload the buffers so we don't have to load and play them later.
 		shootBuffer = [[[OALAudioSupport sharedInstance]
 						bufferFromFile:SHOOT_SOUND] retain];
 		explosionBuffer = [[[OALAudioSupport sharedInstance]
 							bufferFromFile:EXPLODE_SOUND] retain];
+		
+		// Background music track.
+		musicTrack = [[OALAudioTrack track] retain];
 	}
 	return self;
 }
 
 - (void) dealloc
 {
+	[musicTrack release];
+	
 	[channel release];
 	[shootBuffer release];
 	[explosionBuffer release];
@@ -409,10 +415,10 @@
 	// your program, so in a real program you'd be better off making a
 	// singleton object that manages the device and context, rather than
 	// allocating/deallocating it here.
+	// Most of the demos just let OALSimpleAudio manage the device and context
+	// for them.
 	[context release];
 	[device release];
-	
-	[[BackgroundAudio sharedInstance] stop];
 	
 	[super dealloc];
 }
@@ -420,28 +426,28 @@
 - (void) onGameStart
 {
 	// Play the BG music and loop it forever.
-	[[BackgroundAudio sharedInstance] playFile:INGAME_MUSIC_FILE loops:-1];
+	[musicTrack playFile:INGAME_MUSIC_FILE loops:-1];
 }
 
 - (void) onGamePause
 {
-	[BackgroundAudio sharedInstance].paused = YES;
+	musicTrack.paused = YES;
 	channel.paused = YES;
 }
 
 - (void) onGameResume
 {
 	channel.paused = NO;
-	[BackgroundAudio sharedInstance].paused = NO;
+	musicTrack.paused = NO;
 }
 
 - (void) onGameOver
 {
 	[channel stop];
-	[[BackgroundAudio sharedInstance] stop];
+	[musicTrack stop];
 	
 	// We only play the game over music through once.
-	[[BackgroundAudio sharedInstance] playFile:GAMEOVER_MUSIC_FILE];
+	[musicTrack playFile:GAMEOVER_MUSIC_FILE];
 }
 
 - (void) onShipShotABullet
@@ -458,10 +464,7 @@
 {
 	// Stop all music and sound effects.
 	[channel stop];
-	[[BackgroundAudio sharedInstance] stop];
- 
-	// Unload bg music.
-	[[BackgroundAudio] clear];
+	[musicTrack stop];
 }
 
 @end
@@ -484,6 +487,7 @@
  - <strong>ChannelsDemo</strong>: Demonstrates using audio channels.
  - <strong>FadeDemo</strong>: Demonstrates realtime fading with AudioTrack and ALSource.
  - <strong>AudioTrackDemo</strong>: Demonstrates using multiple AudioTrack objects.
+ - <strong>HardwareDemo</strong>: Demonstrates hardware monitoring features.
  - <strong>PlanetKillerDemo</strong>: Demonstrates using OALSimpleAudio in a game setting.
  
  
@@ -539,8 +543,8 @@
  <br>
  \subsection simulator_no_sound No OpenAL Sound in Simulator
 
- Note: As of XCode 3.2.3, this problem doesn't seem to be surfacing anymore.  The workaround
- code is now disabled by default.  You can re-enable it by setting
+ <strong>Note:</strong> As of XCode 3.2.3, this problem doesn't seem to be surfacing anymore.
+ The workaround code is now disabled by default.  You can re-enable it by setting
  OBJECTAL_CFG_SIMULATOR_BUG_WORKAROUND to 1 in ObjectALConfig.h.
 
  There's a bug in the simulator that causes OpenAL-based sounds to stop playing in certain cases
@@ -551,8 +555,8 @@
  <br>
  \subsection simulator_freezing Simulator Freezups
  
- Note: As of XCode 3.2.3, this problem doesn't seem to be surfacing anymore.  The workaround
- code is now disabled by default.  You can re-enable it by setting
+ <strong>Note:</strong> As of XCode 3.2.3, this problem doesn't seem to be surfacing anymore.
+ The workaround code is now disabled by default.  You can re-enable it by setting
  OBJECTAL_CFG_SIMULATOR_BUG_WORKAROUND to 1 in ObjectALConfig.h.
  
  There's a particularly nasty bug in the simulator's OpenAL and AVAudioPlayer implementation that

@@ -36,19 +36,25 @@
 #pragma mark OALSimpleAudio
 
 /**
- * A simpler interface to the iOS sound system.
+ * A simpler interface to the ObjectAL sound library.  This singleton can be
+ * used alone for simpler audio needs, or in conjunction with user-created
+ * audio objects for more advanced needs (as is done in many of the demos).
  *
- * For sound effects, it initializes OpenAL with the default device,
- * a context, and a channel source consisting of 32 interruptible sources.
+ * For sound effects, it initializes OpenAL with the default ALDevice,
+ * an ALContext, and an ALChannelSource consisting of all 32 interruptible
+ * ALSource objects (the maximum currently allowed for iOS).
+ * If you want to create your own sources as well, initialize this object using
+ * [OALSimpleAudio sharedInstanceWithSources:], specifying less than 32 sources.
  *
- * For background audio, it creates a single OALAudioTrack (you can create more
- * on your own if you want).
+ * For background audio, it creates a single OALAudioTrack, which will not reserve
+ * resources unless used. (you can create more OALAudioTrack objects for your own
+ * use if you want).
  *
- * It also provides access to the more common configuration options available in
- * OALAudioSupport.
+ * This singleton also provides access to the more common configuration options
+ * available in OALAudioSupport.
  *
- * All commands are delegated either to the channel (for sound effects),
- * or to the audio track (for BG music).
+ * All commands are delegated either to the ALChannelSource (for sound effects),
+ * or to the OALAudioTrack (for BG music).
  */
 @interface OALSimpleAudio : NSObject
 {
@@ -274,14 +280,26 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALSimpleAudio);
  */
 - (ALBuffer*) preloadEffect:(NSString*) filePath;
 
+#if NS_BLOCKS_AVAILABLE
 /** Asynchronous preload and cache multiple sound effects for later playback.
  *
  * @param filePaths An NSArray of NSStrings with the paths containing the sound data.
+ * @param progressBlock Executed regularly while file loading is in progress.
+ * @param completionBlock Executed when all loading is complete.
  */
-#if NS_BLOCKS_AVAILABLE
-- (void) preloadEffects:(NSArray*) filePaths progressBlock:(void (^)(uint progress, uint successCount, uint total)) progressBlock completionBlock:(void (^)(uint successCount, uint total)) completionBlock;
+- (void) preloadEffects:(NSArray*) filePaths
+		  progressBlock:(void (^)(uint progress, uint successCount, uint total)) progressBlock
+		completionBlock:(void (^)(uint successCount, uint total)) completionBlock;
 #else
-- (void) preloadEffects:(NSArray*) filePaths progressInvocation:(NSInvocation *) progressInvocation completionInvocation:(NSInvocation *) completionInvocation;
+/** Asynchronous preload and cache multiple sound effects for later playback.
+ *
+ * @param filePaths An NSArray of NSStrings with the paths containing the sound data.
+ * @param progressInvocation Invoked regularly while file loading is in progress.
+ * @param completionInvocation Invoked when all loading is complete.
+ */
+- (void) preloadEffects:(NSArray*) filePaths
+	 progressInvocation:(NSInvocation *) progressInvocation
+   completionInvocation:(NSInvocation *) completionInvocation;
 #endif
 
 /** Unload a preloaded effect.

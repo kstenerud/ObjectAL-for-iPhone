@@ -38,7 +38,7 @@
 /**
  * (INTERNAL USE) NSOperation for running an audio operation asynchronously.
  */
-@interface AsyncAudioTrackOperation: NSOperation
+@interface OAL_AsyncAudioTrackOperation: NSOperation
 {
 	/** The audio track object to perform the operation on */
 	OALAudioTrack* audioTrack;
@@ -72,7 +72,7 @@
 
 @end
 
-@implementation AsyncAudioTrackOperation
+@implementation OAL_AsyncAudioTrackOperation
 
 + (id) operationWithTrack:(OALAudioTrack*) track url:(NSURL*) url seekTime:(NSTimeInterval)seekTime target:(id) target selector:(SEL) selector
 {
@@ -106,7 +106,7 @@
 /**
  * (INTERNAL USE) NSOperation for playing an audio file asynchronously.
  */
-@interface AsyncAudioTrackPlayOperation : AsyncAudioTrackOperation
+@interface OAL_AsyncAudioTrackPlayOperation : OAL_AsyncAudioTrackOperation
 {
 	/** The number of times to loop during playback */
 	NSInteger loops;
@@ -139,7 +139,7 @@
 @end
 
 
-@implementation AsyncAudioTrackPlayOperation
+@implementation OAL_AsyncAudioTrackPlayOperation
 
 + (id) operationWithTrack:(OALAudioTrack*) track url:(NSURL*) url loops:(NSInteger) loops target:(id) target selector:(SEL) selector
 {
@@ -172,14 +172,14 @@
 /**
  * (INTERNAL USE) NSOperation for preloading an audio file asynchronously.
  */
-@interface AsyncAudioTrackPreloadOperation : AsyncAudioTrackOperation
+@interface OAL_AsyncAudioTrackPreloadOperation : OAL_AsyncAudioTrackOperation
 {
 }
 
 @end
 
 
-@implementation AsyncAudioTrackPreloadOperation
+@implementation OAL_AsyncAudioTrackPreloadOperation
 
 - (void)main
 {
@@ -473,7 +473,7 @@
 {
 	if(nil == url)
 	{
-		LOG_ERROR(@"Cannot open NULL file / url");
+		OAL_LOG_ERROR(@"Cannot open NULL file / url");
 		return NO;
 	}
 	
@@ -481,7 +481,7 @@
 	{
 		if(suspended)
 		{
-			LOG_ERROR(@"Could not load URL %@: Audio is still suspended", url);
+			OAL_LOG_ERROR(@"Could not load URL %@: Audio is still suspended", url);
 			return NO;
 		}
 		
@@ -508,7 +508,7 @@
 			player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
 			if(nil != error)
 			{
-				LOG_ERROR(@"Could not load URL %@: %@", url, [error localizedDescription]);
+				OAL_LOG_ERROR(@"Could not load URL %@: %@", url, [error localizedDescription]);
 				return NO;
 			}
 			
@@ -531,7 +531,7 @@
 		paused = NO;
 		BOOL allOK = [player prepareToPlay];
 		if(!allOK){
-			LOG_ERROR(@"Failed to prepareToPlay: %@", url);
+			OAL_LOG_ERROR(@"Failed to prepareToPlay: %@", url);
 		}else{
 			[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:OALAudioTrackSourceChangedNotification object:self] waitUntilDone:NO];
 		}
@@ -558,7 +558,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		[operationQueue addOperation:[AsyncAudioTrackPreloadOperation operationWithTrack:self url:url seekTime:seekTime target:target selector:selector]];
+		[operationQueue addOperation:[OAL_AsyncAudioTrackPreloadOperation operationWithTrack:self url:url seekTime:seekTime target:target selector:selector]];
 		return NO;
 	}
 }
@@ -608,7 +608,7 @@
 
 - (void) playUrlAsync:(NSURL*) url loops:(NSInteger) loops target:(id) target selector:(SEL) selector
 {
-	[operationQueue addOperation:[AsyncAudioTrackPlayOperation operationWithTrack:self url:url loops:loops target:target selector:selector]];
+	[operationQueue addOperation:[OAL_AsyncAudioTrackPlayOperation operationWithTrack:self url:url loops:loops target:target selector:selector]];
 }
 
 - (void) playFileAsync:(NSString*) path target:(id) target selector:(SEL) selector
@@ -627,7 +627,7 @@
 	{
 		if(suspended)
 		{
-			LOG_ERROR(@"Could not play: Audio is still suspended");
+			OAL_LOG_ERROR(@"Could not play: Audio is still suspended");
 			return NO;
 		}
 		
@@ -650,7 +650,7 @@
 	{
 		if(suspended)
 		{
-			LOG_ERROR(@"Could not play: Audio is still suspended");
+			OAL_LOG_ERROR(@"Could not play: Audio is still suspended");
 			return NO;
 		}
 		
@@ -707,7 +707,7 @@
 	{
 		[self stopFade];
 		gainAction = [[OALSequentialActions actions:
-					   [OALGainAction actionWithDuration:duration endValue:value function:[OALGainAction defaultFunction]],
+					   [OALGainAction actionWithDuration:duration endValue:value],
 					   [OALCallAction actionWithCallTarget:target selector:selector withObject:self],
 					   nil] retain];
 		[gainAction runWithTarget:self];
@@ -737,7 +737,7 @@
 		{
 			[self stopPan];
 			panAction = [[OALSequentialActions actions:
-						  [OALPanAction actionWithDuration:duration endValue:value function:[OALPanAction defaultFunction]],
+						  [OALPanAction actionWithDuration:duration endValue:value],
 						  [OALCallAction actionWithCallTarget:target selector:selector withObject:self],
 						  nil] retain];
 			[panAction runWithTarget:self];

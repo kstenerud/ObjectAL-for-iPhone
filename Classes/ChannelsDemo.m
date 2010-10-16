@@ -58,46 +58,52 @@
 	CGSize size = [[CCDirector sharedDirector] winSize];
 	CGPoint center = ccp(size.width/2, size.height/2);
 	
-	CCSprite* track;
 	CCLabel* label;
+
+	label = [CCLabel labelWithString:@"Tap a channel repeatedly" fontName:@"Helvetica" fontSize:20];
+	label.position = ccp(size.width/2, size.height-30);
+	label.color = ccBLACK;
+	label.visible = YES;
+	[self addChild:label];
+	
+	
+	CCSprite* track;
 	Slider* slider;
 	
 	
 	// BG Volume slider
-	track = [CCSprite spriteWithFile:@"SliderTrackVertical.png"];
-	track.scaleY = 75 / track.contentSize.height;
-	slider = [VerticalSlider sliderWithTrack:track
-										knob:[CCSprite spriteWithFile:@"SliderKnobVertical.png"]
+	track = [CCSprite spriteWithFile:@"SliderTrackHorizontal.png"];
+	track.scaleX = 100 / track.contentSize.width;
+	slider = [HorizontalSlider sliderWithTrack:track
+										knob:[CCSprite spriteWithFile:@"SliderKnobHorizontal.png"]
 									  target:self moveSelector:@selector(onBgVolume:) dropSelector:@selector(onBgVolume:)];
 	slider.scale = 2.0;
-	slider.anchorPoint = ccp(0, 1);
-	slider.position = ccp(20,size.height - 4);
+	slider.anchorPoint = ccp(0, 0);
+	slider.position = ccp(20, 160);
 	[self addChild:slider];
 	slider.value = 1.0;
 	label = [CCLabel labelWithString:@"BG Volume" fontName:@"Helvetica" fontSize:24];
-	label.anchorPoint = ccp(0, 1);
+	label.anchorPoint = ccp(0, 0);
 	label.color = ccBLACK;
-	label.position = ccp(slider.position.x + slider.contentSize.width/2 * slider.scaleX + 20,
-						 slider.position.y);
+	label.position = ccp(slider.position.x, slider.position.y + slider.contentSize.height*slider.scaleY + 4);
 	[self addChild:label];
 	
 	
 	// Effects Volume slider
-	track = [CCSprite spriteWithFile:@"SliderTrackVertical.png"];
-	track.scaleY = 75 / track.contentSize.height;
-	slider = [VerticalSlider sliderWithTrack:track
-										knob:[CCSprite spriteWithFile:@"SliderKnobVertical.png"]
+	track = [CCSprite spriteWithFile:@"SliderTrackHorizontal.png"];
+	track.scaleX = 100 / track.contentSize.width;
+	slider = [HorizontalSlider sliderWithTrack:track
+										knob:[CCSprite spriteWithFile:@"SliderKnobHorizontal.png"]
 									  target:self moveSelector:@selector(onEffectsVolume:) dropSelector:@selector(onEffectsVolume:)];
 	slider.scale = 2.0;
-	slider.anchorPoint = ccp(0, 1);
-	slider.position = ccp(20,size.height - 166);
+	slider.anchorPoint = ccp(0, 0);
+	slider.position = ccp(20, 44);
 	[self addChild:slider];
 	slider.value = 1.0;
 	label = [CCLabel labelWithString:@"FX Volume" fontName:@"Helvetica" fontSize:24];
-	label.anchorPoint = ccp(0, 1);
+	label.anchorPoint = ccp(0, 0);
 	label.color = ccBLACK;
-	label.position = ccp(slider.position.x + slider.contentSize.width/2 * slider.scaleX + 20,
-						 slider.position.y);
+	label.position = ccp(slider.position.x, slider.position.y + slider.contentSize.height*slider.scaleY + 4);
 	[self addChild:label];
 	
 	

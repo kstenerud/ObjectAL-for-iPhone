@@ -31,12 +31,12 @@
 		maxHeight = label.contentSize.height;
 	}
 	
-	float halfHeight = maxHeight * 0.5;
+	float halfHeight = maxHeight * 0.5f;
 	
-	sprite.anchorPoint = ccp(0.5, 0.5);
-	sprite.position = ccp(sprite.contentSize.width*0.5, halfHeight);
-	label.anchorPoint = ccp(0.5, 0.5);
-	label.position = ccp(sprite.position.x + sprite.contentSize.width*0.5 + label.contentSize.width*0.5, halfHeight);
+	sprite.anchorPoint = ccp(0.5f, 0.5f);
+	sprite.position = ccp(sprite.contentSize.width*0.5f, halfHeight);
+	label.anchorPoint = ccp(0.5f, 0.5f);
+	label.position = ccp(sprite.position.x + sprite.contentSize.width*0.5f + label.contentSize.width*0.5f, halfHeight);
 	
 	CCNode* node = [CCNode node];
 	[node addChild:sprite];
