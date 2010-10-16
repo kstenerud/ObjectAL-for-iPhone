@@ -419,7 +419,10 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		return player.currentTime;
+		if(player)
+			return player.currentTime;
+		else
+			return currentTime;
 	}
 }
 
