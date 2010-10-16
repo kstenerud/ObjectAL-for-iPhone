@@ -727,10 +727,10 @@ done:
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(handleInterruptions)
+		audioSessionWasActive = audioSessionActive;
+		
+		if(handleInterruptions && audioSessionWasActive)
 		{
-			audioSessionWasActive = audioSessionActive;
-			
 			self.audioSessionActive = NO;
 		}
 		
@@ -744,12 +744,9 @@ done:
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(handleInterruptions)
+		if(handleInterruptions && audioSessionWasActive)
 		{
-			if(audioSessionWasActive)
-			{
-				self.audioSessionActive = YES;
-			}
+			self.audioSessionActive = YES;
 		}
 		
 		if(audioSessionDelegate){
