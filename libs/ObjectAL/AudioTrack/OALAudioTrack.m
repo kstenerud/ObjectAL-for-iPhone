@@ -44,6 +44,8 @@
 	OALAudioTrack* audioTrack;
 	/** The URL of the sound file to play */
 	NSURL* url;
+	/** The seekTime of the sound file */
+	NSTimeInterval seekTime;
 	/** The target to inform when the operation completes */
 	id target;
 	/** The selector to call when the operation completes */
@@ -57,7 +59,7 @@
  * @param target the target to inform when the operation completes.
  * @param selector the selector to call when the operation completes.
  */ 
-+ (id) operationWithTrack:(OALAudioTrack*) track url:(NSURL*) url target:(id) target selector:(SEL) selector;
++ (id) operationWithTrack:(OALAudioTrack*) track url:(NSURL*) url seekTime:(NSTimeInterval)seekTime target:(id) target selector:(SEL) selector;
 
 /** (INTERNAL USE) Initialize an Asynchronous Operation.
  *
@@ -66,23 +68,24 @@
  * @param target the target to inform when the operation completes.
  * @param selector the selector to call when the operation completes.
  */ 
-- (id) initWithTrack:(OALAudioTrack*) track url:(NSURL*) url target:(id) target selector:(SEL) selector;
+- (id) initWithTrack:(OALAudioTrack*) track url:(NSURL*) url seekTime:(NSTimeInterval)seekTime target:(id) target selector:(SEL) selector;
 
 @end
 
 @implementation AsyncAudioTrackOperation
 
-+ (id) operationWithTrack:(OALAudioTrack*) track url:(NSURL*) url target:(id) target selector:(SEL) selector
++ (id) operationWithTrack:(OALAudioTrack*) track url:(NSURL*) url seekTime:(NSTimeInterval)seekTime target:(id) target selector:(SEL) selector
 {
-	return [[[self alloc] initWithTrack:track url:url target:target selector:selector] autorelease];
+	return [[[self alloc] initWithTrack:track url:url seekTime:seekTime target:target selector:selector] autorelease];
 }
 
-- (id) initWithTrack:(OALAudioTrack*) track url:(NSURL*) urlIn target:(id) targetIn selector:(SEL) selectorIn
+- (id) initWithTrack:(OALAudioTrack*) track url:(NSURL*) urlIn seekTime:(NSTimeInterval)seekTimeIn target:(id) targetIn selector:(SEL) selectorIn
 {
 	if(nil != (self = [super init]))
 	{
 		audioTrack = [track retain];
 		url = [urlIn retain];
+		seekTime = seekTimeIn;
 		target = targetIn;
 		selector = selectorIn;
 	}
@@ -145,7 +148,7 @@
 
 - (id) initWithTrack:(OALAudioTrack*) track url:(NSURL*) urlIn loops:(NSInteger) loopsIn target:(id) targetIn selector:(SEL) selectorIn
 {
-	if(nil != (self = [super initWithTrack:track url:urlIn target:targetIn selector:selectorIn]))
+	if(nil != (self = [super initWithTrack:track url:urlIn seekTime:0 target:targetIn selector:selectorIn]))
 	{
 		loops = loopsIn;
 	}
@@ -180,7 +183,7 @@
 
 - (void)main
 {
-	[audioTrack preloadUrl:url];
+	[audioTrack preloadUrl:url seekTime:seekTime];
 	[target performSelectorOnMainThread:selector withObject:audioTrack waitUntilDone:NO];
 }
 
@@ -425,6 +428,8 @@
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		currentTime = value;
+		if(player)
+			player.currentTime = currentTime;
 	}
 }
 
@@ -461,6 +466,11 @@
 
 - (bool) preloadUrl:(NSURL*) url
 {
+	return [self preloadUrl:url seekTime:0];
+}
+
+- (bool) preloadUrl:(NSURL*) url seekTime:(NSTimeInterval)seekTime
+{
 	if(nil == url)
 	{
 		LOG_ERROR(@"Cannot open NULL file / url");
@@ -488,7 +498,6 @@
 		//{
 			SIMULATOR_BUG_WORKAROUND_PREPARE_PLAYBACK();
 		if(playing || paused){
-			self.currentTime = 0;
 			[player stop];
 		}
 			[player release];
@@ -517,7 +526,7 @@
 			currentlyLoadedUrl = [url retain];
 		//}
 		
-		player.currentTime = currentTime;
+		self.currentTime	= seekTime;
 		playing = NO;
 		paused = NO;
 		BOOL allOK = [player prepareToPlay];
@@ -532,21 +541,36 @@
 
 - (bool) preloadFile:(NSString*) path
 {
-	return [self preloadUrl:[OALAudioSupport urlForPath:path]];
+	return [self preloadFile:path seekTime:0];
+}
+
+- (bool) preloadFile:(NSString*) path seekTime:(NSTimeInterval)seekTime
+{
+	return [self preloadUrl:[OALAudioSupport urlForPath:path] seekTime:seekTime];
 }
 
 - (bool) preloadUrlAsync:(NSURL*) url target:(id) target selector:(SEL) selector
 {
+	return [self preloadUrlAsync:url seekTime:0 target:target selector:selector];
+}
+
+- (bool) preloadUrlAsync:(NSURL*) url seekTime:(NSTimeInterval)seekTime target:(id) target selector:(SEL) selector
+{
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		[operationQueue addOperation:[AsyncAudioTrackPreloadOperation operationWithTrack:self url:url target:target selector:selector]];
+		[operationQueue addOperation:[AsyncAudioTrackPreloadOperation operationWithTrack:self url:url seekTime:seekTime target:target selector:selector]];
 		return NO;
 	}
 }
 
 - (bool) preloadFileAsync:(NSString*) path target:(id) target selector:(SEL) selector
 {
-	return [self preloadUrlAsync:[OALAudioSupport urlForPath:path] target:target selector:selector];
+	return [self preloadFileAsync:path seekTime:0 target:target selector:selector];
+}
+
+- (bool) preloadFileAsync:(NSString*) path seekTime:(NSTimeInterval)seekTime target:(id) target selector:(SEL) selector
+{
+	return [self preloadUrlAsync:[OALAudioSupport urlForPath:path] seekTime:seekTime target:target selector:selector];
 }
 
 - (bool) playUrl:(NSURL*) url
@@ -820,18 +844,16 @@
 			suspended = value;
 			if(suspended)
 			{
-				BOOL wasPlaying = playing;
 				currentTime = player.currentTime;
-				[player stop];
-				
-				if(wasPlaying)
-					[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:OALAudioTrackStoppedPlayingNotification object:self] waitUntilDone:NO];
+				[self stop];
 			}
-			else if(playing && !paused)
+			else
 			{
-				player.currentTime = currentTime;
-				playing = NO;
-				paused = NO;
+				if(playing && !paused){
+	//				player.currentTime = currentTime;
+	//				playing = NO;
+	//				paused = NO;
+				}
 			}
 		}
 	}
@@ -843,7 +865,6 @@
 #if TARGET_OS_IPHONE
 - (void) audioPlayerBeginInterruption:(AVAudioPlayer*) playerIn
 {
-	currentTime = self.currentTime;
 	if([delegate respondsToSelector:@selector(audioPlayerBeginInterruption:)])
 	{
 		[delegate audioPlayerBeginInterruption:playerIn];
@@ -883,7 +904,6 @@
 	{
 		playing = NO;
 		paused = NO;
-		self.currentTime = 0;
 		SIMULATOR_BUG_WORKAROUND_END_PLAYBACK();
 	}
 	if([delegate respondsToSelector:@selector(audioPlayerDidFinishPlaying:successfully:)])

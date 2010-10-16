@@ -164,6 +164,7 @@
  * @return TRUE if the operation was successful.
  */
 - (bool) preloadUrl:(NSURL*) url;
+- (bool) preloadUrl:(NSURL*) url seekTime:(NSTimeInterval)seekTime;
 
 /** Preload the contents of a file for playback.
  * Once the audio data is preloaded, you can call "play" to play it. <br>
@@ -172,6 +173,7 @@
  * @return TRUE if the operation was successful.
  */
 - (bool) preloadFile:(NSString*) path;
+- (bool) preloadFile:(NSString*) path seekTime:(NSTimeInterval)seekTime;
 
 /** Asynchronously preload the contents of a URL for playback.
  * Once the audio data is preloaded, you can call "play" to play it. <br>
@@ -182,6 +184,7 @@
  * @return TRUE if the operation was successfully queued.
  */
 - (bool) preloadUrlAsync:(NSURL*) url target:(id) target selector:(SEL) selector;
+- (bool) preloadUrlAsync:(NSURL*) url seekTime:(NSTimeInterval)seekTime target:(id) target selector:(SEL) selector;
 
 /** Asynchronously preload the contents of a file for playback.
  * Once the audio data is preloaded, you can call "play" to play it. <br>
@@ -192,6 +195,7 @@
  * @return TRUE if the operation was successfully queued.
  */
 - (bool) preloadFileAsync:(NSString*) path target:(id) target selector:(SEL) selector;
+- (bool) preloadFileAsync:(NSString*) path seekTime:(NSTimeInterval)seekTime target:(id) target selector:(SEL) selector;
 
 /** Play the contents of a URL once.
  *

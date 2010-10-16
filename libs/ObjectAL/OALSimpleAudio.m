@@ -296,12 +296,17 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 
 - (bool) preloadBg:(NSString*) filePath
 {
+	return [self preloadBg:filePath seekTime:0];
+}
+
+- (bool) preloadBg:(NSString*) filePath seekTime:(NSTimeInterval)seekTime
+{
 	if(nil == filePath)
 	{
 		LOG_ERROR(@"filePath was NULL");
 		return NO;
 	}
-	BOOL result = [backgroundTrack preloadFile:filePath];
+	BOOL result = [backgroundTrack preloadFile:filePath seekTime:seekTime];
 	if(result){
 		backgroundTrack.numberOfLoops = 0;
 	}

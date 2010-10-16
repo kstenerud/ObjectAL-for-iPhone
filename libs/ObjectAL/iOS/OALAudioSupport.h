@@ -146,6 +146,9 @@
 /** If true, the audio session is active */
 @property(readwrite,assign) bool audioSessionActive;
 
+/** Marks the overall sound engine as being suspended. */
+@property(readonly) bool suspended;
+
 #pragma mark Object Management
 
 /** Singleton implementation providing "sharedInstance" and "purgeSharedInstance" methods.

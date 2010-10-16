@@ -194,6 +194,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALSimpleAudio);
  * @return TRUE if the operation was successful.
  */
 - (bool) preloadBg:(NSString*) path;
+- (bool) preloadBg:(NSString*) path seekTime:(NSTimeInterval)seekTime;
 
 /** Play whatever background music is preloaded.
  *
