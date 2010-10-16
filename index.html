@@ -34,13 +34,57 @@
 <P class="title">
 	<H1> ObjectAL for iPhone</H1>
 </P>
+<H3></H3>
 <P class="intro">
 A free, open source audio library which provides a simpler, Objective-C
 interface to OpenAL and AVAudioPlayer for iPhone developers.
 </P>
 
+<BR>
+<H2>History:</H2>
 
-<H2><SPAN style="color: #93914D;">2010-09-21</SPAN>&nbsp;&nbsp;ObjectAL 1.1 Released</H2>
+
+<H3><SPAN style="color: #93914D;">UPCOMING</SPAN>&nbsp;&nbsp;Coming in ObjectAL 2.0 (currently in master)</H3>
+<H4>Major changes (incompatible with earlier versions):</H4>
+<UL>
+	<LI><strong>BackgroundAudio</strong> has been replaced with <strong>OALAudioTrack</strong> and <strong>OALAudioTracks</strong>.</LI>
+	<LI><strong>ObjectAL</strong> has been renamed to <strong>OpenALManager</strong>.</LI>
+	<LI><strong>IphoneAudioSupport</strong> has been renamed to <strong>IOSAudioSupport</strong>.</LI>
+	<LI><strong>SimpleIphoneAudio</strong> has been renamed to <strong>OALSimpleAudio</strong>.</LI>
+	<LI><strong>SoundSource</strong> has been renamed to <strong>ALSoundSource</strong>.</LI>
+	<LI><strong>ChannelSource</strong> has been renamed to <strong>ALChannelSource</strong>.</LI>
+	<LI><strong>SoundSourcePool</strong> has been renamed to <strong>ALSoundSourcePool</strong>.</LI>
+</UL>
+
+<H4>New Classes:</H4>
+<UL>
+	<LI><strong>OALAudioTrack:</strong> Allows more than one background audio track to play at a time.</LI>
+	<LI><strong>OALAction:</strong> Allows actions to be performed on audio objects.
+             You can configure ObjectAL to make all actions subclasses of cocos2d actions in ObjectALConfig.h</LI>
+	<LI><strong>OALFunction:</strong> Allows you to modify how a duration based fade, pan, or pitch gets applied in an action.</LI>
+</UL>
+
+<H4>Other changes:</H4>
+<UL>
+	<LI>Changed the file layout.</LI>
+	<LI>SoundSource objects (such as ALSource) support duration based fade, pan, and pitch.</LI>
+	<LI><strong>OALAudioSupport</strong> has new properties "hardwareMuted" "hardwareVolume", "audioRoute", and "ipodDucking".</LI>
+	<LI><strong>OALSimpleAudio</strong> has methods to preload multiple sound files at a time.</LI>
+	<LI><strong>OALAudioTrack</strong> supports duration based fade and pan.</LI>
+	<LI><strong>OALAudioTrack</strong> has notifications for start/stop playback and for when the source changes.</LI>
+	<LI>Audio tracks support starting playback at an arbitrary point.</LI>
+	<LI>New demo: Audio Tracks.</LI>
+	<LI>New demo: Hardware Monitoring.</LI>
+	<LI>ObjectAL can now be compiled as Objective-C++ if you want.</LI>
+	<LI>Fixed crash issue when the first attempt to start the audio session fails.</LI>
+	<LI>Workaround for compiler bug when compiling for iOS4.1 with LLVM.</LI>
+	<LI>Fix for SynthesizeSingleton when using a nonstandard init method.</LI>
+	<LI>Compiles with stricter warnings.</LI>
+	<LI>Audio objects now have "volume" as an alias to "gain".</LI>
+</UL>
+
+
+<H3><SPAN style="color: #93914D;">2010-09-21</SPAN>&nbsp;&nbsp;ObjectAL 1.1 Released</H3>
 <UL>
 	<LI>Added realtime fading to ObjectAL and BackgroundAudio</LI>
 
@@ -65,7 +109,7 @@ interface to OpenAL and AVAudioPlayer for iPhone developers.
 	<LI>Various bug fixes</LI>
 </UL>
 
-<H2 class="following"><SPAN style="color: #93914D;">2010-06-12</SPAN>&nbsp;&nbsp;ObjectAL 1.0 Released</H2>
+<H3 class="following"><SPAN style="color: #93914D;">2010-06-12</SPAN>&nbsp;&nbsp;ObjectAL 1.0 Released</H3>
 <UL>
 	<LI>First GitHib release of ObjectAL.</LI>
 </UL>
