@@ -30,7 +30,8 @@
 #pragma mark Configuration
 
 
-#pragma mark OBJECTAL_CFG_SYNCHRONIZED_OPERATIONS
+#pragma mark -
+#pragma mark Synchronization
 
 #if OBJECTAL_CFG_SYNCHRONIZED_OPERATIONS
 
@@ -44,7 +45,7 @@
 
 
 #pragma mark -
-#pragma mark OBJECTAL_CFG_CLANG_LLVM_BUG_WORKAROUND
+#pragma mark LLVM Bug Workaround
 
 #if OBJECTAL_CFG_CLANG_LLVM_BUG_WORKAROUND && __clang__
 
@@ -60,61 +61,70 @@
 #pragma mark -
 #pragma mark Logging
 
+
+#pragma mark -
+#pragma mark General Logging
+
+
 #if OBJECTAL_CFG_LOG_ERRORS
 
-/** Write a warning log entry with the specified calling context.
+/** Base log call.  This is called by other logging macros.
  *
- * @param CONTEXT The calling context, typically __PRETTY_FUNCTION__ (C-string, not NSString!)
- * @param FMT Printf-style format describing the warning condition
+ * @param FMT_STRING The format string to use.  Must contain %s for the context and %@ for the message.
+ * @param CONTEXT The calling context, as a C string (typically __PRETTY_FUNCTION__).
+ * @param FMT Message with NSLog() style formatting.
  * @param ... Arguments
  */
-#define LOG_WARNING_CONTEXT(CONTEXT, FMT, ...) \
-{ \
-	NSString* error_log_strXX = [NSString stringWithFormat:(FMT), ##__VA_ARGS__]; \
-	NSLog(@"Warning: %s: %@", (CONTEXT), error_log_strXX); \
-}
-
-/** Write an error log entry with the specified calling context.
- *
- * @param CONTEXT The calling context, typically __PRETTY_FUNCTION__ (C-string, not NSString!)
- * @param FMT Printf-style format describing the error condition
- * @param ... Arguments
- */
-#define LOG_ERROR_CONTEXT(CONTEXT, FMT, ...) \
-{ \
-	NSString* error_log_strXX = [NSString stringWithFormat:(FMT), ##__VA_ARGS__]; \
-	NSLog(@"Error: %s: %@", (CONTEXT), error_log_strXX); \
-}
+#define OAL_LOG_BASE(FMT_STRING, CONTEXT, FMT, ...)	\
+	NSLog(FMT_STRING, (CONTEXT), [NSString stringWithFormat:(FMT), ##__VA_ARGS__]);
 
 #else /* OBJECTAL_CFG_LOG_ERRORS */
 
-#define LOG_WARNING_CONTEXT(CONTEXT, FMT, ...)
-#define LOG_ERROR_CONTEXT(CONTEXT, FMT, ...)
+#define OAL_LOG_BASE(FMT_STRING, CONTEXT, FMT, ...)
 
 #endif /* OBJECTAL_CFG_LOG_ERRORS */
 
 
-/** Write a warning log entry with __PRETTY_FUNCTION__ as the calling context.
+/** Write an "Info" log entry.
  *
- * @param FMT Printf-style format describing the warning condition
+ * @param FMT Message with NSLog() style formatting.
  * @param ... Arguments
  */
-#define LOG_WARNING(FMT, ...) LOG_WARNING_CONTEXT(__PRETTY_FUNCTION__, FMT, ##__VA_ARGS__)
+#define OAL_LOG_INFO(FMT, ...) OAL_LOG_BASE(@"Info: %s: %@", __PRETTY_FUNCTION__, FMT, ##__VA_ARGS__)
 
-/** Write an error log entry with __PRETTY_FUNCTION__ as the calling context.
+/** Write a "Warning" log entry.
  *
- * @param FMT Printf-style format describing the error condition
+ * @param FMT Message with NSLog() style formatting.
  * @param ... Arguments
  */
-#define LOG_ERROR(FMT, ...) LOG_ERROR_CONTEXT(__PRETTY_FUNCTION__, FMT, ##__VA_ARGS__)
+#define OAL_LOG_WARNING(FMT, ...) OAL_LOG_BASE(@"Warning: %s: %@", __PRETTY_FUNCTION__, FMT, ##__VA_ARGS__)
 
+/** Write an "Error" log entry.
+ *
+ * @param FMT Message with NSLog() style formatting.
+ * @param ... Arguments
+ */
+#define OAL_LOG_ERROR(FMT, ...) OAL_LOG_BASE(@"Error: %s: %@", __PRETTY_FUNCTION__, FMT, ##__VA_ARGS__)
+
+
+/** Write an "Error" log entry with context.
+ *
+ * @param CONTEXT The calling context, as a C string (typically __PRETTY_FUNCTION__).
+ * @param FMT Message with NSLog() style formatting.
+ * @param ... Arguments
+ */
+#define OAL_LOG_ERROR_CONTEXT(CONTEXT, FMT, ...) OAL_LOG_BASE(@"Error: %s: %@", CONTEXT, FMT, ##__VA_ARGS__)
+
+
+#pragma mark -
+#pragma mark Special Purpose Logging
 
 #if OBJECTAL_CFG_LOG_ERRORS
 
 /** Report on the specified AudioSession error code, logging an error if the code does not indicate success.
  *
  * @param ERROR_CODE The error code.
- * @param FMT Printf-style format describing the error condition
+ * @param FMT Message with NSLog() style formatting.
  * @param ... Arguments
  */
 #define REPORT_AUDIOSESSION_CALL(ERROR_CODE, FMT, ...) \
@@ -126,7 +136,7 @@ if(noErr != (ERROR_CODE)) \
 /** Report on the specified ExtAudio error code, logging an error if the code does not indicate success.
  *
  * @param ERROR_CODE The error code.
- * @param FMT Printf-style format describing the error condition
+ * @param FMT Message with NSLog() style formatting.
  * @param ... Arguments
  */
 #define REPORT_EXTAUDIO_CALL(ERROR_CODE, FMT, ...) \

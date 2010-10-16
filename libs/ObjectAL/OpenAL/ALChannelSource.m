@@ -498,7 +498,7 @@
 - (id<ALSoundSource>) play
 {
 	// Do nothing.
-	LOG_WARNING(@"\"play\" does nothing in ChannelSource.  Use \"play:(ALBuffer*) buffer loop:(bool) loop\" instead.");
+	OAL_LOG_WARNING(@"\"play\" does nothing in ChannelSource.  Use \"play:(ALBuffer*) buffer loop:(bool) loop\" instead.");
 	return nil;
 }
 

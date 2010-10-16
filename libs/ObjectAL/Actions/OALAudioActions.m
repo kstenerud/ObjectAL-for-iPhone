@@ -27,10 +27,10 @@
 #import "OALAudioActions.h"
 
 
-#pragma mark OALAction_GainProtocol
+#pragma mark OAL_GainProtocol
 
-/** Protocol to stop the compiler from complaining */
-@protocol OALAction_GainProtocol
+/** (INTERNAL USE) Protocol to keep the compiler happy. */
+@protocol OAL_GainProtocol
 
 /** The gain (volume), represented as a float from 0.0 to 1.0. */
 @property(readwrite) float gain;
@@ -60,9 +60,10 @@
 			 && [targetIn respondsToSelector:@selector(setGain:)],
 			 @"Target does not respond to selectors [gain] and [setGain:]");
 	
+	// NAN is a special marker value instructing us to use the current value from the target.
 	if(isnan(startValue))
 	{
-		startValue = [(id<OALAction_GainProtocol>)targetIn gain];
+		startValue = [(id<OAL_GainProtocol>)targetIn gain];
 	}
 	
 	[super prepareWithTarget:targetIn];
@@ -70,7 +71,7 @@
 
 - (void) updateCompletion:(float) proportionComplete
 {
-	[(id<OALAction_GainProtocol>)target setGain:lowValue
+	[(id<OAL_GainProtocol>)target setGain:lowValue
 	 + [realFunction valueForInput:proportionComplete] * delta];
 }
 
@@ -78,10 +79,10 @@
 
 
 #pragma mark -
-#pragma mark OALAction_PitchProtocol
+#pragma mark OAL_PitchProtocol
 
-/** Protocol to stop the compiler from complaining */
-@protocol OALAction_PitchProtocol
+/** (INTERNAL USE) Protocol to keep the compiler happy. */
+@protocol OAL_PitchProtocol
 
 /** The pitch, represented as a float with 1.0 representing normal pitch. */
 @property(readwrite) float pitch;
@@ -111,9 +112,10 @@
 			 && [targetIn respondsToSelector:@selector(setPitch:)],
 			 @"Target does not respond to selectors [pitch] and [setPitch:]");
 	
+	// NAN is a special marker value instructing us to use the current value from the target.
 	if(isnan(startValue))
 	{
-		startValue = [(id<OALAction_PitchProtocol>)targetIn pitch];
+		startValue = [(id<OAL_PitchProtocol>)targetIn pitch];
 	}
 	
 	[super prepareWithTarget:targetIn];
@@ -121,7 +123,7 @@
 
 - (void) updateCompletion:(float) proportionComplete
 {
-	[(id<OALAction_PitchProtocol>)target setPitch:startValue
+	[(id<OAL_PitchProtocol>)target setPitch:startValue
 	 + [realFunction valueForInput:proportionComplete] * delta];
 }
 
@@ -129,10 +131,10 @@
 
 
 #pragma mark -
-#pragma mark OALAction_PanProtocol
+#pragma mark OAL_PanProtocol
 
-/** Protocol to stop the compiler from complaining */
-@protocol OALAction_PanProtocol
+/** (INTERNAL USE) Protocol to keep the compiler happy. */
+@protocol OAL_PanProtocol
 
 /** The pan, represented as a float from -1.0 to 1.0. */
 @property(readwrite) float pan;
@@ -162,9 +164,10 @@
 			 && [targetIn respondsToSelector:@selector(setPan:)],
 			 @"Target does not respond to selectors [pan] and [setPan:]");
 	
+	// NAN is a special marker value instructing us to use the current value from the target.
 	if(isnan(startValue))
 	{
-		startValue = [(id<OALAction_PanProtocol>)targetIn pan];
+		startValue = [(id<OAL_PanProtocol>)targetIn pan];
 	}
 	
 	[super prepareWithTarget:targetIn];
@@ -172,7 +175,7 @@
 
 - (void) updateCompletion:(float) proportionComplete
 {
-	[(id<OALAction_PanProtocol>)target setPan:startValue
+	[(id<OAL_PanProtocol>)target setPan:startValue
 	 + [realFunction valueForInput:proportionComplete] * delta];
 }
 
@@ -180,10 +183,10 @@
 
 
 #pragma mark -
-#pragma mark OALAction_PositionProtocol
+#pragma mark OAL_PositionProtocol
 
-/** Protocol to stop the compiler from complaining */
-@protocol OALAction_PositionProtocol
+/** (INTERNAL USE) Protocol to keep the compiler happy. */
+@protocol OAL_PositionProtocol
 
 /** The position in 3D space. */
 @property(readwrite,assign) ALPoint position;
@@ -232,7 +235,7 @@
 - (void) updateCompletion:(float) proportionComplete
 {
 	[super updateCompletion:proportionComplete];
-	[(id<OALAction_PositionProtocol>)target setPosition:position];
+	[(id<OAL_PositionProtocol>)target setPosition:position];
 }
 
 @end
@@ -290,8 +293,12 @@
 			 @"Target does not respond to selector [setPosition:]");
 	
 	[super prepareWithTarget:targetIn];
-	startPoint = [(id<OALAction_PositionProtocol>)targetIn position];
+
+	startPoint = [(id<OAL_PositionProtocol>)targetIn position];
 	delta = ALPointMake(position.x-startPoint.x, position.y-startPoint.y, position.z - startPoint.z);
+
+	// If unitsPerSecond was set, we use that to calculate duration.  Otherwise just use the current
+	// value in duration.
 	if(unitsPerSecond > 0)
 	{
 		duration = sqrtf(delta.x * delta.x + delta.y * delta.y + delta.z * delta.z) / unitsPerSecond;
@@ -300,7 +307,7 @@
 
 - (void) updateCompletion:(float) proportionComplete
 {
-	[(id<OALAction_PositionProtocol>)target setPosition:
+	[(id<OAL_PositionProtocol>)target setPosition:
 	 ALPointMake(startPoint.x + delta.x*proportionComplete,
 				 startPoint.y + delta.y*proportionComplete,
 				 startPoint.z + delta.z*proportionComplete)];
@@ -342,6 +349,12 @@
 	{
 		delta = deltaIn;
 		unitsPerSecond = unitsPerSecondIn;
+		if(unitsPerSecond > 0)
+		{
+			// If unitsPerSecond was set, we use that to calculate duration.  Otherwise just use the current
+			// value in duration.
+			duration = sqrtf(delta.x * delta.x + delta.y * delta.y + delta.z * delta.z) / unitsPerSecond;
+		}
 	}
 	return self;
 }
@@ -361,16 +374,19 @@
 			 @"Target does not respond to selector [setPosition:]");
 	
 	[super prepareWithTarget:targetIn];
-	startPoint = [(id<OALAction_PositionProtocol>)targetIn position];
+
+	startPoint = [(id<OAL_PositionProtocol>)targetIn position];
 	if(unitsPerSecond > 0)
 	{
+		// If unitsPerSecond was set, we use that to calculate duration.  Otherwise just use the current
+		// value in duration.
 		duration = sqrtf(delta.x * delta.x + delta.y * delta.y + delta.z * delta.z) / unitsPerSecond;
 	}
 }
 
 - (void) updateCompletion:(float) proportionComplete
 {
-	[(id<OALAction_PositionProtocol>)target setPosition:
+	[(id<OAL_PositionProtocol>)target setPosition:
 	 ALPointMake(startPoint.x + delta.x*proportionComplete,
 				 startPoint.y + delta.y*proportionComplete,
 				 startPoint.z + delta.z*proportionComplete)];

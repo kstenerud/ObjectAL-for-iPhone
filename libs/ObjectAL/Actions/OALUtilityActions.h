@@ -105,10 +105,11 @@
 
 /** Create an action.
  *
- * @param action1 The comma separated list of actions.
+ * @param actions The comma separated list of actions.
+ * @param NS_REQUIRES_NIL_TERMINATION List of actions must be terminated by a nil.
  * @return A new set of sequential actions.
  */
-+ (id) actions:(OALAction*) action1, ... NS_REQUIRES_NIL_TERMINATION;
++ (id) actions:(OALAction*) actions, ... NS_REQUIRES_NIL_TERMINATION;
 
 /** Create an action.
  *
@@ -155,10 +156,11 @@
 
 /** Create an action.
  *
- * @param action1 The comma separated list of actions.
+ * @param actions The comma separated list of actions.
+ * @param NS_REQUIRES_NIL_TERMINATION List of actions must be terminated by a nil.
  * @return A new set of concurrent actions.
  */
-+ (id) actions:(OALAction*) action1, ... NS_REQUIRES_NIL_TERMINATION;
++ (id) actions:(OALAction*) actions, ... NS_REQUIRES_NIL_TERMINATION;
 
 /** Create an action.
  *

@@ -26,6 +26,14 @@
 		CGSize size = [[CCDirector sharedDirector] winSize];
 		CGPoint center = ccp(size.width/2, size.height/2);
 
+		CCLabel* label = [CCLabel labelWithString:@"Drag the ship around" fontName:@"Helvetica" fontSize:20];
+		label.position = ccp(size.width/2, size.height-30);
+		[self addChild:label];
+		
+		label = [CCLabel labelWithString:@"(Works best with headphones on)" fontName:@"Helvetica" fontSize:20];
+		label.position = ccp(size.width/2, size.height-60);
+		[self addChild:label];
+		
 		rocketShip = [CCSprite spriteWithFile:@"RocketShip.png"];
 		rocketShip.position = ccp(center.x, center.y - 50);
 		[self addChild:rocketShip z:20];

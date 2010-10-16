@@ -256,7 +256,7 @@ static volatile __CLASSNAME__* _##__CLASSNAME__##_sharedInstance = nil;	\
  *
  *	+ (void) initSharedInstanceWithValue:(int) value
  *	{
- *		CALL_LESSER_SINGLETON_INIT_METHOD(initWithValue:value);
+ *		CALL_LESSER_SINGLETON_INIT_METHOD(MyClass, initWithValue:value);
  *	}
  *
  *	...
@@ -271,12 +271,12 @@ static volatile __CLASSNAME__* _##__CLASSNAME__##_sharedInstance = nil;	\
  *
  *	+ (void) initSharedInstanceComplex
  *	{
- *		CALL_LESSER_SINGLETON_INIT_METHOD_PRE();
+ *		CALL_LESSER_SINGLETON_INIT_METHOD_PRE(MyClass);
  *
  *		int firstNumber = [self getFirstNumberSomehow];
  *		_sharedInstance = [[self alloc] initWithValues:firstNumber, 2, 3, 4, -1];
  *
- *		CALL_LESSER_SINGLETON_INIT_METHOD_POST();
+ *		CALL_LESSER_SINGLETON_INIT_METHOD_POST(MyClass);
  *	}
  */
 
@@ -289,7 +289,7 @@ static volatile __CLASSNAME__* _##__CLASSNAME__##_sharedInstance = nil;	\
 	return (__CLASSNAME__*) _##__CLASSNAME__##_sharedInstance;	\
 }	\
 	\
-+ (__CLASSNAME__*) sharedInstance	\
++ (__CLASSNAME__*) sharedInstanceSynch	\
 {	\
 	@synchronized(self)	\
 	{	\
@@ -298,7 +298,8 @@ static volatile __CLASSNAME__* _##__CLASSNAME__##_sharedInstance = nil;	\
 			_##__CLASSNAME__##_sharedInstance = [[self alloc] init];	\
 			if(_##__CLASSNAME__##_sharedInstance)	\
 			{	\
-				method_exchangeImplementations(class_getClassMethod(self, @selector(sharedInstance)), class_getClassMethod(self, @selector(sharedInstanceNoSynch)));	\
+				Method newSharedInstanceMethod = class_getClassMethod(self, @selector(sharedInstanceNoSynch));	\
+				method_setImplementation(class_getClassMethod(self, @selector(sharedInstance)), method_getImplementation(newSharedInstanceMethod));	\
 			}	\
 		}	\
 		else	\
@@ -309,40 +310,47 @@ static volatile __CLASSNAME__* _##__CLASSNAME__##_sharedInstance = nil;	\
 	return (__CLASSNAME__*) _##__CLASSNAME__##_sharedInstance;	\
 }	\
 	\
++ (__CLASSNAME__*) sharedInstance	\
+{	\
+	return [self sharedInstanceSynch]; \
+}	\
+	\
 + (void)purgeSharedInstance	\
 {	\
 	@synchronized(self)	\
 	{	\
-		method_exchangeImplementations(class_getClassMethod(self, @selector(sharedInstance)), class_getClassMethod(self, @selector(sharedInstanceNoSynch)));	\
+		Method newSharedInstanceMethod = class_getClassMethod(self, @selector(sharedInstanceSynch));	\
+		method_setImplementation(class_getClassMethod(self, @selector(sharedInstance)), method_getImplementation(newSharedInstanceMethod));	\
 		[_##__CLASSNAME__##_sharedInstance release];	\
 		_##__CLASSNAME__##_sharedInstance = nil;	\
 	}	\
 }
 
 
-#define CALL_LESSER_SINGLETON_INIT_METHOD_PRE() \
+#define CALL_LESSER_SINGLETON_INIT_METHOD_PRE(__CLASSNAME__) \
 	@synchronized(self)	\
 	{	\
 		if(nil == _##__CLASSNAME__##_sharedInstance)	\
 		{
 
 
-#define CALL_LESSER_SINGLETON_INIT_METHOD_POST() \
+#define CALL_LESSER_SINGLETON_INIT_METHOD_POST(__CLASSNAME__) \
 			if(_##__CLASSNAME__##_sharedInstance)	\
 			{	\
-				method_exchangeImplementations(class_getClassMethod(self, @selector(sharedInstance)), class_getClassMethod(self, @selector(sharedInstanceNoSynch)));	\
+				Method newSharedInstanceMethod = class_getClassMethod(self, @selector(sharedInstanceNoSynch));	\
+				method_setImplementation(class_getClassMethod(self, @selector(sharedInstance)), method_getImplementation(newSharedInstanceMethod));	\
 			}	\
 		}	\
 		else	\
 		{	\
-			NSAssert2(1==0, @"SynthesizeSingleton: %@ ERROR: _sharedInstance has already been initialized.", self);	\
+			NSAssert1(1==0, @"SynthesizeSingleton: %@ ERROR: _sharedInstance has already been initialized.", self);	\
 		}	\
 	}
 
 
-#define CALL_LESSER_SINGLETON_INIT_METHOD(__INIT_CALL__) \
-	CALL_LESSER_SINGLETON_INIT_METHOD_PRE(); \
+#define CALL_LESSER_SINGLETON_INIT_METHOD(__CLASSNAME__,__INIT_CALL__) \
+	CALL_LESSER_SINGLETON_INIT_METHOD_PRE(__CLASSNAME__); \
 	_##__CLASSNAME__##_sharedInstance = [[self alloc] __INIT_CALL__];	\
-	CALL_LESSER_SINGLETON_INIT_METHOD_POST()
+	CALL_LESSER_SINGLETON_INIT_METHOD_POST(__CLASSNAME__)
 
 #endif /* SYNTHESIZE_SINGLETON_FOR_CLASS */

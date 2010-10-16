@@ -88,35 +88,44 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALActionManager);
 		// Add new actions
 		for(OALAction* action in actionsToAdd)
 		{
+			// But only if they haven't been stopped already
 			if(action.running)
 			{
 				NSUInteger index = [targets indexOfObject:action.target];
 				if(NSNotFound == index)
 				{
+					// Since this target has no running actions yet, add the support
+					// structure to keep track of it.
 					index = [targets count];
 					[targets addObject:action.target];
 					[targetActions addObject:[NSMutableArray arrayWithCapacity:5]];
 				}
+
+				// Get the list of actions operating on this target and add the new action.
 				NSMutableArray* actions = [targetActions objectAtIndex:index];
 				[actions addObject:action];
 			}
 		}
+		// All actions have been added.  Clear the "add" list.
 		[actionsToAdd removeAllObjects];
 		
+
 		// Remove stopped actions
 		for(OALAction* action in actionsToRemove)
 		{
 			NSUInteger index = [targets indexOfObject:action.target];
 			if(NSNotFound != index)
 			{
+				// Remove the action.
 				NSMutableArray* actions = [targetActions objectAtIndex:index];
 				[actions removeObject:action];
 				if([actions count] == 0)
 				{
+					// If there are no more actions for this target, stop tracking it.
 					[targets removeObjectAtIndex:index];
 					[targetActions removeObjectAtIndex:index];
 					
-					// If there are no more actions running, stop the timer.
+					// If there are no more actions running, stop the master timer.
 					if([targets count] == 0)
 					{
 						[stepTimer invalidate];
@@ -159,7 +168,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALActionManager);
 	{
 		[actionsToAdd addObject:action];
 		
-		// Only start the timer if there are actions to perform.
+		// Start the timer if it hasn't been started yet and there are actions to perform.
 		if([targets count] == 0 && [actionsToAdd count] == 1)
 		{
 			stepTimer = [NSTimer scheduledTimerWithTimeInterval:kActionStepInterval

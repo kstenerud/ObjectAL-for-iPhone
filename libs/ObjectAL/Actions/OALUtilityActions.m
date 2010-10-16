@@ -45,6 +45,7 @@
 	{
 		forcedTarget = targetIn; // Weak reference
 		action = [actionIn retain];
+		duration = action.duration;
 	}
 	return self;
 }
@@ -65,8 +66,13 @@
 
 - (void) prepareWithTarget:(id) targetIn
 {
-	[super prepareWithTarget:forcedTarget];
+	// Have the action use the forced target.
 	[action prepareWithTarget:forcedTarget];
+	duration = action.duration;
+
+	// Since we may be running in the manager (if duration > 0), we
+	// must call [super prepareWithTarget:] using the passed in target.
+	[super prepareWithTarget:targetIn];
 }
 
 #if !OBJECTAL_USE_COCOS2D_ACTIONS
@@ -108,15 +114,12 @@
 {
 	NSMutableArray* actions = [NSMutableArray arrayWithCapacity:10];
 	va_list params;
+
 	va_start(params, firstAction);
-	OALAction* action = firstAction;
-	
-	while(nil != action)
+	for(OALAction* action = firstAction; nil != action; action = va_arg(params,OALAction*))
 	{
 		[actions addObject:action];
-		action = va_arg(params,OALAction*);
 	}
-	
 	va_end(params);
 	
 	return [[[self alloc] initWithActions:actions] autorelease];
@@ -133,10 +136,12 @@
 	{
 		if([actionsIn isKindOfClass:[NSMutableArray class]])
 		{
+			// Take ownership if it's a mutable array.
 			actions = [actionsIn retain];
 		}
 		else
 		{
+			// Otherwise copy it into a mutable array.
 			actions = [[NSMutableArray arrayWithArray:actionsIn] retain];
 		}
 		
@@ -174,6 +179,7 @@
 	[pDurations removeAllObjects];
 	if(0 == duration)
 	{
+		// Easy case: 0 duration.
 		for(OALAction* action in actions)
 		{
 			[pDurations addObject:[NSNumber numberWithFloat:0]];
@@ -181,6 +187,7 @@
 	}
 	else
 	{
+		// Complex case: > 0 duration.
 		for(OALAction* action in actions)
 		{
 			[pDurations addObject:[NSNumber numberWithFloat:action.duration/duration]];
@@ -222,19 +229,30 @@
 - (void) updateCompletion:(float) pComplete
 {
 	float pDelta = pComplete - pLastComplete;
+	
+	// First, run past all actions that have been completed since the last update.
 	while(pCurrentActionComplete + pDelta >= pCurrentActionDuration)
 	{
+		// Only send a 1.0 update if the action has a duration.
 		if(currentAction.duration > 0)
 		{
 			[currentAction updateCompletion:1.0];
 		}
+
 		[currentAction stopAction];
+
+		// Subtract its contribution to the current delta.
 		pDelta -= (pCurrentActionDuration - pCurrentActionComplete);
+		
+		// Move on to the next action.
 		actionIndex++;
 		if(actionIndex >= [actions count])
 		{
+			// If there are no more actions, we are done.
 			return;
 		}
+		
+		// Store some info about the new current action and start it running.
 		currentAction = [actions objectAtIndex:actionIndex];
 		pCurrentActionDuration = [[pDurations objectAtIndex:actionIndex] floatValue];
 		pCurrentActionComplete = 0;
@@ -249,6 +267,8 @@
 	}
 	else
 	{
+		// The action is not yet complete.  Send an update with the current proportion
+		// for this action.
 		pCurrentActionComplete += pDelta;
 		[currentAction updateCompletion:pCurrentActionComplete / pCurrentActionDuration];
 	}
@@ -290,15 +310,12 @@ COCOS2D_SUBCLASS(OALSequentialActions)
 {
 	NSMutableArray* actions = [NSMutableArray arrayWithCapacity:10];
 	va_list params;
+
 	va_start(params, firstAction);
-	OALAction* action = firstAction;
-	
-	while(nil != action)
+	for(OALAction* action = firstAction; nil != action; action = va_arg(params,OALAction*))
 	{
 		[actions addObject:action];
-		action = va_arg(params,OALAction*);
 	}
-	
 	va_end(params);
 	
 	return [[[self alloc] initWithActions:actions] autorelease];
@@ -315,10 +332,12 @@ COCOS2D_SUBCLASS(OALSequentialActions)
 	{
 		if([actionsIn isKindOfClass:[NSMutableArray class]])
 		{
+			// Take ownership if it's a mutable array.
 			actions = [actionsIn retain];
 		}
 		else
 		{
+			// Otherwise copy it into a mutable array.
 			actions = [[NSMutableArray arrayWithArray:actionsIn] retain];
 		}
 		
@@ -391,6 +410,7 @@ COCOS2D_SUBCLASS(OALSequentialActions)
 {
 	if(0 == proportionComplete)
 	{
+		// All actions get an update at 0.
 		for(OALAction* action in actions)
 		{
 			[action updateCompletion:0];
@@ -398,6 +418,7 @@ COCOS2D_SUBCLASS(OALSequentialActions)
 	}
 	else
 	{
+		// Only actions with a duration get an update after 0.
 		for(int i = 0; i < [actionsWithDuration count]; i++)
 		{
 			OALAction* action = [actionsWithDuration objectAtIndex:i];

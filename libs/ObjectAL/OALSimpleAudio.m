@@ -293,7 +293,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 {
 	if(nil == filePath)
 	{
-		LOG_ERROR(@"filePath was NULL");
+		OAL_LOG_ERROR(@"filePath was NULL");
 		return NO;
 	}
 	return [backgroundTrack preloadFile:filePath];
@@ -308,7 +308,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 {
 	if(nil == filePath)
 	{
-		LOG_ERROR(@"filePath was NULL");
+		OAL_LOG_ERROR(@"filePath was NULL");
 		return NO;
 	}
 	return [backgroundTrack playFile:filePath loops:loop ? -1 : 0];
@@ -362,7 +362,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 		buffer = [[OALAudioSupport sharedInstance] bufferFromFile:filePath];
 		if(nil == buffer)
 		{
-			LOG_ERROR(@"Could not load effect %@", filePath);
+			OAL_LOG_ERROR(@"Could not load effect %@", filePath);
 			return nil;
 		}
 
@@ -379,7 +379,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 {
 	if(nil == filePath)
 	{
-		LOG_ERROR(@"filePath was NULL");
+		OAL_LOG_ERROR(@"filePath was NULL");
 		return;
 	}
 	[self internalPreloadEffect:filePath];
@@ -389,7 +389,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 {
 	if(nil == filePath)
 	{
-		LOG_ERROR(@"filePath was NULL");
+		OAL_LOG_ERROR(@"filePath was NULL");
 		return;
 	}
 	OPTIONALLY_SYNCHRONIZED(self)
@@ -424,7 +424,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 {
 	if(nil == filePath)
 	{
-		LOG_ERROR(@"filePath was NULL");
+		OAL_LOG_ERROR(@"filePath was NULL");
 		return NO;
 	}
 	ALBuffer* buffer = [self internalPreloadEffect:filePath];

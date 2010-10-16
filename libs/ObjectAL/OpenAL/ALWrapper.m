@@ -88,7 +88,7 @@ BOOL checkIfSuccessful(const char* contextInfo)
 	ALenum error = alGetError();
 	if(AL_NO_ERROR != error)
 	{
-		LOG_ERROR_CONTEXT(contextInfo, @"%s (error code 0x%08x)", alGetString(error), error);
+		OAL_LOG_ERROR_CONTEXT(contextInfo, @"%s (error code 0x%08x)", alGetString(error), error);
 		return NO;
 	}
 	return YES;
@@ -105,7 +105,7 @@ BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device)
 	ALenum error = alcGetError(device);
 	if(ALC_NO_ERROR != error)
 	{
-		LOG_ERROR_CONTEXT(contextInfo, @"%s (error code 0x%08x)", alcGetString(device, error), error);
+		OAL_LOG_ERROR_CONTEXT(contextInfo, @"%s (error code 0x%08x)", alcGetString(device, error), error);
 		return NO;
 	}
 	return YES;
@@ -247,7 +247,7 @@ BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device)
 		device = alcOpenDevice([deviceName UTF8String]);
 		if(NULL == device)
 		{
-			LOG_ERROR(@"Could not open device %@", deviceName);
+			OAL_LOG_ERROR(@"Could not open device %@", deviceName);
 		}
 	}
 	return device;
@@ -365,7 +365,7 @@ BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device)
 		result = alcCaptureOpenDevice([deviceName UTF8String], frequency, format, bufferSize);
 		if(nil == result)
 		{
-			LOG_ERROR(@"Could not open capture device %@", deviceName);
+			OAL_LOG_ERROR(@"Could not open capture device %@", deviceName);
 		}
 	}
 	return result;
@@ -447,7 +447,7 @@ BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device)
 			}
 			else
 			{
-				LOG_ERROR(@"Could not make context %d current.  Pass in a device reference for better diagnostic info.", context);
+				OAL_LOG_ERROR(@"Could not make context %d current.  Pass in a device reference for better diagnostic info.", context);
 			}
 			return NO;
 		}
@@ -510,7 +510,7 @@ BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device)
 			}
 			else
 			{
-				LOG_ERROR(@"Could not get device for context %d.  Pass in a device reference for better diagnostic info.", context);
+				OAL_LOG_ERROR(@"Could not get device for context %d.  Pass in a device reference for better diagnostic info.", context);
 			}
 		}
 	}
@@ -1336,7 +1336,7 @@ BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device)
 		alcGetMacOSXMixerOutputRate = (alcMacOSXGetMixerOutputRateProcPtr) alcGetProcAddress(NULL, (const ALCchar*) "alcMacOSXGetMixerOutputRate");
 		if(NULL == alcGetMacOSXMixerOutputRate)
 		{
-			LOG_ERROR(@"Could not get proc pointer for \"alcMacOSXMixerOutputRate\".");
+			OAL_LOG_ERROR(@"Could not get proc pointer for \"alcMacOSXMixerOutputRate\".");
 		}
 	}
 	
@@ -1356,7 +1356,7 @@ BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device)
 		alcMacOSXMixerOutputRate = (alcMacOSXMixerOutputRateProcPtr) alcGetProcAddress(NULL, (const ALCchar*) "alcMacOSXMixerOutputRate");
 		if(NULL == alcMacOSXMixerOutputRate)
 		{
-			LOG_ERROR(@"Could not get proc pointer for \"alcMacOSXMixerOutputRate\".");
+			OAL_LOG_ERROR(@"Could not get proc pointer for \"alcMacOSXMixerOutputRate\".");
 		}
 	}
 	
@@ -1370,7 +1370,7 @@ BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device)
 		alBufferDataStatic = (alBufferDataStaticProcPtr) alcGetProcAddress(NULL, (const ALCchar*) "alBufferDataStatic");
 		if(NULL == alBufferDataStatic)
 		{
-			LOG_ERROR(@"Could not get proc pointer for \"alBufferDataStatic\".");
+			OAL_LOG_ERROR(@"Could not get proc pointer for \"alBufferDataStatic\".");
 		}
 	}
 	

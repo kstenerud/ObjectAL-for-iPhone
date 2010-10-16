@@ -111,6 +111,7 @@
 
 	[firstSource play:firstBuffer loop:YES];
 	[secondSource play:secondBuffer loop:YES];
+	secondSource.gain = 0;
 }
 
 - (void) onExitPressed

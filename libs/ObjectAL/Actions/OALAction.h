@@ -255,7 +255,7 @@ COCOS2D_SUBCLASS_HEADER(OALAction, CCIntervalAction);
  *
  * @param duration The duration of this action in seconds.
  * @param startValue The "starting" value that this action will diverge from when setting the target's
- *                   property.
+ *                   property.  If NAN, use the current value from the target.
  * @param endValue The "ending" value that this action will converge upon when setting the target's property.
  * @param function The function to apply in this action's update method.
  * @return A new action.
@@ -290,7 +290,7 @@ COCOS2D_SUBCLASS_HEADER(OALAction, CCIntervalAction);
  *
  * @param duration The duration of this action in seconds.
  * @param startValue The "starting" value that this action will diverge from when setting the target's
- *                   property.
+ *                   property.  If NAN, use the current value from the target.
  * @param endValue The "ending" value that this action will converge upon when setting the target's property.
  * @param function The function to apply in this action's update method.
  * @return The initialized action.

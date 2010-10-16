@@ -25,6 +25,8 @@
 		1F3B9A2D0EF2145700286867 /* ObjectALAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F3B9A2B0EF2145700286867 /* ObjectALAppDelegate.m */; };
 		3918AB1F121ABB520060C2AF /* FadeDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 3918AB1E121ABB520060C2AF /* FadeDemo.m */; };
 		3918AB23121ABBA90060C2AF /* CCLayer+Scene.m in Sources */ = {isa = PBXBuildFile; fileRef = 3918AB22121ABBA90060C2AF /* CCLayer+Scene.m */; };
+		395FE7E71268C64100A8BD6A /* HardwareDemo.h in Headers */ = {isa = PBXBuildFile; fileRef = 395FE7E51268C64100A8BD6A /* HardwareDemo.h */; };
+		395FE7E81268C64100A8BD6A /* HardwareDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 395FE7E61268C64100A8BD6A /* HardwareDemo.m */; };
 		396B395F124EDA43009B84A4 /* OALAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 396B392E124EDA42009B84A4 /* OALAction.h */; };
 		396B3960124EDA43009B84A4 /* OALAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 396B392F124EDA42009B84A4 /* OALAction.m */; };
 		396B3961124EDA43009B84A4 /* OALActionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 396B3930124EDA42009B84A4 /* OALActionManager.h */; };
@@ -75,6 +77,10 @@
 		3987EFCB1210350B00781573 /* Exit.png in Resources */ = {isa = PBXBuildFile; fileRef = 39AD850D121032430049990E /* Exit.png */; };
 		3987EFCC1210350F00781573 /* Ganymede.png in Resources */ = {isa = PBXBuildFile; fileRef = 39AD850E121032430049990E /* Ganymede.png */; };
 		3987EFCD1210351200781573 /* HappyAlley.wav in Resources */ = {isa = PBXBuildFile; fileRef = 39AD850F121032430049990E /* HappyAlley.wav */; };
+		399A5E401265311900415D8D /* OALSimpleAudioSample.h in Headers */ = {isa = PBXBuildFile; fileRef = 399A5E3E1265311900415D8D /* OALSimpleAudioSample.h */; };
+		399A5E411265311900415D8D /* OALSimpleAudioSample.m in Sources */ = {isa = PBXBuildFile; fileRef = 399A5E3F1265311900415D8D /* OALSimpleAudioSample.m */; };
+		399A5E481265325600415D8D /* OpenALAudioTrackSample.h in Headers */ = {isa = PBXBuildFile; fileRef = 399A5E461265325600415D8D /* OpenALAudioTrackSample.h */; };
+		399A5E491265325600415D8D /* OpenALAudioTrackSample.m in Sources */ = {isa = PBXBuildFile; fileRef = 399A5E471265325600415D8D /* OpenALAudioTrackSample.m */; };
 		39AD85191210326F0049990E /* Jupiter.png in Resources */ = {isa = PBXBuildFile; fileRef = 39AD85101210326F0049990E /* Jupiter.png */; };
 		39AD851A1210326F0049990E /* Pew.caf in Resources */ = {isa = PBXBuildFile; fileRef = 39AD85111210326F0049990E /* Pew.caf */; };
 		39AD851B1210326F0049990E /* PlanetKiller.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 39AD85121210326F0049990E /* PlanetKiller.mp3 */; };
@@ -319,6 +325,8 @@
 		3918AB1E121ABB520060C2AF /* FadeDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FadeDemo.m; sourceTree = "<group>"; };
 		3918AB21121ABBA90060C2AF /* CCLayer+Scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCLayer+Scene.h"; sourceTree = "<group>"; };
 		3918AB22121ABBA90060C2AF /* CCLayer+Scene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CCLayer+Scene.m"; sourceTree = "<group>"; };
+		395FE7E51268C64100A8BD6A /* HardwareDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HardwareDemo.h; sourceTree = "<group>"; };
+		395FE7E61268C64100A8BD6A /* HardwareDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HardwareDemo.m; sourceTree = "<group>"; };
 		396B392E124EDA42009B84A4 /* OALAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALAction.h; sourceTree = "<group>"; };
 		396B392F124EDA42009B84A4 /* OALAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALAction.m; sourceTree = "<group>"; };
 		396B3930124EDA42009B84A4 /* OALActionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALActionManager.h; sourceTree = "<group>"; };
@@ -370,6 +378,10 @@
 		397D06CA1249215200C5BC20 /* AudioTrackDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioTrackDemo.m; sourceTree = "<group>"; };
 		397D0791124974FC00C5BC20 /* CCNode+ContentSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCNode+ContentSize.h"; sourceTree = "<group>"; };
 		397D0792124974FC00C5BC20 /* CCNode+ContentSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CCNode+ContentSize.m"; sourceTree = "<group>"; };
+		399A5E3E1265311900415D8D /* OALSimpleAudioSample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALSimpleAudioSample.h; sourceTree = "<group>"; };
+		399A5E3F1265311900415D8D /* OALSimpleAudioSample.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALSimpleAudioSample.m; sourceTree = "<group>"; };
+		399A5E461265325600415D8D /* OpenALAudioTrackSample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenALAudioTrackSample.h; sourceTree = "<group>"; };
+		399A5E471265325600415D8D /* OpenALAudioTrackSample.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenALAudioTrackSample.m; sourceTree = "<group>"; };
 		39AD84B6121031BC0049990E /* libObjectAL.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libObjectAL.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		39AD850C121032430049990E /* ColdFunk.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ColdFunk.wav; sourceTree = "<group>"; };
 		39AD850D121032430049990E /* Exit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Exit.png; sourceTree = "<group>"; };
@@ -692,6 +704,7 @@
 		2D500B1D0D5A766B00DBA0E3 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				399A5E3D1265310600415D8D /* Sample Code */,
 				397D06C412491F2700C5BC20 /* Demos */,
 				39AD8525121032E00049990E /* Support */,
 				39AD8534121032E00049990E /* MainScene.h */,
@@ -801,6 +814,8 @@
 				39AD8533121032E00049990E /* CrossFadeDemo.m */,
 				3918AB1D121ABB520060C2AF /* FadeDemo.h */,
 				3918AB1E121ABB520060C2AF /* FadeDemo.m */,
+				395FE7E51268C64100A8BD6A /* HardwareDemo.h */,
+				395FE7E61268C64100A8BD6A /* HardwareDemo.m */,
 				39AD8536121032E00049990E /* PlanetKillerDemo.h */,
 				39AD8537121032E00049990E /* PlanetKillerDemo.m */,
 				39AD8538121032E00049990E /* SingleSourceDemo.h */,
@@ -811,6 +826,17 @@
 				39AD853D121032E00049990E /* VolumePitchPanDemo.m */,
 			);
 			name = Demos;
+			sourceTree = "<group>";
+		};
+		399A5E3D1265310600415D8D /* Sample Code */ = {
+			isa = PBXGroup;
+			children = (
+				399A5E3E1265311900415D8D /* OALSimpleAudioSample.h */,
+				399A5E3F1265311900415D8D /* OALSimpleAudioSample.m */,
+				399A5E461265325600415D8D /* OpenALAudioTrackSample.h */,
+				399A5E471265325600415D8D /* OpenALAudioTrackSample.m */,
+			);
+			name = "Sample Code";
 			sourceTree = "<group>";
 		};
 		39AD8525121032E00049990E /* Support */ = {
@@ -1104,6 +1130,9 @@
 				39B0373D1262A32D00AC27C9 /* ObjectALMacros.h in Headers */,
 				39B037EE1262DAF700AC27C9 /* OALUtilityActions.h in Headers */,
 				39B037F21262DAFE00AC27C9 /* OALAudioActions.h in Headers */,
+				399A5E401265311900415D8D /* OALSimpleAudioSample.h in Headers */,
+				399A5E481265325600415D8D /* OpenALAudioTrackSample.h in Headers */,
+				395FE7E71268C64100A8BD6A /* HardwareDemo.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1383,6 +1412,9 @@
 				39B034541262430E00AC27C9 /* OALSimpleAudio.m in Sources */,
 				39B037EF1262DAF700AC27C9 /* OALUtilityActions.m in Sources */,
 				39B037F31262DAFE00AC27C9 /* OALAudioActions.m in Sources */,
+				399A5E411265311900415D8D /* OALSimpleAudioSample.m in Sources */,
+				399A5E491265325600415D8D /* OpenALAudioTrackSample.m in Sources */,
+				395FE7E81268C64100A8BD6A /* HardwareDemo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

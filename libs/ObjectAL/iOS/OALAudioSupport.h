@@ -58,6 +58,7 @@
 
 	bool handleInterruptions;
 	bool allowIpod;
+	bool ipodDucking;
 	bool useHardwareIfAvailable;
 	bool honorSilentSwitch;
 	
@@ -113,6 +114,12 @@
  */
 @property(readwrite,assign) bool allowIpod;
 
+/** If YES, ipod music will duck (lower in volume) when your app plays a sound.
+ *
+ * Default value: NO
+ */
+@property(readwrite,assign) bool ipodDucking;
+
 /** Determines what to do if no other application is playing audio and allowIpod = YES
  * (NOT SUPPORTED ON THE SIMULATOR). <br>
  *
@@ -150,6 +157,22 @@
 
 /** If true, the audio session is active */
 @property(readwrite,assign) bool audioSessionActive;
+
+/** Get the device's final hardware output volume, as controlled by
+ * the volume button on the side of the device.
+ */
+@property(readonly) float hardwareVolume;
+
+/** Check if the hardware mute switch is on (not supported on the simulator).
+ * Note: If headphones are plugged in, hardwareMuted will always return FALSE
+ *       regardless of the switch state.
+ */
+@property(readonly) bool hardwareMuted;
+
+/** Check what hardware route the audio is taking, such as "Speaker" or "Headphone"
+ * (not supported on the simulator).
+ */
+@property(readonly) NSString* audioRoute;
 
 #pragma mark Object Management
 

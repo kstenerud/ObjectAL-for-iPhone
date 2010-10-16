@@ -16,6 +16,7 @@
 #import "FadeDemo.h"
 #import "TargetedAction.h"
 #import "AudioTrackDemo.h"
+#import "HardwareDemo.h"
 
 
 #define kScenesPerPage 6
@@ -102,6 +103,7 @@ static int startIndex = 0;
 	[self addScene:[FadeDemo class] named:@"Fading"];
 	[self addScene:[AudioTrackDemo class] named:@"Audio Tracks"];
 	[self addScene:[PlanetKillerDemo class] named:@"Planet Killer (OALSimpleAudio)"];
+	[self addScene:[HardwareDemo class] named:@"Hardware Monitor Demo"];
 }
 
 - (void) addScene:(Class) sceneClass named:(NSString*) name

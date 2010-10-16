@@ -44,6 +44,10 @@
 		CGSize size = [[CCDirector sharedDirector] winSize];
 		CGPoint center = ccp(size.width/2, size.height/2);
 
+		CCLabel* label = [CCLabel labelWithString:@"Tap the screen to shoot!" fontName:@"Helvetica" fontSize:18];
+		label.position = ccp(size.width/2, size.height-20);
+		[self addChild:label];
+		
 		ImageButton* button = [ImageButton buttonWithImageFile:@"Exit.png" target:self selector:@selector(onExitPressed)];
 		button.anchorPoint = ccp(1,1);
 		button.position = ccp(size.width, size.height);
