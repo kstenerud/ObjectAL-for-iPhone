@@ -55,6 +55,7 @@
 /** (INTERNAL USE) Create a new Asynchronous Operation.
  *
  * @param track the audio track to perform the operation on.
+ * @param seekTime the position in the file to start playing at.
  * @param url the URL containing the sound file.
  * @param target the target to inform when the operation completes.
  * @param selector the selector to call when the operation completes.
@@ -64,6 +65,7 @@
 /** (INTERNAL USE) Initialize an Asynchronous Operation.
  *
  * @param track the audio track to perform the operation on.
+ * @param seekTime the position in the file to start playing at.
  * @param url the URL containing the sound file.
  * @param target the target to inform when the operation completes.
  * @param selector the selector to call when the operation completes.

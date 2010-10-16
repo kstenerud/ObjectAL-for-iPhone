@@ -200,6 +200,18 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALSimpleAudio);
  * @return TRUE if the operation was successful.
  */
 - (bool) preloadBg:(NSString*) path;
+
+/** Preload background music.
+ *
+ * <strong>Note:</strong> only <strong>ONE</strong> background music
+ * file may be played or preloaded at a time via OALSimpleAudio.
+ * If you play or preload another file, the one currently playing
+ * will stop.
+ *
+ * @param path The path containing the background music.
+ * @param seekTime the position in the file to start playing at.
+ * @return TRUE if the operation was successful.
+ */
 - (bool) preloadBg:(NSString*) path seekTime:(NSTimeInterval)seekTime;
 
 /** Play whatever background music is preloaded.
