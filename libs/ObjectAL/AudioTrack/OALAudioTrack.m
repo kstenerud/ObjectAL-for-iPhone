@@ -398,13 +398,17 @@
 				{
 					[player pause];
 					if(playing)
+					{
 						[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:OALAudioTrackStoppedPlayingNotification object:self] waitUntilDone:NO];
+					}
 				}
 				else if(playing)
 				{
 					playing = [player play];
 					if(playing)
+					{
 						[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:OALAudioTrackStartedPlayingNotification object:self] waitUntilDone:NO];
+					}
 				}
 			}
 		}
@@ -493,46 +497,49 @@
 		
 		[self stopActions];
 		
-		// Only load if it's not the same URL as last time.
-		//if(![[url absoluteString] isEqualToString:[currentlyLoadedUrl absoluteString]])
-		//{
-			SIMULATOR_BUG_WORKAROUND_PREPARE_PLAYBACK();
-		if(playing || paused){
+		SIMULATOR_BUG_WORKAROUND_PREPARE_PLAYBACK();
+		if(playing || paused)
+		{
 			[player stop];
 		}
-			[player release];
+		[player release];
 		if(playing)
+		{
 			[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:OALAudioTrackStoppedPlayingNotification object:self] waitUntilDone:NO];
+		}
 		
-			NSError* error;
-			player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
-			if(nil != error)
-			{
-				OAL_LOG_ERROR(@"Could not load URL %@: %@", url, [error localizedDescription]);
-				return NO;
-			}
-			
-			player.volume = muted ? 0 : gain;
-			player.numberOfLoops = numberOfLoops;
-			player.meteringEnabled = meteringEnabled;
-			player.delegate = self;
-			isIOS40OrHigher = [player respondsToSelector:@selector(pan)];
-			if(isIOS40OrHigher)
-			{
-				player.pan = pan;
-			}
-			
-			[currentlyLoadedUrl release];
-			currentlyLoadedUrl = [url retain];
-		//}
+		NSError* error;
+		player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+		if(nil != error)
+		{
+			OAL_LOG_ERROR(@"Could not load URL %@: %@", url, [error localizedDescription]);
+			return NO;
+		}
+		
+		player.volume = muted ? 0 : gain;
+		player.numberOfLoops = numberOfLoops;
+		player.meteringEnabled = meteringEnabled;
+		player.delegate = self;
+		isIOS40OrHigher = [player respondsToSelector:@selector(pan)];
+		if(isIOS40OrHigher)
+		{
+			player.pan = pan;
+		}
+		
+		[currentlyLoadedUrl release];
+		currentlyLoadedUrl = [url retain];
 		
 		self.currentTime	= seekTime;
 		playing = NO;
 		paused = NO;
+
 		BOOL allOK = [player prepareToPlay];
-		if(!allOK){
+		if(!allOK)
+		{
 			OAL_LOG_ERROR(@"Failed to prepareToPlay: %@", url);
-		}else{
+		}
+		else
+		{
 			[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:OALAudioTrackSourceChangedNotification object:self] waitUntilDone:NO];
 		}
 		return allOK;
@@ -639,7 +646,9 @@
 		paused = NO;
 		playing = [player play];
 		if(playing)
+		{
 			[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:OALAudioTrackStartedPlayingNotification object:self] waitUntilDone:NO];
+		}
 		return playing;
 	}
 }
@@ -663,7 +672,8 @@
 			player.numberOfLoops = numberOfLoops;
 			paused = NO;
 			playing = [player playAtTime:time];
-			if(playing){
+			if(playing)
+			{
 				[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:OALAudioTrackStartedPlayingNotification object:self] waitUntilDone:NO];
 			}
 			return playing;
@@ -680,7 +690,9 @@
 		currentTime = player.currentTime;
 		[player stop];
 		if(playing)
+		{
 			[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:OALAudioTrackStoppedPlayingNotification object:self] waitUntilDone:NO];
+		}
 		
 //		self.currentTime = 0;
 //		player.currentTime = 0;
@@ -770,7 +782,9 @@
 		[player stop];
 		[player release];
 		if(playing)
+		{
 			[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:OALAudioTrackStoppedPlayingNotification object:self] waitUntilDone:NO];
+		}
 		
 		self.currentTime = 0;
 		player = nil;
@@ -849,7 +863,8 @@
 			}
 			else
 			{
-				if(playing && !paused){
+				if(playing && !paused)
+				{
 	//				player.currentTime = currentTime;
 	//				playing = NO;
 	//				paused = NO;

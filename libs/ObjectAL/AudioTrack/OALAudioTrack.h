@@ -166,6 +166,14 @@
  * @return TRUE if the operation was successful.
  */
 - (bool) preloadUrl:(NSURL*) url;
+
+/** Preload the contents of a URL for playback.
+ * Once the audio data is preloaded, you can call "play" to play it. <br>
+ *
+ * @param url The URL containing the sound data.
+ * @param seekTime The position in the file to start playing at.
+ * @return TRUE if the operation was successful.
+ */
 - (bool) preloadUrl:(NSURL*) url seekTime:(NSTimeInterval)seekTime;
 
 /** Preload the contents of a file for playback.
@@ -175,6 +183,14 @@
  * @return TRUE if the operation was successful.
  */
 - (bool) preloadFile:(NSString*) path;
+
+/** Preload the contents of a file for playback.
+ * Once the audio data is preloaded, you can call "play" to play it. <br>
+ *
+ * @param path The file containing the sound data.
+ * @param seekTime The position in the file to start playing at.
+ * @return TRUE if the operation was successful.
+ */
 - (bool) preloadFile:(NSString*) path seekTime:(NSTimeInterval)seekTime;
 
 /** Asynchronously preload the contents of a URL for playback.
@@ -186,6 +202,16 @@
  * @return TRUE if the operation was successfully queued.
  */
 - (bool) preloadUrlAsync:(NSURL*) url target:(id) target selector:(SEL) selector;
+
+/** Asynchronously preload the contents of a URL for playback.
+ * Once the audio data is preloaded, you can call "play" to play it. <br>
+ *
+ * @param url The URL containing the sound data.
+ * @param seekTime The position in the file to start playing at.
+ * @param target the target to inform when preparation is complete.
+ * @param selector the selector to call when preparation is complete.
+ * @return TRUE if the operation was successfully queued.
+ */
 - (bool) preloadUrlAsync:(NSURL*) url seekTime:(NSTimeInterval)seekTime target:(id) target selector:(SEL) selector;
 
 /** Asynchronously preload the contents of a file for playback.
@@ -197,6 +223,16 @@
  * @return TRUE if the operation was successfully queued.
  */
 - (bool) preloadFileAsync:(NSString*) path target:(id) target selector:(SEL) selector;
+
+/** Asynchronously preload the contents of a file for playback.
+ * Once the audio data is preloaded, you can call "play" to play it. <br>
+ *
+ * @param path The file containing the sound data.
+ * @param seekTime The position in the file to start playing at.
+ * @param target the target to inform when preparation is complete.
+ * @param selector the selector to call when preparation is complete.
+ * @return TRUE if the operation was successfully queued.
+ */
 - (bool) preloadFileAsync:(NSString*) path seekTime:(NSTimeInterval)seekTime target:(id) target selector:(SEL) selector;
 
 /** Play the contents of a URL once.
