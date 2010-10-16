@@ -279,14 +279,26 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALSimpleAudio);
  */
 - (ALBuffer*) preloadEffect:(NSString*) filePath;
 
+#if NS_BLOCKS_AVAILABLE
 /** Asynchronous preload and cache multiple sound effects for later playback.
  *
  * @param filePaths An NSArray of NSStrings with the paths containing the sound data.
+ * @param progressBlock Executed regularly while file loading is in progress.
+ * @param completionBlock Executed when all loading is complete.
  */
-#if NS_BLOCKS_AVAILABLE
-- (void) preloadEffects:(NSArray*) filePaths progressBlock:(void (^)(uint progress, uint successCount, uint total)) progressBlock completionBlock:(void (^)(uint successCount, uint total)) completionBlock;
+- (void) preloadEffects:(NSArray*) filePaths
+		  progressBlock:(void (^)(uint progress, uint successCount, uint total)) progressBlock
+		completionBlock:(void (^)(uint successCount, uint total)) completionBlock;
 #else
-- (void) preloadEffects:(NSArray*) filePaths progressInvocation:(NSInvocation *) progressInvocation completionInvocation:(NSInvocation *) completionInvocation;
+/** Asynchronous preload and cache multiple sound effects for later playback.
+ *
+ * @param filePaths An NSArray of NSStrings with the paths containing the sound data.
+ * @param progressInvocation Invoked regularly while file loading is in progress.
+ * @param completionInvocation Invoked when all loading is complete.
+ */
+- (void) preloadEffects:(NSArray*) filePaths
+	 progressInvocation:(NSInvocation *) progressInvocation
+   completionInvocation:(NSInvocation *) completionInvocation;
 #endif
 
 /** Unload a preloaded effect.

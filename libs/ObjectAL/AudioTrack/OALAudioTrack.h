@@ -90,6 +90,8 @@
 
 /** The gain (volume) for playback (0.0 - 1.0, where 1.0 = no attenuation). */
 @property(readwrite,assign) float gain;
+
+/** The volume (alias to gain) for playback (0.0 - 1.0, where 1.0 = no attenuation). */
 @property(readwrite,assign) float volume;
 
 /** Pan value (-1.0 = far left, 1.0 = far right).

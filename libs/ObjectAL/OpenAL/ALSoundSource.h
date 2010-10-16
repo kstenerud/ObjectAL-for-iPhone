@@ -58,6 +58,8 @@
 
 /** Gain (volume) (OpenAL property). */
 @property(readwrite,assign) float gain;
+
+/** Volume (alias to gain). */
 @property(readwrite,assign) float volume;
 
 /** If true, this source may be interrupted when resources are low. */
