@@ -19,7 +19,7 @@
 #import "HardwareDemo.h"
 
 
-#define kScenesPerPage 6
+#define kScenesPerPage 5
 
 @interface IndexedMenuItemLabel: CCMenuItemLabel
 {
@@ -67,17 +67,40 @@ static uint startIndex = 0;
 		scenes = [[NSMutableArray arrayWithCapacity:20] retain];
 		
 		CGSize screenSize = [[CCDirector sharedDirector] winSize];
+		CCLabel* label;
+		
+		label = [CCLabel labelWithString:@"Welcome to the ObjectAL demo." fontName:@"Helvetica" fontSize:20];
+		label.position = ccp(screenSize.width/2, screenSize.height-18);
+		[self addChild:label];
+		
+		label = [CCLabel labelWithString:@"Select a menu item to continue" fontName:@"Helvetica" fontSize:16];
+		label.position = ccp(screenSize.width/2, screenSize.height-40);
+		[self addChild:label];
+		
+		label = [CCLabel labelWithString:@"______________________________" fontName:@"Helvetica" fontSize:28];
+		label.color = ccc3(213, 199, 43);
+		label.position = ccp(screenSize.width/2, screenSize.height-44);
+		[self addChild:label];
 		
 		previousButton = [ImageButton buttonWithImageFile:@"Back.png" target:self selector:@selector(onPrevious:)];
 		previousButton.position = ccp(previousButton.contentSize.width/2 + 10,
-									  previousButton.contentSize.height/2 + 20);
+									  previousButton.contentSize.height/2);
 		[self addChild:previousButton z:10];
 		
 		nextButton = [ImageButton buttonWithImageFile:@"Next.png" target:self selector:@selector(onNext:)];
 		nextButton.position = ccp(screenSize.width - nextButton.contentSize.width/2 - 10,
-								  nextButton.contentSize.height/2 + 20);
+								  nextButton.contentSize.height/2);
 		[self addChild:nextButton z:10];
-
+		
+		label = [CCLabel labelWithString:@"______________________________" fontName:@"Helvetica" fontSize:28];
+		label.color = ccc3(213, 199, 43);
+		label.position = ccp(screenSize.width/2, 64);
+		[self addChild:label];
+		
+		label = [CCLabel labelWithString:@"Tap arrows to switch pages" fontName:@"Helvetica" fontSize:16];
+		label.position = ccp(screenSize.width/2, 26);
+		[self addChild:label];
+		
 		
 		[self prepareScenes];
 		[self setStartIndex:startIndex];
@@ -103,7 +126,7 @@ static uint startIndex = 0;
 	[self addScene:[FadeDemo class] named:@"Fading"];
 	[self addScene:[AudioTrackDemo class] named:@"Audio Tracks"];
 	[self addScene:[PlanetKillerDemo class] named:@"Planet Killer (OALSimpleAudio)"];
-	[self addScene:[HardwareDemo class] named:@"Hardware Monitor Demo"];
+	[self addScene:[HardwareDemo class] named:@"Hardware Monitor"];
 }
 
 - (void) addScene:(Class) sceneClass named:(NSString*) name
@@ -152,7 +175,7 @@ static uint startIndex = 0;
 		[menu addChild:item];
 	}
 	[menu alignItemsVertically];
-	menu.position = ccp(menu.position.x, menu.position.y + 30);
+	menu.position = ccp(menu.position.x, menu.position.y - 4);
 	[self addChild:menu];
 	
 	if(nil != oldMenu)
