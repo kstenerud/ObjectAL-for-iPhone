@@ -543,10 +543,10 @@ int compareInts (const void * a, const void * b)
 			[textureAtlas_ removeQuadAtIndex:atlasIndex];
 
 			// update possible children
-			for( CCSprite *sprite in children_) {
-				unsigned int ai = [sprite atlasIndex];
+			for( CCSprite *spr in children_) {
+				unsigned int ai = [spr atlasIndex];
 				if( ai >= atlasIndex) {
-					[sprite setAtlasIndex: ai-1];
+					[spr setAtlasIndex: ai-1];
 				}
 			}
 		}

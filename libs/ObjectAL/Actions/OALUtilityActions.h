@@ -79,7 +79,7 @@
 	NSMutableArray* pDurations;
 
 	/** The index of the action currently being processed. */
-	int actionIndex;
+	uint actionIndex;
 	
 	/** The last completeness proportion value acted upon. */
 	float pLastComplete;

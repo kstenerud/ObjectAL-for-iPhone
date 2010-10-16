@@ -26,7 +26,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 #import "OALAction.h"
-
+#import "OALAudioTrackNotifications.h"
 
 /**
  * Plays an audio track via AVAudioPlayer.
@@ -63,6 +63,7 @@
 	 * sometimes say it's not playing when it actually is.
 	 */
 	bool playing;
+	NSTimeInterval currentTime;
 	
 	/** Check to see if we are running iOS 4.0 or higher. */
 	bool isIOS40OrHigher;
@@ -89,6 +90,7 @@
 
 /** The gain (volume) for playback (0.0 - 1.0, where 1.0 = no attenuation). */
 @property(readwrite,assign) float gain;
+@property(readwrite,assign) float volume;
 
 /** Pan value (-1.0 = far left, 1.0 = far right).
  * <strong>Note:</strong> This will have no effect on iOS versions prior to 4.0.

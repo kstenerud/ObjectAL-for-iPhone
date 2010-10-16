@@ -236,7 +236,7 @@
 		// Only send a 1.0 update if the action has a duration.
 		if(currentAction.duration > 0)
 		{
-			[currentAction updateCompletion:1.0];
+			[currentAction updateCompletion:1.0f];
 		}
 
 		[currentAction stopAction];
@@ -262,7 +262,7 @@
 	if(pComplete >= 1.0)
 	{
 		// Make sure a cumulative rounding error doesn't cause an uncompletable action.
-		[currentAction updateCompletion:1.0];
+		[currentAction updateCompletion:1.0f];
 		[currentAction stopAction];
 	}
 	else
@@ -419,13 +419,13 @@ COCOS2D_SUBCLASS(OALSequentialActions)
 	else
 	{
 		// Only actions with a duration get an update after 0.
-		for(int i = 0; i < [actionsWithDuration count]; i++)
+		for(uint i = 0; i < [actionsWithDuration count]; i++)
 		{
 			OALAction* action = [actionsWithDuration objectAtIndex:i];
 			float proportion = proportionComplete / [[pDurations objectAtIndex:i] floatValue];
-			if(proportion > 1.0)
+			if(proportion > 1.0f)
 			{
-				proportion = 1.0;
+				proportion = 1.0f;
 			}
 			[action updateCompletion:proportion];
 		}

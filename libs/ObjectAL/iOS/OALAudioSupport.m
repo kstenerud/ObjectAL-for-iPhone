@@ -234,6 +234,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSupport);
 		REPORT_AUDIOSESSION_CALL(AudioSessionInitialize(NULL, NULL, interruptListenerCallback, self), @"Failed to initialize audio session");
 
 		handleInterruptions = YES;
+		audioSessionDelegate = nil;
 		allowIpod = YES;
 		ipodDucking = NO;
 		useHardwareIfAvailable = YES;
@@ -325,6 +326,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSupport);
 }
 
 @synthesize handleInterruptions;
+@synthesize audioSessionDelegate;
 
 - (bool) honorSilentSwitch
 {
@@ -472,7 +474,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSupport);
 	}
 	
 	// Allocate some memory to hold the data
-	streamSizeInBytes = audioStreamDescription.mBytesPerFrame * numFrames;
+	streamSizeInBytes = audioStreamDescription.mBytesPerFrame * (SInt32)numFrames;
 	streamData = malloc(streamSizeInBytes);
 	if(nil == streamData)
 	{
@@ -520,7 +522,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSupport);
 								   data:streamData
 								   size:streamSizeInBytes
 								 format:audioFormat
-							  frequency:audioStreamDescription.mSampleRate];
+							  frequency:(ALsizei)audioStreamDescription.mSampleRate];
 	// ALBuffer is maintaining this memory now.  Make sure we don't free() it.
 	streamData = nil;
 	
@@ -820,7 +822,11 @@ done:
 			audioSessionWasActive = audioSessionActive;
 			
 			self.audioSessionActive = NO;
-
+		}
+		
+		if(audioSessionDelegate && [audioSessionDelegate respondsToSelector:@selector(beginInterruption)])
+		{
+			[audioSessionDelegate beginInterruption];
 		}
 	}
 }
@@ -834,6 +840,17 @@ done:
 			if(audioSessionWasActive)
 			{
 				self.audioSessionActive = YES;
+			}
+		}
+		
+		if(audioSessionDelegate){
+			if([audioSessionDelegate respondsToSelector:@selector(endInterruptionWithFlags:)])
+			{
+				[audioSessionDelegate endInterruptionWithFlags:AVAudioSessionInterruptionFlags_ShouldResume];
+			}
+			else if([audioSessionDelegate respondsToSelector:@selector(endInterruption)])
+			{
+				[audioSessionDelegate endInterruption];
 			}
 		}
 	}

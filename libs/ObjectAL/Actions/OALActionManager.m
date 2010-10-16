@@ -143,15 +143,15 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALActionManager);
 		{
 			for(OALAction* action in actions)
 			{
-				float elapsedTime = mach_absolute_difference_seconds(currentTime, action.startTime);
+				float elapsedTime = (float)mach_absolute_difference_seconds(currentTime, action.startTime);
 				float proportionComplete = elapsedTime / action.duration;
-				if(proportionComplete < 1.0)
+				if(proportionComplete < 1.0f)
 				{
 					[action updateCompletion:proportionComplete];
 				}
 				else
 				{
-					[action updateCompletion:1.0];
+					[action updateCompletion:1.0f];
 					[action stopAction];
 				}
 			}

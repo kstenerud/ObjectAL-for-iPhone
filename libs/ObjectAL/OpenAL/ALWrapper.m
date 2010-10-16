@@ -60,6 +60,21 @@
  */
 + (NSArray*) decodeSpaceSeparatedStringList:(const ALCchar*) source;
 
+/** Check the OpenAL error status and log an error message if necessary.
+ *
+ * @param contextInfo Contextual information to add when logging an error.
+ * @return TRUE if the operation was successful (no error).
+ */
+BOOL checkIfSuccessful(const char* contextInfo);
+
+/** Check the OpenAL error status and log an error message if necessary.
+ *
+ * @param contextInfo Contextual information to add when logging an error.
+ * @param device The device to check for errors on.
+ * @return TRUE if the operation was successful (no error).
+ */
+BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device);
+
 @end
 
 #pragma mark -
@@ -68,7 +83,11 @@
 
 typedef ALdouble AL_APIENTRY (*alcMacOSXGetMixerOutputRateProcPtr)();
 typedef ALvoid AL_APIENTRY (*alcMacOSXMixerOutputRateProcPtr) (const ALdouble value);
-typedef ALvoid	AL_APIENTRY	(*alBufferDataStaticProcPtr) (const ALint bid, ALenum format, const ALvoid* data, ALsizei size, ALsizei freq);
+typedef ALvoid AL_APIENTRY (*alBufferDataStaticProcPtr) (const ALint bid,
+														 ALenum format,
+														 const ALvoid* data,
+														 ALsizei size,
+														 ALsizei freq);
 
 static alcMacOSXGetMixerOutputRateProcPtr alcGetMacOSXMixerOutputRate = NULL;
 static alcMacOSXMixerOutputRateProcPtr alcMacOSXMixerOutputRate = NULL;
@@ -78,11 +97,6 @@ static alBufferDataStaticProcPtr alBufferDataStatic = NULL;
 #pragma mark -
 #pragma mark Error Handling
 
-/** Check the OpenAL error status and log an error message if necessary.
- *
- * @param contextInfo Contextual information to add when logging an error.
- * @return TRUE if the operation was successful (no error).
- */
 BOOL checkIfSuccessful(const char* contextInfo)
 {
 	ALenum error = alGetError();
@@ -94,12 +108,6 @@ BOOL checkIfSuccessful(const char* contextInfo)
 	return YES;
 }
 
-/** Check the OpenAL error status and log an error message if necessary.
- *
- * @param contextInfo Contextual information to add when logging an error.
- * @param device The device to check for errors on.
- * @return TRUE if the operation was successful (no error).
- */
 BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device)
 {
 	ALenum error = alcGetError(device);
@@ -828,11 +836,11 @@ BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device)
 
 + (ALuint) genSource
 {
-	uint sourceId;
+	ALuint sourceId;
 	@synchronized(self)
 	{
 		[self genSources:&sourceId numSources:1];
-		sourceId = CHECK_AL_CALL() ? sourceId : AL_INVALID;
+		sourceId = CHECK_AL_CALL() ? sourceId : (ALuint)AL_INVALID;
 	}
 	return sourceId;
 }
@@ -1136,11 +1144,11 @@ BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device)
 
 + (ALuint) genBuffer
 {
-	uint bufferId;
+	ALuint bufferId;
 	@synchronized(self)
 	{
 		[self genBuffers:&bufferId numBuffers:1];
-		bufferId = CHECK_AL_CALL() ? bufferId : AL_INVALID;
+		bufferId = CHECK_AL_CALL() ? bufferId : (ALuint)AL_INVALID;
 	}
 	return bufferId;
 }

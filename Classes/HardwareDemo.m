@@ -95,7 +95,7 @@
 	muteLabel.visible = [OALAudioSupport sharedInstance].hardwareMuted;
 	[routeLabel setString:[NSString stringWithFormat:@"Route: %@", route]];
 
-	[self schedule:@selector(step) interval:0.1];
+	[self schedule:@selector(step) interval:0.1f];
 }
 
 - (void) step

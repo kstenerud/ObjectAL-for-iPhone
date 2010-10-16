@@ -74,7 +74,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSCurveFunction);
 - (float) valueForInput:(float) inputValue
 {
 	// x^2 * (3-2x)
-	return inputValue * inputValue * (3.0 - 2.0 * inputValue);
+	return inputValue * inputValue * (3.0f - 2.0f * inputValue);
 }
 
 @end
@@ -102,7 +102,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALExponentialFunction);
 - (float) valueForInput:(float) inputValue
 {
 	// (10^(x-1) - 10^-1) * (1 / (1 - 10^-1))
-	return (powf(10,inputValue-1.0) - 0.1) * (1.0/0.9);
+	return (powf(10.f,inputValue-1.0f) - 0.1f) * (1.0f/0.9f);
 }
 
 @end
@@ -130,7 +130,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALLogarithmicFunction);
 - (float) valueForInput:(float) inputValue
 {
 	// log10(x * (1 - 10^-1) + 10^-1) + 1
-	return log10f(inputValue * 0.9 + 0.1) + 1.0;
+	return log10f(inputValue * 0.9f + 0.1f) + 1.0f;
 }
 
 @end
@@ -175,7 +175,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALLogarithmicFunction);
 
 - (float) valueForInput:(float) inputValue
 {
-	return [function valueForInput:1.0 - inputValue];
+	return [function valueForInput:1.0f - inputValue];
 }
 
 @end

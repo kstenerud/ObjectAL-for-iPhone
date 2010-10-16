@@ -157,7 +157,7 @@
 
 -(void) updateQuad:(ccV3F_C4B_T2F_Quad*)quad atIndex:(NSUInteger) n
 {
-	NSAssert( n >= 0 && n < capacity_, @"updateQuadWithTexture: Invalid index");
+	NSAssert( n < capacity_, @"updateQuadWithTexture: Invalid index");
 	
 	totalQuads_ =  MAX( n+1, totalQuads_);
 	
@@ -167,7 +167,7 @@
 
 -(void) insertQuad:(ccV3F_C4B_T2F_Quad*)quad atIndex:(NSUInteger)index
 {
-	NSAssert( index >= 0 && index < capacity_, @"insertQuadWithTexture: Invalid index");
+	NSAssert( index < capacity_, @"insertQuadWithTexture: Invalid index");
 	
 	totalQuads_++;
 	NSAssert( totalQuads_ <= capacity_, @"invalid totalQuads");
@@ -187,8 +187,8 @@
 
 -(void) insertQuadFromIndex:(NSUInteger)oldIndex atIndex:(NSUInteger)newIndex
 {
-	NSAssert( newIndex >= 0 && newIndex < totalQuads_, @"insertQuadFromIndex:atIndex: Invalid index");
-	NSAssert( oldIndex >= 0 && oldIndex < totalQuads_, @"insertQuadFromIndex:atIndex: Invalid index");
+	NSAssert( newIndex < totalQuads_, @"insertQuadFromIndex:atIndex: Invalid index");
+	NSAssert( oldIndex < totalQuads_, @"insertQuadFromIndex:atIndex: Invalid index");
 
 	if( oldIndex == newIndex )
 		return;
@@ -209,7 +209,7 @@
 
 -(void) removeQuadAtIndex:(NSUInteger) index
 {
-	NSAssert( index >= 0 && index < totalQuads_, @"removeQuadAtIndex: Invalid index");
+	NSAssert( index < totalQuads_, @"removeQuadAtIndex: Invalid index");
 	
 	NSUInteger remaining = (totalQuads_-1) - index;
 	
@@ -221,8 +221,6 @@
 	}
 	
 	totalQuads_--;
-	
-	NSAssert( totalQuads_ >= 0, @"invalid totalQuads");
 }
 
 -(void) removeAllQuads

@@ -56,7 +56,7 @@
 /** This is the index in the demo list where the main menu will start displaying from.
  * We keep this as a global so it maintains its value between scene changes.
  */
-static int startIndex = 0;
+static uint startIndex = 0;
 
 
 -(id) init
@@ -119,7 +119,7 @@ static int startIndex = 0;
 	[OALSimpleAudio purgeSharedInstance];
 }
 
-- (void) setStartIndex:(int) newIndex
+- (void) setStartIndex:(uint) newIndex
 {
 	CGSize screenSize = [[CCDirector sharedDirector] winSize];
 	float moveX = screenSize.width;
@@ -135,12 +135,12 @@ static int startIndex = 0;
 	nextButton.visible = startIndex < [scenes count] - kScenesPerPage - 1;
 	
 	menu = [CCMenu menuWithItems:nil];
-	int endIndex = startIndex + kScenesPerPage - 1;
+	uint endIndex = startIndex + kScenesPerPage - 1;
 	if(endIndex >= [scenes count])
 	{
 		endIndex = [scenes count] - 1;
 	}
-	for(int i = startIndex; i <= endIndex; i++)
+	for(uint i = startIndex; i <= endIndex; i++)
 	{
 		IndexedMenuItemLabel* item = [IndexedMenuItemLabel itemWithLabel:[CCLabel labelWithString:[sceneNames objectAtIndex:i]
 																						 fontName:@"Helvetica"
@@ -161,9 +161,9 @@ static int startIndex = 0;
 		CCAction* action = [CCSequence actions:
 							[CCSpawn actions:
 							 [TargetedAction actionWithTarget:oldMenu action:
-							  [CCMoveBy actionWithDuration:0.3 position:ccp(moveX,0)]],
+							  [CCMoveBy actionWithDuration:0.3f position:ccp(moveX,0)]],
 							 [TargetedAction actionWithTarget:menu action:
-							  [CCMoveBy actionWithDuration:0.3 position:ccp(moveX,0)]],
+							  [CCMoveBy actionWithDuration:0.3f position:ccp(moveX,0)]],
 							 nil],
 							[CCCallFunc actionWithTarget:self selector:@selector(onMenuSlideComplete)],
 							nil];
@@ -198,7 +198,7 @@ static int startIndex = 0;
 
 - (void) onNext:(id) sender
 {
-	int newIndex = startIndex + kScenesPerPage;
+	uint newIndex = startIndex + kScenesPerPage;
 	if(newIndex >= [scenes count])
 	{
 		newIndex = [scenes count] - 1;
