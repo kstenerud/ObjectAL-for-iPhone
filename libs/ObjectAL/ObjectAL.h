@@ -95,7 +95,7 @@
  - OALAudioTrack provides a simpler interface to AVAudioPlayer, allowing you to play, stop,
    pause, fade, and mute background music tracks.
  
- - OALAudioSupport provides support functionality for audio in iPhone, including automatic
+ - OALAudioSupport provides support functionality for audio in iOS devices, including automatic
    interrupt handling and audio data loading routines. <br>
    As well, it provides an easy way to configure how the audio session will handle iPod-style music
    playing and the silent switch.
@@ -131,7 +131,7 @@
  - ALSource is a sound emitting source that plays sound data from an ALBuffer.  It has position,
    direction, velocity, as well as other properties which determine how the sound is emitted.
  
- - ChannelSource allows you to reserve a certain number of sources for special purposes.
+ - ALChannelSource allows you to reserve a certain number of sources for special purposes.
  
  - ALBuffer is simply a container for sound data.  Only linear PCM is supported directly, but
    OALAudioSupport load methods, and OALSimpleAudio effect preload and play methods, will
