@@ -40,3 +40,4 @@ Other changes:
 - Fix for SynthesizeSingleton when using a nonstandard init method.
 - Compiles with stricter warnings.
 - Audio objects now have "volume" as an alias to "gain".
+- Fixed bug that caused distortion when loading certain formats into OpenAL.
