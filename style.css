@@ -253,10 +253,11 @@ p {
 
 p.git {
 	font: normal 12px courier, sans-serif;
+	color: #222222;
 	margin: 10px 0 0 0;
 	padding: 8px 0 8px 10px;
 	border: 1px solid #7F7F7F;
-	background: #F7F7F7;
+	background: #E7E7E7;
 }
 
 span {
