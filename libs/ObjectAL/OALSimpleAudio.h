@@ -67,6 +67,12 @@
 	ALChannelSource* channel;
 	/** Cache for preloaded sound samples. */
 	NSMutableDictionary* preloadCache;
+#if NS_BLOCKS_AVAILABLE
+	/** Queue for preloading and async operations that use blocks. This ensures all operations are safe because they are guaranteed to run in order. */
+	dispatch_queue_t oal_dispatch_queue;
+#endif
+	/** keeping track of how many effects remain to be loaded */
+	uint pendingLoadCount;
 	
 	/** Audio track to play background music */
 	OALAudioTrack* backgroundTrack;
@@ -281,6 +287,14 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALSimpleAudio);
 - (ALBuffer*) preloadEffect:(NSString*) filePath;
 
 #if NS_BLOCKS_AVAILABLE
+/** Asynchronous preload and cache sound effect for later playback.
+ *
+ * @param filePath an NSString with the path containing the sound data.
+ * @param completionBlock Executed when loading is complete.
+ */
+- (BOOL) preloadEffect:(NSString*) filePath
+	   completionBlock:(void(^)(ALBuffer *)) completionBlock;
+
 /** Asynchronous preload and cache multiple sound effects for later playback.
  *
  * @param filePaths An NSArray of NSStrings with the paths containing the sound data.
@@ -288,8 +302,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALSimpleAudio);
  * @param completionBlock Executed when all loading is complete.
  */
 - (void) preloadEffects:(NSArray*) filePaths
-		  progressBlock:(void (^)(uint progress, uint successCount, uint total)) progressBlock
-		completionBlock:(void (^)(uint successCount, uint total)) completionBlock;
+		  progressBlock:(void (^)(uint progress, uint successCount, uint total)) progressBlock;
 #else
 /** Asynchronous preload and cache multiple sound effects for later playback.
  *
@@ -298,8 +311,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALSimpleAudio);
  * @param completionInvocation Invoked when all loading is complete.
  */
 - (void) preloadEffects:(NSArray*) filePaths
-	 progressInvocation:(NSInvocation *) progressInvocation
-   completionInvocation:(NSInvocation *) completionInvocation;
+	 progressInvocation:(NSInvocation *) progressInvocation;
 #endif
 
 /** Unload a preloaded effect.

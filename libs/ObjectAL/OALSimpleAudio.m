@@ -79,6 +79,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 		channel = [[ALChannelSource channelWithSources:sources] retain];
 		
 		backgroundTrack = [[OALAudioTrack track] retain];
+		
+#if NS_BLOCKS_AVAILABLE
+		oal_dispatch_queue	= dispatch_queue_create("objectal.simpleaudio.queue", NULL);
+#endif
+		pendingLoadCount	= 0;
 
 		self.preloadCacheEnabled = YES;
 		self.bgVolume = 1.0f;
@@ -89,6 +94,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 
 - (void) dealloc
 {
+#if NS_BLOCKS_AVAILABLE
+	dispatch_release(oal_dispatch_queue);
+#endif
+	
 	[backgroundTrack release];
 	[channel stop];
 	[channel release];
@@ -125,12 +134,20 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 		{
 			if(value)
 			{
-				preloadCache = [[NSMutableDictionary dictionaryWithCapacity:50] retain];
+				preloadCache = [[NSMutableDictionary alloc] initWithCapacity:64];
 			}
 			else
 			{
-				[preloadCache release];
-				preloadCache = nil;
+				if(pendingLoadCount > 0)
+				{
+					OAL_LOG_WARNING(@"attempted to turn off preload cache while pending loads are queued.");
+					return;
+				}
+				else
+				{
+					[preloadCache release];
+					preloadCache = nil;
+				}
 			}
 		}
 	}
@@ -395,48 +412,94 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 		OAL_LOG_ERROR(@"filePath was NULL");
 		return nil;
 	}
+	if(pendingLoadCount > 0)
+		OAL_LOG_WARNING(@"You are loading an effect synchronously, but have pending async loads that have not completed. Your load will happen after those finish. Your thread is now stuck waiting. Next time just load everything async please.");
+
+#if NS_BLOCKS_AVAILABLE
+	//Using blocks with the same queue used to asynch load removes the need for locking
+	//BUT be warned that if you had called preloadEffects and then called this method, your app will stall until all of the loading is done.
+	//It is advised you just always use async loading
+	__block ALBuffer* retBuffer = nil;
+	pendingLoadCount++;
+	dispatch_sync(oal_dispatch_queue, ^{
+		retBuffer = [self internalPreloadEffect:filePath];
+	});
+	pendingLoadCount--;
+	return retBuffer;
+#else
 	return [self internalPreloadEffect:filePath];
+#endif
 }
 
 #if NS_BLOCKS_AVAILABLE
+
+- (BOOL) preloadEffect:(NSString*) filePath
+			completionBlock:(void(^)(ALBuffer *)) completionBlock
+{
+	if(nil == filePath)
+	{
+		OAL_LOG_ERROR(@"filePath was NULL");
+		completionBlock(nil);
+		return NO;
+	}
+	
+	pendingLoadCount++;
+	dispatch_async(oal_dispatch_queue, ^{
+		OAL_LOG_INFO(@"Preloading effect: %@", filePath);
+		
+		ALBuffer *retBuffer = [self internalPreloadEffect:filePath];
+		if(!retBuffer)
+		{
+			 OAL_LOG_WARNING(@"%@ failed to preload.", filePath);
+		}
+		dispatch_async(dispatch_get_main_queue(),
+		^{
+			completionBlock(retBuffer);
+			pendingLoadCount--;
+		});
+	});
+	return YES;
+}
+
 - (void) preloadEffects:(NSArray*) filePaths
 		  progressBlock:(void (^)(uint progress, uint successCount, uint total)) progressBlock
-		completionBlock:(void (^)(uint successCount, uint total)) completionBlock
 {
 	uint total					= [filePaths count];
 	if(total < 1)
 	{
 		OAL_LOG_ERROR(@"Preload effects: No files to process");
+		progressBlock(0,0,0);
 		return;
 	}
 	
 	__block uint successCount	= 0;
 	
-	[filePaths enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
-	 {
-		 NSLog(@"OAL preloading: %@", obj);
-		 ALBuffer *result = [self preloadEffect:(NSString *)obj];
-		 if(!result)
+	pendingLoadCount			+= total;
+	dispatch_async(oal_dispatch_queue,
+	^{
+		[filePaths enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
 		 {
-			 OAL_LOG_WARNING(@"%@ failed to preload.", obj);
-		 }
-		 else
-		 {
-			 successCount++;
-		 }
-		 uint cnt = idx+1;
-		 dispatch_async(dispatch_get_main_queue(), ^
-		 {
-			 progressBlock(cnt, successCount, total);
-		 });
-		 if(cnt == total)
-		 {
-			 dispatch_async(dispatch_get_main_queue(), ^
+			 OAL_LOG_INFO(@"Preloading effect: %@", obj);
+			 ALBuffer *result = [self internalPreloadEffect:(NSString *)obj];
+			 if(!result)
 			 {
-				 completionBlock(successCount, total);
+				 OAL_LOG_WARNING(@"%@ failed to preload.", obj);
+			 }
+			 else
+			 {
+				 successCount++;
+			 }
+			 uint cnt = idx+1;
+			 dispatch_async(dispatch_get_main_queue(), 
+			 ^{
+				 if(cnt == total)
+				 {
+					 pendingLoadCount		-= total;
+				 }
+				 progressBlock(cnt, successCount, total);
 			 });
-		 }
-	 }];
+		 }];
+	});
 }
 #else
 - (void) preloadEffects:(NSArray*) filePaths
