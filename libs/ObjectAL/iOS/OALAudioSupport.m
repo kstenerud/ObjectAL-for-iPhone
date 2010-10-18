@@ -400,20 +400,12 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSupport);
 	audioStreamDescription.mFormatFlags = kAudioFormatFlagsNativeEndian |
 	kAudioFormatFlagIsSignedInteger |
 	kAudioFormatFlagIsPacked;
+	audioStreamDescription.mBitsPerChannel = 16;
 	if(audioStreamDescription.mChannelsPerFrame > 2)
 	{
 		// Don't allow more than 2 channels (stereo)
 		OAL_LOG_WARNING(@"Audio stream for url %@ contains %d channels. Capping at 2.", url, audioStreamDescription.mChannelsPerFrame);
 		audioStreamDescription.mChannelsPerFrame = 2;
-	}
-	// Convert to 8 or 16 bit as necessary
-	if(audioStreamDescription.mBitsPerChannel < 8)
-	{
-		audioStreamDescription.mBitsPerChannel = 8;
-	}
-	else if(audioStreamDescription.mBitsPerChannel > 8)
-	{
-		audioStreamDescription.mBitsPerChannel = 16;
 	}
 	audioStreamDescription.mBytesPerFrame = audioStreamDescription.mChannelsPerFrame * audioStreamDescription.mBitsPerChannel / 8;
 	audioStreamDescription.mFramesPerPacket = 1;
