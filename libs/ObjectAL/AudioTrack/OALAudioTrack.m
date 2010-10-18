@@ -494,7 +494,7 @@
 		// Only load if it's not the same URL as last time.
 		if([[url absoluteString] isEqualToString:[currentlyLoadedUrl absoluteString]])
 		{
-			return NO;
+			return YES;
 		}
 		
 		[self stopActions];
