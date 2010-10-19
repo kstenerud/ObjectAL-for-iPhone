@@ -154,8 +154,8 @@ static uint startIndex = 0;
 	startIndex = newIndex;
 	oldMenu = menu;
 	
-	previousButton.visible = startIndex > 0;
-	nextButton.visible = startIndex < [scenes count] - kScenesPerPage - 1;
+	previousButton.visible = previousButton.isTouchEnabled = startIndex > 0;
+	nextButton.visible = nextButton.isTouchEnabled = startIndex < [scenes count] - kScenesPerPage - 1;
 	
 	menu = [CCMenu menuWithItems:nil];
 	uint endIndex = startIndex + kScenesPerPage - 1;
