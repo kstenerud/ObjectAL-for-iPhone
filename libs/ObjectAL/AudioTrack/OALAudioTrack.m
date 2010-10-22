@@ -269,6 +269,10 @@
 	[super dealloc];
 }
 
+- (NSString*) description
+{
+	return [NSString stringWithFormat:@"<%@: %p: %@>", [self class], self, [currentlyLoadedUrl lastPathComponent]];
+}
 
 #pragma mark Properties
 

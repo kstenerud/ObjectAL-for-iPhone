@@ -166,7 +166,7 @@
    OS X. You can play the following linear PCM variants: mono 8-bit, mono 16-bit, stereo 8-bit, and
    stereo 16-bit.
  
- AudioTrack supports all hardware and software decoded formats as
+ OALAudioTrack supports all hardware and software decoded formats as
  <a href="http://developer.apple.com/library/ios/#documentation/AudioVideo/Conceptual/MultimediaPG/UsingAudio/UsingAudio.html">
  specified by Apple here</a>.
 
@@ -486,8 +486,8 @@
  - <strong>VolumePitchPanDemo</strong>: Demonstrates using gain, pitch, and pan controls.
  - <strong>CrossFadeDemo</strong>: Demonstrates crossfading between two sources.
  - <strong>ChannelsDemo</strong>: Demonstrates using audio channels.
- - <strong>FadeDemo</strong>: Demonstrates realtime fading with AudioTrack and ALSource.
- - <strong>AudioTrackDemo</strong>: Demonstrates using multiple AudioTrack objects.
+ - <strong>FadeDemo</strong>: Demonstrates realtime fading with OALAudioTrack and ALSource.
+ - <strong>AudioTrackDemo</strong>: Demonstrates using multiple OALAudioTrack objects.
  - <strong>HardwareDemo</strong>: Demonstrates hardware monitoring features.
  - <strong>PlanetKillerDemo</strong>: Demonstrates using OALSimpleAudio in a game setting.
  
@@ -549,7 +549,7 @@
  OBJECTAL_CFG_SIMULATOR_BUG_WORKAROUND to 1 in ObjectALConfig.h.
 
  There's a bug in the simulator that causes OpenAL-based sounds to stop playing in certain cases
- when using AVAudioPlayer (AudioTrack).  ObjectAL contains code to work around this issue,
+ when using AVAudioPlayer (OALAudioTrack).  ObjectAL contains code to work around this issue,
  but it's not a 100% fix.
  
  
@@ -563,14 +563,14 @@
  There's a particularly nasty bug in the simulator's OpenAL and AVAudioPlayer implementation that
  causes the simulator to freeze for 60+ seconds in a very specific case:
  
- If you use AudioTrack to play background music, then stop the music,
+ If you use OALAudioTrack to play background music, then stop the music,
  then close the current OpenAL context, the simulator will freeze (a real device won't).
  
  This is not really a huge problem, however, since you really should be making a sound manager
  singleton object (what OALSimpleAudio is, basically) to handle the ALDevice and ALContext
  (which will in 99.9% of cases last for the entire duration of your program).
  
- If you absolutely must close the current OpenAL context, start any AudioTrack objects playing
+ If you absolutely must close the current OpenAL context, start any OALAudioTrack objects playing
  at 0 volume first.
  
  */
