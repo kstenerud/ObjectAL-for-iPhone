@@ -60,7 +60,7 @@
 {
 	if(nil != (self = [super init]))
 	{
-		sources = [[NSMutableArray arrayWithCapacity:10] retain];
+		sources = [[NSMutableArray alloc] initWithCapacity:10];
 	}
 	return self;
 }
