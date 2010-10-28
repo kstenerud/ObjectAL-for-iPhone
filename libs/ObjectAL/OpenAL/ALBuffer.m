@@ -50,6 +50,8 @@
 		format = formatIn;
 
 		[ALWrapper bufferDataStatic:bufferId format:format data:bufferData size:size frequency:frequency];
+		
+		duration = (float)self.size / ((float)self.frequency * (float)self.bits / 8);
 	}
 	return self;
 }
@@ -64,6 +66,11 @@
 	[super dealloc];
 }
 
+- (NSString*) description
+{
+	NSString* nameStr = NSNotFound == [name rangeOfString:@"://"].location ? name : [name lastPathComponent];
+	return [NSString stringWithFormat:@"<%@: %p: %@>", [self class], self, nameStr];
+}
 
 #pragma mark Properties
 
@@ -94,5 +101,7 @@
 {
 	return [ALWrapper getBufferi:bufferId parameter:AL_SIZE];	
 }
+
+@synthesize duration;
 
 @end

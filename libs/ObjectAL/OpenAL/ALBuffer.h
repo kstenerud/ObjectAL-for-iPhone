@@ -42,6 +42,7 @@
 	ALuint bufferId;
 	NSString* name;
 	ALenum format;
+	float duration;
 	/** The uncompressed sound data to play. */
 	void* bufferData;
 }
@@ -73,6 +74,8 @@
 /** The size, in bytes, of the currently loaded buffer data. */
 @property(readonly) ALuint size;
 
+/** The duration of the sample in this buffer, in seconds. */
+@property(readonly) float duration;
 
 #pragma mark Object Management
 
