@@ -81,9 +81,6 @@
 #pragma mark -
 #pragma mark General Logging
 
-
-#if OBJECTAL_CFG_LOG_ERRORS
-
 /** Base log call.  This is called by other logging macros.
  *
  * @param FMT_STRING The format string to use.  Must contain %s for the context and %@ for the message.
@@ -94,34 +91,38 @@
 #define OAL_LOG_BASE(FMT_STRING, CONTEXT, FMT, ...)	\
 	NSLog(FMT_STRING, (CONTEXT), [NSString stringWithFormat:(FMT), ##__VA_ARGS__]);
 
-#else /* OBJECTAL_CFG_LOG_ERRORS */
-
-#define OAL_LOG_BASE(FMT_STRING, CONTEXT, FMT, ...)
-
-#endif /* OBJECTAL_CFG_LOG_ERRORS */
-
-
 /** Write an "Info" log entry.
  *
  * @param FMT Message with NSLog() style formatting.
  * @param ... Arguments
  */
+#if OBJECTAL_CFG_LOG_LEVEL > 2
 #define OAL_LOG_INFO(FMT, ...) OAL_LOG_BASE(@"Info: %s: %@", __PRETTY_FUNCTION__, FMT, ##__VA_ARGS__)
+#else /* OBJECTAL_CFG_LOG_LEVEL */
+#define OAL_LOG_INFO(FMT, ...)
+#endif /* OBJECTAL_CFG_LOG_LEVEL */
 
 /** Write a "Warning" log entry.
  *
  * @param FMT Message with NSLog() style formatting.
  * @param ... Arguments
  */
+#if OBJECTAL_CFG_LOG_LEVEL > 1
 #define OAL_LOG_WARNING(FMT, ...) OAL_LOG_BASE(@"Warning: %s: %@", __PRETTY_FUNCTION__, FMT, ##__VA_ARGS__)
+#else /* OBJECTAL_CFG_LOG_LEVEL */
+#define OAL_LOG_WARNING(FMT, ...)
+#endif /* OBJECTAL_CFG_LOG_LEVEL */
 
 /** Write an "Error" log entry.
  *
  * @param FMT Message with NSLog() style formatting.
  * @param ... Arguments
  */
+#if OBJECTAL_CFG_LOG_LEVEL > 0
 #define OAL_LOG_ERROR(FMT, ...) OAL_LOG_BASE(@"Error: %s: %@", __PRETTY_FUNCTION__, FMT, ##__VA_ARGS__)
-
+#else /* OBJECTAL_CFG_LOG_LEVEL */
+#define OAL_LOG_ERROR(FMT, ...)
+#endif /* OBJECTAL_CFG_LOG_LEVEL */
 
 /** Write an "Error" log entry with context.
  *
@@ -129,13 +130,16 @@
  * @param FMT Message with NSLog() style formatting.
  * @param ... Arguments
  */
+#if OBJECTAL_CFG_LOG_LEVEL > 0
 #define OAL_LOG_ERROR_CONTEXT(CONTEXT, FMT, ...) OAL_LOG_BASE(@"Error: %s: %@", CONTEXT, FMT, ##__VA_ARGS__)
-
+#else /* OBJECTAL_CFG_LOG_LEVEL */
+#define OAL_LOG_ERROR_CONTEXT(FMT, ...)
+#endif /* OBJECTAL_CFG_LOG_LEVEL */
 
 #pragma mark -
 #pragma mark Special Purpose Logging
 
-#if OBJECTAL_CFG_LOG_ERRORS
+#if OBJECTAL_CFG_LOG_LEVEL > 0
 
 /** Report on the specified AudioSession error code, logging an error if the code does not indicate success.
  *
@@ -161,9 +165,9 @@ if(noErr != (ERROR_CODE)) \
 	[OALAudioSupport logExtAudioError:(ERROR_CODE) function:__PRETTY_FUNCTION__ description:(FMT), ##__VA_ARGS__]; \
 }
 
-#else /* OBJECTAL_CFG_LOG_ERRORS */
+#else /* OBJECTAL_CFG_LOG_LEVEL */
 
 #define REPORT_AUDIOSESSION_CALL(ERROR_CODE, FMT, ...)
 #define REPORT_EXTAUDIO_CALL(ERROR_CODE, FMT, ...)
 
-#endif /* OBJECTAL_CFG_LOG_ERRORS */
+#endif /* OBJECTAL_CFG_LOG_LEVEL */

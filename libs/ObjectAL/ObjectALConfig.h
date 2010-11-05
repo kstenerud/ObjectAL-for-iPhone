@@ -63,14 +63,18 @@
 #define OBJECTAL_CFG_SYNCHRONIZED_OPERATIONS 1
 
 
-/** When this option is enabled, ObjectAL will output log entries for any errors that occur.
- * In general, turning this off won't help performance since the log code only gets called
+/** When this option is greater than zero, ObjectAL will output log entries for that correspond to the LEVEL.
+ * LEVEL = 0 // No output
+ * LEVEL = 1 // Errors only
+ * LEVEL = 2 // Errors & Warnings
+ * LEVEL = 3 // Errors, Warnings & Info
+ * In general, setting this to zero won't help performance since the log code only gets called
  * when an error occurs.  There can be a slight improvement, however, since it won't even
  * check return codes in many cases. <br>
  *
  * Recommended setting: 1
  */
-#define OBJECTAL_CFG_LOG_ERRORS 1
+#define OBJECTAL_CFG_LOG_LEVEL 1
 
 
 /** There are various cases with certain iOS versions where the audio session will receive an
