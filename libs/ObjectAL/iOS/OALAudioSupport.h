@@ -50,12 +50,12 @@
  *
  * \code afconvert -f caff -d I8@@22050 sourcefile.wav destfile.caf \endcode
  */
-@interface OALAudioSupport : NSObject
+@interface OALAudioSupport : NSObject <AVAudioSessionDelegate>
 {
 	/** Operation queue for asynchronous loading. */
 	NSOperationQueue* operationQueue;
 
-	UInt32 overrideAudioSessionCategory;
+	NSString* overrideAudioSessionCategory;
 
 	bool handleInterruptions;
 	bool allowIpod;
@@ -68,9 +68,6 @@
 	/** Delegate for interruptions */
 	id<AVAudioSessionDelegate> audioSessionDelegate;
 
-	/** Marks the overall sound engine as being suspended. */
-	bool suspended;
-	
 	/** If true, BackgoundAudio was already suspended when the interrupt occurred. */
 	bool backgroundAudioWasSuspended;
 	
@@ -79,6 +76,9 @@
 	
 	/** If true, the audio session was active when the interrupt occurred. */
 	bool audioSessionWasActive;
+	
+	/** The time that the application was last activated. */
+	NSDate* lastActivated;
 }
 
 
@@ -94,7 +94,7 @@
  *
  * Default value: 0
  */
-@property(readwrite,assign) UInt32 overrideAudioSessionCategory;
+@property(readwrite,retain) NSString* overrideAudioSessionCategory;
 
 /** If YES, allow ipod music to continue playing (NOT SUPPORTED ON THE SIMULATOR).
  * Note: If this is enabled, and another app is playing music, background audio
@@ -152,9 +152,6 @@
 
 /** If true, the audio session is active */
 @property(readwrite,assign) bool audioSessionActive;
-
-/** Marks the overall sound engine as being suspended. */
-@property(readonly) bool suspended;
 
 /** Get the device's final hardware output volume, as controlled by
  * the volume button on the side of the device.

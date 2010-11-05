@@ -32,7 +32,9 @@
 #import "Support/EAGLView.h"
 
 /** @typedef tPixelFormat
- Possible Pixel Formats for the EAGLView
+ Possible Pixel Formats for the EAGLView.
+ 
+ @deprecated Will be removed in v1.0
  */
 typedef enum {
 	/** RGB565 pixel format. No alpha. 16-bit. (Default) */
@@ -52,6 +54,8 @@ typedef enum {
 /** @typedef tDepthBufferFormat
  Possible DepthBuffer Formats for the EAGLView.
  Use 16 or 24 bit depth buffers if you are going to use real 3D objects.
+ 
+ @deprecated Will be removed in v1.0
  */
 typedef enum {
 	/// A Depth Buffer of 0 bits will be used (default)
@@ -140,7 +144,7 @@ typedef enum {
 	CCDirectorTypeMainLoop = kCCDirectorTypeMainLoop,
 	CCDirectorTypeThreadMainLoop = kCCDirectorTypeThreadMainLoop,
 	CCDirectorTypeDisplayLink = kCCDirectorTypeDisplayLink,
-	CCDirectorTypeDefault =kCCDirectorTypeDefault,
+	CCDirectorTypeDefault = kCCDirectorTypeDefault,
 
 
 } ccDirectorType;
@@ -191,28 +195,24 @@ and when to execute the Scenes.
 {
 	EAGLView	*openGLView_;
 
-	NSBundle* loadingBundle;
-
 	// internal timer
-	NSTimeInterval animationInterval;
-	NSTimeInterval oldAnimationInterval;
+	NSTimeInterval animationInterval_;
+	NSTimeInterval oldAnimationInterval_;
 
 	tPixelFormat pixelFormat_;
 	tDepthBufferFormat depthBufferFormat_;
-
-	/* landscape mode ? */
-	BOOL landscape;
 	
 	/* orientation */
 	ccDeviceOrientation	deviceOrientation_;
 	
 	/* display FPS ? */
-	BOOL displayFPS;
-	int frames;
-	ccTime accumDt;
-	ccTime frameRate;
+	BOOL displayFPS_;
+
+	int frames_;
+	ccTime accumDt_;
+	ccTime frameRate_;
 #if	CC_DIRECTOR_FAST_FPS
-	CCLabelAtlas *FPSLabel;
+	CCLabelAtlas *FPSLabel_;
 #endif
 	
 	/* is the running scene paused */
@@ -232,7 +232,7 @@ and when to execute the Scenes.
 	NSMutableArray *scenesStack_;
 	
 	/* last time the main loop was updated */
-	struct timeval lastUpdate;
+	struct timeval lastUpdate_;
 	/* delta time since last tick to main loop */
 	ccTime dt;
 	/* whether or not the next delta time will be zero */
@@ -252,9 +252,9 @@ and when to execute the Scenes.
 	
 	/* contentScaleFactor could be simulated */
 	BOOL	isContentScaleSupported_;
-	
+
 #if CC_ENABLE_PROFILERS
-	ccTime accumDtForProfiler;
+	ccTime accumDtForProfiler_;
 #endif
 }
 
@@ -270,7 +270,9 @@ and when to execute the Scenes.
 @property (nonatomic,readonly) tPixelFormat pixelFormat DEPRECATED_ATTRIBUTE;
 /** whether or not the next delta time will be zero */
 @property (nonatomic,readwrite,assign) BOOL nextDeltaTimeZero;
-/** The device orientattion */
+/** The device orientation.
+ If the EAGLView is going to be controlled by an UIViewController, then set the CCDirector orientation to portrait.
+ */
 @property (nonatomic,readwrite) ccDeviceOrientation deviceOrientation;
 /** Whether or not the Director is paused */
 @property (nonatomic,readonly) BOOL isPaused;
@@ -437,10 +439,16 @@ and when to execute the Scenes.
  */
 -(void) startAnimation;
 
+/** Draw the scene.
+ This method is called every frame. Don't call it manually.
+ */
+-(void) drawScene;
+
 // Memory Helper
 
-/** Removes cached all cocos2d cached data.
- It will purge the CCTextureCache, CCSpriteFrameCache, CCBitmapFont cache
+/** Removes all the cocos2d data that was cached automatically.
+ It will purge the CCTextureCache, CCBitmapFont cache.
+ IMPORTANT: The CCSpriteFrameCache won't be purged. If you want to purge it, you have to purge it manually.
  @since v0.99.3
  */
 -(void) purgeCachedData;
@@ -455,6 +463,10 @@ and when to execute the Scenes.
 - (void) setAlphaBlending: (BOOL) on;
 /** enables/disables OpenGL depth test */
 - (void) setDepthTest: (BOOL) on;
+/** recalculate the projection view and projection size based on the EAGLVIEW
+ @since v0.99.4
+ */
+- (void) recalculateProjectionAndEAGLViewSize;
 
 @end
 

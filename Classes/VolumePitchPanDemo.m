@@ -62,11 +62,11 @@
 	slider = [VerticalSlider sliderWithTrack:track
 										knob:[CCSprite spriteWithFile:@"SliderKnobVertical.png"]
 									  target:self moveSelector:@selector(onVolumeChanged:) dropSelector:@selector(onVolumeChanged:)];
-	slider.scale = 2.0;
-	slider.anchorPoint = ccp(0.5, 0);
+	slider.scale = 2.0f;
+	slider.anchorPoint = ccp(0.5f, 0);
 	slider.position = ccp(100, 100);
 	[self addChild:slider];
-	slider.value = 1.0;
+	slider.value = 1.0f;
 	label = [CCLabel labelWithString:@"Volume" fontName:@"Helvetica" fontSize:30];
 	label.anchorPoint = ccp(0, 1);
 	label.color = ccBLACK;
@@ -81,11 +81,11 @@
 	slider = [VerticalSlider sliderWithTrack:track
 										knob:[CCSprite spriteWithFile:@"SliderKnobVertical.png"]
 									  target:self moveSelector:@selector(onPitchChanged:) dropSelector:@selector(onPitchChanged:)];
-	slider.scale = 2.0;
-	slider.anchorPoint = ccp(0.5, 0);
+	slider.scale = 2.0f;
+	slider.anchorPoint = ccp(0.5f, 0);
 	slider.position = ccp(340, 100);
 	[self addChild:slider];
-	slider.value = 0.5;
+	slider.value = 0.5f;
 	label = [CCLabel labelWithString:@"Pitch" fontName:@"Helvetica" fontSize:30];
 	label.anchorPoint = ccp(0, 1);
 	label.color = ccBLACK;
@@ -100,13 +100,13 @@
 	slider = [HorizontalSlider sliderWithTrack:track
 										  knob:[CCSprite spriteWithFile:@"SliderKnobHorizontal.png"]
 										target:self moveSelector:@selector(onPanChanged:) dropSelector:@selector(onPanChanged:)];
-	slider.scale = 2.0;
-	slider.anchorPoint = ccp(0.5, 0);
+	slider.scale = 2.0f;
+	slider.anchorPoint = ccp(0.5f, 0);
 	slider.position = ccp(center.x,10);
 	[self addChild:slider];
-	slider.value = 0.5;
+	slider.value = 0.5f;
 	label = [CCLabel labelWithString:@"Pan" fontName:@"Helvetica" fontSize:30];
-	label.anchorPoint = ccp(0.5, 0);
+	label.anchorPoint = ccp(0.5f, 0);
 	label.color = ccBLACK;
 	label.position = ccp(slider.position.x,
 						 slider.position.y + slider.contentSize.height * slider.scaleY + 10);

@@ -75,22 +75,29 @@
  */
 #define CC_COCOSNODE_RENDER_SUBPIXEL 1
 
-/** @def CC_SPRITESHEET_RENDER_SUBPIXEL
- If enabled, the CCSprite objects rendered with CCSpriteSheet will be able to render in subpixels.
+/** @def CC_SPRITEBATCHNODE_RENDER_SUBPIXEL
+ If enabled, the CCSprite objects rendered with CCSpriteBatchNode will be able to render in subpixels.
  If disabled, integer pixels will be used.
  
  To enable set it to a value different than 0. Enabled by default.
  */
-#define CC_SPRITESHEET_RENDER_SUBPIXEL	1
+#define CC_SPRITEBATCHNODE_RENDER_SUBPIXEL	1
 
-/** @def CC_TEXTURE_ATLAS_USES_VBO
- If enabled, the CCTextureAtlas object will use VBO instead of vertex list (VBO is recommended by Apple)
+/** @def CC_USES_VBO
+ If enabled, batch nodes (texture atlas and particle system) will use VBO instead of vertex list (VBO is recommended by Apple)
  
- To enable set it to a value different than 0. Enabled by default.
-
- @since v0.99.0
+ To enable set it to a value different than 0.
+ Enabled by default on ARMv7 processors and iPhone Simulator.
+ Disabled by default on ARMv6 processors.
+ 
+ @since v0.99.5
  */
-#define CC_TEXTURE_ATLAS_USES_VBO 1
+
+#if defined(__ARM_NEON__) || defined(TARGET_IPHONE_SIMULATOR)
+#define CC_USES_VBO 1
+#else
+#define CC_USES_VBO 0
+#endif
 
 /** @def CC_NODE_TRANSFORM_USING_AFFINE_MATRIX
  If enabled, CCNode will transform the nodes using a cached Affine matrix.
@@ -105,6 +112,16 @@
 
  */
 #define CC_NODE_TRANSFORM_USING_AFFINE_MATRIX 1
+
+/** @def CC_OPTIMIZE_BLEND_FUNC_FOR_PREMULTIPLIED_ALPHA
+ If most of your imamges have pre-multiplied alpha, set it to 1 (if you are going to use .PNG/.JPG file images).
+ Only set to 0 if ALL your images by-pass Apple UIImage loading system (eg: if you use libpng or PVR images)
+
+ To enable set it to a value different than 0. Enabled by default.
+
+ @since v0.99.5
+ */
+#define CC_OPTIMIZE_BLEND_FUNC_FOR_PREMULTIPLIED_ALPHA 1
 
 /** @def CC_TEXTURE_ATLAS_USE_TRIANGLE_STRIP
  Use GL_TRIANGLE_STRIP instead of GL_TRIANGLES when rendering the texture atlas.
@@ -135,13 +152,13 @@
  */
 #define CC_SPRITE_DEBUG_DRAW 0
 
-/** @def CC_SPRITESHEET_DEBUG_DRAW
+/** @def CC_SPRITEBATCHNODE_DEBUG_DRAW
  If enabled, all subclasses of CCSprite that are rendered using an CCSpriteSheet draw a bounding box.
  Useful for debugging purposes only. It is recommened to leave it disabled.
  
  To enable set it to a value different than 0. Disabled by default.
  */
-#define CC_SPRITESHEET_DEBUG_DRAW 0
+#define CC_SPRITEBATCHNODE_DEBUG_DRAW 0
 
 /** @def CC_BITMAPFONTATLAS_DEBUG_DRAW
  If enabled, all subclasses of BitmapFontAtlas will draw a bounding box

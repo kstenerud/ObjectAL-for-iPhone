@@ -73,6 +73,22 @@
 #define OBJECTAL_CFG_LOG_ERRORS 1
 
 
+/** There are various cases with certain iOS versions where the audio session will receive an
+ * "interrupt begin" event, but no corresponding "interrupt end" event, causing the OpenAL context
+ * to remain disabled. <br>
+ * If this option is enabled, it will add extra processing to all ALSource, ALListener,
+ * and ALContext operations to ensure that the context is set up properly. <br>
+ *
+ * This bug is known to surface in iOS 4.0 when you start playback using MPMusicPlayerController,
+ * and when locking/unlocking the device in iOS 4.2 GM.  The lock/unlock bug is already handled
+ * elsewhere, so the only time you'd actually need to have this set is if you're using
+ * MPMusicPlayerController and expect the app to be run on an iOS 4.0 (rather than 4.1 or 4.2) device.
+ *
+ * Recommended setting: 1 if you're using MPMusicPlayerController, 0 otherwise.
+ */
+#define OBJECTAL_CFG_INTERRUPT_BUG_WORKAROUND 1
+
+
 /** The CLANG/LLVM 1.5 compiler that ships with XCode 3.2.3 fails when compiling a method
  * which takes a struct and passes that struct or one of its components to a C function
  * from within a @synchronized(self) context when compiling for the Device in Debug

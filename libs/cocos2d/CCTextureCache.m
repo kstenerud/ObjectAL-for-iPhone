@@ -27,9 +27,33 @@
 #import "CCTexture2D.h"
 #import "ccMacros.h"
 #import "CCDirector.h"
+#import "CCConfiguration.h"
 #import "Support/CCFileUtils.h"
 
 static EAGLContext *auxEAGLcontext = nil;
+
+//static NSString* loadHiResImage( NSString* path )
+//{
+//	NSString *newPath = nil;
+//
+//	if([[UIScreen mainScreen] scale] == 2.0)
+//	{
+//		NSString *path2x = [path stringByReplacingCharactersInRange:NSMakeRange([path length] - 4, 0) withString:@"@2x"];
+//		newPath = [[UIImage alloc] initWithContentsOfFile:path2x];
+//		
+//		if(!newPath)
+//		{
+//			newPath = [[UIImage alloc] initWithContentsOfFile:path];
+//		}
+//	}
+//	else
+//	{
+//		newPath = [[UIImage alloc] initWithContentsOfFile:path];
+//	}
+//	
+//	return newPath;
+//}
+
 
 @interface CCAsyncObject : NSObject
 {
@@ -56,7 +80,6 @@ static EAGLContext *auxEAGLcontext = nil;
 @end
 
 
-
 @implementation CCTextureCache
 
 #pragma mark TextureCache - Alloc, Init & Dealloc
@@ -79,6 +102,7 @@ static CCTextureCache *sharedTextureCache;
 +(void)purgeSharedTextureCache
 {
 	[sharedTextureCache release];
+	sharedTextureCache = nil;
 }
 
 -(id) init
@@ -193,7 +217,9 @@ static CCTextureCache *sharedTextureCache;
 			tex = [self addPVRTCImage:fullpath];
 		
 		// Issue #886: TEMPORARY FIX FOR TRANSPARENT JPEGS IN IOS4
-		else if ( [lowerCase hasSuffix:@".jpg"] || [lowerCase hasSuffix:@".jpeg"]) {
+		else if ( ( [[CCConfiguration sharedConfiguration] iOSVersion] >= kCCiOSVersion_4_0) &&
+				  ( [lowerCase hasSuffix:@".jpg"] || [lowerCase hasSuffix:@".jpeg"] ) 
+				 ) {
 			// convert jpg to png before loading the texture
 			UIImage *jpg = [[UIImage alloc] initWithContentsOfFile:fullpath];
 			UIImage *png = [[UIImage alloc] initWithData:UIImagePNGRepresentation(jpg)];
@@ -215,7 +241,6 @@ static CCTextureCache *sharedTextureCache;
 			UIImage *image = [ [UIImage alloc] initWithContentsOfFile: fullpath ];
 			tex = [ [CCTexture2D alloc] initWithImage: image ];
 			[image release];
-			
 
 			if( tex )
 				[textures setObject: tex forKey:path];
@@ -268,7 +293,7 @@ static CCTextureCache *sharedTextureCache;
 		return tex;
 	}
 	
-	tex = [[CCTexture2D alloc] initWithPVRTCFile: fileimage];
+	tex = [[CCTexture2D alloc] initWithPVRFile: fileimage];
 	if( tex )
 		[textures setObject: tex forKey:fileimage];
 	else

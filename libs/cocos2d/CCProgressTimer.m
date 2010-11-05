@@ -387,16 +387,16 @@ const char kProgressTextureCoords = 0x1e;
 		
 		if (sprite_.flipY || sprite_.flipX) {
 			if (sprite_.flipX) {
-				unsigned char idx = vIndexes[0];
-				vertexData_[idx].texCoords.u = tMax.x - vertexData_[idx].texCoords.u;
-				idx = vIndexes[1];
-				vertexData_[idx].texCoords.u = tMax.x - vertexData_[idx].texCoords.u;
+				unsigned char index = vIndexes[0];
+				vertexData_[index].texCoords.u = tMax.x - vertexData_[index].texCoords.u;
+				index = vIndexes[1];
+				vertexData_[index].texCoords.u = tMax.x - vertexData_[index].texCoords.u;
 			}
 			if(sprite_.flipY){
-				unsigned char idx = vIndexes[0];
-				vertexData_[idx].texCoords.v = tMax.y - vertexData_[idx].texCoords.v;
-				idx = vIndexes[1];
-				vertexData_[idx].texCoords.v = tMax.y - vertexData_[idx].texCoords.v;
+				unsigned char index = vIndexes[0];
+				vertexData_[index].texCoords.v = tMax.y - vertexData_[index].texCoords.v;
+				index = vIndexes[1];
+				vertexData_[index].texCoords.v = tMax.y - vertexData_[index].texCoords.v;
 			}
 		}
 		
@@ -424,16 +424,16 @@ const char kProgressTextureCoords = 0x1e;
 	
 	if (sprite_.flipY || sprite_.flipX) {
 		if (sprite_.flipX) {
-			unsigned char idx = vIndexes[0];
-			vertexData_[idx].texCoords.u = tMax.x - vertexData_[idx].texCoords.u;
-			idx = vIndexes[1];
-			vertexData_[idx].texCoords.u = tMax.x - vertexData_[idx].texCoords.u;
+			unsigned char index = vIndexes[0];
+			vertexData_[index].texCoords.u = tMax.x - vertexData_[index].texCoords.u;
+			index = vIndexes[1];
+			vertexData_[index].texCoords.u = tMax.x - vertexData_[index].texCoords.u;
 		}
 		if(sprite_.flipY){
-			unsigned char idx = vIndexes[0];
-			vertexData_[idx].texCoords.v = tMax.y - vertexData_[idx].texCoords.v;
-			idx = vIndexes[1];
-			vertexData_[idx].texCoords.v = tMax.y - vertexData_[idx].texCoords.v;
+			unsigned char index = vIndexes[0];
+			vertexData_[index].texCoords.v = tMax.y - vertexData_[index].texCoords.v;
+			index = vIndexes[1];
+			vertexData_[index].texCoords.v = tMax.y - vertexData_[index].texCoords.v;
 		}
 	}
 	

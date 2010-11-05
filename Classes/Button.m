@@ -36,7 +36,7 @@
 		selector = selectorIn;
 		
 		self.isRelativeAnchorPoint = YES;
-		self.anchorPoint = ccp(0.5, 0.5);
+		self.anchorPoint = ccp(0.5f, 0.5f);
 	}
 	return self;
 }

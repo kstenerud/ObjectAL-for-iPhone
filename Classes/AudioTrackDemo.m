@@ -118,7 +118,7 @@
 	for(Slider* slider in sliders)
 	{
 		slider.position = ccp(slider.contentSize.width*slider.scaleX/2 + xPos + maxWidth + 20, slider.position.y);
-		slider.value = 1.0;
+		slider.value = 1.0f;
 	}
 
 	// Exit button

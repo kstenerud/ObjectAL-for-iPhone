@@ -34,7 +34,7 @@
 #import "CCDirector.h"
 #import "CCActionManager.h"
 #import "Support/CGPointExtension.h"
-#import "Support/ccArray.h"
+#import "Support/ccCArray.h"
 #import "Support/TransformUtils.h"
 
 
@@ -332,7 +332,7 @@
 
 -(void) removeFromParentAndCleanup:(BOOL)cleanup
 {
-	[self.parent removeChild:self cleanup:cleanup];
+	[parent_ removeChild:self cleanup:cleanup];
 }
 
 /* "remove" logic MUST only be on this method
@@ -364,7 +364,8 @@
 -(void) removeAllChildrenWithCleanup:(BOOL)cleanup
 {
 	// not using detachChild improves speed here
-	for (CCNode *c in children_)
+	CCNode *c;
+	CCARRAY_FOREACH(children_, c)
 	{
 		// IMPORTANT:
 		//  -1st do onExit
@@ -451,6 +452,7 @@
 
 -(void) visit
 {
+	// quick return if not visible
 	if (!visible_)
 		return;
 	
@@ -463,32 +465,30 @@
 	
 	[self transform];
 	
-	if(children_){
+	if(children_) {
 		ccArray *arrayData = children_->data;
-		id *arr = arrayData->arr;
-		NSUInteger nu = arrayData->num;
+		unsigned int i=0;
 		
-		while (nu > 0) {
-			CCNode *child = *arr;
-			if ( child.zOrder < 0 ) {
+		// draw children zOrder < 0
+		for( ; i < arrayData->num; i++ ) {
+			CCNode *child =  arrayData->arr[i];
+			if ( [child zOrder] < 0 ) {
 				[child visit];
-				nu--;
-				arr++;
-			} else {
+			} else
 				break;
-			}
 		}
 		
+		// self draw
 		[self draw];
 		
-		while (nu > 0) {
-			CCNode *child = *arr++;
+		// draw children zOrder >= 0
+		for( ; i < arrayData->num; i++ ) {
+			CCNode *child =  arrayData->arr[i];
 			[child visit];
-			nu--;
 		}
-	} else {
+
+	} else
 		[self draw];	
-	}
 	
 	if ( grid_ && grid_.active)
 		[grid_ afterDraw:self];

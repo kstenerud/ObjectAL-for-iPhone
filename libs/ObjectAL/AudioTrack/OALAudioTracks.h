@@ -37,15 +37,15 @@
 {
 	/** All instantiated audio tracks. */
 	NSMutableArray* tracks;
-	bool suspended;
+	bool interrupted;
 	bool muted;
 	bool paused;
 }
 
 #pragma mark Properties
 
-/** Suspends/resumes all audio tracks. */
-@property(readwrite,assign) bool suspended;
+/** Interrupts all audio tracks. */
+@property(readwrite,assign) bool interrupted;
 
 /** Pauses/unpauses all audio tracks. */
 @property(readwrite,assign) bool paused;

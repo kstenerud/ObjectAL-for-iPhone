@@ -42,7 +42,7 @@
 	CGPoint position = ccp(20, size.height - 80);
 	
 	label = [CCLabel labelWithString:@"ALSource" fontName:@"Helvetica" fontSize:24];
-	label.anchorPoint = ccp(0, 0.5);
+	label.anchorPoint = ccp(0, 0.5f);
 	label.color = ccBLACK;
 	label.position = position;
 	[self addChild:label];
@@ -55,7 +55,7 @@
 												label:label
 											   target:self
 											 selector:@selector(onObjectALPlayStop:)];
-	button.anchorPoint = ccp(0, 0.5);
+	button.anchorPoint = ccp(0, 0.5f);
 	button.position = position;
 	[self addChild:button];
 	
@@ -67,7 +67,7 @@
 												label:label
 											   target:self
 											 selector:@selector(onObjectALFadeOut:)];
-	button.anchorPoint = ccp(0, 0.5);
+	button.anchorPoint = ccp(0, 0.5f);
 	button.position = position;
 	[self addChild:button];
 	
@@ -79,14 +79,14 @@
 												label:label
 											   target:self
 											 selector:@selector(onObjectALFadeIn:)];
-	button.anchorPoint = ccp(0, 0.5);
+	button.anchorPoint = ccp(0, 0.5f);
 	button.position = position;
 	[self addChild:button];
 
 	position.y -= kSpaceBetweenButtons;
 
 	label = [CCLabel labelWithString:@"Fading" fontName:@"Helvetica" fontSize:24];
-	label.anchorPoint = ccp(0, 0.5);
+	label.anchorPoint = ccp(0, 0.5f);
 	label.color = ccBLACK;
 	label.position = position;
 	[self addChild:label];
@@ -97,7 +97,7 @@
 	position = ccp(center.x, size.height - 80);
 
 	label = [CCLabel labelWithString:@"AudioTrack" fontName:@"Helvetica" fontSize:24];
-	label.anchorPoint = ccp(0, 0.5);
+	label.anchorPoint = ccp(0, 0.5f);
 	label.color = ccBLACK;
 	label.position = position;
 	[self addChild:label];
@@ -110,7 +110,7 @@
 												label:label
 											   target:self
 											 selector:@selector(onBackgroundPlayStop:)];
-	button.anchorPoint = ccp(0, 0.5);
+	button.anchorPoint = ccp(0, 0.5f);
 	button.position = position;
 	[self addChild:button];
 	
@@ -122,7 +122,7 @@
 												label:label
 											   target:self
 											 selector:@selector(onBackgroundFadeOut:)];
-	button.anchorPoint = ccp(0, 0.5);
+	button.anchorPoint = ccp(0, 0.5f);
 	button.position = position;
 	[self addChild:button];
 	
@@ -134,14 +134,14 @@
 												label:label
 											   target:self
 											 selector:@selector(onBackgrounFadeIn:)];
-	button.anchorPoint = ccp(0, 0.5);
+	button.anchorPoint = ccp(0, 0.5f);
 	button.position = position;
 	[self addChild:button];
 	
 	position.y -= kSpaceBetweenButtons;
 	
 	label = [CCLabel labelWithString:@"Fading" fontName:@"Helvetica" fontSize:24];
-	label.anchorPoint = ccp(0, 0.5);
+	label.anchorPoint = ccp(0, 0.5f);
 	label.color = ccBLACK;
 	label.position = position;
 	[self addChild:label];
@@ -172,7 +172,7 @@
 	}
 	else
 	{
-		[OALSimpleAudio sharedInstance].bgVolume = 1.0;
+		[OALSimpleAudio sharedInstance].bgVolume = 1.0f;
 		[[OALSimpleAudio sharedInstance] playBg:@"ColdFunk.wav" loop:YES];
 	}
 }
@@ -182,7 +182,7 @@
 	if([OALSimpleAudio sharedInstance].bgPlaying)
 	{
 		bgFading.visible = YES;
-		[[OALSimpleAudio sharedInstance].backgroundTrack fadeTo:0.0 duration:1.0 target:self selector:@selector(onBackgroundFadeComplete:)];
+		[[OALSimpleAudio sharedInstance].backgroundTrack fadeTo:0.0f duration:1.0f target:self selector:@selector(onBackgroundFadeComplete:)];
 
 		// Alternatively, you could do this:
 		//   OALAction* action = [OALSequentialActions actions:
@@ -201,7 +201,7 @@
 	if([OALSimpleAudio sharedInstance].bgPlaying)
 	{
 		bgFading.visible = YES;
-		[[OALSimpleAudio sharedInstance].backgroundTrack fadeTo:1.0 duration:1.0 target:self selector:@selector(onBackgroundFadeComplete:)];
+		[[OALSimpleAudio sharedInstance].backgroundTrack fadeTo:1.0f duration:1.0f target:self selector:@selector(onBackgroundFadeComplete:)];
 
 		// Alternatively, you could do this:
 		//   OALAction* action = [OALSequentialActions actions:
@@ -239,7 +239,7 @@
 	if(nil != source)
 	{
 		oalFading.visible = YES;
-		[source fadeTo:0.0 duration:1.0 target:self selector:@selector(onObjectALFadeComplete:)];
+		[source fadeTo:0.0f duration:1.0f target:self selector:@selector(onObjectALFadeComplete:)];
 
 		// Alternatively, you could do this:
 		//   OALAction* action = [OALSequentialActions actions:
@@ -258,7 +258,7 @@
 	if(nil != source)
 	{
 		oalFading.visible = YES;
-		[source fadeTo:1.0 duration:1.0 target:self selector:@selector(onObjectALFadeComplete:)];
+		[source fadeTo:1.0f duration:1.0f target:self selector:@selector(onObjectALFadeComplete:)];
 		
 		// Alternatively, you could do this:
 		//   OALAction* action = [OALSequentialActions actions:

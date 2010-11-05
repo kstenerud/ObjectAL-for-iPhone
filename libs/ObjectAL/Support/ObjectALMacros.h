@@ -59,6 +59,22 @@
 
 
 #pragma mark -
+#pragma mark MPMusicPlayerController bug workaround
+
+#if OBJECTAL_CFG_INTERRUPT_BUG_WORKAROUND
+
+#define OBJECTAL_INTERRUPT_BUG_WORKAROUND() [context ensureContextIsCurrent]
+#define OBJECTAL_CONTEXT_INTERRUPT_BUG_WORKAROUND() [self ensureContextIsCurrent]
+
+#else /* OBJECTAL_CFG_INTERRUPT_BUG_WORKAROUND */
+
+#define OBJECTAL_INTERRUPT_BUG_WORKAROUND()
+#define OBJECTAL_CONTEXT_INTERRUPT_BUG_WORKAROUND()
+
+#endif /* OBJECTAL_CFG_INTERRUPT_BUG_WORKAROUND */
+
+
+#pragma mark -
 #pragma mark Logging
 
 

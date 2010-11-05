@@ -47,7 +47,7 @@
 		swallowTouches = YES;
 		isTouchEnabled = YES;
 		self.isRelativeAnchorPoint = YES;
-		self.anchorPoint = ccp(0.5, 0.5);		
+		self.anchorPoint = ccp(0.5f, 0.5f);		
 	}
 	return self;
 }
@@ -193,7 +193,7 @@
 		verticalMax = trackSize.height - knobSize.height/2;
 		horizontalLock = combinedSize.width/2;
 		
-		knob.anchorPoint = ccp(0.5,0.5);
+		knob.anchorPoint = ccp(0.5f,0.5f);
 		knob.position = ccp(horizontalLock, verticalMin);
 		
 		track.anchorPoint = ccp(0,0);
@@ -263,7 +263,7 @@
 		horizontalMax = trackSize.width - knobSize.width/2;
 		verticalLock = combinedSize.height/2;
 		
-		knob.anchorPoint = ccp(0.5,0.5);
+		knob.anchorPoint = ccp(0.5f,0.5f);
 		knob.position = ccp(horizontalMin, verticalLock);
 		
 		track.anchorPoint = ccp(0,0);

@@ -38,8 +38,8 @@
  */
 
 // 0x00 HI ME LO
-// 00   00 99 04
-#define COCOS2D_VERSION 0x00009904
+// 00   00 99 05
+#define COCOS2D_VERSION 0x00009905
 
 //
 // all cocos2d include files
@@ -72,6 +72,7 @@
 #import "CCSprite.h"
 #import "CCSpriteFrame.h"
 #import "CCSpriteSheet.h"
+#import "CCSpriteBatchNode.h"
 #import "CCSpriteFrameCache.h"
 #import "CCTextureCache.h"
 #import "CCTransition.h"
@@ -119,6 +120,7 @@
 #import "Support/CGPointExtension.h"
 #import "Support/ccCArray.h"
 #import "Support/CCArray.h"
+#import "Support/ccUtils.h"
 
 #if CC_ENABLE_PROFILERS
 #import "Support/CCProfiling.h"

@@ -123,6 +123,7 @@
 
 -(CCTMXTilesetInfo*) tilesetForLayer:(CCTMXLayerInfo*)layerInfo map:(CCTMXMapInfo*)mapInfo
 {
+	CCTMXTilesetInfo *tileset = nil;
 	CFByteOrder o = CFByteOrderGetCurrent();
 	
 	CGSize size = layerInfo.layerSize;
@@ -154,7 +155,7 @@
 	
 	// If all the tiles are 0, return empty tileset
 	CCLOG(@"cocos2d: Warning: TMX Layer '%@' has no tiles", layerInfo.name);
-	return nil;
+	return tileset;
 }
 
 

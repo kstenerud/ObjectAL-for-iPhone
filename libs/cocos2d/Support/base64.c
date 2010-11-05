@@ -18,7 +18,7 @@ int _base64Decode( unsigned char *input, unsigned int input_len, unsigned char *
 
     for (i = (sizeof alphabet) - 1; i >= 0 ; i--) {
 		inalphabet[alphabet[i]] = 1;
-		decoder[alphabet[i]] = (char)i;
+		decoder[alphabet[i]] = i;
     }
 
     char_count = 0;
@@ -32,7 +32,7 @@ int _base64Decode( unsigned char *input, unsigned int input_len, unsigned char *
 		bits += decoder[c];
 		char_count++;
 		if (char_count == 4) {
-			output[ output_idx++ ] = (unsigned char)(bits >> 16);
+			output[ output_idx++ ] = (bits >> 16);
 			output[ output_idx++ ] = ((bits >> 8) & 0xff);
 			output[ output_idx++ ] = ( bits & 0xff);
 			bits = 0;
@@ -49,10 +49,10 @@ int _base64Decode( unsigned char *input, unsigned int input_len, unsigned char *
 				errors++;
 				break;
 			case 2:
-				output[ output_idx++ ] = (unsigned char)( bits >> 10 );
+				output[ output_idx++ ] = ( bits >> 10 );
 				break;
 			case 3:
-				output[ output_idx++ ] = (unsigned char)( bits >> 16 );
+				output[ output_idx++ ] = ( bits >> 16 );
 				output[ output_idx++ ] = (( bits >> 8 ) & 0xff);
 				break;
 			}
@@ -73,7 +73,7 @@ int base64Decode(unsigned char *in, unsigned int inLength, unsigned char **out)
 	unsigned int outLength = 0;
 	
 	//should be enough to store 6-bit buffers in 8-bit buffers
-	*out = malloc( (size_t)(inLength * 3.0f / 4.0f + 1) );
+	*out = malloc( inLength * 3.0f / 4.0f + 1 );
 	if( *out ) {
 		int ret = _base64Decode(in, inLength, *out, &outLength);
 		

@@ -283,7 +283,7 @@
 	} else if (NSMaxRange(rangeLimit) > [_buffer length]) {
 		@throw [NSException exceptionWithName:NSRangeException reason:@"rangeLimit beyond range of attributed string" userInfo:nil];
 	}
-	NSInteger runIndex = [self indexOfEffectiveAttributeRunForIndex:index];
+	NSUInteger runIndex = [self indexOfEffectiveAttributeRunForIndex:index];
 	ZAttributeRun *run = [_attributes objectAtIndex:runIndex];
 	if (aRange != NULL) {
 		if (attributeName != nil) {
@@ -327,7 +327,7 @@
 			// as we already guarantee each run has unique attributes.
 			// just make sure to clip the range to the rangeLimit
 			aRange->location = MAX(run.index, rangeLimit.location);
-			ZAttributeRun *endRun = ((NSUInteger)runIndex+1 < [_attributes count] ? [_attributes objectAtIndex:runIndex+1] : nil);
+			ZAttributeRun *endRun = (runIndex+1 < [_attributes count] ? [_attributes objectAtIndex:runIndex+1] : nil);
 			aRange->length = MIN((endRun ? endRun.index : [_buffer length]), NSMaxRange(rangeLimit)) - aRange->location;
 		}
 	}
@@ -536,6 +536,7 @@
 }
 
 - (id)initWithIndex:(NSUInteger)idx attributes:(NSDictionary *)attrs {
+	NSParameterAssert(idx >= 0);
 	if ((self = [super init])) {
 		_index = idx;
 		if (attrs == nil) {

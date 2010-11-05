@@ -187,6 +187,7 @@
 
 - (NSString*) alVersion
 {
+	OBJECTAL_CONTEXT_INTERRUPT_BUG_WORKAROUND();
 	return [ALWrapper getString:AL_VERSION];
 }
 
@@ -200,6 +201,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
+		OBJECTAL_CONTEXT_INTERRUPT_BUG_WORKAROUND();
 		return [ALWrapper getInteger:AL_DISTANCE_MODEL];
 	}
 }
@@ -208,6 +210,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
+		OBJECTAL_CONTEXT_INTERRUPT_BUG_WORKAROUND();
 		[ALWrapper distanceModel:value];
 	}
 }
@@ -216,6 +219,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
+		OBJECTAL_CONTEXT_INTERRUPT_BUG_WORKAROUND();
 		return [ALWrapper getFloat:AL_DOPPLER_FACTOR];
 	}
 }
@@ -224,12 +228,14 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
+		OBJECTAL_CONTEXT_INTERRUPT_BUG_WORKAROUND();
 		[ALWrapper dopplerFactor:value];
 	}
 }
 
 - (NSArray*) extensions
 {
+	OBJECTAL_CONTEXT_INTERRUPT_BUG_WORKAROUND();
 	return [ALWrapper getSpaceSeparatedStringList:AL_EXTENSIONS];
 }
 
@@ -237,6 +243,7 @@
 
 - (NSString*) renderer
 {
+	OBJECTAL_CONTEXT_INTERRUPT_BUG_WORKAROUND();
 	return [ALWrapper getString:AL_RENDERER];
 }
 
@@ -246,6 +253,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
+		OBJECTAL_CONTEXT_INTERRUPT_BUG_WORKAROUND();
 		return [ALWrapper getFloat:AL_SPEED_OF_SOUND];
 	}
 }
@@ -254,6 +262,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
+		OBJECTAL_CONTEXT_INTERRUPT_BUG_WORKAROUND();
 		[ALWrapper speedOfSound:value];
 	}
 }
@@ -288,6 +297,7 @@
 
 - (NSString*) vendor
 {
+	OBJECTAL_CONTEXT_INTERRUPT_BUG_WORKAROUND();
 	return [ALWrapper getString:AL_VENDOR];
 }
 
@@ -321,16 +331,25 @@
 	}
 }
 
+- (void) ensureContextIsCurrent
+{
+	if([ALWrapper getCurrentContext] != context)
+	{
+		[OpenALManager sharedInstance].currentContext = self;
+	}
+}
 
 #pragma mark Extensions
 
 - (bool) isExtensionPresent:(NSString*) name
 {
+	OBJECTAL_CONTEXT_INTERRUPT_BUG_WORKAROUND();
 	return [ALWrapper isExtensionPresent:name];
 }
 
 - (void*) getProcAddress:(NSString*) functionName
 {
+	OBJECTAL_CONTEXT_INTERRUPT_BUG_WORKAROUND();
 	return [ALWrapper getProcAddress:functionName];
 }
 

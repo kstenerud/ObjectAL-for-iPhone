@@ -398,23 +398,22 @@
 		if(paused != value)
 		{
 			paused = value;
-			if(!suspended)
+			if(paused)
 			{
-				if(paused)
+				[player pause];
+				if(playing)
 				{
-					[player pause];
-					if(playing)
-					{
-						[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:OALAudioTrackStoppedPlayingNotification object:self] waitUntilDone:NO];
-					}
+					[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:)
+																		   withObject:[NSNotification notificationWithName:OALAudioTrackStoppedPlayingNotification object:self] waitUntilDone:NO];
 				}
-				else if(playing)
+			}
+			else if(playing)
+			{
+				playing = [player play];
+				if(playing)
 				{
-					playing = [player play];
-					if(playing)
-					{
-						[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:OALAudioTrackStartedPlayingNotification object:self] waitUntilDone:NO];
-					}
+					[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:)
+																		   withObject:[NSNotification notificationWithName:OALAudioTrackStartedPlayingNotification object:self] waitUntilDone:NO];
 				}
 			}
 		}
@@ -492,12 +491,6 @@
 	
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspended)
-		{
-			OAL_LOG_ERROR(@"Could not load URL %@: Audio is still suspended", url);
-			return NO;
-		}
-		
 		// Only load if it's not the same URL as last time.
 		if([[url absoluteString] isEqualToString:[currentlyLoadedUrl absoluteString]])
 		{
@@ -641,12 +634,6 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspended)
-		{
-			OAL_LOG_ERROR(@"Could not play: Audio is still suspended");
-			return NO;
-		}
-		
 		[self stopActions];
 		SIMULATOR_BUG_WORKAROUND_PREPARE_PLAYBACK();
 		player.currentTime = currentTime;
@@ -666,12 +653,6 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspended)
-		{
-			OAL_LOG_ERROR(@"Could not play: Audio is still suspended");
-			return NO;
-		}
-		
 		if(isIOS40OrHigher)
 		{
 			[self stopActions];
@@ -696,15 +677,14 @@
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[self stopActions];
-		currentTime = player.currentTime;
 		[player stop];
 		if(playing)
 		{
 			[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:OALAudioTrackStoppedPlayingNotification object:self] waitUntilDone:NO];
 		}
 		
-//		self.currentTime = 0;
-//		player.currentTime = 0;
+		self.currentTime = 0;
+		player.currentTime = 0;
 		SIMULATOR_BUG_WORKAROUND_END_PLAYBACK();
 		paused = NO;
 		playing = NO;
@@ -850,34 +830,29 @@
 
 #pragma mark Internal Use
 
-- (bool) suspended
+- (bool) interrupted
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		return suspended;
+		return interrupted;
 	}
 }
 
-- (void) setSuspended:(bool) value
+- (void) setInterrupted:(bool) value
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspended != value)
+		interrupted = value;
+		if(interrupted)
 		{
-			suspended = value;
-			if(suspended)
+			currentTime = player.currentTime;
+		}
+		else if(playing && !player.playing)
+		{
+			player.currentTime = currentTime;
+			if(!paused)
 			{
-				currentTime = player.currentTime;
-				[self stop];
-			}
-			else
-			{
-				if(playing && !paused)
-				{
-	//				player.currentTime = currentTime;
-	//				playing = NO;
-	//				paused = NO;
-				}
+				playing = [player play];
 			}
 		}
 	}

@@ -37,8 +37,8 @@
 		// We'll do an S-Curve fade.
 		fadeFunction = [[OALSCurveFunction function] retain];
 
-		firstSource.gain = 1.0;
-		secondSource.gain = 0.0;
+		firstSource.gain = 1.0f;
+		secondSource.gain = 0.0f;
 	}
 	return self;
 }
@@ -71,13 +71,13 @@
 	slider = [HorizontalSlider sliderWithTrack:track
 										  knob:[CCSprite spriteWithFile:@"SliderKnobHorizontal.png"]
 										target:self moveSelector:@selector(onCrossfadeChanged:) dropSelector:@selector(onCrossfadeChanged:)];
-	slider.scale = 2.0;
-	slider.anchorPoint = ccp(0.5, 0.5);
+	slider.scale = 2.0f;
+	slider.anchorPoint = ccp(0.5f, 0.5f);
 	slider.position = ccp(center.x,center.y);
 	[self addChild:slider];
 	slider.value = 0;
 	label = [CCLabel labelWithString:@"Crossfade" fontName:@"Helvetica" fontSize:30];
-	label.anchorPoint = ccp(0.5, 0);
+	label.anchorPoint = ccp(0.5f, 0);
 	label.color = ccBLACK;
 	label.position = ccp(slider.position.x,
 						 slider.position.y + slider.contentSize.height * slider.scaleY + 10);

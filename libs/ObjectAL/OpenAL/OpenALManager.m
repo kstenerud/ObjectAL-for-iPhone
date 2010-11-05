@@ -87,11 +87,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OpenALManager);
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(context != currentContext)
-		{
-			currentContext = context;
-			[ALWrapper makeContextCurrent:currentContext.context deviceReference:currentContext.device.device];
-		}
+		currentContext = context;
+		[ALWrapper makeContextCurrent:currentContext.context deviceReference:currentContext.device.device];
 	}
 }
 
@@ -139,53 +136,27 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OpenALManager);
 
 #pragma mark Internal Use
 
-- (bool) suspended
+- (bool) interrupted
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		return suspended;
+		return interrupted;
 	}
 }
 
-- (void) setSuspended:(bool) value
+- (void) setInterrupted:(bool) value
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(value != suspended)
+		interrupted = value;
+		if(interrupted)
 		{
-			suspended = value;
-			if(suspended)
-			{
-				[ALWrapper makeContextCurrent:nil];
-				/*  alcSuspendContext appears to be a no-op
-				 for(ALDevice* device in devices)
-				 {
-				 for(ALContext* context in device.contexts)
-				 {
-				 if(!context.suspended)
-				 {
-				 [suspendedContexts addObject:context];
-				 [ALWrapper suspendContext:context.context];
-				 }
-				 }
-				 }
-				 */
-			}
-			else
-			{
-				/*
-				 for(ALContext* context in suspendedContexts)
-				 {
-				 [ALWrapper makeContextCurrent:context.context];
-				 [context process];
-				 }
-				 [suspendedContexts removeAllObjects];
-				 */
-				if(nil != currentContext)
-				{
-					[ALWrapper makeContextCurrent:currentContext.context deviceReference:currentContext.device.device];
-				}
-			}
+			[ALWrapper makeContextCurrent:nil];
+		}
+		else if(nil != currentContext && NULL == [ALWrapper getCurrentContext])
+		{
+			[ALWrapper makeContextCurrent:currentContext.context
+						  deviceReference:currentContext.device.device];
 		}
 	}
 }

@@ -77,11 +77,11 @@
 	slider = [HorizontalSlider sliderWithTrack:track
 										knob:[CCSprite spriteWithFile:@"SliderKnobHorizontal.png"]
 									  target:self moveSelector:@selector(onBgVolume:) dropSelector:@selector(onBgVolume:)];
-	slider.scale = 2.0;
+	slider.scale = 2.0f;
 	slider.anchorPoint = ccp(0, 0);
 	slider.position = ccp(20, 160);
 	[self addChild:slider];
-	slider.value = 1.0;
+	slider.value = 1.0f;
 	label = [CCLabel labelWithString:@"BG Volume" fontName:@"Helvetica" fontSize:24];
 	label.anchorPoint = ccp(0, 0);
 	label.color = ccBLACK;
@@ -95,11 +95,11 @@
 	slider = [HorizontalSlider sliderWithTrack:track
 										knob:[CCSprite spriteWithFile:@"SliderKnobHorizontal.png"]
 									  target:self moveSelector:@selector(onEffectsVolume:) dropSelector:@selector(onEffectsVolume:)];
-	slider.scale = 2.0;
+	slider.scale = 2.0f;
 	slider.anchorPoint = ccp(0, 0);
 	slider.position = ccp(20, 44);
 	[self addChild:slider];
-	slider.value = 1.0;
+	slider.value = 1.0f;
 	label = [CCLabel labelWithString:@"FX Volume" fontName:@"Helvetica" fontSize:24];
 	label.anchorPoint = ccp(0, 0);
 	label.color = ccBLACK;
@@ -117,7 +117,7 @@
 												label:label
 											   target:self
 											 selector:@selector(on1SourceChannel:)];
-	button.anchorPoint = ccp(0, 0.5);
+	button.anchorPoint = ccp(0, 0.5f);
 	button.position = position;
 	[self addChild:button];
 	
@@ -129,7 +129,7 @@
 												label:label
 											   target:self
 											 selector:@selector(on2SourceChannel:)];
-	button.anchorPoint = ccp(0, 0.5);
+	button.anchorPoint = ccp(0, 0.5f);
 	button.position = position;
 	[self addChild:button];
 	
@@ -141,7 +141,7 @@
 												label:label
 											   target:self
 											 selector:@selector(on3SourceChannel:)];
-	button.anchorPoint = ccp(0, 0.5);
+	button.anchorPoint = ccp(0, 0.5f);
 	button.position = position;
 	[self addChild:button];
 	
@@ -153,7 +153,7 @@
 												label:label
 											   target:self
 											 selector:@selector(on8SourceChannel:)];
-	button.anchorPoint = ccp(0, 0.5);
+	button.anchorPoint = ccp(0, 0.5f);
 	button.position = position;
 	[self addChild:button];
 

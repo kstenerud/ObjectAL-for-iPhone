@@ -42,7 +42,7 @@
 - (void) prepareScenes;
 - (void) addScene:(Class) sceneClass named:(NSString*) name;
 
-- (void) setStartIndex:(int) newIndex;
+- (void) setStartIndex:(uint) newIndex;
 - (void) onMenuSlideComplete;
 
 - (void) onSceneSelect:(IndexedMenuItemLabel*) item;

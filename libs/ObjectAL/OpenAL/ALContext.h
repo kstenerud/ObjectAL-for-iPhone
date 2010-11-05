@@ -195,6 +195,11 @@
  */
 - (void) clearBuffers;
 
+/** Make sure this context is the current context.
+ * This method is used to work around iOS 4.0 and 4.2 bugs
+ * that could cause the context to be lost.
+ */
+- (void) ensureContextIsCurrent;
 
 #pragma mark Extensions
 

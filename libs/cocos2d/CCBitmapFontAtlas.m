@@ -495,16 +495,40 @@ typedef struct _KerningHashElement
 -(void) createFontChars
 {
 	int nextFontPositionX = 0;
+	int nextFontPositionY = 0;
 	unichar prev = -1;
 	int kerningAmount = 0;
 	
 	CGSize tmpSize = CGSizeZero;
 
-	NSUInteger l = [string_ length];
-	for(NSUInteger i=0; i<l; i++) {
+	int longestLine = 0;
+	int totalHeight = 0;
+	
+	int quantityOfLines = 1;
+
+	unsigned int stringLen = [string_ length];
+
+	// quantity of lines NEEDS to be calculated before parsing the lines,
+	// since the Y position needs to be calcualted before hand
+	for( unsigned int i=0; i < stringLen-1;i++) {
+		unichar c = [string_ characterAtIndex:i];
+		if( c=='\n')
+			quantityOfLines++;
+	}
+	
+	totalHeight = configuration_->commonHeight * quantityOfLines;
+	nextFontPositionY = -(configuration_->commonHeight - configuration_->commonHeight*quantityOfLines);
+
+	for(unsigned int i=0; i<stringLen; i++) {
 		unichar c = [string_ characterAtIndex:i];
 		NSAssert( c < kCCBitmapFontAtlasMaxChars, @"BitmapFontAtlas: character outside bounds");
 		
+		if (c == '\n') {
+			nextFontPositionX = 0;
+			nextFontPositionY -= configuration_->commonHeight;
+			continue;
+		}
+
 		kerningAmount = [self kerningAmountForFirst:prev second:c];
 		
 		ccBitmapFontDef fontDef = configuration_->bitmapFontArray[c];
@@ -515,7 +539,7 @@ typedef struct _KerningHashElement
 		
 		fontChar = (CCSprite*) [self getChildByTag:i];
 		if( ! fontChar ) {
-			fontChar = [[CCSprite alloc] initWithSpriteSheet:self rect:rect];
+			fontChar = [[CCSprite alloc] initWithBatchNode:self rect:rect];
 			[self addChild:fontChar z:0 tag:i];
 			[fontChar release];
 		}
@@ -527,31 +551,34 @@ typedef struct _KerningHashElement
 			fontChar.visible = YES;
 			fontChar.opacity = 255;
 		}
-
-		fontChar.position = ccp( nextFontPositionX + fontDef.xOffset + fontDef.rect.size.width / 2.0f ,
-								(configuration_->commonHeight - fontDef.yOffset) - rect.size.height/2.0f );		
 		
+		float yOffset = configuration_->commonHeight - fontDef.yOffset;
+		fontChar.position = ccp( (float)nextFontPositionX + fontDef.xOffset + fontDef.rect.size.width*0.5f + kerningAmount,
+								(float)nextFontPositionY + yOffset - rect.size.height*0.5f );
+
 //		NSLog(@"position.y: %f", fontChar.position.y);
 		
 		// update kerning
-		fontChar.position = ccpAdd( fontChar.position, ccp(kerningAmount,0));
 		nextFontPositionX += configuration_->bitmapFontArray[c].xAdvance + kerningAmount;
 		prev = c;
-		
-		tmpSize.width += configuration_->bitmapFontArray[c].xAdvance + kerningAmount;
-		tmpSize.height = configuration_->commonHeight;
-		
+
 		// Apply label properties
 		[fontChar setOpacityModifyRGB:opacityModifyRGB_];
 		// Color MUST be set before opacity, since opacity might change color if OpacityModifyRGB is on
 		[fontChar setColor:color_];
 
-		// only apply opaccity if it is different than 255 )
+		// only apply opacity if it is different than 255 )
 		// to prevent modifying the color too (issue #610)
 		if( opacity_ != 255 )
 			[fontChar setOpacity: opacity_];
+
+		if (longestLine < nextFontPositionX)
+			longestLine = nextFontPositionX;
 	}
-	
+
+	tmpSize.width = longestLine;
+	tmpSize.height = totalHeight;
+
 	[self setContentSize:tmpSize];
 }
 
@@ -566,6 +593,11 @@ typedef struct _KerningHashElement
 		child.visible = NO;
 
 	[self createFontChars];
+}
+
+-(void) setCString:(char*)label
+{
+	[self setString:[NSString stringWithUTF8String:label]];
 }
 
 #pragma mark BitmapFontAtlas - CCRGBAProtocol protocol

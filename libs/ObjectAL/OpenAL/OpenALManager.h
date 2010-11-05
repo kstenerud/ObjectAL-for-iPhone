@@ -51,7 +51,7 @@
 	/** All suspended contexts */
 	NSMutableArray* suspendedContexts;
 	
-	bool suspended;
+	bool interrupted;
 }
 
 
@@ -101,7 +101,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OpenALManager);
 /** (INTERNAL USE) Used by the interrupt handler to suspend ObjectAL
  * (if interrupts are enabled in OALAudioSupport).
  */
-@property(readwrite,assign) bool suspended;
+@property(readwrite,assign) bool interrupted;
 
 /** (INTERNAL USE) Notify that a device is initializing.
  */

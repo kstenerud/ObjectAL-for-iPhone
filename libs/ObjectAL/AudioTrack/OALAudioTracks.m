@@ -61,22 +61,22 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioTracks);
 
 @synthesize tracks;
 
-- (bool) suspended
+- (bool) interrupted
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		return suspended;
+		return interrupted;
 	}
 }
 
-- (void) setSuspended:(bool) value
+- (void) setInterrupted:(bool) value
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		suspended = value;
+		interrupted = value;
 		for(OALAudioTrack* track in tracks)
 		{
-			track.suspended = suspended;
+			track.interrupted = interrupted;
 		}
 	}
 }

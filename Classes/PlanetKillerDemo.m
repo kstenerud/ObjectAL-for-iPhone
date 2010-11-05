@@ -115,7 +115,7 @@
 	[bullets addObject:bullet];
 	
 	CCIntervalAction* action = [CCSequence actions:
-								[CCMoveTo actionWithDuration:1.0 position:endPoint],
+								[CCMoveTo actionWithDuration:1.0f position:endPoint],
 								[CCCallFuncN actionWithTarget:self selector:@selector(removeBullet:)],
 								nil];
 	[bullet runAction:action];
@@ -215,9 +215,9 @@
 	[planets addObject:planet];
 	
 	CCSequence* action = [CCSequence actions:
-						  [CCFadeIn actionWithDuration:0.5],
-						  [CCDelayTime actionWithDuration:3.0],
-						  [CCFadeOut actionWithDuration:0.5],
+						  [CCFadeIn actionWithDuration:0.5f],
+						  [CCDelayTime actionWithDuration:3.0f],
+						  [CCFadeOut actionWithDuration:0.5f],
 						  [CCCallFuncN actionWithTarget:self selector:@selector(removePlanet:)],
 						  nil];
 	[planet runAction:action];

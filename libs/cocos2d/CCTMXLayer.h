@@ -29,8 +29,7 @@
 
 
 #import "CCAtlasNode.h"
-#import "CCSpriteSheet.h"
-#import "Support/ccArray.h"
+#import "CCSpriteBatchNode.h"
 
 
 @class CCTMXMapInfo;
@@ -62,7 +61,7 @@
  
  @since v0.8.1
  */
-@interface CCTMXLayer : CCSpriteSheet
+@interface CCTMXLayer : CCSpriteBatchNode
 {
 	CCTMXTilesetInfo	*tileset_;
 	NSString			*layerName_;

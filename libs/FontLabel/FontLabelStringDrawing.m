@@ -145,8 +145,8 @@ static fontTable *readFontTableFromCGFont(CGFontRef font) {
 				UInt32 offset = OSReadBigInt32(encodingSubtable, 4);
 				const UInt8 *subtable = &bytes[offset];
 				UInt16 format = OSReadBigInt16(subtable, 0);
-				for (size_t j = 0; j < supportedFormatsCount; j++) {
-					if (format == supportedFormats[j]) {
+				for (size_t i = 0; i < supportedFormatsCount; i++) {
+					if (format == supportedFormats[i]) {
 						if (format >= 8) {
 							// the version is a fixed-point
 							UInt16 formatFrac = OSReadBigInt16(subtable, 2);
@@ -226,7 +226,7 @@ static void mapCharactersToGlyphsInFont(const fontTable *table, unichar characte
 							UInt16 idRangeOffset = OSReadBigInt16(table->cmap.format4.idRangeOffsets, segOffset);
 							if (idRangeOffset == 0) {
 								UInt16 idDelta = OSReadBigInt16(table->cmap.format4.idDeltas, segOffset);
-								outGlyphs[j] = (CGGlyph)((c + idDelta) % 65536);
+								outGlyphs[j] = (c + idDelta) % 65536;
 							} else {
 								// use the glyphIndexArray
 								UInt16 glyphOffset = idRangeOffset + 2 * (c - startCode);
