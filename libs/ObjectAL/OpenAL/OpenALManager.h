@@ -48,9 +48,6 @@
 	/** All opened devices */
 	NSMutableArray* devices;
 	
-	/** All suspended contexts */
-	NSMutableArray* suspendedContexts;
-	
 	bool interrupted;
 }
 
@@ -63,7 +60,10 @@
 /** List of available capture devices (NSString*). */
 @property(readonly) NSArray* availableCaptureDevices;
 
-/** The current context (some context operations require the context to be the "current" one). */
+/** The current context (some context operations require the context to be the "current" one).
+ * Note: In iOS 3.0, setting this to nil after using OpenAL functions can sometimes lead to
+ * a crash.
+ */
 @property(readwrite,assign) ALContext* currentContext;
 
 /** Name of the default capture device. */

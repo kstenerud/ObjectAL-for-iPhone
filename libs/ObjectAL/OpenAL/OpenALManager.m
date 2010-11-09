@@ -48,7 +48,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OpenALManager);
 		[OALAudioSupport sharedInstance];
 		
 		devices = [[NSMutableArray mutableArrayUsingWeakReferencesWithCapacity:5] retain];
-		suspendedContexts = [[NSMutableArray mutableArrayUsingWeakReferencesWithCapacity:30] retain];
 	}
 	return self;
 }
@@ -56,7 +55,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OpenALManager);
 - (void) dealloc
 {
 	self.currentContext = nil;
-	[suspendedContexts release];
 	[devices release];
 	
 	[super dealloc];

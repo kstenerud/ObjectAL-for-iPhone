@@ -73,6 +73,7 @@
  - \ref use_iossimpleaudio_sec
  - \ref use_objectal_sec
  - \ref other_examples_sec
+ - \ref ios_3_0_warning_sec
  - \ref simulator_issues_sec
  
  
@@ -494,12 +495,24 @@
  
  
  <br> <br>
+ \section ios_3_0_warning_sec Warning for iOS 3.0
+ 
+ If you're deploying to iOS 3.0 devices, do NOT call [OALSimpleAudio purgeSharedInstance].
+ A bug in OpenAL causes it to sometimes crash when shutting down the library.
+ 
+ MainScene.m in the ObjectAL demo need to call this in order to clean up between demo runs,
+ so you will encounter crashes when switching between demos on a 3.0 device.
+ 
+ 
+ 
+ 
+ <br> <br>
  \section simulator_issues_sec Simulator Issues
  
  As you've likely heard time and time again, the simulator is no substitute for the real thing.
  The simulator is buggy.  It can run faster or slower than a real device.  It fails system calls
  that a real device doesn't.  It shows graphics glitches that a real device doesn't.  Sounds stop
- working. Dogs and cats living together, etc, etc.
+ working, clicks and static, dogs and cats living together, etc, etc.
  When things look wrong, try it on a real device before bugging people.
  
  

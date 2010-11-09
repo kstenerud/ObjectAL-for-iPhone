@@ -65,9 +65,6 @@
 	bool playing;
 	NSTimeInterval currentTime;
 	
-	/** Check to see if we are running iOS 4.0 or higher. */
-	bool isIOS40OrHigher;
-	
 	/** The current action being applied to gain. */
 	OALAction* gainAction;
 	

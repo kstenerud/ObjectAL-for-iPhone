@@ -137,8 +137,15 @@ static uint startIndex = 0;
 
 - (void) onEnterTransitionDidFinish
 {
-	// Make sure OALSimpleAudio isn't initialized from another demo
-	// when returning to the main scene.
+	/* Make sure OALSimpleAudio isn't initialized from another demo
+	 * when returning to the main scene.
+	 *
+	 * Note: You normally wouldn't do this in a real project. I do it here
+	 * to provide a clean slate for the individual demos, which expect a
+	 * clean slate.
+	 *
+	 * Note: On iOS 3.0, this can sometimes cause the app to crash!
+	 */
 	[OALSimpleAudio purgeSharedInstance];
 }
 

@@ -32,6 +32,7 @@
 #import "OALAudioSupport.h"
 #import "OALUtilityActions.h"
 #import "ObjectALMacros.h"
+#import "IOSVersion.h"
 
 #pragma mark Asynchronous Operations
 
@@ -306,7 +307,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(isIOS40OrHigher)
+		if([IOSVersion sharedInstance].version >= 4.0)
 		{
 			pan = value;
 			player.pan = pan;
@@ -449,7 +450,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(isIOS40OrHigher)
+		if([IOSVersion sharedInstance].version >= 4.0)
 		{
 			return player.deviceCurrentTime;
 		}
@@ -522,8 +523,7 @@
 		player.numberOfLoops = numberOfLoops;
 		player.meteringEnabled = meteringEnabled;
 		player.delegate = self;
-		isIOS40OrHigher = [player respondsToSelector:@selector(pan)];
-		if(isIOS40OrHigher)
+		if([IOSVersion sharedInstance].version >= 4.0)
 		{
 			player.pan = pan;
 		}
@@ -653,7 +653,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(isIOS40OrHigher)
+		if([IOSVersion sharedInstance].version >= 4.0)
 		{
 			[self stopActions];
 			SIMULATOR_BUG_WORKAROUND_PREPARE_PLAYBACK();
@@ -731,7 +731,7 @@
 		target:(id) target
 	  selector:(SEL) selector
 {
-	if(isIOS40OrHigher)
+	if([IOSVersion sharedInstance].version >= 4.0)
 	{
 		// Must always be synchronized
 		@synchronized(self)
@@ -748,7 +748,7 @@
 
 - (void) stopPan
 {
-	if(isIOS40OrHigher)
+	if([IOSVersion sharedInstance].version >= 4.0)
 	{
 		// Must always be synchronized
 		@synchronized(self)

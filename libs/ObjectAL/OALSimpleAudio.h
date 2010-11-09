@@ -55,6 +55,9 @@
  *
  * All commands are delegated either to the ALChannelSource (for sound effects),
  * or to the OALAudioTrack (for BG music).
+ *
+ * Note: A bug in iOS 3.0 OpenAL implementation can sometimes cause a crash if you
+ * purgeSharedInstance.
  */
 @interface OALSimpleAudio : NSObject
 {
@@ -67,7 +70,7 @@
 	ALChannelSource* channel;
 	/** Cache for preloaded sound samples. */
 	NSMutableDictionary* preloadCache;
-#if NS_BLOCKS_AVAILABLE
+#if NS_BLOCKS_AVAILABLE && OBJECTAL_USE_BLOCKS
 	/** Queue for preloading and async operations that use blocks. This ensures all operations are safe because they are guaranteed to run in order. */
 	dispatch_queue_t oal_dispatch_queue;
 #endif
@@ -298,7 +301,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALSimpleAudio);
  */
 - (ALBuffer*) preloadEffect:(NSString*) filePath;
 
-#if NS_BLOCKS_AVAILABLE
+#if NS_BLOCKS_AVAILABLE && OBJECTAL_USE_BLOCKS
 /** Asynchronous preload and cache sound effect for later playback.
  *
  * @param filePath an NSString with the path containing the sound data.
