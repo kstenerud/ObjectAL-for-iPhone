@@ -143,8 +143,6 @@ static uint startIndex = 0;
 	 * Note: You normally wouldn't do this in a real project. I do it here
 	 * to provide a clean slate for the individual demos, which expect a
 	 * clean slate.
-	 *
-	 * Note: On iOS 3.0, this can sometimes cause the app to crash!
 	 */
 	[OALSimpleAudio purgeSharedInstance];
 }

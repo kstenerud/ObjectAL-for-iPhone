@@ -175,7 +175,7 @@
 	
 	// We'll let OALSimpleAudio deal with the device and context.
 	// Since we're not going to use it for playing effects, don't give it any sources.
-	[OALSimpleAudio sharedInstanceWithSources:0];
+	[OALSimpleAudio sharedInstance].reservedSources = 0;
 	
 	// This is the only sound that gets played.  Notice that a single
 	// buffer can be played by multiple sources simultaneously.

@@ -115,21 +115,27 @@
 /** All sources being used by this channel.  Do not modify! */
 @property(readonly) ALSoundSourcePool* sourcePool;
 
+/** The number of sources reserved by this channel. */
+@property(readwrite,assign,nonatomic) unsigned int reservedSources;
 
 #pragma mark Object Management
 
 /** Create a channel with a number of sources.
  *
- * @param numSources the number of sources to create in this channel.
+ * @param reservedSources the number of sources to reserve for this channel.
  * @return A new channel.
  */
-+ (id) channelWithSources:(int) numSources;
++ (id) channelWithSources:(int) reservedSources;
 
 /** Initialize a channel with a number of sources.
  *
- * @param numSources the number of sources to create in this channel.
+ * @param reservedSources the number of sources to reserve for this channel.
  * @return The initialized channel.
  */
-- (id) initWithSources:(int) numSources;
+- (id) initWithSources:(int) reservedSources;
+
+/** Reset all sources in this channel to their default state.
+ */
+- (void) resetToDefault;
 
 @end

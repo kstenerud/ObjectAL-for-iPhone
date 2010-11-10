@@ -102,7 +102,7 @@
 @property(readwrite,assign) int sourceRelative;
 
 /** Source type (OpenAL property). */
-@property(readwrite,assign) int sourceType;
+@property(readonly) int sourceType;
 
 /** Velocity (OpenAL property). */
 @property(readwrite,assign) ALVector velocity;

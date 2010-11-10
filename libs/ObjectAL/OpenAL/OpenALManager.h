@@ -61,8 +61,6 @@
 @property(readonly) NSArray* availableCaptureDevices;
 
 /** The current context (some context operations require the context to be the "current" one).
- * Note: In iOS 3.0, setting this to nil after using OpenAL functions can sometimes lead to
- * a crash.
  */
 @property(readwrite,assign) ALContext* currentContext;
 

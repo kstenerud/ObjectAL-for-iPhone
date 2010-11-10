@@ -73,7 +73,6 @@
  - \ref use_iossimpleaudio_sec
  - \ref use_objectal_sec
  - \ref other_examples_sec
- - \ref ios_3_0_warning_sec
  - \ref simulator_issues_sec
  
  
@@ -491,18 +490,6 @@
  - <strong>AudioTrackDemo</strong>: Demonstrates using multiple OALAudioTrack objects.
  - <strong>HardwareDemo</strong>: Demonstrates hardware monitoring features.
  - <strong>PlanetKillerDemo</strong>: Demonstrates using OALSimpleAudio in a game setting.
- 
- 
- 
- <br> <br>
- \section ios_3_0_warning_sec Warning for iOS 3.0
- 
- If you're deploying to iOS 3.0 devices, do NOT call [OALSimpleAudio purgeSharedInstance].
- A bug in OpenAL causes it to sometimes crash when shutting down the library.
- 
- MainScene.m in the ObjectAL demo need to call this in order to clean up between demo runs,
- so you will encounter crashes when switching between demos on a 3.0 device.
- 
  
  
  

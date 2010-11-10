@@ -55,9 +55,6 @@
  *
  * All commands are delegated either to the ALChannelSource (for sound effects),
  * or to the OALAudioTrack (for BG music).
- *
- * Note: A bug in iOS 3.0 OpenAL implementation can sometimes cause a crash if you
- * purgeSharedInstance.
  */
 @interface OALSimpleAudio : NSObject
 {
@@ -125,6 +122,9 @@
  * Default value: YES
  */
 @property(readwrite,assign) bool honorSilentSwitch;
+
+/** The number of sources OALSimpleAudio is using (max 32 on current iOS devices). */
+@property(readwrite,assign) unsigned int reservedSources;
 
 /** Background audio URL */
 @property(readonly) NSURL* backgroundTrackURL;
@@ -382,5 +382,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALSimpleAudio);
 /** Stop all effects and bg music.
  */
 - (void) stopEverything;
+
+/** Reset everything in this object to its default state.
+ */
+- (void) resetToDefault;
 
 @end

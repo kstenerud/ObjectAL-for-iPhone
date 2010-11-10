@@ -85,7 +85,7 @@
 	
 	// We'll let OALSimpleAudio deal with the device and context.
 	// Since we're not going to use it for playing effects, don't give it any sources.
-	[OALSimpleAudio sharedInstanceWithSources:0];
+	[OALSimpleAudio sharedInstance].reservedSources = 0;
 	
 	leftSource = [[ALSource source] retain];
 	leftBuffer = [[[OALAudioSupport sharedInstance] bufferFromFile:@"ColdFunk.wav"] retain];

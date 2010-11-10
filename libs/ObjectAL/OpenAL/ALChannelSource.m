@@ -33,26 +33,19 @@
 
 #pragma mark Object Management
 
-+ (id) channelWithSources:(int) numSources
++ (id) channelWithSources:(int) reservedSources
 {
-	return [[[self alloc] initWithSources:numSources] autorelease];
+	return [[[self alloc] initWithSources:reservedSources] autorelease];
 }
 
-- (id) initWithSources:(int) numSources
+- (id) initWithSources:(int) reservedSources
 {
 	if(nil != (self = [super init]))
 	{
 		context = [[OpenALManager sharedInstance].currentContext retain];
 
-		// Create some OpenAL sound sources
-		sourcePool = [[ALSoundSourcePool pool] retain];
-		for(int i = 0; i < numSources; i++)
-		{
-			[sourcePool addSource:[ALSource source]];
-		}
-		
 		// Set this channel's properties from the OpenAL sound source defaults
-		id<ALSoundSource> firstSource = (0 == [sourcePool.sources count]) ? 0 : [sourcePool.sources objectAtIndex:0];
+		id<ALSoundSource> firstSource = [[ALSource alloc] init];
 		pitch = firstSource.pitch;
 		gain = firstSource.gain;
 		maxDistance = firstSource.maxDistance;
@@ -69,6 +62,23 @@
 		sourceRelative = firstSource.sourceRelative;
 		sourceType = firstSource.sourceType;
 		looping = firstSource.looping;
+		
+		// Create some OpenAL sound sources
+		sourcePool = [[ALSoundSourcePool pool] retain];
+
+		if(0 == reservedSources)
+		{
+			[firstSource release];
+		}
+		else
+		{
+			[sourcePool addSource:[firstSource autorelease]];
+		}
+
+		for(int i = 1; i < reservedSources; i++)
+		{
+			[sourcePool addSource:[ALSource source]];
+		}
 	}
 	return self;
 }
@@ -80,6 +90,47 @@
 	[super dealloc];
 }
 
+- (unsigned int) reservedSources
+{
+	return [sourcePool.sources count];
+}
+
+- (void) setReservedSources:(unsigned int) reservedSources
+{
+	unsigned int currentNumSources = [sourcePool.sources count];
+	if(reservedSources > currentNumSources)
+	{
+		for(unsigned int i = currentNumSources; i < reservedSources; i++)
+		{
+			id<ALSoundSource> source = [ALSource source];
+			source.pitch = pitch;
+			source.gain = gain;
+			source.maxDistance = maxDistance;
+			source.rolloffFactor = rolloffFactor;
+			source.referenceDistance = referenceDistance;
+			source.minGain = minGain;
+			source.maxGain = maxGain;
+			source.coneOuterGain = coneOuterGain;
+			source.coneInnerAngle = coneInnerAngle;
+			source.coneOuterAngle = coneOuterAngle;
+			source.position = position;
+			source.velocity = velocity;
+			source.direction = direction;
+			source.sourceRelative = sourceRelative;
+			source.looping = looping;
+			
+			[sourcePool addSource:source];
+		}
+		
+	}
+	else if(reservedSources < currentNumSources)
+	{
+		while([sourcePool.sources count] > reservedSources)
+		{
+			[sourcePool removeSource:[sourcePool.sources lastObject]];
+		}
+	}
+}
 
 #pragma mark Properties
 
@@ -468,18 +519,6 @@
 	}
 }
 
-- (void) setSourceType:(int) value
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		sourceType = value;
-		for(id<ALSoundSource> source in sourcePool.sources)
-		{
-			source.sourceType = value;
-		}
-	}
-}
-
 @synthesize sourcePool;
 
 - (ALVector) velocity
@@ -688,6 +727,39 @@
 		{
 			[source clear];
 		}
+	}
+}
+
+- (void) resetToDefault
+{
+	bool removeOne = self.reservedSources > 0;
+	if(removeOne)
+	{
+		self.reservedSources -= 1;
+	}
+
+	id<ALSoundSource> source = [[ALSource alloc] init];
+	self.pitch = source.pitch;
+	self.gain = source.gain;
+	self.maxDistance = source.maxDistance;
+	self.rolloffFactor = source.rolloffFactor;
+	self.referenceDistance = source.referenceDistance;
+	self.minGain = source.minGain;
+	self.maxGain = source.maxGain;
+	self.coneOuterGain = source.coneOuterGain;
+	self.coneInnerAngle = source.coneInnerAngle;
+	self.coneOuterAngle = source.coneOuterAngle;
+	self.position = source.position;
+	self.velocity = source.velocity;
+	self.direction = source.direction;
+	self.sourceRelative = source.sourceRelative;
+	sourceType = source.sourceType;
+	self.looping = source.looping;
+	[source release];
+
+	if(removeOne)
+	{
+		self.reservedSources += 1;
 	}
 }
 

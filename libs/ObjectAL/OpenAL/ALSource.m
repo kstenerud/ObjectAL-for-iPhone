@@ -88,8 +88,10 @@
 		[ALWrapper sourcei:sourceId parameter:AL_BUFFER value:AL_NONE];
 	}
 
-	[buffer release];
-
+	// In IOS 3.0, OpenAL doesn't stop playing right away.
+	// We autorelease to give it some time to stop.
+	[buffer autorelease];
+	
 	@synchronized([OpenALManager sharedInstance])
 	{
 		ALContext* oldContext = [OpenALManager sharedInstance].currentContext;

@@ -173,6 +173,17 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 	[OALAudioSupport sharedInstance].useHardwareIfAvailable = value;
 }
 
+
+- (unsigned int) reservedSources
+{
+	return channel.reservedSources;
+}
+
+- (void) setReservedSources:(unsigned int) value
+{
+	channel.reservedSources = value;
+}
+
 @synthesize backgroundTrack;
 
 - (bool) bgPaused
@@ -572,6 +583,15 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 {
 	[self stopAllEffects];
 	[self stopBg];
+}
+
+- (void) resetToDefault
+{
+	[self stopEverything];
+	[channel resetToDefault];
+	self.reservedSources = kDefaultReservedSources;
+	self.bgMuted = NO;
+	self.bgVolume = 1.0f;
 }
 
 @end
