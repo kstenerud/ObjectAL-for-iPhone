@@ -88,9 +88,9 @@
 		[ALWrapper sourcei:sourceId parameter:AL_BUFFER value:AL_NONE];
 	}
 
-	// In IOS 3.0, OpenAL doesn't stop playing right away.
-	// We autorelease to give it some time to stop.
-	[buffer autorelease];
+	// In IOS 3.x, OpenAL doesn't stop playing right away.
+	// Release after a delay to give it some time to stop.
+	[buffer performSelector:@selector(release) withObject:nil afterDelay:0.1];
 	
 	@synchronized([OpenALManager sharedInstance])
 	{
@@ -120,7 +120,11 @@
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[self stop];
-		[buffer autorelease];
+
+		// In IOS 3.x, OpenAL doesn't stop playing right away.
+		// Release after a delay to give it some time to stop.
+		[buffer performSelector:@selector(release) withObject:nil afterDelay:0.1];
+
 		buffer = [value retain];
 		OBJECTAL_INTERRUPT_BUG_WORKAROUND();
 		[ALWrapper sourcei:sourceId parameter:AL_BUFFER value:buffer.bufferId];
