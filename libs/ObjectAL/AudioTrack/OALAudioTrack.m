@@ -241,6 +241,7 @@
 {
 	if(nil != (self = [super init]))
 	{
+		OAL_LOG_DEBUG(@"%@: Init", self);
 		// Make sure OALAudioTracks is initialized.
 		[OALAudioTracks sharedInstance];
 		
@@ -257,6 +258,7 @@
 
 - (void) dealloc
 {
+	OAL_LOG_DEBUG(@"%@: Dealloc", self);
 	[[OALAudioTracks sharedInstance] notifyTrackDeallocating:self];
 
 	[operationQueue release];
@@ -311,6 +313,10 @@
 		{
 			pan = value;
 			player.pan = pan;
+		}
+		else
+		{
+			OAL_LOG_WARNING_COND(pan != 0.0f, @"%@: Pan not supported on iOS %f", self, [IOSVersion sharedInstance].version);
 		}
 	}
 }
@@ -401,6 +407,7 @@
 			paused = value;
 			if(paused)
 			{
+				OAL_LOG_DEBUG(@"%@: Pause", self);
 				[player pause];
 				if(playing)
 				{
@@ -410,6 +417,7 @@
 			}
 			else if(playing)
 			{
+				OAL_LOG_DEBUG(@"%@: Unpause", self);
 				playing = [player play];
 				if(playing)
 				{
@@ -486,17 +494,14 @@
 {
 	if(nil == url)
 	{
-		OAL_LOG_ERROR(@"Cannot open NULL file / url");
+		OAL_LOG_ERROR(@"%@: Cannot open NULL file / url", self);
 		return NO;
 	}
 	
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		// Only load if it's not the same URL as last time.
-		if([[url absoluteString] isEqualToString:[currentlyLoadedUrl absoluteString]])
-		{
-			return YES;
-		}
+		bool alreadyLoaded = [[url absoluteString] isEqualToString:[currentlyLoadedUrl absoluteString]];
+		OAL_LOG_DEBUG_COND(alreadyLoaded, @"%@: %@: URL already preloaded", self, url);
 		
 		[self stopActions];
 		
@@ -505,18 +510,26 @@
 		{
 			[player stop];
 		}
-		[player release];
+
+		if(!alreadyLoaded)
+		{
+			[player release];
+		}
+
 		if(playing)
 		{
 			[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:OALAudioTrackStoppedPlayingNotification object:self] waitUntilDone:NO];
 		}
 		
-		NSError* error;
-		player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
-		if(nil != error)
+		if(!alreadyLoaded)
 		{
-			OAL_LOG_ERROR(@"Could not load URL %@: %@", url, [error localizedDescription]);
-			return NO;
+			NSError* error;
+			player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+			if(nil != error)
+			{
+				OAL_LOG_ERROR(@"%@: Could not load URL %@: %@", self, url, [error localizedDescription]);
+				return NO;
+			}
 		}
 		
 		player.volume = muted ? 0 : gain;
@@ -528,17 +541,20 @@
 			player.pan = pan;
 		}
 		
-		[currentlyLoadedUrl release];
-		currentlyLoadedUrl = [url retain];
+		if(!alreadyLoaded)
+		{
+			[currentlyLoadedUrl release];
+			currentlyLoadedUrl = [url retain];
+		}
 		
-		self.currentTime	= seekTime;
+		self.currentTime = seekTime;
 		playing = NO;
 		paused = NO;
 
 		BOOL allOK = [player prepareToPlay];
 		if(!allOK)
 		{
-			OAL_LOG_ERROR(@"Failed to prepareToPlay: %@", url);
+			OAL_LOG_ERROR(@"%@: Failed to prepareToPlay: %@", self, url);
 		}
 		else
 		{
@@ -668,6 +684,11 @@
 			}
 			return playing;
 		}
+		else
+		{
+			OAL_LOG_WARNING(@"%@: playAtTime not supported on iOS %f", self, [IOSVersion sharedInstance].version);
+		}
+
 		return NO;
 	}
 }
@@ -842,17 +863,22 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		interrupted = value;
-		if(interrupted)
+		if(value != interrupted)
 		{
-			currentTime = player.currentTime;
-		}
-		else if(playing && !player.playing)
-		{
-			player.currentTime = currentTime;
-			if(!paused)
+			interrupted = value;
+			OAL_LOG_DEBUG_COND(interrupted, @"%@: Interrupted", self);
+			OAL_LOG_DEBUG_COND(!interrupted, @"%@: End Interrupt", self);
+			if(interrupted)
 			{
-				playing = [player play];
+				currentTime = player.currentTime;
+			}
+			else if(playing && !player.playing)
+			{
+				player.currentTime = currentTime;
+				if(!paused)
+				{
+					playing = [player play];
+				}
 			}
 		}
 	}

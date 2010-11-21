@@ -68,17 +68,19 @@
 	/** Delegate for interruptions */
 	id<AVAudioSessionDelegate> audioSessionDelegate;
 
-	/** If true, BackgoundAudio was already suspended when the interrupt occurred. */
-	bool backgroundAudioWasSuspended;
+	/** If true, AudioTrack was already manually interrupted when the interrupt occurred. */
+	bool audioTracksWereInterrupted;
 	
-	/** If true, ObjectAL was already suspended when the interrupt occurred. */
-	bool objectALWasSuspended;
+	/** If true, OpenAL was already manually interrupted when the interrupt occurred. */
+	bool openALWasInterrupted;
 	
 	/** If true, the audio session was active when the interrupt occurred. */
 	bool audioSessionWasActive;
 	
-	/** The time that the application was last activated. */
-	NSDate* lastActivated;
+	bool interrupted;
+	
+	/** If true, the current interrupt was manually induced. */
+	bool manualInterrupt;
 }
 
 
@@ -145,6 +147,9 @@
  * Default value: YES
  */
 @property(readwrite,assign) bool handleInterruptions;
+
+/** Delegate that will receive all audio session events.
+ */
 @property(readwrite,assign) id<AVAudioSessionDelegate> audioSessionDelegate;
 
 /** If true, another application (usually iPod) is playing music. */
@@ -152,6 +157,9 @@
 
 /** If true, the audio session is active */
 @property(readwrite,assign) bool audioSessionActive;
+
+/** If true, interrupt the entire audio system. */
+@property(readwrite,assign) bool interrupted;
 
 /** Get the device's final hardware output volume, as controlled by
  * the volume button on the side of the device.

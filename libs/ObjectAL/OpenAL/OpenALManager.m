@@ -44,6 +44,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OpenALManager);
 {
 	if(nil != (self = [super init]))
 	{
+		OAL_LOG_DEBUG(@"%@: Init", self);
 		// Make sure OALAudioSupport is initialized.
 		[OALAudioSupport sharedInstance];
 		
@@ -54,6 +55,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OpenALManager);
 
 - (void) dealloc
 {
+	OAL_LOG_DEBUG(@"%@: Dealloc", self);
 	self.currentContext = nil;
 	[devices release];
 	
@@ -146,15 +148,20 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OpenALManager);
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		interrupted = value;
-		if(interrupted)
+		if(value != interrupted)
 		{
-			[ALWrapper makeContextCurrent:nil];
-		}
-		else if(nil != currentContext && NULL == [ALWrapper getCurrentContext])
-		{
-			[ALWrapper makeContextCurrent:currentContext.context
-						  deviceReference:currentContext.device.device];
+			interrupted = value;
+			if(interrupted)
+			{
+				OAL_LOG_DEBUG(@"Interrupted");
+				[ALWrapper makeContextCurrent:nil];
+			}
+			else if(nil != currentContext && NULL == [ALWrapper getCurrentContext])
+			{
+				OAL_LOG_DEBUG(@"End Interrupt");
+				[ALWrapper makeContextCurrent:currentContext.context
+							  deviceReference:currentContext.device.device];
+			}
 		}
 	}
 }

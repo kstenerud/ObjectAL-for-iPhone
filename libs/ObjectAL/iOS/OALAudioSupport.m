@@ -34,8 +34,6 @@
 
 #define kMaxSessionActivationRetries 40
 
-#define kMinTimeBetweenActivations 3.0
-
 /** Dictionary mapping audio session error codes to human readable descriptions.
  * Key: NSNumber, Value: NSString
  */
@@ -170,19 +168,19 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSupport);
 {
 	if(nil != (self = [super init]))
 	{
+		OAL_LOG_DEBUG(@"%@: Init", self);
 		operationQueue = [[NSOperationQueue alloc] init];
-		[(AVAudioSession*)[AVAudioSession sharedInstance] setDelegate: self];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(appBecameActive:)
-													 name:UIApplicationDidBecomeActiveNotification
-												   object:nil];
-		
+		[(AVAudioSession*)[AVAudioSession sharedInstance] setDelegate:self];
+
+		// Set up defaults
 		handleInterruptions = YES;
 		audioSessionDelegate = nil;
 		allowIpod = YES;
 		ipodDucking = NO;
 		useHardwareIfAvailable = YES;
 		honorSilentSwitch = YES;
+
+		// Activate the audio session.
 		self.audioSessionActive = YES;
 	}
 	return self;
@@ -190,14 +188,12 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSupport);
 
 - (void) dealloc
 {
+	OAL_LOG_DEBUG(@"%@: Dealloc", self);
 	self.audioSessionActive = NO;
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+
 	[operationQueue release];
-	[audioSessionErrorCodes release];
-	audioSessionErrorCodes = nil;
-	[extAudioErrorCodes release];
-	extAudioErrorCodes = nil;
 	[overrideAudioSessionCategory release];
+
 	[super dealloc];
 }
 
@@ -332,6 +328,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSupport);
 		OAL_LOG_ERROR(@"Cannot open NULL file / url");
 		return nil;
 	}
+	
+	OAL_LOG_DEBUG(@"Load buffer from %@", url);
 	
 	// Holds any errors that occur.
 	OSStatus error;
@@ -740,82 +738,114 @@ done:
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(value)
+		if(value != audioSessionActive)
 		{
-			[self updateAudioMode];
-			[self activateAudioSession];
-		}
-		else
-		{
-			NSError* error;
-			if(![[AVAudioSession sharedInstance] setActive:NO error:&error])
+			if(value)
 			{
-				OAL_LOG_ERROR(@"Could not deactivate audio session: %@", error);
+				OAL_LOG_DEBUG(@"Activate audio session");
+				[self updateAudioMode];
+				[self activateAudioSession];
 			}
 			else
 			{
-				audioSessionActive = NO;
+				OAL_LOG_DEBUG(@"Deactivate audio session");
+				NSError* error;
+				if(![[AVAudioSession sharedInstance] setActive:NO error:&error])
+				{
+					OAL_LOG_ERROR(@"Could not deactivate audio session: %@", error);
+				}
+				else
+				{
+					audioSessionActive = NO;
+				}
+				
 			}
-			
 		}
 	}
+}
+
+- (bool) interrupted
+{
+	@synchronized(self)
+	{
+		return interrupted;
+	}
+}
+
+- (void) setInterrupted:(bool) value
+{
+	@synchronized(self)
+	{
+		if(value != interrupted)
+		{
+			interrupted = value;
+			if(interrupted)
+			{
+				OAL_LOG_DEBUG(@"Interrupted");
+				// Default to YES since interrupt handler will change it if needed.
+				manualInterrupt = YES;
+
+				openALWasInterrupted = [OpenALManager sharedInstance].interrupted;
+				[OpenALManager sharedInstance].interrupted = YES;
+
+				audioTracksWereInterrupted = [OALAudioTracks sharedInstance].interrupted;
+				[OALAudioTracks sharedInstance].interrupted = YES;
+
+				audioSessionWasActive = self.audioSessionActive;
+				self.audioSessionActive = NO;
+			}
+			else
+			{
+				OAL_LOG_DEBUG(@"End Interrupt");
+				if(audioSessionWasActive)
+				{
+					self.audioSessionActive = YES;
+				}
+				if(openALWasInterrupted)
+				{
+					[OpenALManager sharedInstance].interrupted = NO;
+				}
+				if(audioTracksWereInterrupted)
+				{
+					[OALAudioTracks sharedInstance].interrupted = NO;
+				}
+				manualInterrupt = NO;
+			}
+		}
+	}	
 }
 
 // AVAudioSessionDelegate
 - (void) beginInterruption
 {
+	OAL_LOG_DEBUG(@"Received interrupt from system. manualInterrupt = %d", manualInterrupt);
 	@synchronized(self)
 	{
-		audioSessionWasActive = self.audioSessionActive;
-		
-		if(handleInterruptions && audioSessionWasActive && [lastActivated timeIntervalSinceNow] < -kMinTimeBetweenActivations)
+		if(handleInterruptions && !manualInterrupt)
 		{
-			[OpenALManager sharedInstance].interrupted = YES;
-			[OALAudioTracks sharedInstance].interrupted = YES;
-			self.audioSessionActive = NO;
+			self.interrupted = YES;
+			// This is not a manual interrupt.
+			manualInterrupt = NO;
 		}
 		
-		if(audioSessionDelegate && [audioSessionDelegate respondsToSelector:@selector(beginInterruption)])
+		if([audioSessionDelegate respondsToSelector:@selector(beginInterruption)])
 		{
 			[audioSessionDelegate beginInterruption];
 		}
 	}
 }
 
-- (void) appBecameActive:(id) sender
-{
-	@synchronized(self)
-	{
-		if(handleInterruptions && audioSessionWasActive && !self.audioSessionActive)
-		{
-			self.audioSessionActive = YES;
-			[OpenALManager sharedInstance].interrupted = NO;
-			[OALAudioTracks sharedInstance].interrupted = NO;
-		}
-		[lastActivated autorelease];
-		lastActivated = [[NSDate date] retain];
-	}
-}
-
 - (void) endInterruption
 {
+	OAL_LOG_DEBUG(@"Received end interrupt from system. manualInterrupt = %d", manualInterrupt);
 	@synchronized(self)
 	{
-		if(handleInterruptions && audioSessionWasActive && !self.audioSessionActive)
+		if(handleInterruptions && !manualInterrupt)
 		{
-			if([lastActivated timeIntervalSinceNow] < -kMinTimeBetweenActivations)
-			{
-				self.audioSessionActive = YES;
-				[OpenALManager sharedInstance].interrupted = NO;
-				[OALAudioTracks sharedInstance].interrupted = NO;
-			}
+			self.interrupted = NO;
 		}
 		
-		if([audioSessionDelegate respondsToSelector:@selector(endInterruptionWithFlags:)])
-		{
-			[audioSessionDelegate endInterruptionWithFlags:AVAudioSessionInterruptionFlags_ShouldResume];
-		}
-		else if([audioSessionDelegate respondsToSelector:@selector(endInterruption)])
+		if([audioSessionDelegate respondsToSelector:@selector(endInterruption)])
 		{
 			[audioSessionDelegate endInterruption];
 		}
@@ -824,13 +854,12 @@ done:
 
 - (void)endInterruptionWithFlags:(NSUInteger)flags
 {
+	OAL_LOG_DEBUG(@"Received interrupt with flags 0x%08x from system. manualInterrupt = %d", flags, manualInterrupt);
 	@synchronized(self)
 	{
-		if(handleInterruptions && audioSessionWasActive)
+		if(handleInterruptions && !manualInterrupt)
 		{
-			self.audioSessionActive = YES;
-			[OpenALManager sharedInstance].interrupted = NO;
-			[OALAudioTracks sharedInstance].interrupted = NO;
+			self.interrupted = NO;
 		}
 		
 		if([audioSessionDelegate respondsToSelector:@selector(endInterruptionWithFlags:)])

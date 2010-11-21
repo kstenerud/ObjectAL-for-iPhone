@@ -26,6 +26,35 @@
 
 #import "ObjectALConfig.h"
 
+
+
+#ifdef LEVEL_NONE
+#define OAL_BAK_LEVEL_NONE LEVEL_NONE
+#undef LEVEL_NONE
+#endif
+#ifdef LEVEL_ERROR
+#define OAL_BAK_LEVEL_ERROR LEVEL_ERROR
+#undef LEVEL_ERROR
+#endif
+#ifdef LEVEL_WARNING
+#define OAL_BAK_LEVEL_WARNING LEVEL_WARNING
+#undef LEVEL_WARNING
+#endif
+#ifdef LEVEL_INFO
+#define OAL_BAK_LEVEL_INFO LEVEL_INFO
+#undef LEVEL_INFO
+#endif
+#ifdef LEVEL_DEBUG
+#define OAL_BAK_LEVEL_DEBUG LEVEL_DEBUG
+#undef LEVEL_DEBUG
+#endif
+#define LEVEL_NONE 0
+#define LEVEL_ERROR 1
+#define LEVEL_WARNING 2
+#define LEVEL_INFO 3
+#define LEVEL_DEBUG 4
+
+
 #pragma mark -
 #pragma mark Configuration
 
@@ -59,22 +88,6 @@
 
 
 #pragma mark -
-#pragma mark MPMusicPlayerController bug workaround
-
-#if OBJECTAL_CFG_INTERRUPT_BUG_WORKAROUND
-
-#define OBJECTAL_INTERRUPT_BUG_WORKAROUND() [context ensureContextIsCurrent]
-#define OBJECTAL_CONTEXT_INTERRUPT_BUG_WORKAROUND() [self ensureContextIsCurrent]
-
-#else /* OBJECTAL_CFG_INTERRUPT_BUG_WORKAROUND */
-
-#define OBJECTAL_INTERRUPT_BUG_WORKAROUND()
-#define OBJECTAL_CONTEXT_INTERRUPT_BUG_WORKAROUND()
-
-#endif /* OBJECTAL_CFG_INTERRUPT_BUG_WORKAROUND */
-
-
-#pragma mark -
 #pragma mark Logging
 
 
@@ -89,17 +102,39 @@
  * @param ... Arguments
  */
 #define OAL_LOG_BASE(FMT_STRING, CONTEXT, FMT, ...)	\
-	NSLog(FMT_STRING, (CONTEXT), [NSString stringWithFormat:(FMT), ##__VA_ARGS__]);
+	NSLog(FMT_STRING, (CONTEXT), [NSString stringWithFormat:(FMT), ##__VA_ARGS__])
+
+#define OAL_LOG_BASE_COND(COND, FMT_STRING, CONTEXT, FMT, ...)	\
+	if(COND) \
+	{ \
+		NSLog(FMT_STRING, (CONTEXT), [NSString stringWithFormat:(FMT), ##__VA_ARGS__]); \
+	}
+
+
+/** Write a "Debug" log entry.
+ *
+ * @param FMT Message with NSLog() style formatting.
+ * @param ... Arguments
+ */
+#if OBJECTAL_CFG_LOG_LEVEL >= 4
+#define OAL_LOG_DEBUG(FMT, ...) OAL_LOG_BASE(@"OAL Debug: %s: %@", __PRETTY_FUNCTION__, FMT, ##__VA_ARGS__)
+#define OAL_LOG_DEBUG_COND(COND, FMT, ...) OAL_LOG_BASE_COND(COND, @"OAL Debug: %s: %@", __PRETTY_FUNCTION__, FMT, ##__VA_ARGS__)
+#else /* OBJECTAL_CFG_LOG_LEVEL */
+#define OAL_LOG_DEBUG(FMT, ...)
+#define OAL_LOG_DEBUG_COND(COND, FMT, ...)
+#endif /* OBJECTAL_CFG_LOG_LEVEL */
 
 /** Write an "Info" log entry.
  *
  * @param FMT Message with NSLog() style formatting.
  * @param ... Arguments
  */
-#if OBJECTAL_CFG_LOG_LEVEL > 2
-#define OAL_LOG_INFO(FMT, ...) OAL_LOG_BASE(@"Info: %s: %@", __PRETTY_FUNCTION__, FMT, ##__VA_ARGS__)
+#if OBJECTAL_CFG_LOG_LEVEL >= 3
+#define OAL_LOG_INFO(FMT, ...) OAL_LOG_BASE(@"OAL Info: %s: %@", __PRETTY_FUNCTION__, FMT, ##__VA_ARGS__)
+#define OAL_LOG_INFO_COND(COND, FMT, ...) OAL_LOG_BASE_COND(COND, @"OAL Info: %s: %@", __PRETTY_FUNCTION__, FMT, ##__VA_ARGS__)
 #else /* OBJECTAL_CFG_LOG_LEVEL */
 #define OAL_LOG_INFO(FMT, ...)
+#define OAL_LOG_INFO_COND(COND, FMT, ...)
 #endif /* OBJECTAL_CFG_LOG_LEVEL */
 
 /** Write a "Warning" log entry.
@@ -107,10 +142,12 @@
  * @param FMT Message with NSLog() style formatting.
  * @param ... Arguments
  */
-#if OBJECTAL_CFG_LOG_LEVEL > 1
-#define OAL_LOG_WARNING(FMT, ...) OAL_LOG_BASE(@"Warning: %s: %@", __PRETTY_FUNCTION__, FMT, ##__VA_ARGS__)
+#if OBJECTAL_CFG_LOG_LEVEL >= 2
+#define OAL_LOG_WARNING(FMT, ...) OAL_LOG_BASE(@"OAL Warning: %s: %@", __PRETTY_FUNCTION__, FMT, ##__VA_ARGS__)
+#define OAL_LOG_WARNING_COND(COND, FMT, ...) OAL_LOG_BASE_COND(COND, @"OAL Warning: %s: %@", __PRETTY_FUNCTION__, FMT, ##__VA_ARGS__)
 #else /* OBJECTAL_CFG_LOG_LEVEL */
 #define OAL_LOG_WARNING(FMT, ...)
+#define OAL_LOG_WARNING_COND(COND, FMT, ...)
 #endif /* OBJECTAL_CFG_LOG_LEVEL */
 
 /** Write an "Error" log entry.
@@ -118,10 +155,12 @@
  * @param FMT Message with NSLog() style formatting.
  * @param ... Arguments
  */
-#if OBJECTAL_CFG_LOG_LEVEL > 0
-#define OAL_LOG_ERROR(FMT, ...) OAL_LOG_BASE(@"Error: %s: %@", __PRETTY_FUNCTION__, FMT, ##__VA_ARGS__)
+#if OBJECTAL_CFG_LOG_LEVEL >= 1
+#define OAL_LOG_ERROR(FMT, ...) OAL_LOG_BASE(@"OAL Error: %s: %@", __PRETTY_FUNCTION__, FMT, ##__VA_ARGS__)
+#define OAL_LOG_ERROR_COND(COND, FMT, ...) OAL_LOG_BASE_COND(COND, @"OAL Error: %s: %@", __PRETTY_FUNCTION__, FMT, ##__VA_ARGS__)
 #else /* OBJECTAL_CFG_LOG_LEVEL */
 #define OAL_LOG_ERROR(FMT, ...)
+#define OAL_LOG_ERROR_COND(COND, FMT, ...)
 #endif /* OBJECTAL_CFG_LOG_LEVEL */
 
 /** Write an "Error" log entry with context.
@@ -130,8 +169,8 @@
  * @param FMT Message with NSLog() style formatting.
  * @param ... Arguments
  */
-#if OBJECTAL_CFG_LOG_LEVEL > 0
-#define OAL_LOG_ERROR_CONTEXT(CONTEXT, FMT, ...) OAL_LOG_BASE(@"Error: %s: %@", CONTEXT, FMT, ##__VA_ARGS__)
+#if OBJECTAL_CFG_LOG_LEVEL >= 1
+#define OAL_LOG_ERROR_CONTEXT(CONTEXT, FMT, ...) OAL_LOG_BASE(@"OAL Error: %s: %@", CONTEXT, FMT, ##__VA_ARGS__)
 #else /* OBJECTAL_CFG_LOG_LEVEL */
 #define OAL_LOG_ERROR_CONTEXT(FMT, ...)
 #endif /* OBJECTAL_CFG_LOG_LEVEL */
@@ -171,3 +210,27 @@ if(noErr != (ERROR_CODE)) \
 #define REPORT_EXTAUDIO_CALL(ERROR_CODE, FMT, ...)
 
 #endif /* OBJECTAL_CFG_LOG_LEVEL */
+
+
+
+
+#undef LEVEL_ERROR
+#ifdef OAL_BAK_LEVEL_ERROR
+#define LEVEL_ERROR OAL_BAK_LEVEL_ERROR
+#undef OAL_BAK_LEVEL_ERROR
+#endif
+#undef LEVEL_WARNING
+#ifdef OAL_BAK_LEVEL_WARNING
+#define LEVEL_WARNING OAL_BAK_LEVEL_WARNING
+#undef OAL_BAK_LEVEL_WARNING
+#endif
+#undef LEVEL_INFO
+#ifdef OAL_BAK_LEVEL_INFO
+#define LEVEL_INFO OAL_BAK_LEVEL_INFO
+#undef OAL_BAK_LEVEL_INFO
+#endif
+#undef LEVEL_DEBUG
+#ifdef OAL_BAK_LEVEL_DEBUG
+#define LEVEL_DEBUG OAL_BAK_LEVEL_DEBUG
+#undef OAL_BAK_LEVEL_DEBUG
+#endif

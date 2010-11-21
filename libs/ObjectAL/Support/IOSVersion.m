@@ -21,7 +21,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(IOSVersion);
 		unichar ch = [versionStr characterAtIndex:0];
 		if(ch < '0' || ch > '9' || [versionStr characterAtIndex:1] != '.')
 		{
-			NSLog(@"Error: %s: Cannot parse iOS version string [%@]", __PRETTY_FUNCTION__, versionStr);
+			NSLog(@"Error: %s: Cannot parse iOS version string \"%@\"", __PRETTY_FUNCTION__, versionStr);
 		}
 		
 		version = (float)(ch - '0');
@@ -30,7 +30,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(IOSVersion);
 		unsigned int vLength = [versionStr length];
 		for(unsigned int i = 2; i < vLength; i++)
 		{
-			unichar ch = [versionStr characterAtIndex:i];
+			ch = [versionStr characterAtIndex:i];
 			if(ch >= '0' && ch <= '9')
 			{
 				version += (ch - '0') * multiplier;

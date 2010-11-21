@@ -73,6 +73,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 {
 	if(nil != (self = [super init]))
 	{
+		OAL_LOG_DEBUG(@"%@: Init with %d sources", self, sources);
 		device = [[ALDevice deviceWithDeviceSpecifier:nil] retain];
 		context = [[ALContext contextOnDevice:device attributes:nil] retain];
 		[OpenALManager sharedInstance].currentContext = context;
@@ -94,6 +95,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 
 - (void) dealloc
 {
+	OAL_LOG_DEBUG(@"%@: Dealloc", self);
 #if NS_BLOCKS_AVAILABLE && OBJECTAL_USE_BLOCKS
 	dispatch_release(oal_dispatch_queue);
 #endif
@@ -140,7 +142,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 			{
 				if(pendingLoadCount > 0)
 				{
-					OAL_LOG_WARNING(@"attempted to turn off preload cache while pending loads are queued.");
+					OAL_LOG_WARNING(@"Attempted to turn off preload cache while pending loads are queued.");
 					return;
 				}
 				else
@@ -361,6 +363,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 			pan:(float) pan
 		   loop:(bool) loop
 {
+	OAL_LOG_DEBUG(@"Play bg with vol %f, pan %f, loop %d, file %@", volume, pan, loop, filePath);
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		backgroundTrack.gain = volume;
@@ -378,6 +381,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
+		OAL_LOG_DEBUG(@"Play bg, loop %d");
 		backgroundTrack.numberOfLoops = loop ? -1 : 0;
 		return [backgroundTrack play];
 	}
@@ -385,6 +389,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 
 - (void) stopBg
 {
+	OAL_LOG_DEBUG(@"Stop bg");
 	[backgroundTrack stop];
 }
 
@@ -400,6 +405,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 	}
 	if(nil == buffer)
 	{
+		OAL_LOG_DEBUG(@"Effect not in cache. Loading %@", filePath);
 		buffer = [[OALAudioSupport sharedInstance] bufferFromFile:filePath];
 		if(nil == buffer)
 		{
@@ -423,8 +429,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 		OAL_LOG_ERROR(@"filePath was NULL");
 		return nil;
 	}
-	if(pendingLoadCount > 0)
-		OAL_LOG_WARNING(@"You are loading an effect synchronously, but have pending async loads that have not completed. Your load will happen after those finish. Your thread is now stuck waiting. Next time just load everything async please.");
+
+	OAL_LOG_WARNING_COND(pendingLoadCount > 0, @"You are loading an effect synchronously, but have pending async loads that have not completed. Your load will happen after those finish. Your thread is now stuck waiting. Next time just load everything async please.");
 
 #if NS_BLOCKS_AVAILABLE && OBJECTAL_USE_BLOCKS
 	//Using blocks with the same queue used to asynch load removes the need for locking
@@ -432,7 +438,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 	//It is advised you just always use async loading
 	__block ALBuffer* retBuffer = nil;
 	pendingLoadCount++;
-	dispatch_sync(oal_dispatch_queue, ^{
+	dispatch_sync(oal_dispatch_queue,
+	^{
 		retBuffer = [self internalPreloadEffect:filePath];
 	});
 	pendingLoadCount--;
@@ -455,7 +462,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 	}
 	
 	pendingLoadCount++;
-	dispatch_async(oal_dispatch_queue, ^{
+	dispatch_async(oal_dispatch_queue,
+	^{
 		OAL_LOG_INFO(@"Preloading effect: %@", filePath);
 		
 		ALBuffer *retBuffer = [self internalPreloadEffect:filePath];
@@ -528,6 +536,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 		OAL_LOG_ERROR(@"filePath was NULL");
 		return;
 	}
+	OAL_LOG_DEBUG(@"Remove effect from cache: %@", filePath);
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[preloadCache removeObjectForKey:filePath];
@@ -538,6 +547,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
+		OAL_LOG_DEBUG(@"Remove all effects from cache");
 		[preloadCache removeAllObjects];
 	}
 }
@@ -573,6 +583,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 
 - (void) stopAllEffects
 {
+	OAL_LOG_DEBUG(@"Stop all effects");
 	[channel stop];
 }
 
@@ -587,6 +598,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 
 - (void) resetToDefault
 {
+	OAL_LOG_DEBUG(@"Reset to default");
 	[self stopEverything];
 	[channel resetToDefault];
 	self.reservedSources = kDefaultReservedSources;

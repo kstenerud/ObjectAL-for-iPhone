@@ -89,7 +89,6 @@
 		{
 			value = 0;
 		}
-		OBJECTAL_INTERRUPT_BUG_WORKAROUND();
 		[ALWrapper listenerf:AL_GAIN value:value];
 	}
 }
@@ -99,7 +98,6 @@
 	ALOrientation result;
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		OBJECTAL_INTERRUPT_BUG_WORKAROUND();
 		[ALWrapper getListenerfv:AL_ORIENTATION values:(float*)&result];
 	}
 	return result;
@@ -109,7 +107,6 @@
 {
 	OPTIONALLY_SYNCHRONIZED_STRUCT_OP(self)
 	{
-		OBJECTAL_INTERRUPT_BUG_WORKAROUND();
 		[ALWrapper listenerfv:AL_ORIENTATION values:(float*)&value];
 	}
 }
@@ -119,7 +116,6 @@
 	ALPoint result;
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		OBJECTAL_INTERRUPT_BUG_WORKAROUND();
 		[ALWrapper getListener3f:AL_POSITION v1:&result.x v2:&result.y v3:&result.z];
 	}
 	return result;
@@ -129,7 +125,6 @@
 {
 	OPTIONALLY_SYNCHRONIZED_STRUCT_OP(self)
 	{
-		OBJECTAL_INTERRUPT_BUG_WORKAROUND();
 		[ALWrapper listener3f:AL_POSITION v1:value.x v2:value.y v3:value.z];
 	}
 }
@@ -139,7 +134,6 @@
 	ALVector result;
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		OBJECTAL_INTERRUPT_BUG_WORKAROUND();
 		[ALWrapper getListener3f:AL_VELOCITY v1:&result.x v2:&result.y v3:&result.z];
 	}
 	return result;
@@ -149,7 +143,6 @@
 {
 	OPTIONALLY_SYNCHRONIZED_STRUCT_OP(self)
 	{
-		OBJECTAL_INTERRUPT_BUG_WORKAROUND();
 		[ALWrapper listener3f:AL_VELOCITY v1:value.x v2:value.y v3:value.z];
 	}
 }

@@ -42,6 +42,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioTracks);
 {
 	if(nil != (self = [super init]))
 	{
+		OAL_LOG_DEBUG(@"%@: Init", self);
 		// Make sure OALAudioSupport is initialized.
 		[OALAudioSupport sharedInstance];
 
@@ -52,6 +53,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioTracks);
 
 - (void) dealloc
 {
+	OAL_LOG_DEBUG(@"%@: Dealloc", self);
 	[tracks release];
 	[super dealloc];
 }

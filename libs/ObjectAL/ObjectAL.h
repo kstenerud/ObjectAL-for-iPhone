@@ -73,6 +73,7 @@
  - \ref use_iossimpleaudio_sec
  - \ref use_objectal_sec
  - \ref other_examples_sec
+ - \ref ios_issues_sec
  - \ref simulator_issues_sec
  
  
@@ -491,6 +492,72 @@
  - <strong>HardwareDemo</strong>: Demonstrates hardware monitoring features.
  - <strong>PlanetKillerDemo</strong>: Demonstrates using OALSimpleAudio in a game setting.
  
+ 
+ 
+ <br> <br>
+ \section ios_issues_sec iOS Issues that can impede playback
+ 
+ Certain versions of iOS have bugs or quirks, requiring workarounds.  ObjectAL tries to handle
+ most of these automatically, but there are cases that require specific handling by the developer.
+ These are:
+
+ <br>
+ \subsection mpmovieplayercontroller_ios3 MPMoviePlayerController on iOS 3.x
+ 
+ In iOS 3.x, MPMoviePlayerController doesn't play nice, and takes over the audio session when
+ you play a video.  In order to mitigate this, you must manually interrupt OpenAL, play the video,
+ and then manually end the interrupt once video playback finishes:
+ 
+ \code
+- (void) playVideo
+{	
+	if([myMoviePlayer respondsToSelector:@selector(view)])
+	{
+		[myMoviePlayer setFullscreen:YES animated:YES];
+	}
+	else
+	{
+		// No "view" method means we are < 4.0
+		// Manually interrupt so iOS 3.x doesn't clobber our session!
+		[OpenALManager sharedInstance].interrupted = YES;
+	}
+
+	[myMoviePlayer play];
+	
+	[[NSNotificationCenter defaultCenter] 
+	 addObserver:self
+	 selector:@selector(movieFinishedCallback:)                                                 
+	 name:MPMoviePlayerPlaybackDidFinishNotification
+	 object:myMoviePlayer];
+}
+
+-(void)movieFinishedCallback:(NSNotification *)notification
+{
+	if([myMoviePlayer respondsToSelector:@selector(view)])
+	{
+		if (myMoviePlayer.fullscreen)
+		{
+			[myMoviePlayer setFullscreen:NO animated:YES];
+		}
+	}
+	else
+	{
+		// No "view" method means we are < 4.0
+		// Manually end the interrupt
+		[OpenALManager sharedInstance].interrupted = NO;
+	}
+}
+ \endcode
+ <br>
+ \subsection mpmusicplayercontroller_ios4_0 MPMusicPlayerController on iOS 4.0
+
+ On iOS 4.0, MPMusicPlayerController sends an interrupt when it begins playback, but doesn't send
+ a corresponding "end interrupt" when it ends.  To work around this, make an "end interrupt" call
+ after starting playback:
+ \code
+	[OALAudioSupport sharedInstance].interrupted = NO;
+ \endcode
+
  
  
  <br> <br>

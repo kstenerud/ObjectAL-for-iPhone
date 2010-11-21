@@ -27,6 +27,7 @@
 #import "ALBuffer.h"
 #import "ALWrapper.h"
 #import "OpenALManager.h"
+#import "ObjectALMacros.h"
 
 
 @implementation ALBuffer
@@ -43,6 +44,7 @@
 {
 	if(nil != (self = [super init]))
 	{
+		OAL_LOG_DEBUG(@"%@: Init", self);
 		self.name = nameIn;
 		bufferId = [ALWrapper genBuffer];
 		device = [[OpenALManager sharedInstance].currentContext.device retain];
@@ -58,6 +60,7 @@
 
 - (void) dealloc
 {
+	OAL_LOG_DEBUG(@"%@: Dealloc", self);
 	[ALWrapper deleteBuffer:bufferId];
 	[device release];
 	[name release];

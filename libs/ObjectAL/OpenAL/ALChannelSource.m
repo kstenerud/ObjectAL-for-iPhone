@@ -42,6 +42,7 @@
 {
 	if(nil != (self = [super init]))
 	{
+		OAL_LOG_DEBUG(@"%@: Init with %d sources", self, reservedSources);
 		context = [[OpenALManager sharedInstance].currentContext retain];
 
 		// Set this channel's properties from the OpenAL sound source defaults
@@ -85,6 +86,7 @@
 
 - (void) dealloc
 {
+	OAL_LOG_DEBUG(@"%@: Dealloc", self);
 	[sourcePool release];
 	[context release];
 	[super dealloc];
@@ -547,7 +549,7 @@
 - (id<ALSoundSource>) play
 {
 	// Do nothing.
-	OAL_LOG_WARNING(@"\"play\" does nothing in ChannelSource.  Use \"play:(ALBuffer*) buffer loop:(bool) loop\" instead.");
+	OAL_LOG_WARNING(@"%@: \"play\" does nothing in ChannelSource.  Use \"play:(ALBuffer*) buffer loop:(bool) loop\" instead.", self);
 	return nil;
 }
 

@@ -145,8 +145,8 @@ static fontTable *readFontTableFromCGFont(CGFontRef font) {
 				UInt32 offset = OSReadBigInt32(encodingSubtable, 4);
 				const UInt8 *subtable = &bytes[offset];
 				UInt16 format = OSReadBigInt16(subtable, 0);
-				for (size_t i = 0; i < supportedFormatsCount; i++) {
-					if (format == supportedFormats[i]) {
+				for (size_t j = 0; j < supportedFormatsCount; j++) {
+					if (format == supportedFormats[j]) {
 						if (format >= 8) {
 							// the version is a fixed-point
 							UInt16 formatFrac = OSReadBigInt16(subtable, 2);

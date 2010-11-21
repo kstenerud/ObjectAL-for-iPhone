@@ -45,6 +45,7 @@
 {
 	if(nil != (self = [super init]))
 	{
+		OAL_LOG_DEBUG(@"%@: Init device %@", self, deviceSpecifier);
 		// Make sure OALAudioSupport is initialized.
 		[OALAudioSupport sharedInstance];
 
@@ -60,6 +61,7 @@
 
 - (void) dealloc
 {
+	OAL_LOG_DEBUG(@"%@: Dealloc", self);
 	[[OpenALManager sharedInstance] notifyDeviceDeallocating:self];
 	[contexts release];
 	[ALWrapper closeDevice:device];
