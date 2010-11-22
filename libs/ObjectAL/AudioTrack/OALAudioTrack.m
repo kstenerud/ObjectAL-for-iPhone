@@ -437,10 +437,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(player)
-			return player.currentTime;
-		else
-			return currentTime;
+		return (nil == player) ? currentTime : player.currentTime;
 	}
 }
 
@@ -449,8 +446,10 @@
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		currentTime = value;
-		if(player)
+		if(nil != player)
+		{
 			player.currentTime = currentTime;
+		}
 	}
 }
 
@@ -791,16 +790,17 @@
 		
 		[player stop];
 		[player release];
+		player = nil;
+		playing = NO;
+		paused = NO;
+		muted = NO;
+
 		if(playing)
 		{
 			[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:OALAudioTrackStoppedPlayingNotification object:self] waitUntilDone:NO];
 		}
 		
 		self.currentTime = 0;
-		player = nil;
-		playing = NO;
-		paused = NO;
-		muted = NO;
 	}
 }
 
