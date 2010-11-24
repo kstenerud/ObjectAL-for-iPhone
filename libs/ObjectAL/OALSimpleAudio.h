@@ -168,6 +168,13 @@
 /** The number of items currently in the preload cache. */
 @property(readonly) NSUInteger preloadCacheCount;
 
+/** If YES, the sound system is suspended. */
+@property(readwrite,assign) bool suspended;
+
+/** If YES, the sound system is interrupted. */
+@property(readonly) bool interrupted;
+
+
 #pragma mark Object Management
 
 /** Singleton implementation providing "sharedInstance" and "purgeSharedInstance" methods.

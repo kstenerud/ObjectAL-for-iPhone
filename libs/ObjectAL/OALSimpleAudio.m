@@ -606,4 +606,20 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 	self.bgVolume = 1.0f;
 }
 
+- (bool) suspended
+{
+	return [OALAudioSupport sharedInstance].suspended;
+}
+
+- (void) setSuspended:(bool) value
+{
+	[OALAudioSupport sharedInstance].suspended = value;
+}
+
+- (bool) interrupted
+{
+	return [OALAudioSupport sharedInstance].interrupted;
+}
+
+
 @end

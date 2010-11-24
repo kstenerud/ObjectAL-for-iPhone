@@ -27,6 +27,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "OALAction.h"
 #import "OALAudioTrackNotifications.h"
+#import "SuspendLock.h"
 
 /**
  * Plays an audio track via AVAudioPlayer.
@@ -70,6 +71,9 @@
 	
 	/** The current action being applied to pan. */
 	OALAction* panAction;
+	
+	/** Manages a double-lock between suspend and interrupt */
+	SuspendLock* suspendLock;
 }
 
 
@@ -143,6 +147,12 @@
 
 /** The number of channels in the currently loaded sound. */
 @property(readonly) NSUInteger numberOfChannels;
+
+/** If YES, this object is suspended. */
+@property(readwrite,assign) bool suspended;
+
+/** If YES, this object is interrupted. */
+@property(readonly) bool interrupted;
 
 
 #pragma mark Object Management
@@ -401,13 +411,5 @@
  * @return the average power for the channel.
  */
 - (float) peakPowerForChannel:(NSUInteger)channelNumber;
-
-
-#pragma mark Internal Use
-
-/** (INTERNAL USE) Used by the interrupt handler to suspend the audio device
- * (if interrupts are enabled in OALAudioSupport).
- */
-@property(readwrite,assign) bool interrupted;
 
 @end

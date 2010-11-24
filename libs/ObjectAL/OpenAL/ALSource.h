@@ -29,6 +29,7 @@
 #import "ALSoundSource.h"
 #import "ALBuffer.h"
 #import "OALAction.h"
+#import "SuspendLock.h"
 
 @class ALContext;
 
@@ -45,7 +46,7 @@
 	bool interruptible;
 	float gain;
 	bool muted;
-	bool paused;
+	bool wasPaused;
 	ALBuffer* buffer;
 	ALContext* context;
 
@@ -57,6 +58,9 @@
 
 	/** Current action operating on the pitch control. */
 	OALAction* pitchAction;
+	
+	/** Manages a double-lock between suspend and interrupt */
+	SuspendLock* suspendLock;
 }
 
 
@@ -90,6 +94,12 @@
 
 /** The state of this source. */
 @property(readwrite,assign) int state;
+
+/** If YES, this object is suspended. */
+@property(readwrite,assign) bool suspended;
+
+/** If YES, this object is interrupted. */
+@property(readonly) bool interrupted;
 
 
 #pragma mark Object Management

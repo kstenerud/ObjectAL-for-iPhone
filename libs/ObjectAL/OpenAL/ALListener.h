@@ -27,6 +27,7 @@
 #import <Foundation/Foundation.h>
 #import <OpenAL/al.h>
 #import "ALTypes.h"
+#import "SuspendLock.h"
 
 @class ALContext;
 
@@ -44,6 +45,9 @@
 	ALContext* context; // Weak reference
 	bool muted;
 	float gain;
+	
+	/** Manages a double-lock between suspend and interrupt */
+	SuspendLock* suspendLock;
 }
 
 
@@ -76,6 +80,12 @@
 * Only valid if this listener's context is the current context.
 */
 @property(readwrite,assign) ALVector velocity;
+
+/** If YES, this object is suspended. */
+@property(readwrite,assign) bool suspended;
+
+/** If YES, this object is interrupted. */
+@property(readonly) bool interrupted;
 
 
 #pragma mark Object Management

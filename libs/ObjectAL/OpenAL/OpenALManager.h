@@ -28,6 +28,7 @@
 #import "SynthesizeSingleton.h"
 #import "ALContext.h"
 #import "ALDevice.h"
+#import "SuspendLock.h"
 
 
 #pragma mark OpenALManager
@@ -48,7 +49,8 @@
 	/** All opened devices */
 	NSMutableArray* devices;
 	
-	bool interrupted;
+	/** Manages a double-lock between suspend and interrupt */
+	SuspendLock* suspendLock;
 }
 
 
@@ -76,6 +78,11 @@
 /** The frequency of the output mixer. */
 @property(readwrite,assign) ALdouble mixerOutputFrequency;
 
+/** If YES, this object is suspended. */
+@property(readwrite,assign) bool suspended;
+
+/** If YES, this object is interrupted. */
+@property(readonly) bool interrupted;
 
 #pragma mark Object Management
 
@@ -95,11 +102,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OpenALManager);
 
 
 #pragma mark Internal Use
-
-/** (INTERNAL USE) Used by the interrupt handler to suspend ObjectAL
- * (if interrupts are enabled in OALAudioSupport).
- */
-@property(readwrite,assign) bool interrupted;
 
 /** (INTERNAL USE) Notify that a device is initializing.
  */

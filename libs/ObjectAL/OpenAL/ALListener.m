@@ -45,10 +45,18 @@
 	{
 		context = contextIn;
 		gain = 1.0f;
+		suspendLock = [[SuspendLock lockWithTarget:nil
+									  lockSelector:nil
+									unlockSelector:nil] retain];
 	}
 	return self;
 }
 
+- (void) dealloc
+{
+	[suspendLock release];
+	[super dealloc];
+}
 
 #pragma mark Properties
 
@@ -66,6 +74,12 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
+		if(suspendLock.locked)
+		{
+			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
+			return;
+		}
+		
 		muted = value;
 		float resultingGain = muted ? 0 : gain;
 		self.gain = resultingGain;
@@ -84,6 +98,12 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
+		if(suspendLock.locked)
+		{
+			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
+			return;
+		}
+		
 		gain = value;
 		if(muted)
 		{
@@ -107,6 +127,12 @@
 {
 	OPTIONALLY_SYNCHRONIZED_STRUCT_OP(self)
 	{
+		if(suspendLock.locked)
+		{
+			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
+			return;
+		}
+		
 		[ALWrapper listenerfv:AL_ORIENTATION values:(float*)&value];
 	}
 }
@@ -125,6 +151,12 @@
 {
 	OPTIONALLY_SYNCHRONIZED_STRUCT_OP(self)
 	{
+		if(suspendLock.locked)
+		{
+			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
+			return;
+		}
+		
 		[ALWrapper listener3f:AL_POSITION v1:value.x v2:value.y v3:value.z];
 	}
 }
@@ -143,8 +175,38 @@
 {
 	OPTIONALLY_SYNCHRONIZED_STRUCT_OP(self)
 	{
+		if(suspendLock.locked)
+		{
+			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
+			return;
+		}
+		
 		[ALWrapper listener3f:AL_VELOCITY v1:value.x v2:value.y v3:value.z];
 	}
+}
+
+- (bool) suspended
+{
+	// No need to synchronize since SuspendLock does that already.
+	return suspendLock.suspendLock;
+}
+
+- (void) setSuspended:(bool) value
+{
+	// No need to synchronize since SuspendLock does that already.
+	suspendLock.suspendLock = value;
+}
+
+- (bool) interrupted
+{
+	// No need to synchronize since SuspendLock does that already.
+	return suspendLock.interruptLock;
+}
+
+- (void) setInterrupted:(bool) value
+{
+	// No need to synchronize since SuspendLock does that already.
+	suspendLock.interruptLock = value;
 }
 
 @end

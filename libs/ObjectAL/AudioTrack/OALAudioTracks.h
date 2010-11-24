@@ -26,6 +26,7 @@
 
 #import "OALAudioTrack.h"
 #import "SynthesizeSingleton.h"
+#import "SuspendLock.h"
 
 
 #pragma mark OALAudioTracks
@@ -37,15 +38,14 @@
 {
 	/** All instantiated audio tracks. */
 	NSMutableArray* tracks;
-	bool interrupted;
 	bool muted;
 	bool paused;
+	
+	/** Manages a double-lock between suspend and interrupt */
+	SuspendLock* suspendLock;
 }
 
 #pragma mark Properties
-
-/** Interrupts all audio tracks. */
-@property(readwrite,assign) bool interrupted;
 
 /** Pauses/unpauses all audio tracks. */
 @property(readwrite,assign) bool paused;
@@ -55,6 +55,12 @@
 
 /** All instantiated audio tracks. */
 @property(readonly) NSArray* tracks;
+
+/** If YES, this object is suspended. */
+@property(readwrite,assign) bool suspended;
+
+/** If YES, this object is interrupted. */
+@property(readonly) bool interrupted;
 
 
 #pragma mark Object Management

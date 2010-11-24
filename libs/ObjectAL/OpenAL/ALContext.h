@@ -55,6 +55,9 @@
 	bool suspended;
 	/** This context's attributes. */
 	NSMutableArray* attributes;
+	
+	/** Manages a double-lock between suspend and interrupt */
+	SuspendLock* suspendLock;
 }
 
 
@@ -111,13 +114,16 @@
  */
 @property(readwrite,assign) float speedOfSound;
 
-/** If true, this context is suspended. */
-@property(readwrite,assign) bool suspended;
-
 /** Name of the vendor.
  * Only valid when this is the current context.
  */
 @property(readonly) NSString* vendor;
+
+/** If YES, this object is suspended. */
+@property(readwrite,assign) bool suspended;
+
+/** If YES, this object is interrupted. */
+@property(readonly) bool interrupted;
 
 
 #pragma mark Object Management

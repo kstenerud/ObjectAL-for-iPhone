@@ -29,8 +29,13 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import "OALAudioTracks.h"
 #import "OpenALManager.h"
-#import <UIKit/UIKit.h>
+//#import <UIKit/UIKit.h>
+#import "OALInterruptAPI.h"
 
+
+ADD_INTERRUPT_API(OALAudioSupport);
+ADD_INTERRUPT_API(OpenALManager);
+ADD_INTERRUPT_API(OALAudioTracks);
 
 #define kMaxSessionActivationRetries 40
 
@@ -149,9 +154,17 @@ NSDictionary* extAudioErrorCodes = nil;
  */
 - (void) setIntProperty:(AudioSessionPropertyID) property value:(UInt32) value;
 
-/** (INTERNAL USE) Update AudioSession based on the allowIpod and honorSilentSwitch values.
+/** (INTERNAL USE) Set the Audio Session category and properties based on current settings.
  */
-- (void) updateAudioMode;
+- (void) setAudioMode;
+
+/** (INTERNAL USE) Update settings to be compatible with the current audio session category.
+ */
+- (void) updateFromAudioSessionCategory;
+
+/** (INTERNAL USE) Update the audio session category to be compatible with the current settings.
+ */
+- (void) updateFromFlags;
 
 @end
 
@@ -179,7 +192,12 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSupport);
 		ipodDucking = NO;
 		useHardwareIfAvailable = YES;
 		honorSilentSwitch = YES;
+		[self updateFromFlags];
 
+		suspendLock = [[SuspendLock lockWithTarget:self
+									  lockSelector:@selector(onSuspend)
+									unlockSelector:@selector(onUnsuspend)] retain];
+		
 		// Activate the audio session.
 		self.audioSessionActive = YES;
 	}
@@ -192,7 +210,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSupport);
 	self.audioSessionActive = NO;
 
 	[operationQueue release];
-	[overrideAudioSessionCategory release];
+	[audioSessionCategory release];
+	[suspendLock release];
 
 	[super dealloc];
 }
@@ -200,21 +219,22 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSupport);
 
 #pragma mark Properties
 
-- (NSString*) overrideAudioSessionCategory
+- (NSString*) audioSessionCategory
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		return overrideAudioSessionCategory;
+		return audioSessionCategory;
 	}
 }
 
-- (void) setOverrideAudioSessionCategory:(NSString*) value
+- (void) setAudioSessionCategory:(NSString*) value
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		[overrideAudioSessionCategory autorelease];
-		overrideAudioSessionCategory = [value retain];
-		[self updateAudioMode];
+		[audioSessionCategory autorelease];
+		audioSessionCategory = [value retain];
+		[self updateFromAudioSessionCategory];
+		[self setAudioMode];
 	}	
 }
 
@@ -231,7 +251,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSupport);
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		allowIpod = value;
-		[self updateAudioMode];
+		[self updateFromFlags];
+		[self setAudioMode];
 	}
 }
 
@@ -248,7 +269,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSupport);
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		ipodDucking = value;
-		[self updateAudioMode];
+		[self updateFromFlags];
+		[self setAudioMode];
 	}
 }
 
@@ -265,7 +287,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSupport);
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		useHardwareIfAvailable = value;
-		[self updateAudioMode];
+		[self updateFromFlags];
+		[self setAudioMode];
 	}
 }
 
@@ -285,7 +308,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSupport);
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		honorSilentSwitch = value;
-		[self updateAudioMode];
+		[self updateFromFlags];
+		[self setAudioMode];
 	}
 }
 
@@ -656,52 +680,101 @@ done:
 	}
 }
 
-- (void) updateAudioMode
+- (void) updateFromAudioSessionCategory
 {
-	// Simulator doesn't support setting the audio category.
-#if !TARGET_IPHONE_SIMULATOR
-	
-	if(nil != overrideAudioSessionCategory)
+	if([AVAudioSessionCategoryAmbient isEqualToString:audioSessionCategory])
 	{
-		[self setAudioCategory:overrideAudioSessionCategory];
+		honorSilentSwitch = YES;
+		allowIpod = YES;
 	}
-	else
+	else if([AVAudioSessionCategorySoloAmbient isEqualToString:audioSessionCategory])
 	{
-		if(honorSilentSwitch)
+		honorSilentSwitch = YES;
+		allowIpod = NO;
+		useHardwareIfAvailable = YES;
+		ipodDucking = NO;
+	}
+	else if([AVAudioSessionCategoryPlayback isEqualToString:audioSessionCategory])
+	{
+		honorSilentSwitch = NO;
+	}
+	else if([AVAudioSessionCategoryRecord isEqualToString:audioSessionCategory])
+	{
+		honorSilentSwitch = NO;
+		allowIpod = NO;
+		useHardwareIfAvailable = YES;
+		ipodDucking = NO;
+	}
+	else if([AVAudioSessionCategoryPlayAndRecord isEqualToString:audioSessionCategory])
+	{
+		honorSilentSwitch = NO;
+		useHardwareIfAvailable = YES;
+		ipodDucking = NO;
+	}
+	else if([AVAudioSessionCategoryAudioProcessing isEqualToString:audioSessionCategory])
+	{
+		honorSilentSwitch = NO;
+		allowIpod = NO;
+		useHardwareIfAvailable = YES;
+		ipodDucking = NO;
+	}
+}
+
+- (void) updateFromFlags
+{
+	[audioSessionCategory autorelease];
+	if(honorSilentSwitch)
+	{
+		if(allowIpod)
 		{
-			if(allowIpod && (self.ipodPlaying || !useHardwareIfAvailable))
-			{
-				// AmbientSound uses software codec.
-				[self setAudioCategory:AVAudioSessionCategoryAmbient];
-				[self setIntProperty:kAudioSessionProperty_OtherMixableAudioShouldDuck
-							   value:ipodDucking];
-			}
-			else
-			{
-				// SoloAmbientSound uses hardware codec.
-				[self setAudioCategory:AVAudioSessionCategorySoloAmbient];
-			}
+			audioSessionCategory = [AVAudioSessionCategoryAmbient retain];
 		}
 		else
 		{
-			// MediaPlayback also allows audio to continue playing when backgrounded.
-			[self setAudioCategory:AVAudioSessionCategoryPlayback];
-
-			if(allowIpod && (self.ipodPlaying || !useHardwareIfAvailable))
-			{
-				// Mixing uses software codec.
-				[self setIntProperty:kAudioSessionProperty_OverrideCategoryMixWithOthers
-							   value:TRUE];
-				[self setIntProperty:kAudioSessionProperty_OtherMixableAudioShouldDuck
-							   value:ipodDucking];
-			}
-			else
-			{
-				// Non-mixing uses hardware codec, if available.
-				[self setIntProperty:kAudioSessionProperty_OverrideCategoryMixWithOthers
-							   value:FALSE];
-			}
+			audioSessionCategory = [AVAudioSessionCategorySoloAmbient retain];
 		}
+	}
+	else
+	{
+		audioSessionCategory = [AVAudioSessionCategoryPlayback retain];
+	}
+}
+
+- (void) setAudioMode
+{
+	// Simulator doesn't support setting the audio session category.
+#if !TARGET_IPHONE_SIMULATOR
+	
+	NSString* actualCategory = audioSessionCategory;
+	
+	// Mixing uses software decoding and mixes with other apps.
+	bool mixing = allowIpod;
+
+	// Ducking causes other app audio to lower in volume while this session is active.
+	bool ducking = ipodDucking;
+	
+	if(mixing && useHardwareIfAvailable && !self.ipodPlaying)
+	{
+		mixing = NO;
+	}
+
+	if(!mixing && [AVAudioSessionCategoryAmbient isEqualToString:audioSessionCategory])
+	{
+		actualCategory = AVAudioSessionCategorySoloAmbient;
+	}
+
+	[self setAudioCategory:actualCategory];
+
+	if(!mixing)
+	{
+		// Setting ShouldDuck clears MixWithOthers.
+		[self setIntProperty:kAudioSessionProperty_OtherMixableAudioShouldDuck value:ducking];
+	}
+
+	if(!ducking)
+	{
+		// Setting MixWithOthers clears ShouldDuck.
+		[self setIntProperty:kAudioSessionProperty_OverrideCategoryMixWithOthers value:mixing];
 	}
 	
 #endif /* !TARGET_IPHONE_SIMULATOR */
@@ -743,7 +816,7 @@ done:
 			if(value)
 			{
 				OAL_LOG_DEBUG(@"Activate audio session");
-				[self updateAudioMode];
+				[self setAudioMode];
 				[self activateAudioSession];
 			}
 			else
@@ -764,68 +837,86 @@ done:
 	}
 }
 
+/** Called by SuspendLock to suspend this object.
+ */
+- (void) onSuspend
+{
+	audioSessionWasActive = self.audioSessionActive;
+	self.audioSessionActive = NO;
+}
+
+/** Called by SuspendLock to unsuspend this object.
+ */
+- (void) onUnsuspend
+{
+	if(audioSessionWasActive)
+	{
+		self.audioSessionActive = YES;
+	}
+}
+
+- (bool) suspended
+{
+	// No need to synchronize since SuspendLock does that already.
+	return suspendLock.suspendLock;
+}
+
+- (void) setSuspended:(bool) value
+{
+	// Ensure setting/resetting occurs in opposing order
+	if(value)
+	{
+		[OpenALManager sharedInstance].suspended = value;
+		[OALAudioTracks sharedInstance].suspended = value;
+	}
+
+	// No need to synchronize since SuspendLock does that already.
+	suspendLock.suspendLock = value;
+
+	// Ensure setting/resetting occurs in opposing order
+	if(!value)
+	{
+		[OpenALManager sharedInstance].suspended = value;
+		[OALAudioTracks sharedInstance].suspended = value;
+	}
+}
+
 - (bool) interrupted
 {
-	@synchronized(self)
-	{
-		return interrupted;
-	}
+	// No need to synchronize since SuspendLock does that already.
+	return suspendLock.interruptLock;
 }
 
 - (void) setInterrupted:(bool) value
 {
-	@synchronized(self)
+	// Ensure setting/resetting occurs in opposing order
+	if(value)
 	{
-		if(value != interrupted)
-		{
-			interrupted = value;
-			if(interrupted)
-			{
-				OAL_LOG_DEBUG(@"Interrupted");
-				// Default to YES since interrupt handler will change it if needed.
-				manualInterrupt = YES;
+		[OpenALManager sharedInstance].interrupted = value;
+		[OALAudioTracks sharedInstance].interrupted = value;
+	}
 
-				openALWasInterrupted = [OpenALManager sharedInstance].interrupted;
-				[OpenALManager sharedInstance].interrupted = YES;
+	// No need to synchronize since SuspendLock does that already.
+	suspendLock.interruptLock = value;
 
-				audioTracksWereInterrupted = [OALAudioTracks sharedInstance].interrupted;
-				[OALAudioTracks sharedInstance].interrupted = YES;
-
-				audioSessionWasActive = self.audioSessionActive;
-				self.audioSessionActive = NO;
-			}
-			else
-			{
-				OAL_LOG_DEBUG(@"End Interrupt");
-				if(audioSessionWasActive)
-				{
-					self.audioSessionActive = YES;
-				}
-				if(openALWasInterrupted)
-				{
-					[OpenALManager sharedInstance].interrupted = NO;
-				}
-				if(audioTracksWereInterrupted)
-				{
-					[OALAudioTracks sharedInstance].interrupted = NO;
-				}
-				manualInterrupt = NO;
-			}
-		}
-	}	
+	// Ensure setting/resetting occurs in opposing order
+	if(!value)
+	{
+		[OpenALManager sharedInstance].interrupted = value;
+		[OALAudioTracks sharedInstance].interrupted = value;
+	}
 }
+
 
 // AVAudioSessionDelegate
 - (void) beginInterruption
 {
-	OAL_LOG_DEBUG(@"Received interrupt from system. manualInterrupt = %d", manualInterrupt);
+	OAL_LOG_DEBUG(@"Received interrupt from system.");
 	@synchronized(self)
 	{
-		if(handleInterruptions && !manualInterrupt)
+		if(handleInterruptions)
 		{
 			self.interrupted = YES;
-			// This is not a manual interrupt.
-			manualInterrupt = NO;
 		}
 		
 		if([audioSessionDelegate respondsToSelector:@selector(beginInterruption)])
@@ -837,10 +928,10 @@ done:
 
 - (void) endInterruption
 {
-	OAL_LOG_DEBUG(@"Received end interrupt from system. manualInterrupt = %d", manualInterrupt);
+	OAL_LOG_DEBUG(@"Received end interrupt from system.");
 	@synchronized(self)
 	{
-		if(handleInterruptions && !manualInterrupt)
+		if(handleInterruptions)
 		{
 			self.interrupted = NO;
 		}
@@ -854,10 +945,10 @@ done:
 
 - (void)endInterruptionWithFlags:(NSUInteger)flags
 {
-	OAL_LOG_DEBUG(@"Received interrupt with flags 0x%08x from system. manualInterrupt = %d", flags, manualInterrupt);
+	OAL_LOG_DEBUG(@"Received end interrupt with flags 0x%08x from system.", flags);
 	@synchronized(self)
 	{
-		if(handleInterruptions && !manualInterrupt)
+		if(handleInterruptions)
 		{
 			self.interrupted = NO;
 		}
@@ -867,6 +958,19 @@ done:
 			[audioSessionDelegate endInterruptionWithFlags:flags];
 		}
 		else if([audioSessionDelegate respondsToSelector:@selector(endInterruption)])
+		{
+			[audioSessionDelegate endInterruption];
+		}
+	}
+}
+
+- (void) forceEndInterruption:(bool) informDelegate
+{
+	@synchronized(self)
+	{
+		self.interrupted = NO;
+		
+		if(informDelegate && [audioSessionDelegate respondsToSelector:@selector(endInterruption)])
 		{
 			[audioSessionDelegate endInterruption];
 		}

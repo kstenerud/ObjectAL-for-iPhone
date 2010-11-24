@@ -28,6 +28,10 @@
 #import "NSMutableArray+WeakReferences.h"
 #import "ObjectALMacros.h"
 #import "OALAudioSupport.h"
+#import "OALInterruptAPI.h"
+
+
+ADD_INTERRUPT_API(OALAudioTrack);
 
 
 #pragma mark OALAudioTracks
@@ -47,6 +51,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioTracks);
 		[OALAudioSupport sharedInstance];
 
 		tracks = [[NSMutableArray mutableArrayUsingWeakReferencesWithCapacity:10] retain];
+		suspendLock = [[SuspendLock lockWithTarget:nil
+									  lockSelector:nil
+									unlockSelector:nil] retain];
 	}
 	return self;
 }
@@ -55,6 +62,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioTracks);
 {
 	OAL_LOG_DEBUG(@"%@: Dealloc", self);
 	[tracks release];
+	[suspendLock release];
+	
 	[super dealloc];
 }
 
@@ -62,26 +71,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioTracks);
 #pragma mark Properties
 
 @synthesize tracks;
-
-- (bool) interrupted
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return interrupted;
-	}
-}
-
-- (void) setInterrupted:(bool) value
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		interrupted = value;
-		for(OALAudioTrack* track in tracks)
-		{
-			track.interrupted = interrupted;
-		}
-	}
-}
 
 - (bool) paused
 {
@@ -95,6 +84,12 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioTracks);
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
+		if(suspendLock.locked)
+		{
+			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
+			return;
+		}
+		
 		paused = value;
 		for(OALAudioTrack* track in tracks)
 		{
@@ -115,10 +110,76 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioTracks);
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
+		if(suspendLock.locked)
+		{
+			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
+			return;
+		}
+		
 		muted = value;
 		for(OALAudioTrack* track in tracks)
 		{
 			track.muted = muted;
+		}
+	}
+}
+
+- (bool) suspended
+{
+	// No need to synchronize since SuspendLock does that already.
+	return suspendLock.suspendLock;
+}
+
+- (void) setSuspended:(bool) value
+{
+	// Ensure setting/resetting occurs in opposing order
+	if(value)
+	{
+		for(OALAudioTrack* track in tracks)
+		{
+			track.suspended = value;
+		}
+	}
+
+	// No need to synchronize since SuspendLock does that already.
+	suspendLock.suspendLock = value;
+
+	// Ensure setting/resetting occurs in opposing order
+	if(!value)
+	{
+		for(OALAudioTrack* track in tracks)
+		{
+			track.suspended = value;
+		}
+	}
+}
+
+- (bool) interrupted
+{
+	// No need to synchronize since SuspendLock does that already.
+	return suspendLock.interruptLock;
+}
+
+- (void) setInterrupted:(bool) value
+{
+	// Ensure setting/resetting occurs in opposing order
+	if(value)
+	{
+		for(OALAudioTrack* track in tracks)
+		{
+			track.interrupted = value;
+		}
+	}
+
+	// No need to synchronize since SuspendLock does that already.
+	suspendLock.interruptLock = value;
+
+	// Ensure setting/resetting occurs in opposing order
+	if(!value)
+	{
+		for(OALAudioTrack* track in tracks)
+		{
+			track.interrupted = value;
 		}
 	}
 }

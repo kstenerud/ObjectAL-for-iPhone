@@ -31,6 +31,13 @@
 #import "OALAudioSupport.h"
 
 
+@interface ALDevice (Interrupts)
+
+- (void) setInterrupted:(bool) value;
+
+@end
+
+
 #pragma mark OpenALManager
 
 @implementation OpenALManager
@@ -49,6 +56,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OpenALManager);
 		[OALAudioSupport sharedInstance];
 		
 		devices = [[NSMutableArray mutableArrayUsingWeakReferencesWithCapacity:5] retain];
+		suspendLock = [[SuspendLock lockWithTarget:self
+									  lockSelector:@selector(onSuspend)
+									unlockSelector:@selector(onUnsuspend)] retain];
 	}
 	return self;
 }
@@ -58,6 +68,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OpenALManager);
 	OAL_LOG_DEBUG(@"%@: Dealloc", self);
 	self.currentContext = nil;
 	[devices release];
+	[suspendLock release];
 	
 	[super dealloc];
 }
@@ -87,6 +98,12 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OpenALManager);
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
+		if(suspendLock.locked)
+		{
+			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
+			return;
+		}
+		
 		currentContext = context;
 		[ALWrapper makeContextCurrent:currentContext.context deviceReference:currentContext.device.device];
 	}
@@ -116,9 +133,91 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OpenALManager);
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
+		if(suspendLock.locked)
+		{
+			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
+			return;
+		}
+		
 		[ALWrapper setMixerOutputDataRate:frequency];
 	}
 }
+
+/** Called by SuspendLock to suspend this object.
+ */
+- (void) onSuspend
+{
+	[ALWrapper makeContextCurrent:nil];
+}
+
+/** Called by SuspendLock to unsuspend this object.
+ */
+- (void) onUnsuspend
+{
+	[ALWrapper makeContextCurrent:currentContext.context
+				  deviceReference:currentContext.device.device];
+}
+
+- (bool) suspended
+{
+	// No need to synchronize since SuspendLock does that already.
+	return suspendLock.suspendLock;
+}
+
+- (void) setSuspended:(bool) value
+{
+	// Ensure setting/resetting occurs in opposite order
+	if(value)
+	{
+		for(ALDevice* device in devices)
+		{
+			device.suspended = value;
+		}
+	}
+
+	// No need to synchronize since SuspendLock does that already.
+	suspendLock.suspendLock = value;
+	
+	// Ensure setting/resetting occurs in opposite order
+	if(!value)
+	{
+		for(ALDevice* device in devices)
+		{
+			device.suspended = value;
+		}
+	}
+}
+
+- (bool) interrupted
+{
+	// No need to synchronize since SuspendLock does that already.
+	return suspendLock.interruptLock;
+}
+
+- (void) setInterrupted:(bool) value
+{
+	// Ensure setting/resetting occurs in opposing order
+	if(value)
+	{
+		for(ALDevice* device in devices)
+		{
+			device.interrupted = value;
+		}
+	}
+
+	// No need to synchronize since SuspendLock does that already.
+	suspendLock.interruptLock = value;
+
+	// Ensure setting/resetting occurs in opposing order
+	if(!value)
+	{
+		for(ALDevice* device in devices)
+		{
+			device.interrupted = value;
+		}
+	}
+}
+
 
 
 #pragma mark Utility
@@ -135,36 +234,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OpenALManager);
 }
 
 #pragma mark Internal Use
-
-- (bool) interrupted
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return interrupted;
-	}
-}
-
-- (void) setInterrupted:(bool) value
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		if(value != interrupted)
-		{
-			interrupted = value;
-			if(interrupted)
-			{
-				OAL_LOG_DEBUG(@"Interrupted");
-				[ALWrapper makeContextCurrent:nil];
-			}
-			else if(nil != currentContext && NULL == [ALWrapper getCurrentContext])
-			{
-				OAL_LOG_DEBUG(@"End Interrupt");
-				[ALWrapper makeContextCurrent:currentContext.context
-							  deviceReference:currentContext.device.device];
-			}
-		}
-	}
-}
 
 - (void) notifyDeviceInitializing:(ALDevice*) device
 {

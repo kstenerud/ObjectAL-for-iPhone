@@ -28,6 +28,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "SynthesizeSingleton.h"
 #import "ALBuffer.h"
+#import "SuspendLock.h"
 
 
 #pragma mark OALAudioSupport
@@ -55,7 +56,7 @@
 	/** Operation queue for asynchronous loading. */
 	NSOperationQueue* operationQueue;
 
-	NSString* overrideAudioSessionCategory;
+	NSString* audioSessionCategory;
 
 	bool handleInterruptions;
 	bool allowIpod;
@@ -68,19 +69,11 @@
 	/** Delegate for interruptions */
 	id<AVAudioSessionDelegate> audioSessionDelegate;
 
-	/** If true, AudioTrack was already manually interrupted when the interrupt occurred. */
-	bool audioTracksWereInterrupted;
-	
-	/** If true, OpenAL was already manually interrupted when the interrupt occurred. */
-	bool openALWasInterrupted;
-	
 	/** If true, the audio session was active when the interrupt occurred. */
 	bool audioSessionWasActive;
-	
-	bool interrupted;
-	
-	/** If true, the current interrupt was manually induced. */
-	bool manualInterrupt;
+
+	/** Manages a double-lock between suspend and interrupt */
+	SuspendLock* suspendLock;
 }
 
 
@@ -91,12 +84,14 @@
  * and "honorSilentSwitch" settings will be ignored, and the specified audio session
  * category will be used instead. <br>
  *
- * See the kAudioSessionProperty_AudioCategory property in the Apple developer
- * documentation for more info. <br>
+ * @see AVAudioSessionCategory
  *
- * Default value: 0
+ * Default value: nil
  */
-@property(readwrite,retain) NSString* overrideAudioSessionCategory;
+@property(readwrite,retain) NSString* audioSessionCategory;
+
+
+
 
 /** If YES, allow ipod music to continue playing (NOT SUPPORTED ON THE SIMULATOR).
  * Note: If this is enabled, and another app is playing music, background audio
@@ -110,7 +105,7 @@
  */
 @property(readwrite,assign) bool allowIpod;
 
-/** If YES, ipod music will duck (lower in volume) when your app plays a sound.
+/** If YES, ipod music will duck (lower in volume) when the audio session activates.
  *
  * Default value: NO
  */
@@ -158,8 +153,13 @@
 /** If true, the audio session is active */
 @property(readwrite,assign) bool audioSessionActive;
 
-/** If true, interrupt the entire audio system. */
-@property(readwrite,assign) bool interrupted;
+/** If YES, this object is suspended.
+ * Note: Suspending deactivates the audio session.
+ */
+@property(readwrite,assign) bool suspended;
+
+/** If YES, this object is interrupted. */
+@property(readonly) bool interrupted;
 
 /** Get the device's final hardware output volume, as controlled by
  * the volume button on the side of the device.
@@ -243,6 +243,13 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALAudioSupport);
 
 
 #pragma mark Utility
+
+/** Force an interrupt end.  This can be useful in cases where a buggy OS
+ * fails to end an interrupt.
+ *
+ * @param informDelegate If YES, also invoke "endInterruption" on the delegate.
+ */
+- (void) forceEndInterruption:(bool) informDelegate;
 
 /** Get the corresponding URL for a file path.
  *

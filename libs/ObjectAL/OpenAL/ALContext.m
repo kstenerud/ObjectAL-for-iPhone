@@ -29,7 +29,10 @@
 #import "ObjectALMacros.h"
 #import "ALWrapper.h"
 #import "OpenALManager.h"
+#import "OALInterruptAPI.h"
 
+
+ADD_INTERRUPT_API(ALSource);
 
 @implementation ALContext
 
@@ -163,6 +166,9 @@
 			free(attributesList);
 		}
 		
+		suspendLock = [[SuspendLock lockWithTarget:self
+									  lockSelector:@selector(onSuspend)
+									unlockSelector:@selector(onUnsuspend)] retain];
 	}
 	return self;
 }
@@ -180,6 +186,7 @@
 	[ALWrapper destroyContext:context];
 	[device release];
 	[attributes release];
+	[suspendLock release];
 
 	[super dealloc];
 }
@@ -210,6 +217,12 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
+		if(suspendLock.locked)
+		{
+			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
+			return;
+		}
+		
 		[ALWrapper distanceModel:value];
 	}
 }
@@ -226,6 +239,12 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
+		if(suspendLock.locked)
+		{
+			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
+			return;
+		}
+		
 		[ALWrapper dopplerFactor:value];
 	}
 }
@@ -256,37 +275,89 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
+		if(suspendLock.locked)
+		{
+			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
+			return;
+		}
+		
 		[ALWrapper speedOfSound:value];
 	}
 }
 
+/** Called by SuspendLock to suspend this object.
+ */
+- (void) onSuspend
+{
+	[ALWrapper suspendContext:context];
+}
+
+/** Called by SuspendLock to unsuspend this object.
+ */
+- (void) onUnsuspend
+{
+	[self process];
+}
+
+
 - (bool) suspended
 {
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return suspended;
-	}
+	// No need to synchronize since SuspendLock does that already.
+	return suspendLock.suspendLock;
 }
 
 - (void) setSuspended:(bool) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	// Ensure setting/resetting occurs in opposing order
+	if(value)
 	{
-		if(value != suspended)
+		for(ALSource* source in sources)
 		{
-			suspended = value;
-			if(suspended)
-			{
-				[ALWrapper suspendContext:context];
-			}
-			else
-			{
-				[self process];
-			}
-			
+			source.suspended = value;
+		}
+	}
+
+	// No need to synchronize since SuspendLock does that already.
+	suspendLock.suspendLock = value;
+
+	// Ensure setting/resetting occurs in opposing order
+	if(!value)
+	{
+		for(ALSource* source in sources)
+		{
+			source.suspended = value;
 		}
 	}
 }
+
+- (bool) interrupted
+{
+	// No need to synchronize since SuspendLock does that already.
+	return suspendLock.interruptLock;
+}
+
+- (void) setInterrupted:(bool) value
+{
+	if(value)
+	{
+		for(ALSource* source in sources)
+		{
+			source.interrupted = value;
+		}
+	}
+
+	// No need to synchronize since SuspendLock does that already.
+	suspendLock.interruptLock = value;
+
+	if(!value)
+	{
+		for(ALSource* source in sources)
+		{
+			source.interrupted = value;
+		}
+	}
+}
+
 
 - (NSString*) vendor
 {
@@ -309,6 +380,12 @@
 
 - (void) process
 {
+	if(suspendLock.locked)
+	{
+		OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
+		return;
+	}
+	
 	[ALWrapper processContext:context];
 }
 
@@ -316,6 +393,12 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
+		if(suspendLock.locked)
+		{
+			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
+			return;
+		}
+		
 		for(ALSource* source in sources)
 		{
 			[source stop];
@@ -325,6 +408,12 @@
 
 - (void) ensureContextIsCurrent
 {
+	if(suspendLock.locked)
+	{
+		OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
+		return;
+	}
+	
 	if([ALWrapper getCurrentContext] != context)
 	{
 		[OpenALManager sharedInstance].currentContext = self;

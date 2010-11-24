@@ -30,7 +30,10 @@
 #import "NSMutableArray+WeakReferences.h"
 #import "OALAudioSupport.h"
 #import "OpenALManager.h"
+#import "OALInterruptAPI.h"
 
+
+ADD_INTERRUPT_API(ALContext);
 
 @implementation ALDevice
 
@@ -55,6 +58,9 @@
 			
 			[[OpenALManager sharedInstance] notifyDeviceInitializing:self];
 		}
+		suspendLock = [[SuspendLock lockWithTarget:nil
+									  lockSelector:nil
+									unlockSelector:nil] retain];
 	}
 	return self;
 }
@@ -65,6 +71,7 @@
 	[[OpenALManager sharedInstance] notifyDeviceDeallocating:self];
 	[contexts release];
 	[ALWrapper closeDevice:device];
+	[suspendLock release];
 
 	[super dealloc];
 }
@@ -89,6 +96,66 @@
 - (int) minorVersion
 {
 	return [ALWrapper getInteger:device attribute:ALC_MINOR_VERSION];
+}
+
+- (bool) suspended
+{
+	// No need to synchronize since SuspendLock does that already.
+	return suspendLock.suspendLock;
+}
+
+- (void) setSuspended:(bool) value
+{
+	// Ensure setting/resetting occurs in opposite order
+	if(value)
+	{
+		for(ALContext* context in contexts)
+		{
+			context.suspended = value;
+		}
+	}
+
+	// No need to synchronize since SuspendLock does that already.
+	suspendLock.suspendLock = value;
+
+	// Ensure setting/resetting occurs in opposite order
+	if(!value)
+	{
+		for(ALContext* context in contexts)
+		{
+			context.suspended = value;
+		}
+	}
+}
+
+- (bool) interrupted
+{
+	// No need to synchronize since SuspendLock does that already.
+	return suspendLock.interruptLock;
+}
+
+- (void) setInterrupted:(bool) value
+{
+	// Ensure setting/resetting occurs in opposing order
+	if(value)
+	{
+		for(ALContext* context in contexts)
+		{
+			context.interrupted = value;
+		}
+	}
+
+	// No need to synchronize since SuspendLock does that already.
+	suspendLock.interruptLock = value;
+
+	// Ensure setting/resetting occurs in opposing order
+	if(!value)
+	{
+		for(ALContext* context in contexts)
+		{
+			context.interrupted = value;
+		}
+	}
 }
 
 

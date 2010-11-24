@@ -250,6 +250,9 @@
 		gain = 1.0f;
 		numberOfLoops = 0;
 		currentTime = 0.0;
+		suspendLock = [[SuspendLock lockWithTarget:self
+									  lockSelector:@selector(onSuspend)
+									unlockSelector:@selector(onUnsuspend)] retain];
 		
 		[[OALAudioTracks sharedInstance] notifyTrackInitializing:self];
 	}
@@ -269,6 +272,7 @@
 	[gainAction release];
 	[panAction stopAction];
 	[panAction release];
+	[suspendLock release];
 	[super dealloc];
 }
 
@@ -479,6 +483,52 @@
 	{
 		return player.numberOfChannels;
 	}
+}
+
+/** Called by SuspendLock to suspend this object.
+ */
+- (void) onSuspend
+{
+	if(self.playing && !self.paused)
+	{
+		currentTime = player.currentTime;
+		[player pause];
+	}
+}
+
+/** Called by SuspendLock to unsuspend this object.
+ */
+- (void) onUnsuspend
+{
+	if(self.playing && !self.paused)
+	{
+		player.currentTime = currentTime;
+		[player play];
+	}
+}
+
+- (bool) suspended
+{
+	// No need to synchronize since SuspendLock does that already.
+	return suspendLock.suspendLock;
+}
+
+- (void) setSuspended:(bool) value
+{
+	// No need to synchronize since SuspendLock does that already.
+	suspendLock.suspendLock = value;
+}
+
+- (bool) interrupted
+{
+	// No need to synchronize since SuspendLock does that already.
+	return suspendLock.interruptLock;
+}
+
+- (void) setInterrupted:(bool) value
+{
+	// No need to synchronize since SuspendLock does that already.
+	suspendLock.interruptLock = value;
 }
 
 
@@ -848,41 +898,6 @@
 	}
 }
 
-
-#pragma mark Internal Use
-
-- (bool) interrupted
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return interrupted;
-	}
-}
-
-- (void) setInterrupted:(bool) value
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		if(value != interrupted)
-		{
-			interrupted = value;
-			OAL_LOG_DEBUG_COND(interrupted, @"%@: Interrupted", self);
-			OAL_LOG_DEBUG_COND(!interrupted, @"%@: End Interrupt", self);
-			if(interrupted)
-			{
-				currentTime = player.currentTime;
-			}
-			else if(playing && !player.playing)
-			{
-				player.currentTime = currentTime;
-				if(!paused)
-				{
-					playing = [player play];
-				}
-			}
-		}
-	}
-}
 
 #pragma mark -
 #pragma mark AVAudioPlayerDelegate
