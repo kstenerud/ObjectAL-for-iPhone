@@ -106,7 +106,7 @@
 #endif
 
 
-/** The CLANG/LLVM 1.5 compiler that ships with XCode 3.2.3 fails when compiling a method
+/** The CLANG/LLVM 1.5 compiler that ships with XCode 3.2.4 fails when compiling a method
  * which takes a struct and passes that struct or one of its components to a C function
  * from within a @synchronized(self) context when compiling for the Device in Debug
  * configuration (Apple issue #8303765). <br>
@@ -116,10 +116,10 @@
  *
  * Note: This only takes effect if the CLANG compiler is used (__clang__ == 1) <br>
  *
- * Recommended setting: 1 for XCode 3.2.3, 0 for others.
+ * Recommended setting: 1 for XCode 3.2.4, 0 for others.
  */
 #ifndef OBJECTAL_CFG_CLANG_LLVM_BUG_WORKAROUND
-#define OBJECTAL_CFG_CLANG_LLVM_BUG_WORKAROUND 1
+#define OBJECTAL_CFG_CLANG_LLVM_BUG_WORKAROUND 0
 #endif
 
 

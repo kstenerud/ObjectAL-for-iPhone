@@ -490,6 +490,7 @@
  - <strong>FadeDemo</strong>: Demonstrates realtime fading with OALAudioTrack and ALSource.
  - <strong>AudioTrackDemo</strong>: Demonstrates using multiple OALAudioTrack objects.
  - <strong>HardwareDemo</strong>: Demonstrates hardware monitoring features.
+ - <strong>AudioSessionDemo</strong>: Allows you to play with various audio session settings.
  - <strong>PlanetKillerDemo</strong>: Demonstrates using OALSimpleAudio in a game setting.
  
  

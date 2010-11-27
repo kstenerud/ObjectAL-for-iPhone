@@ -46,7 +46,12 @@
 	bool interruptible;
 	float gain;
 	bool muted;
-	bool wasPaused;
+
+	/** The state of this source at the time it was suspended. */
+	int stateOnSuspend;
+	/** The byte offset of playback when this source was suspended. */
+	float byteOffsetOnSuspend;
+
 	ALBuffer* buffer;
 	ALContext* context;
 

@@ -11,6 +11,7 @@
 #import "Slider.h"
 #import "ImageButton.h"
 #import "ObjectAL.h"
+#import "CCLayer+AudioPanel.h"
 
 
 #pragma mark Private Methods
@@ -31,7 +32,7 @@
 
 - (id) init
 {
-	if(nil != (self = [super initWithColor:ccc4(255, 255, 255, 255)]))
+	if(nil != (self = [super initWithColor:ccc4(0, 0, 0, 0)]))
 	{
 		[self buildUI];
 	}
@@ -48,69 +49,54 @@
 
 - (void) buildUI
 {
-	CGSize size = [[CCDirector sharedDirector] winSize];
-	CGPoint center = ccp(size.width/2, size.height/2);
+	[self buildAudioPanelWithSeparator];
+	[self addPanelTitle:@"Volume, Pitch, Pan"];
+	[self addPanelLine1:@"Use the sliders to alter playback."];
+	[self addPanelLine2:@"Pan requires headphones."];
 	
-	CCSprite* track;
+	CGSize size = [[CCDirector sharedDirector] winSize];
+
 	CCLabel* label;
 	Slider* slider;
 
+	CGPoint pos = ccp(160, 140);
 	
-	// Volume slider
-	track = [CCSprite spriteWithFile:@"SliderTrackVertical.png"];
-	track.scaleY = 100 / track.contentSize.height;
-	slider = [VerticalSlider sliderWithTrack:track
-										knob:[CCSprite spriteWithFile:@"SliderKnobVertical.png"]
-									  target:self moveSelector:@selector(onVolumeChanged:) dropSelector:@selector(onVolumeChanged:)];
-	slider.scale = 2.0f;
-	slider.anchorPoint = ccp(0.5f, 0);
-	slider.position = ccp(100, 100);
-	[self addChild:slider];
+	label = [CCLabel labelWithString:@"Volume" fontName:@"Helvetica" fontSize:20];
+	label.anchorPoint = ccp(1, 0);
+	label.position = ccp(pos.x - 4, pos.y);
+	[self addChild:label];
+	
+	slider = [self panelSliderWithTarget:self selector:@selector(onVolumeChanged:)];
+	slider.anchorPoint = ccp(0,0);
+	slider.position = ccp(pos.x +4, pos.y);
 	slider.value = 1.0f;
-	label = [CCLabel labelWithString:@"Volume" fontName:@"Helvetica" fontSize:30];
-	label.anchorPoint = ccp(0, 1);
-	label.color = ccBLACK;
-	label.position = ccp(slider.position.x + slider.contentSize.width/2 * slider.scaleX + 10,
-						 slider.position.y + slider.contentSize.height * slider.scaleY);
-	[self addChild:label];
-	
-	
-	// Pitch slider
-	track = [CCSprite spriteWithFile:@"SliderTrackVertical.png"];
-	track.scaleY = 100 / track.contentSize.height;
-	slider = [VerticalSlider sliderWithTrack:track
-										knob:[CCSprite spriteWithFile:@"SliderKnobVertical.png"]
-									  target:self moveSelector:@selector(onPitchChanged:) dropSelector:@selector(onPitchChanged:)];
-	slider.scale = 2.0f;
-	slider.anchorPoint = ccp(0.5f, 0);
-	slider.position = ccp(340, 100);
 	[self addChild:slider];
-	slider.value = 0.5f;
-	label = [CCLabel labelWithString:@"Pitch" fontName:@"Helvetica" fontSize:30];
-	label.anchorPoint = ccp(0, 1);
-	label.color = ccBLACK;
-	label.position = ccp(slider.position.x + slider.contentSize.width/2 * slider.scaleX + 10,
-						 slider.position.y + slider.contentSize.height * slider.scaleY);
+
+	pos.y -= 50;
+
+	label = [CCLabel labelWithString:@"Pitch" fontName:@"Helvetica" fontSize:20];
+	label.anchorPoint = ccp(1, 0);
+	label.position = ccp(pos.x - 4, pos.y);
 	[self addChild:label];
 	
-	
-	// Pan slider
-	track = [CCSprite spriteWithFile:@"SliderTrackHorizontal.png"];
-	track.scaleX = 220 / track.contentSize.width;
-	slider = [HorizontalSlider sliderWithTrack:track
-										  knob:[CCSprite spriteWithFile:@"SliderKnobHorizontal.png"]
-										target:self moveSelector:@selector(onPanChanged:) dropSelector:@selector(onPanChanged:)];
-	slider.scale = 2.0f;
-	slider.anchorPoint = ccp(0.5f, 0);
-	slider.position = ccp(center.x,10);
+	slider = [self panelSliderWithTarget:self selector:@selector(onPitchChanged:)];
+	slider.anchorPoint = ccp(0,0);
+	slider.position = ccp(pos.x + 4, pos.y);
+	slider.value = 0.5f;
 	[self addChild:slider];
-	slider.value = 0.5f;
-	label = [CCLabel labelWithString:@"Pan" fontName:@"Helvetica" fontSize:30];
-	label.anchorPoint = ccp(0.5f, 0);
-	label.color = ccBLACK;
-	label.position = ccp(slider.position.x,
-						 slider.position.y + slider.contentSize.height * slider.scaleY + 10);
+
+	pos.y -= 50;
+	
+	label = [CCLabel labelWithString:@"Pan" fontName:@"Helvetica" fontSize:20];
+	label.anchorPoint = ccp(1, 0);
+	label.position = ccp(pos.x - 4, pos.y);
 	[self addChild:label];
+	
+	slider = [self panelSliderWithTarget:self selector:@selector(onPanChanged:)];
+	slider.anchorPoint = ccp(0,0);
+	slider.position = ccp(pos.x + 4, pos.y);
+	slider.value = 0.5f;
+	[self addChild:slider];
 
 	
 	// Exit button
@@ -139,7 +125,9 @@
 	[OALSimpleAudio sharedInstance].reservedSources = 0;
 	
 	source = [[ALSource source] retain];
-	buffer = [[[OALAudioSupport sharedInstance] bufferFromFile:@"ColdFunk.wav"] retain];
+	
+	// "Pan" uses OpenAL positioning, so we have to force ColdFunk.caf from stereo to mono.
+	buffer = [[[OALAudioSupport sharedInstance] bufferFromFile:@"ColdFunk.caf" mono:YES] retain];
 	
 	[source play:buffer loop:YES];
 }

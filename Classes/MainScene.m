@@ -17,6 +17,7 @@
 #import "TargetedAction.h"
 #import "AudioTrackDemo.h"
 #import "HardwareDemo.h"
+#import "AudioSessionDemo.h"
 
 
 #define kScenesPerPage 5
@@ -69,11 +70,11 @@ static uint startIndex = 0;
 		CGSize screenSize = [[CCDirector sharedDirector] winSize];
 		CCLabel* label;
 		
-		label = [CCLabel labelWithString:@"Welcome to the ObjectAL demo." fontName:@"Helvetica" fontSize:20];
+		label = [CCLabel labelWithString:@"Welcome to the ObjectAL demonstration." fontName:@"Helvetica" fontSize:20];
 		label.position = ccp(screenSize.width/2, screenSize.height-18);
 		[self addChild:label];
 		
-		label = [CCLabel labelWithString:@"Select a menu item to continue" fontName:@"Helvetica" fontSize:16];
+		label = [CCLabel labelWithString:@"Select a demo to continue" fontName:@"Helvetica" fontSize:16];
 		label.position = ccp(screenSize.width/2, screenSize.height-40);
 		[self addChild:label];
 		
@@ -127,6 +128,7 @@ static uint startIndex = 0;
 	[self addScene:[AudioTrackDemo class] named:@"Audio Tracks"];
 	[self addScene:[PlanetKillerDemo class] named:@"Planet Killer (OALSimpleAudio)"];
 	[self addScene:[HardwareDemo class] named:@"Hardware Monitor"];
+	[self addScene:[AudioSessionDemo class] named:@"Audio Sessions"];
 }
 
 - (void) addScene:(Class) sceneClass named:(NSString*) name

@@ -11,6 +11,9 @@
 #import "ImageAndLabelButton.h"
 #import "Slider.h"
 #import "ObjectAL.h"
+#import "LampButton.h"
+#import "CCLayer+AudioPanel.h"
+
 
 #pragma mark Private Methods
 
@@ -28,7 +31,7 @@
 
 - (id) init
 {
-	if(nil != (self = [super initWithColor:ccc4(255, 255, 255, 255)]))
+	if(nil != (self = [super initWithColor:ccc4(0, 0, 0, 0)]))
 	{		
 		audioTracks = [[NSMutableArray arrayWithCapacity:10] retain];
 		audioTrackFiles = [[NSMutableArray arrayWithCapacity:10] retain];
@@ -37,8 +40,8 @@
 
 		// You could do all mp3 or any other format supported by iOS software decoding.
 		// Any format requiring the hardware will only work on the first track that starts playing.
-		[self addTrack:@"ColdFunk.wav"];
-		[self addTrack:@"HappyAlley.wav"];
+		[self addTrack:@"ColdFunk.caf"];
+		[self addTrack:@"HappyAlley.caf"];
 		[self addTrack:@"PlanetKiller.mp3"];
 
 		[self buildUI];
@@ -63,35 +66,25 @@
 
 - (void) buildUI
 {
+	[self buildAudioPanelWithSeparator];
+	[self addPanelTitle:@"Background Audio Tracks"];
+	[self addPanelLine1:@"Click a filename to start/stop."];
+	[self addPanelLine2:@"Use slider for volume."];	
+	
 	CGSize screenSize = [[CCDirector sharedDirector] winSize];
-	float xPos = 20;
-	float yPos = screenSize.height - 140;
+	float xPos = 40;
+	float yPos = screenSize.height - 170;
 	float maxWidth = 0;
-	
-	CCLabel* label = [CCLabel labelWithString:@"Background audio tracks" fontName:@"Helvetica" fontSize:24];
-	label.position = ccp(screenSize.width/2, screenSize.height-20);
-	label.color = ccBLACK;
-	[self addChild:label];
-
-	label = [CCLabel labelWithString:@"Click name to start." fontName:@"Helvetica" fontSize:20];
-	label.position = ccp(screenSize.width/2, screenSize.height-60);
-	label.color = ccBLACK;
-	[self addChild:label];
-	
-	label = [CCLabel labelWithString:@"Use slider for volume." fontName:@"Helvetica" fontSize:20];
-	label.position = ccp(screenSize.width/2, screenSize.height-84);
-	label.color = ccBLACK;
-	[self addChild:label];
-	
 	
 	for(uint i = 0; i < [audioTracks count]; i++)
 	{
-		label = [CCLabel labelWithString:[audioTrackFiles objectAtIndex:i] fontName:@"Helvetica" fontSize:24];
-		label.color = ccBLACK;
-		ImageAndLabelButton* button = [ImageAndLabelButton buttonWithImageFile:@"Jupiter.png"
-																		 label:label
-																		target:self
-																	  selector:@selector(onPlayStop:)];
+		LampButton* button = [LampButton buttonWithText:[audioTrackFiles objectAtIndex:i]
+												   font:@"Helvetica"
+												   size:20
+											 lampOnLeft:NO
+												 target:self
+											   selector:@selector(onPlayStop:)];
+
 		[buttons addObject:button];
 		[self addChild:button];
 		if(button.contentSize.width > maxWidth)
@@ -99,25 +92,24 @@
 			maxWidth = button.contentSize.width;
 		}
 		
-		CCSprite* track = [CCSprite spriteWithFile:@"SliderTrackHorizontal.png"];
-		Slider* slider = [HorizontalSlider sliderWithTrack:track
-													  knob:[CCSprite spriteWithFile:@"SliderKnobHorizontal.png"]
-													target:self
-											  moveSelector:@selector(onChangeVolume:)
-											  dropSelector:@selector(onChangeVolume:)];
-		slider.scale = 1.8f;
+		Slider* slider = [self panelSliderWithTarget:self selector:@selector(onChangeVolume:)];
 		[sliders addObject:slider];
 		[self addChild:slider];
 
 		button.position = ccp(xPos + button.contentSize.width/2, yPos);
-		slider.position = ccp(button.position.x + button.contentSize.width/2 + 20, yPos);
+		slider.position = ccp(button.position.x + button.contentSize.width/2 + 6, yPos);
 		
-		yPos -= 60;
+		yPos -= 50;
+	}
+
+	for(CCNode* button in buttons)
+	{
+		button.position = ccp(xPos + button.contentSize.width/2 + maxWidth - button.contentSize.width, button.position.y);
 	}
 
 	for(Slider* slider in sliders)
 	{
-		slider.position = ccp(slider.contentSize.width*slider.scaleX/2 + xPos + maxWidth + 20, slider.position.y);
+		slider.position = ccp(xPos + slider.contentSize.width*slider.scaleX/2 + maxWidth + 6, slider.position.y);
 		slider.value = 1.0f;
 	}
 
@@ -132,30 +124,30 @@
 {
 }
 
-- (void) onPlayStop:(ImageAndLabelButton*) sender
+- (void) onPlayStop:(LampButton*) button
 {
-	int index = [buttons indexOfObject:sender];
+	int index = [buttons indexOfObject:button];
 	if(NSNotFound != index)
 	{
 		OALAudioTrack* track = [audioTracks objectAtIndex:index];
-		if(track.playing)
+		if(button.isOn)
 		{
-			[track stop];
+			[track playFile:[audioTrackFiles objectAtIndex:index] loops:-1];
 		}
 		else
 		{
-			[track playFile:[audioTrackFiles objectAtIndex:index] loops:-1];
+			[track stop];
 		}
 	}
 }
 
-- (void) onChangeVolume:(Slider*) sender
+- (void) onChangeVolume:(Slider*) slider
 {
-	int index = [sliders indexOfObject:sender];
+	int index = [sliders indexOfObject:slider];
 	if(NSNotFound != index)
 	{
 		OALAudioTrack* track = [audioTracks objectAtIndex:index];
-		track.gain = sender.value;
+		track.gain = slider.value;
 	}
 }
 

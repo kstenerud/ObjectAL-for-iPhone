@@ -12,6 +12,12 @@
 #import "ImageButton.h"
 #import "ImageAndLabelButton.h"
 #import "ObjectAL.h"
+#import "CCLayer+AudioPanel.h"
+#import "LampButton.h"
+#import "CallFuncWithObject.h"
+
+#define kSpaceBetweenButtons 50
+#define kStartY 190
 
 
 #pragma mark Private Methods
@@ -34,8 +40,6 @@
 	if(nil != (self = [super initWithColor:ccc4(255, 255, 255, 255)]))
 	{
 		[self buildUI];
-		
-		backgroundTrack = [[OALAudioTrack track] retain];
 	}
 	return self;
 }
@@ -48,120 +52,75 @@
 	[eightSourceChannel release];
 	[buffer release];
 
-	[backgroundTrack release];
-
 	[super dealloc];
 }
 
 - (void) buildUI
 {
-	CGSize size = [[CCDirector sharedDirector] winSize];
-	CGPoint center = ccp(size.width/2, size.height/2);
+	[self buildAudioPanelWithTSeparator];
+	[self addPanelTitle:@"Channels"];
+	[self addPanelLine1:@"Tap a button repeatedly."];
+	[self addPanelLine2:@"More sources allows more sounds at a time."];
 	
-	CCLabel* label;
+	CGSize screenSize = [[CCDirector sharedDirector] winSize];
+	CGPoint center = ccp(screenSize.width/2, screenSize.height/2);
 
-	label = [CCLabel labelWithString:@"Tap a channel repeatedly" fontName:@"Helvetica" fontSize:20];
-	label.position = ccp(size.width/2, size.height-30);
-	label.color = ccBLACK;
-	label.visible = YES;
-	[self addChild:label];
-	
-	
-	CCSprite* track;
-	Slider* slider;
-	
-	
-	// BG Volume slider
-	track = [CCSprite spriteWithFile:@"SliderTrackHorizontal.png"];
-	track.scaleX = 100 / track.contentSize.width;
-	slider = [HorizontalSlider sliderWithTrack:track
-										knob:[CCSprite spriteWithFile:@"SliderKnobHorizontal.png"]
-									  target:self moveSelector:@selector(onBgVolume:) dropSelector:@selector(onBgVolume:)];
-	slider.scale = 2.0f;
-	slider.anchorPoint = ccp(0, 0);
-	slider.position = ccp(20, 160);
-	[self addChild:slider];
-	slider.value = 1.0f;
-	label = [CCLabel labelWithString:@"BG Volume" fontName:@"Helvetica" fontSize:24];
-	label.anchorPoint = ccp(0, 0);
-	label.color = ccBLACK;
-	label.position = ccp(slider.position.x, slider.position.y + slider.contentSize.height*slider.scaleY + 4);
-	[self addChild:label];
-	
-	
-	// Effects Volume slider
-	track = [CCSprite spriteWithFile:@"SliderTrackHorizontal.png"];
-	track.scaleX = 100 / track.contentSize.width;
-	slider = [HorizontalSlider sliderWithTrack:track
-										knob:[CCSprite spriteWithFile:@"SliderKnobHorizontal.png"]
-									  target:self moveSelector:@selector(onEffectsVolume:) dropSelector:@selector(onEffectsVolume:)];
-	slider.scale = 2.0f;
-	slider.anchorPoint = ccp(0, 0);
-	slider.position = ccp(20, 44);
-	[self addChild:slider];
-	slider.value = 1.0f;
-	label = [CCLabel labelWithString:@"FX Volume" fontName:@"Helvetica" fontSize:24];
-	label.anchorPoint = ccp(0, 0);
-	label.color = ccBLACK;
-	label.position = ccp(slider.position.x, slider.position.y + slider.contentSize.height*slider.scaleY + 4);
-	[self addChild:label];
-	
-	
-	// Channel Buttons
-	ImageAndLabelButton* button;
-	CGPoint position = ccp(center.x, size.height - 80);
-	
-	label = [CCLabel labelWithString:@"1 Source Channel" fontName:@"Helvetica" fontSize:24];
-	label.color = ccBLACK;
-	button = [ImageAndLabelButton buttonWithImageFile:@"Ganymede.png"
-												label:label
-											   target:self
-											 selector:@selector(on1SourceChannel:)];
+	LampButton* button;
+
+	CGPoint pos = ccp(60, screenSize.height - kStartY);
+
+	button = [LampButton buttonWithText:@"1 Source"
+								   font:@"Helvetica"
+								   size:20
+							 lampOnLeft:YES
+								 target:self
+							   selector:@selector(on1SourceChannel:)];
 	button.anchorPoint = ccp(0, 0.5f);
-	button.position = position;
+	button.position = pos;
 	[self addChild:button];
 	
-	position.y -= 60;
+	pos.y -= kSpaceBetweenButtons;
 
-	label = [CCLabel labelWithString:@"2 Source Channel" fontName:@"Helvetica" fontSize:24];
-	label.color = ccBLACK;
-	button = [ImageAndLabelButton buttonWithImageFile:@"Ganymede.png"
-												label:label
-											   target:self
-											 selector:@selector(on2SourceChannel:)];
+	button = [LampButton buttonWithText:@"2 Sources"
+								   font:@"Helvetica"
+								   size:20
+							 lampOnLeft:YES
+								 target:self
+							   selector:@selector(on2SourceChannel:)];
 	button.anchorPoint = ccp(0, 0.5f);
-	button.position = position;
-	[self addChild:button];
-	
-	position.y -= 60;
-	
-	label = [CCLabel labelWithString:@"3 Source Channel" fontName:@"Helvetica" fontSize:24];
-	label.color = ccBLACK;
-	button = [ImageAndLabelButton buttonWithImageFile:@"Ganymede.png"
-												label:label
-											   target:self
-											 selector:@selector(on3SourceChannel:)];
-	button.anchorPoint = ccp(0, 0.5f);
-	button.position = position;
-	[self addChild:button];
-	
-	position.y -= 60;
-	
-	label = [CCLabel labelWithString:@"8 Source Channel" fontName:@"Helvetica" fontSize:24];
-	label.color = ccBLACK;
-	button = [ImageAndLabelButton buttonWithImageFile:@"Ganymede.png"
-												label:label
-											   target:self
-											 selector:@selector(on8SourceChannel:)];
-	button.anchorPoint = ccp(0, 0.5f);
-	button.position = position;
+	button.position = pos;
 	[self addChild:button];
 
+	
+	pos = ccp(center.x+40, screenSize.height - kStartY);
 
+	button = [LampButton buttonWithText:@"3 Sources"
+								   font:@"Helvetica"
+								   size:20
+							 lampOnLeft:YES
+								 target:self
+							   selector:@selector(on3SourceChannel:)];
+	button.anchorPoint = ccp(0, 0.5f);
+	button.position = pos;
+	[self addChild:button];
+	
+	pos.y -= kSpaceBetweenButtons;
+	
+	button = [LampButton buttonWithText:@"8 Sources"
+								   font:@"Helvetica"
+								   size:20
+							 lampOnLeft:YES
+								 target:self
+							   selector:@selector(on8SourceChannel:)];
+	button.anchorPoint = ccp(0, 0.5f);
+	button.position = pos;
+	[self addChild:button];
+
+	
 	// Exit button
 	button = [ImageButton buttonWithImageFile:@"Exit.png" target:self selector:@selector(onExitPressed)];
 	button.anchorPoint = ccp(1,1);
-	button.position = ccp(size.width, size.height);
+	button.position = ccp(screenSize.width, screenSize.height);
 	[self addChild:button z:250];
 }
 
@@ -186,9 +145,28 @@
 	twoSourceChannel = [[ALChannelSource channelWithSources:2] retain];
 	threeSourceChannel = [[ALChannelSource channelWithSources:3] retain];
 	eightSourceChannel = [[ALChannelSource channelWithSources:8] retain];
+}
+
+- (void) turnOffAfterDelay:(LampButton*) button source:(ALChannelSource*) source
+{
+	[button stopAllActions];
+	CCAction* action = [CCSequence actions:
+						[CCDelayTime actionWithDuration:buffer.duration],
+						[CallFuncWithObject actionWithTarget:self
+													selector:@selector(onTurnOff:source:)
+													  object:button
+													  object:source],
+						nil];
 	
-	// Load and loop bg track forever.
-	[backgroundTrack playFile:@"PlanetKiller.mp3" loops:-1];
+	[self runAction:action];
+}
+
+- (void) onTurnOff:(LampButton*) button source:(ALChannelSource*) source
+{
+	if(!source.playing)
+	{
+		button.isOn = NO;
+	}
 }
 
 - (void) onExitPressed
@@ -197,35 +175,32 @@
 	[[CCDirector sharedDirector] replaceScene:[MainLayer scene]];
 }
 
-- (void) onBgVolume:(Slider*) slider
-{
-	backgroundTrack.gain = slider.value;
-}
-
-- (void) onEffectsVolume:(Slider*) slider
-{
-	[OpenALManager sharedInstance].currentContext.listener.gain = slider.value;
-}
-
-- (void) on1SourceChannel:(Slider*) slider
+- (void) on1SourceChannel:(LampButton*) button
 {
 	[oneSourceChannel play:buffer];
+	button.isOn = YES;
+	[self turnOffAfterDelay:button source:oneSourceChannel];
 }
 
-- (void) on2SourceChannel:(Slider*) slider
+- (void) on2SourceChannel:(LampButton*) button
 {
 	[twoSourceChannel play:buffer];
+	button.isOn = YES;
+	[self turnOffAfterDelay:button source:twoSourceChannel];
 }
 
-- (void) on3SourceChannel:(Slider*) slider
+- (void) on3SourceChannel:(LampButton*) button
 {
 	[threeSourceChannel play:buffer];
+	button.isOn = YES;
+	[self turnOffAfterDelay:button source:threeSourceChannel];
 }
 
-- (void) on8SourceChannel:(Slider*) slider
+- (void) on8SourceChannel:(LampButton*) button
 {
 	[eightSourceChannel play:buffer];
+	button.isOn = YES;
+	[self turnOffAfterDelay:button source:eightSourceChannel];
 }
-
 
 @end

@@ -17,10 +17,6 @@
 	CCNode* track;
 	CCNode* knob;
 
-	float lineLockock;
-	float maxTravel;
-	float minTravel;
-
 	id target;
 	SEL moveSelector;
 	SEL dropSelector;
@@ -34,22 +30,34 @@
 /** Create a slider.
  * @param track The node to use as a track.
  * @param knob The node to use as a knob.
+ * @param padding The amount of padding to add to the touchable area.
  * @param target the target to notify of events.
  * @param moveSelector the selector to call when the knob is moved (nil = ignore).
  * @param dropSelector The selector to call when the knob is dropped (nil = ignore).
  * @return a new slider.
  */
-+ (id) sliderWithTrack:(CCNode*) track knob:(CCNode*) knob target:(id) target moveSelector:(SEL) moveSelector dropSelector:(SEL) dropSelector;
++ (id) sliderWithTrack:(CCNode*) track
+				  knob:(CCNode*) knob
+			   padding:(CGSize) padding
+				target:(id) target
+		  moveSelector:(SEL) moveSelector
+		  dropSelector:(SEL) dropSelector;
 
 /** Initialize a slider.
  * @param track The node to use as a track.
  * @param knob The node to use as a knob.
+ * @param padding The amount of padding to add to the touchable area.
  * @param target the target to notify of events.
  * @param moveSelector the selector to call when the knob is moved (nil = ignore).
  * @param dropSelector The selector to call when the knob is dropped (nil = ignore).
  * @return The initialized slider.
  */
-- (id) initWithTrack:(CCNode*) track knob:(CCNode*) knob target:(id) target moveSelector:(SEL) moveSelector dropSelector:(SEL) dropSelector;
+- (id) initWithTrack:(CCNode*) track
+				knob:(CCNode*) knob
+			 padding:(CGSize) padding
+			  target:(id) target
+		moveSelector:(SEL) moveSelector
+		dropSelector:(SEL) dropSelector;
 
 @end
 

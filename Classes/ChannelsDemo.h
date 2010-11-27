@@ -25,7 +25,6 @@
  */
 @interface ChannelsDemo : CCColorLayer
 {
-	OALAudioTrack* backgroundTrack;
 	ALChannelSource* oneSourceChannel;
 	ALChannelSource* twoSourceChannel;
 	ALChannelSource* threeSourceChannel;

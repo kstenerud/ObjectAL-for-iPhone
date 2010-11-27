@@ -11,8 +11,10 @@
 #import "ImageButton.h"
 #import "ImageAndLabelButton.h"
 #import "ObjectAL.h"
+#import "CCLayer+AudioPanel.h"
 
-#define kSpaceBetweenButtons 50
+#define kSpaceBetweenButtons 40
+#define kStartY 160
 
 @interface FadeDemo (Private)
 
@@ -24,135 +26,124 @@
 
 - (id) init
 {
-	if(nil != (self = [super initWithColor:ccc4(255, 255, 255, 255)]))
+	if(nil != (self = [super initWithColor:ccc4(0, 0, 0, 0)]))
 	{
 		[self buildUI];
 	}
 	return self;
 }
 
-
 - (void) buildUI
 {
-	CGSize size = [[CCDirector sharedDirector] winSize];
-	CGPoint center = ccp(size.width/2, size.height/2);
+	[self buildAudioPanelWithTSeparator];
+	[self addPanelTitle:@"Fading"];
+	[self addPanelLine1:@"Click Start, then use fade buttons"];
+	[self addPanelLine2:@"to start or cancel a fade."];
+	
+	CGSize screenSize = [[CCDirector sharedDirector] winSize];
+	CGPoint center = ccp(screenSize.width/2, screenSize.height/2);
 
-	ImageButton* button;
+	LampButton* button;
 	CCLabel* label;
-	CGPoint position = ccp(20, size.height - 80);
 	
-	label = [CCLabel labelWithString:@"ALSource" fontName:@"Helvetica" fontSize:24];
+	CGPoint pos = ccp(60, screenSize.height - kStartY);
+	
+	label = [CCLabel labelWithString:@"ALSource" fontName:@"Helvetica-Bold" fontSize:24];
 	label.anchorPoint = ccp(0, 0.5f);
-	label.color = ccBLACK;
-	label.position = position;
+	label.position = ccp(pos.x+10, pos.y);
 	[self addChild:label];
 	
-	position.y -= kSpaceBetweenButtons;
+	pos.y -= kSpaceBetweenButtons;
 	
-	label = [CCLabel labelWithString:@"Play / Stop" fontName:@"Helvetica" fontSize:24];
-	label.color = ccBLACK;
-	button = [ImageAndLabelButton buttonWithImageFile:@"Jupiter.png"
-												label:label
-											   target:self
-											 selector:@selector(onObjectALPlayStop:)];
+	button = [LampButton buttonWithText:@"Start/Stop"
+								   font:@"Helvetica"
+								   size:20
+							 lampOnLeft:YES
+								 target:self
+							   selector:@selector(onObjectALPlayStop:)];
 	button.anchorPoint = ccp(0, 0.5f);
-	button.position = position;
+	button.position = pos;
 	[self addChild:button];
+	startStopSourceButton = button;
 	
-	position.y -= kSpaceBetweenButtons;
+	pos.y -= kSpaceBetweenButtons;
 	
-	label = [CCLabel labelWithString:@"Fade Out" fontName:@"Helvetica" fontSize:24];
-	label.color = ccBLACK;
-	button = [ImageAndLabelButton buttonWithImageFile:@"Jupiter.png"
-												label:label
-											   target:self
-											 selector:@selector(onObjectALFadeOut:)];
+	button = [LampButton buttonWithText:@"Fade Out"
+								   font:@"Helvetica"
+								   size:20
+							 lampOnLeft:YES
+								 target:self
+							   selector:@selector(onObjectALFadeOut:)];
 	button.anchorPoint = ccp(0, 0.5f);
-	button.position = position;
+	button.position = pos;
 	[self addChild:button];
+	fadeOutSourceButton = button;
 	
-	position.y -= kSpaceBetweenButtons;
+	pos.y -= kSpaceBetweenButtons;
 	
-	label = [CCLabel labelWithString:@"Fade In" fontName:@"Helvetica" fontSize:24];
-	label.color = ccBLACK;
-	button = [ImageAndLabelButton buttonWithImageFile:@"Jupiter.png"
-												label:label
-											   target:self
-											 selector:@selector(onObjectALFadeIn:)];
+	button = [LampButton buttonWithText:@"Fade In"
+								   font:@"Helvetica"
+								   size:20
+							 lampOnLeft:YES
+								 target:self
+							   selector:@selector(onObjectALFadeIn:)];
 	button.anchorPoint = ccp(0, 0.5f);
-	button.position = position;
+	button.position = pos;
 	[self addChild:button];
+	fadeInSourceButton = button;
 
-	position.y -= kSpaceBetweenButtons;
 
-	label = [CCLabel labelWithString:@"Fading" fontName:@"Helvetica" fontSize:24];
+	pos = ccp(center.x+40, screenSize.height - kStartY);
+
+	label = [CCLabel labelWithString:@"AudioTrack" fontName:@"Helvetica-Bold" fontSize:24];
 	label.anchorPoint = ccp(0, 0.5f);
-	label.color = ccBLACK;
-	label.position = position;
-	[self addChild:label];
-	oalFading = label;
-	oalFading.visible = NO;
-	
-
-	position = ccp(center.x, size.height - 80);
-
-	label = [CCLabel labelWithString:@"AudioTrack" fontName:@"Helvetica" fontSize:24];
-	label.anchorPoint = ccp(0, 0.5f);
-	label.color = ccBLACK;
-	label.position = position;
+	label.position = ccp(pos.x+10, pos.y);
 	[self addChild:label];
 	
-	position.y -= kSpaceBetweenButtons;
+	pos.y -= kSpaceBetweenButtons;
 	
-	label = [CCLabel labelWithString:@"Play / Stop" fontName:@"Helvetica" fontSize:24];
-	label.color = ccBLACK;
-	button = [ImageAndLabelButton buttonWithImageFile:@"Ganymede.png"
-												label:label
-											   target:self
-											 selector:@selector(onBackgroundPlayStop:)];
+	button = [LampButton buttonWithText:@"Start/Stop"
+								   font:@"Helvetica"
+								   size:20
+							 lampOnLeft:YES
+								 target:self
+							   selector:@selector(onBackgroundPlayStop:)];
 	button.anchorPoint = ccp(0, 0.5f);
-	button.position = position;
+	button.position = pos;
 	[self addChild:button];
+	startStopTrackButton = button;
 	
-	position.y -= kSpaceBetweenButtons;
+	pos.y -= kSpaceBetweenButtons;
 	
-	label = [CCLabel labelWithString:@"Fade Out" fontName:@"Helvetica" fontSize:24];
-	label.color = ccBLACK;
-	button = [ImageAndLabelButton buttonWithImageFile:@"Ganymede.png"
-												label:label
-											   target:self
-											 selector:@selector(onBackgroundFadeOut:)];
+	button = [LampButton buttonWithText:@"Fade Out"
+								   font:@"Helvetica"
+								   size:20
+							 lampOnLeft:YES
+								 target:self
+							   selector:@selector(onBackgroundFadeOut:)];
 	button.anchorPoint = ccp(0, 0.5f);
-	button.position = position;
+	button.position = pos;
 	[self addChild:button];
+	fadeOutTrackButton = button;
 	
-	position.y -= kSpaceBetweenButtons;
+	pos.y -= kSpaceBetweenButtons;
 	
-	label = [CCLabel labelWithString:@"Fade In" fontName:@"Helvetica" fontSize:24];
-	label.color = ccBLACK;
-	button = [ImageAndLabelButton buttonWithImageFile:@"Ganymede.png"
-												label:label
-											   target:self
-											 selector:@selector(onBackgrounFadeIn:)];
+	button = [LampButton buttonWithText:@"Fade In"
+								   font:@"Helvetica"
+								   size:20
+							 lampOnLeft:YES
+								 target:self
+							   selector:@selector(onBackgroundFadeIn:)];
 	button.anchorPoint = ccp(0, 0.5f);
-	button.position = position;
+	button.position = pos;
 	[self addChild:button];
-	
-	position.y -= kSpaceBetweenButtons;
-	
-	label = [CCLabel labelWithString:@"Fading" fontName:@"Helvetica" fontSize:24];
-	label.anchorPoint = ccp(0, 0.5f);
-	label.color = ccBLACK;
-	label.position = position;
-	[self addChild:label];
-	bgFading = label;
-	bgFading.visible = NO;
+	fadeInTrackButton = button;
 	
 
 	// Exit button
 	button = [ImageButton buttonWithImageFile:@"Exit.png" target:self selector:@selector(onExitPressed)];
 	button.anchorPoint = ccp(1,1);
-	button.position = ccp(size.width, size.height);
+	button.position = ccp(screenSize.width, screenSize.height);
 	[self addChild:button z:250];
 }
 
@@ -163,26 +154,34 @@
 	[OALSimpleAudio sharedInstance];
 }
 
-- (void) onBackgroundPlayStop:(id) sender
+- (void) onBackgroundPlayStop:(LampButton*) button
 {
-	bgFading.visible = NO;
-	if([OALSimpleAudio sharedInstance].bgPlaying)
+	[[OALSimpleAudio sharedInstance].backgroundTrack stopFade];
+	fadeInTrackButton.isOn = NO;
+	fadeOutTrackButton.isOn = NO;
+
+	if(button.isOn)
 	{
-		[[OALSimpleAudio sharedInstance] stopBg];
+		[OALSimpleAudio sharedInstance].bgVolume = 1.0f;
+		[[OALSimpleAudio sharedInstance] playBg:@"ColdFunk.caf" loop:YES];
 	}
 	else
 	{
-		[OALSimpleAudio sharedInstance].bgVolume = 1.0f;
-		[[OALSimpleAudio sharedInstance] playBg:@"ColdFunk.wav" loop:YES];
+		[[OALSimpleAudio sharedInstance] stopBg];
 	}
 }
 
-- (void) onBackgroundFadeOut:(id) sender
+- (void) onBackgroundFadeOut:(LampButton*) button
 {
-	if([OALSimpleAudio sharedInstance].bgPlaying)
+	fadeInTrackButton.isOn = NO;
+	[[OALSimpleAudio sharedInstance].backgroundTrack stopFade];
+
+	if([OALSimpleAudio sharedInstance].bgPlaying && [OALSimpleAudio sharedInstance].bgVolume > 0.0f)
 	{
-		bgFading.visible = YES;
-		[[OALSimpleAudio sharedInstance].backgroundTrack fadeTo:0.0f duration:1.0f target:self selector:@selector(onBackgroundFadeComplete:)];
+		if(button.isOn)
+		{
+			[[OALSimpleAudio sharedInstance].backgroundTrack fadeTo:0.0f duration:1.0f target:self selector:@selector(onBackgroundFadeComplete:)];
+		}
 
 		// Alternatively, you could do this:
 		//   OALAction* action = [OALSequentialActions actions:
@@ -194,14 +193,23 @@
 		// You could also specify a function like this:
 		//   [OALGainAction actionWithDuration:1.0 endValue:0.0 function:[OALLogarithmicFunction function]];
 	}
+	else
+	{
+		button.isOn = NO;
+	}
 }
 
-- (void) onBackgrounFadeIn:(id) sender
+- (void) onBackgroundFadeIn:(LampButton*) button
 {
-	if([OALSimpleAudio sharedInstance].bgPlaying)
+	fadeOutTrackButton.isOn = NO;
+	[[OALSimpleAudio sharedInstance].backgroundTrack stopFade];
+	
+	if([OALSimpleAudio sharedInstance].bgPlaying && [OALSimpleAudio sharedInstance].bgVolume < 1.0f)
 	{
-		bgFading.visible = YES;
-		[[OALSimpleAudio sharedInstance].backgroundTrack fadeTo:1.0f duration:1.0f target:self selector:@selector(onBackgroundFadeComplete:)];
+		if(button.isOn)
+		{
+			[[OALSimpleAudio sharedInstance].backgroundTrack fadeTo:1.0f duration:1.0f target:self selector:@selector(onBackgroundFadeComplete:)];
+		}
 
 		// Alternatively, you could do this:
 		//   OALAction* action = [OALSequentialActions actions:
@@ -213,33 +221,47 @@
 		// You could also specify a function like this:
 		//   [OALGainAction actionWithDuration:1.0 endValue:1.0 function:[OALLogarithmicFunction function]];
 	}
+	else
+	{
+		button.isOn = NO;
+	}
 }
 
 - (void) onBackgroundFadeComplete:(id) sender
 {
-	bgFading.visible = NO;
+	fadeInTrackButton.isOn = NO;
+	fadeOutTrackButton.isOn = NO;
 }
 
-- (void) onObjectALPlayStop:(id) sender
+
+- (void) onObjectALPlayStop:(LampButton*) button
 {
-	oalFading.visible = NO;
-	if(source.playing)
+	[source stopFade];
+	fadeInSourceButton.isOn = NO;
+	fadeOutSourceButton.isOn = NO;
+	
+	if(button.isOn)
+	{
+		source = [[OALSimpleAudio sharedInstance] playEffect:@"HappyAlley.caf" loop:YES];
+	}
+	else
 	{
 		[source stop];
 		source = nil;
 	}
-	else
-	{
-		source = [[OALSimpleAudio sharedInstance] playEffect:@"HappyAlley.wav" loop:YES];
-	}
 }
 
-- (void) onObjectALFadeOut:(id) sender
+- (void) onObjectALFadeOut:(LampButton*) button
 {
-	if(nil != source)
+	fadeInSourceButton.isOn = NO;
+	[source stopFade];
+	
+	if(nil != source && source.volume > 0.0f)
 	{
-		oalFading.visible = YES;
-		[source fadeTo:0.0f duration:1.0f target:self selector:@selector(onObjectALFadeComplete:)];
+		if(button.isOn)
+		{
+			[source fadeTo:0.0f duration:1.0f target:self selector:@selector(onObjectALFadeComplete:)];
+		}
 
 		// Alternatively, you could do this:
 		//   OALAction* action = [OALSequentialActions actions:
@@ -251,14 +273,23 @@
 		// You could also specify a function like this:
 		//   [OALGainAction actionWithDuration:1.0 endValue:0.0 function:[OALLogarithmicFunction function]];
 	}
+	else
+	{
+		button.isOn = NO;
+	}
 }
 
-- (void) onObjectALFadeIn:(id) sender
+- (void) onObjectALFadeIn:(LampButton*) button
 {
-	if(nil != source)
+	fadeOutSourceButton.isOn = NO;
+	[source stopFade];
+	
+	if(nil != source && source.volume < 1.0f)
 	{
-		oalFading.visible = YES;
-		[source fadeTo:1.0f duration:1.0f target:self selector:@selector(onObjectALFadeComplete:)];
+		if(button.isOn)
+		{
+			[source fadeTo:1.0f duration:1.0f target:self selector:@selector(onObjectALFadeComplete:)];
+		}
 		
 		// Alternatively, you could do this:
 		//   OALAction* action = [OALSequentialActions actions:
@@ -270,11 +301,16 @@
 		// You could also specify a function like this:
 		//   [OALGainAction actionWithDuration:1.0 endValue:1.0 function:[OALLogarithmicFunction function]];
 	}
+	else
+	{
+		button.isOn = NO;
+	}
 }
 
 - (void) onObjectALFadeComplete:(id) sender
 {
-	oalFading.visible = NO;
+	fadeInSourceButton.isOn = NO;
+	fadeOutSourceButton.isOn = NO;
 }
 
 - (void) onExitPressed

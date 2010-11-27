@@ -31,6 +31,7 @@
 		targetedTouches = YES;
 		swallowTouches = YES;
 		isTouchEnabled = YES;
+		scaleOnPush = YES;
 		
 		target = targetIn;
 		selector = selectorIn;
@@ -100,15 +101,21 @@
 
 - (void) onButtonDown
 {
-	[touchablePortion stopAllActions];
-	[touchablePortion runAction:[CCScaleTo actionWithDuration:0.05f scale:1.2f]];
+	if(scaleOnPush)
+	{
+		[touchablePortion stopAllActions];
+		[touchablePortion runAction:[CCScaleTo actionWithDuration:0.05f scale:1.2f]];
+	}
 	buttonWasDown = YES;
 }
 
 - (void) onButtonUp
 {
-	[touchablePortion stopAllActions];
-	[touchablePortion runAction:[CCScaleTo actionWithDuration:0.01f scale:1.0f]];
+	if(scaleOnPush)
+	{
+		[touchablePortion stopAllActions];
+		[touchablePortion runAction:[CCScaleTo actionWithDuration:0.01f scale:1.0f]];
+	}
 	buttonWasDown = NO;
 }
 
@@ -165,6 +172,7 @@
 	}
 }
 
+@synthesize scaleOnPush;
 @synthesize touchablePortion;
 
 - (void) setTouchablePortion:(CCNode *) value

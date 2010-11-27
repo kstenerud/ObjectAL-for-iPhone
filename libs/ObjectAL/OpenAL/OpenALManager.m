@@ -29,13 +29,10 @@
 #import "ALWrapper.h"
 #import "NSMutableArray+WeakReferences.h"
 #import "OALAudioSupport.h"
+#import "OALInterruptAPI.h"
 
 
-@interface ALDevice (Interrupts)
-
-- (void) setInterrupted:(bool) value;
-
-@end
+ADD_INTERRUPT_API(ALDevice);
 
 
 #pragma mark OpenALManager

@@ -467,7 +467,12 @@
 
 - (bool) paused
 {
-	return AL_PAUSED == self.state;
+	if(suspendLock.locked)
+	{
+		return AL_PAUSED == stateOnSuspend;
+	}
+
+	return AL_PAUSED == stateOnSuspend || AL_PAUSED == self.state;
 }
 
 - (void) setPaused:(bool) shouldPause
@@ -482,18 +487,19 @@
 		
 		if(shouldPause)
 		{
-			if(AL_PLAYING == self.state)
+			if(AL_PLAYING == self.state && AL_PAUSED != stateOnSuspend)
 			{
 				[ALWrapper sourcePause:sourceId];
 			}
 		}
 		else
 		{
-			if(AL_PAUSED == self.state)
+			if(AL_PAUSED == self.state || AL_PAUSED == stateOnSuspend)
 			{
 				[ALWrapper sourcePlay:sourceId];
 			}
 		}
+		stateOnSuspend = 0;
 	}
 }
 
@@ -521,7 +527,11 @@
 
 - (bool) playing
 {
-	return AL_PLAYING == self.state;
+	if(suspendLock.locked)
+	{
+		return AL_PLAYING == stateOnSuspend || AL_PAUSED == stateOnSuspend;
+	}
+	return AL_PLAYING == self.state || AL_PAUSED == self.state;
 }
 
 - (ALPoint) position
@@ -704,8 +714,10 @@
  */
 - (void) onSuspend
 {
-	wasPaused = self.paused;
-	if(!wasPaused)
+	stateOnSuspend = self.state;
+	byteOffsetOnSuspend = self.offsetInBytes;
+
+	if(AL_PLAYING == stateOnSuspend)
 	{
 		[ALWrapper sourcePause:sourceId];
 	}
@@ -715,9 +727,17 @@
  */
 - (void) onUnsuspend
 {
-	if(!wasPaused)
+	if(AL_PAUSED == stateOnSuspend || AL_PLAYING == stateOnSuspend)
 	{
 		[ALWrapper sourcePlay:sourceId];
+		self.offsetInBytes = byteOffsetOnSuspend;
+		NSLog(@"### Start playing. state = %d", self.state);
+		
+		if(AL_PAUSED == stateOnSuspend)
+		{
+			[ALWrapper sourcePause:sourceId];
+			NSLog(@"### Pause. state = %d", self.state);
+		}
 	}
 }
 
@@ -795,6 +815,7 @@
 			[self stop];
 		}
 		
+		stateOnSuspend = 0;
 		[ALWrapper sourcePlay:sourceId];
 	}
 	return self;
@@ -829,6 +850,7 @@
 		self.buffer = bufferIn;
 		self.looping = loop;
 		
+		stateOnSuspend = 0;
 		[ALWrapper sourcePlay:sourceId];
 	}
 	return self;
@@ -863,6 +885,7 @@
 		self.pan = panIn;
 		self.looping = loopIn;
 		
+		stateOnSuspend = 0;
 		[ALWrapper sourcePlay:sourceId];
 	}		
 	return self;
@@ -879,6 +902,7 @@
 		}
 		
 		[self stopActions];
+		stateOnSuspend = 0;
 		[ALWrapper sourceStop:sourceId];
 	}
 }

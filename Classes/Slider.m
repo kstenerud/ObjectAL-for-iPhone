@@ -13,12 +13,27 @@
 
 #pragma mark Object Management
 
-+ (id) sliderWithTrack:(CCNode*) track knob:(CCNode*) knob target:(id) target moveSelector:(SEL) moveSelector dropSelector:(SEL) dropSelector
++ (id) sliderWithTrack:(CCNode*) track
+				  knob:(CCNode*) knob
+			   padding:(CGSize) padding
+				target:(id) target
+		  moveSelector:(SEL) moveSelector
+		  dropSelector:(SEL) dropSelector
 {
-	return [[[self alloc] initWithTrack:track knob:knob target:target moveSelector:moveSelector dropSelector:dropSelector] autorelease];
+	return [[[self alloc] initWithTrack:track
+								   knob:knob
+								padding:padding
+								 target:target
+						   moveSelector:moveSelector
+						   dropSelector:dropSelector] autorelease];
 }
 
-- (id) initWithTrack:(CCNode*) trackIn knob:(CCNode*) knobIn target:(id) targetIn moveSelector:(SEL) moveSelectorIn dropSelector:(SEL) dropSelectorIn
+- (id) initWithTrack:(CCNode*) trackIn
+				knob:(CCNode*) knobIn
+			 padding:(CGSize) padding
+			  target:(id) targetIn
+		moveSelector:(SEL) moveSelectorIn
+		dropSelector:(SEL) dropSelectorIn
 {
 	if(nil != (self = [super init]))
 	{
@@ -40,6 +55,8 @@
 		CGSize trackSize = CGSizeMake(track.contentSize.width * track.scaleX, track.contentSize.height * track.scaleY);
 		CGSize combinedSize = CGSizeMake(knobSize.width > trackSize.width ? knobSize.width : trackSize.width,
 										 knobSize.height > trackSize.height ? knobSize.height : trackSize.height);
+		combinedSize.width += padding.width*2;
+		combinedSize.height += padding.height*2;
 		
 		self.contentSize = combinedSize;
 		touchPriority = 0;
@@ -180,16 +197,32 @@
 
 #pragma mark Object Management
 
-- (id) initWithTrack:(CCNode*) trackIn knob:(CCNode*) knobIn target:(id) targetIn moveSelector:(SEL) moveSelectorIn dropSelector:(SEL) dropSelectorIn
+- (id) initWithTrack:(CCNode*) trackIn
+				knob:(CCNode*) knobIn
+			 padding:(CGSize) padding
+			  target:(id) targetIn
+		moveSelector:(SEL) moveSelectorIn
+		dropSelector:(SEL) dropSelectorIn
 {
-	if(nil != (self = [super initWithTrack:trackIn knob:knobIn target:targetIn moveSelector:moveSelectorIn dropSelector:dropSelectorIn]))
+	if(nil != (self = [super initWithTrack:trackIn
+									  knob:knobIn
+								   padding:padding
+									target:targetIn
+							  moveSelector:moveSelectorIn
+							  dropSelector:dropSelectorIn]))
 	{
 		CGSize knobSize = CGSizeMake(knob.contentSize.width * knob.scaleX, knob.contentSize.height * knob.scaleY);
+		knobSize.width += padding.width*2;
+		knobSize.height += padding.height*2;
+
 		CGSize trackSize = CGSizeMake(track.contentSize.width * track.scaleX, track.contentSize.height * track.scaleY);
+		trackSize.width += padding.width*2;
+		trackSize.height += padding.height*2;
+
 		CGSize combinedSize = CGSizeMake(knobSize.width > trackSize.width ? knobSize.width : trackSize.width,
 										 knobSize.height > trackSize.height ? knobSize.height : trackSize.height);
 
-		verticalMin = knobSize.height/2;
+		verticalMin = knobSize.height/2 - padding.height*2;
 		verticalMax = trackSize.height - knobSize.height/2;
 		horizontalLock = combinedSize.width/2;
 		
@@ -197,7 +230,7 @@
 		knob.position = ccp(horizontalLock, verticalMin);
 		
 		track.anchorPoint = ccp(0,0);
-		track.position = ccp(combinedSize.width/2 - trackSize.width/2, 0);
+		track.position = ccp(combinedSize.width/2 - track.contentSize.width/2, 0);
 	}
 	return self;
 }
@@ -250,16 +283,32 @@
 
 #pragma mark Object Management
 
-- (id) initWithTrack:(CCNode*) trackIn knob:(CCNode*) knobIn target:(id) targetIn moveSelector:(SEL) moveSelectorIn dropSelector:(SEL) dropSelectorIn
+- (id) initWithTrack:(CCNode*) trackIn
+				knob:(CCNode*) knobIn
+			 padding:(CGSize) padding
+			  target:(id) targetIn
+		moveSelector:(SEL) moveSelectorIn
+		dropSelector:(SEL) dropSelectorIn
 {
-	if(nil != (self = [super initWithTrack:trackIn knob:knobIn target:targetIn moveSelector:moveSelectorIn dropSelector:dropSelectorIn]))
+	if(nil != (self = [super initWithTrack:trackIn
+									  knob:knobIn
+								   padding:padding
+									target:targetIn
+							  moveSelector:moveSelectorIn
+							  dropSelector:dropSelectorIn]))
 	{
 		CGSize knobSize = CGSizeMake(knob.contentSize.width * knob.scaleX, knob.contentSize.height * knob.scaleY);
+		knobSize.width += padding.width*2;
+		knobSize.height += padding.height*2;
+		
 		CGSize trackSize = CGSizeMake(track.contentSize.width * track.scaleX, track.contentSize.height * track.scaleY);
+		trackSize.width += padding.width*2;
+		trackSize.height += padding.height*2;
+		
 		CGSize combinedSize = CGSizeMake(knobSize.width > trackSize.width ? knobSize.width : trackSize.width,
 										 knobSize.height > trackSize.height ? knobSize.height : trackSize.height);
 		
-		horizontalMin = knobSize.width/2;
+		horizontalMin = knobSize.width/2 - padding.width*2;
 		horizontalMax = trackSize.width - knobSize.width/2;
 		verticalLock = combinedSize.height/2;
 		
@@ -267,7 +316,7 @@
 		knob.position = ccp(horizontalMin, verticalLock);
 		
 		track.anchorPoint = ccp(0,0);
-		track.position = ccp(0, combinedSize.height/2 - trackSize.height/2);
+		track.position = ccp(0, combinedSize.height/2 - track.contentSize.height/2);
 	}
 	return self;
 }

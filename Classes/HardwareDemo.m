@@ -10,6 +10,13 @@
 #import "ObjectAL.h"
 #import "MainScene.h"
 #import "CCLayer+Scene.h"
+#import "CCLayer+AudioPanel.h"
+#import "LampButton.h"
+#import "VUMeter.h"
+
+
+#define kSpaceBetweenButtons 40
+#define kStartY 180
 
 @interface HardwareDemo (Private)
 
@@ -37,44 +44,54 @@
 
 - (void) buildUI
 {
+	[self buildAudioPanelWithSeparator];
+	[self addPanelTitle:@"Hardware Monitoring"];
+	[self addPanelLine1:@"Use your volume buttons and silent switch."];
+	[self addPanelLine2:@"Not supported in the simulator."];
+	
 	CGSize screenSize = [[CCDirector sharedDirector] winSize];
+	CCLabel* label;
 	
-	CCLabel* label = [CCLabel labelWithString:@"Hardware Monitoring" fontName:@"Helvetica" fontSize:28];
-	label.position = ccp(screenSize.width/2, screenSize.height-30);
-	label.color = ccBLACK;
-	label.visible = YES;
+	label = [CCLabel labelWithString:@"Route:" fontName:@"Helvetica-Bold" fontSize:18];
+	label.anchorPoint = ccp(0, 0.5f);
+	label.position = ccp(44, 34);
 	[self addChild:label];
 	
-	label = [CCLabel labelWithString:@"Play with the hardware volume and mute controls on your device." fontName:@"Helvetica" fontSize:16];
-	label.position = ccp(screenSize.width/2, screenSize.height-80);
-	label.color = ccBLACK;
-	label.visible = YES;
-	[self addChild:label];
-	
-	label = [CCLabel labelWithString:@"Note: This is unsupported in the simulator!" fontName:@"Helvetica" fontSize:16];
-	label.position = ccp(screenSize.width/2, screenSize.height-120);
-	label.color = ccBLACK;
-	label.visible = YES;
-	[self addChild:label];
-	
-	
-	
-	routeLabel = [CCLabel labelWithString:@"Route: ?" fontName:@"Helvetica" fontSize:24];
-	routeLabel.position = ccp(screenSize.width/2, 70);
-	routeLabel.color = ccBLACK;
-	routeLabel.visible = YES;
+	routeLabel = [CCLabel labelWithString:@"-" fontName:@"Helvetica" fontSize:18];
+	routeLabel.anchorPoint = ccp(0, 0.5f);
+	routeLabel.position = ccp(label.position.x + 60, label.position.y);
 	[self addChild:routeLabel];
+
+	label = [CCLabel labelWithString:@"Volume:" fontName:@"Helvetica-Bold" fontSize:18];
+	label.anchorPoint = ccp(0, 0.5f);
+	label.position = ccp(220, 34);
+	[self addChild:label];
 	
-	volumeLabel = [CCLabel labelWithString:@"Volume: ?" fontName:@"Helvetica" fontSize:24];
-	volumeLabel.position = ccp(screenSize.width/2, 40);
-	volumeLabel.color = ccBLACK;
+	volumeLabel = [CCLabel labelWithString:@"0.0" fontName:@"Helvetica" fontSize:18];
+	volumeLabel.anchorPoint = ccp(0, 0.5f);
+	volumeLabel.position = ccp(label.position.x + 74, label.position.y);
 	[self addChild:volumeLabel];
-		
-	muteLabel = [CCLabel labelWithString:@"Muted" fontName:@"Helvetica" fontSize:24];
-	muteLabel.position = ccp(screenSize.width/2, 10);
-	muteLabel.color = ccBLACK;
-	muteLabel.visible = NO;
+	
+	muteLabel = [LampButton buttonWithText:@"Muted:"
+									  font:@"Helvetica-Bold"
+									  size:18
+								lampOnLeft:NO
+									target:nil
+								  selector:nil];
+	muteLabel.anchorPoint = ccp(0, 0.5f);
+	muteLabel.position = ccp(350, 34);
+	muteLabel.isTouchEnabled = NO;
 	[self addChild:muteLabel];
+	
+	leftMeter = [[[VUMeter alloc] init] autorelease];
+	leftMeter.anchorPoint = ccp(0, 0);
+	leftMeter.position = ccp(100, 52);
+	[self addChild:leftMeter];
+	
+	rightMeter = [[[VUMeter alloc] init] autorelease];
+	rightMeter.anchorPoint = ccp(0, 0);
+	rightMeter.position = ccp(250, 52);
+	[self addChild:rightMeter];
 	
 	// Exit button
 	ImageButton* button = [ImageButton buttonWithImageFile:@"Exit.png" target:self selector:@selector(onExitPressed)];
@@ -85,17 +102,19 @@
 
 - (void) onEnterTransitionDidFinish
 {
-	[[OALSimpleAudio sharedInstance] playBg:@"ColdFunk.wav" loop:YES];
+	[[OALSimpleAudio sharedInstance] playBg:@"ColdFunk.caf" loop:YES];
+	[OALSimpleAudio sharedInstance].backgroundTrack.meteringEnabled = YES;
 	
 	volume = [OALAudioSupport sharedInstance].hardwareVolume;
 	muted = [OALAudioSupport sharedInstance].hardwareMuted;
 	route = [[OALAudioSupport sharedInstance].audioRoute retain];
 	
-	[volumeLabel setString:[NSString stringWithFormat:@"Volume: %f", volume]];
-	muteLabel.visible = [OALAudioSupport sharedInstance].hardwareMuted;
-	[routeLabel setString:[NSString stringWithFormat:@"Route: %@", route]];
+	[volumeLabel setString:[NSString stringWithFormat:@"%.2f", volume]];
+	muteLabel.isOn = [OALAudioSupport sharedInstance].hardwareMuted;
+	[routeLabel setString:[NSString stringWithFormat:@"%@", route]];
 
 	[self schedule:@selector(step) interval:0.1f];
+	[self schedule:@selector(vuStep)];
 }
 
 - (void) step
@@ -104,18 +123,26 @@
 	if(newVolume != volume)
 	{
 		volume = newVolume;
-		[volumeLabel setString:[NSString stringWithFormat:@"Volume: %f", volume]];
+		[volumeLabel setString:[NSString stringWithFormat:@"%.2f", volume]];
 	}
 
-	muteLabel.visible = [OALAudioSupport sharedInstance].hardwareMuted;
+	muteLabel.isOn = [OALAudioSupport sharedInstance].hardwareMuted;
 
 	NSString* newRoute = [OALAudioSupport sharedInstance].audioRoute;
 	if(![newRoute isEqualToString:route])
 	{
 		[route autorelease];
 		route = [newRoute retain];
-		[routeLabel setString:[NSString stringWithFormat:@"Route: %@", route]];
+		[routeLabel setString:[NSString stringWithFormat:@"%@", route]];
 	}
+}
+
+- (void) vuStep
+{
+	OALAudioTrack* bg = [OALSimpleAudio sharedInstance].backgroundTrack;
+	[bg updateMeters];
+	leftMeter.db = [bg averagePowerForChannel:0];
+	rightMeter.db = [bg averagePowerForChannel:1];
 }
 
 - (void) onExitPressed

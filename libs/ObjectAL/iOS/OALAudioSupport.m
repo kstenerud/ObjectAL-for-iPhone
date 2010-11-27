@@ -59,6 +59,8 @@ NSDictionary* extAudioErrorCodes = nil;
 {
 	/** The URL of the sound file to play */
 	NSURL* url;
+	/** If true, load the sound as mono */
+	bool mono;
 	/** The target to inform when the operation completes */
 	id target;
 	/** The selector to call when the operation completes */
@@ -68,33 +70,51 @@ NSDictionary* extAudioErrorCodes = nil;
 /** (INTERNAL USE) Create a new Asynchronous Operation.
  *
  * @param url the URL containing the sound file.
+ * @param mono If true, convert the sound to mono.
  * @param target the target to inform when the operation completes.
  * @param selector the selector to call when the operation completes.
  */ 
-+ (id) operationWithUrl:(NSURL*) url target:(id) target selector:(SEL) selector;
++ (id) operationWithUrl:(NSURL*) url
+				   mono:(bool) mono
+				 target:(id) target
+			   selector:(SEL) selector;
 
 /** (INTERNAL USE) Initialize an Asynchronous Operation.
  *
  * @param url the URL containing the sound file.
+ * @param mono If true, convert the sound to mono.
  * @param target the target to inform when the operation completes.
  * @param selector the selector to call when the operation completes.
  */ 
-- (id) initWithUrl:(NSURL*) url target:(id) target selector:(SEL) selector;
+- (id) initWithUrl:(NSURL*) url
+			  mono:(bool) mono
+			target:(id) target
+		  selector:(SEL) selector;
 
 @end
 
 @implementation OAL_AsyncALBufferLoadOperation
 
-+ (id) operationWithUrl:(NSURL*) url target:(id) target selector:(SEL) selector
++ (id) operationWithUrl:(NSURL*) url
+				   mono:(bool) mono
+				 target:(id) target
+			   selector:(SEL) selector
 {
-	return [[[self alloc] initWithUrl:url target:target selector:selector] autorelease];
+	return [[[self alloc] initWithUrl:url
+								 mono:mono
+							   target:target
+							 selector:selector] autorelease];
 }
 
-- (id) initWithUrl:(NSURL*) urlIn target:(id) targetIn selector:(SEL) selectorIn
+- (id) initWithUrl:(NSURL*) urlIn
+			  mono:(bool) monoIn
+			target:(id) targetIn
+		  selector:(SEL) selectorIn
 {
 	if(nil != (self = [super init]))
 	{
 		url = [urlIn retain];
+		mono = monoIn;
 		target = targetIn;
 		selector = selectorIn;
 	}
@@ -110,7 +130,7 @@ NSDictionary* extAudioErrorCodes = nil;
 
 - (void)main
 {
-	ALBuffer* buffer = [[OALAudioSupport sharedInstance] bufferFromUrl:url];
+	ALBuffer* buffer = [[OALAudioSupport sharedInstance] bufferFromUrl:url mono:mono];
 	[target performSelectorOnMainThread:selector withObject:buffer waitUntilDone:NO];
 }
 
@@ -342,10 +362,20 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSupport);
 
 - (ALBuffer*) bufferFromFile:(NSString*) filePath
 {
-	return [self bufferFromUrl:[OALAudioSupport urlForPath:filePath]];
+	return [self bufferFromFile:filePath mono:NO];
+}
+
+- (ALBuffer*) bufferFromFile:(NSString*) filePath mono:(bool) mono
+{
+	return [self bufferFromUrl:[OALAudioSupport urlForPath:filePath] mono:mono];
 }
 
 - (ALBuffer*) bufferFromUrl:(NSURL*) url
+{
+	return [self bufferFromUrl:url mono:NO];
+}
+
+- (ALBuffer*) bufferFromUrl:(NSURL*) url mono:(bool) mono
 {
 	if(nil == url)
 	{
@@ -415,6 +445,12 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSupport);
 	kAudioFormatFlagIsSignedInteger |
 	kAudioFormatFlagIsPacked;
 	audioStreamDescription.mBitsPerChannel = 16;
+	
+	if(mono)
+	{
+		audioStreamDescription.mChannelsPerFrame = 1;
+	}
+	
 	if(audioStreamDescription.mChannelsPerFrame > 2)
 	{
 		// Don't allow more than 2 channels (stereo)
@@ -500,16 +536,49 @@ done:
 	return alBuffer;
 }
 
-- (NSString*) bufferAsyncFromFile:(NSString*) filePath target:(id) target selector:(SEL) selector
+- (NSString*) bufferAsyncFromFile:(NSString*) filePath
+						   target:(id) target
+						 selector:(SEL) selector
 {
-	return [self bufferAsyncFromUrl:[OALAudioSupport urlForPath:filePath] target:target selector:selector];
+	return [self bufferAsyncFromFile:filePath
+								mono:NO
+							  target:target
+							selector:selector];
 }
 
-- (NSString*) bufferAsyncFromUrl:(NSURL*) url target:(id) target selector:(SEL) selector
+- (NSString*) bufferAsyncFromFile:(NSString*) filePath
+							 mono:(bool) mono
+						   target:(id) target
+						 selector:(SEL) selector
+{
+	return [self bufferAsyncFromUrl:[OALAudioSupport urlForPath:filePath]
+							   mono:mono
+							 target:target
+						   selector:selector];
+}
+
+- (NSString*) bufferAsyncFromUrl:(NSURL*) url
+						  target:(id) target
+						selector:(SEL) selector
+{
+	return [self bufferAsyncFromUrl:url
+							   mono:NO
+							 target:target
+						   selector:selector];
+}
+
+- (NSString*) bufferAsyncFromUrl:(NSURL*) url
+							mono:(bool) mono
+						  target:(id) target
+						selector:(SEL) selector
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		[operationQueue addOperation:[OAL_AsyncALBufferLoadOperation operationWithUrl:url target:target selector:selector]];
+		[operationQueue addOperation:
+		 [OAL_AsyncALBufferLoadOperation operationWithUrl:url
+													 mono:mono
+												   target:target
+												 selector:selector]];
 	}
 	return [url absoluteString];
 }
@@ -517,7 +586,9 @@ done:
 
 #pragma mark Audio Error Utility
 
-+ (void) logAudioSessionError:(OSStatus)errorCode function:(const char*) function description:(NSString*) description, ...
++ (void) logAudioSessionError:(OSStatus)errorCode
+					 function:(const char*) function
+				  description:(NSString*) description, ...
 {
 	if(noErr != errorCode)
 	{
@@ -554,7 +625,9 @@ done:
 	}
 }
 
-+ (void) logExtAudioError:(OSStatus)errorCode function:(const char*) function description:(NSString*) description, ...
++ (void) logExtAudioError:(OSStatus)errorCode
+				 function:(const char*) function
+			  description:(NSString*) description, ...
 {
 	if(noErr != errorCode)
 	{
@@ -691,8 +764,6 @@ done:
 	{
 		honorSilentSwitch = YES;
 		allowIpod = NO;
-		useHardwareIfAvailable = YES;
-		ipodDucking = NO;
 	}
 	else if([AVAudioSessionCategoryPlayback isEqualToString:audioSessionCategory])
 	{
@@ -702,22 +773,27 @@ done:
 	{
 		honorSilentSwitch = NO;
 		allowIpod = NO;
-		useHardwareIfAvailable = YES;
 		ipodDucking = NO;
 	}
 	else if([AVAudioSessionCategoryPlayAndRecord isEqualToString:audioSessionCategory])
 	{
 		honorSilentSwitch = NO;
-		useHardwareIfAvailable = YES;
+		allowIpod = NO;
 		ipodDucking = NO;
 	}
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_3_1
 	else if([AVAudioSessionCategoryAudioProcessing isEqualToString:audioSessionCategory])
 	{
 		honorSilentSwitch = NO;
 		allowIpod = NO;
-		useHardwareIfAvailable = YES;
 		ipodDucking = NO;
 	}
+#endif /* __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_3_1 */
+	else
+	{
+		OAL_LOG_WARNING(@"%@: Unrecognized audio session category", audioSessionCategory);
+	}
+
 }
 
 - (void) updateFromFlags
@@ -753,11 +829,13 @@ done:
 	// Ducking causes other app audio to lower in volume while this session is active.
 	bool ducking = ipodDucking;
 	
+	// If the hardware is available and we want it, take it.
 	if(mixing && useHardwareIfAvailable && !self.ipodPlaying)
 	{
 		mixing = NO;
 	}
 
+	// Handle special case where useHardwareIfAvailable caused us to take the hardware.
 	if(!mixing && [AVAudioSessionCategoryAmbient isEqualToString:audioSessionCategory])
 	{
 		actualCategory = AVAudioSessionCategorySoloAmbient;
@@ -767,13 +845,13 @@ done:
 
 	if(!mixing)
 	{
-		// Setting ShouldDuck clears MixWithOthers.
+		// Setting OtherMixableAudioShouldDuck clears MixWithOthers.
 		[self setIntProperty:kAudioSessionProperty_OtherMixableAudioShouldDuck value:ducking];
 	}
 
 	if(!ducking)
 	{
-		// Setting MixWithOthers clears ShouldDuck.
+		// Setting MixWithOthers clears OtherMixableAudioShouldDuck.
 		[self setIntProperty:kAudioSessionProperty_OverrideCategoryMixWithOthers value:mixing];
 	}
 	

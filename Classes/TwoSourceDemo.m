@@ -88,10 +88,12 @@
 	[OALSimpleAudio sharedInstance].reservedSources = 0;
 	
 	leftSource = [[ALSource source] retain];
-	leftBuffer = [[[OALAudioSupport sharedInstance] bufferFromFile:@"ColdFunk.wav"] retain];
+	// ColdFunk.caf is stereo, which doesn't work with positioning. Force to mono.
+	leftBuffer = [[[OALAudioSupport sharedInstance] bufferFromFile:@"ColdFunk.caf" mono:YES] retain];
 	
 	rightSource = [[ALSource source] retain];
-	rightBuffer = [[[OALAudioSupport sharedInstance] bufferFromFile:@"HappyAlley.wav"] retain];
+	// HappyAlley.caf is stereo, which doesn't work with positioning. Force to mono.
+	rightBuffer = [[[OALAudioSupport sharedInstance] bufferFromFile:@"HappyAlley.caf" mono:YES] retain];
 	
 	leftSource.position = alpoint(leftPlanet.position.x, leftPlanet.position.y, 0);
 	leftSource.referenceDistance = 50;

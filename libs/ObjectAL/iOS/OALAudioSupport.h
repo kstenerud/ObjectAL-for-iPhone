@@ -50,6 +50,9 @@
  * Example: convert from a wav file to iOS compatible, 8 bits per channel, 22050KHz:
  *
  * \code afconvert -f caff -d I8@@22050 sourcefile.wav destfile.caf \endcode
+ *
+ * Note: Stereo samples don't support positional audio, so if you plan on using positioning
+ *       be sure to specify mono when loading the sample.
  */
 @interface OALAudioSupport : NSObject <AVAudioSessionDelegate>
 {
@@ -200,6 +203,17 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALAudioSupport);
 - (ALBuffer*) bufferFromFile:(NSString*) filePath;
 
 /** Load an OpenAL buffer with the contents of an audio file.
+ * The buffer's name will be the fully qualified URL of the path.
+ *
+ * See the class description note regarding sound file formats.
+ *
+ * @param filePath The path of the file containing the audio data.
+ * @param mono If true, convert the sound to mono.
+ * @return An ALBuffer containing the audio data.
+ */
+- (ALBuffer*) bufferFromFile:(NSString*) filePath mono:(bool) mono;
+
+/** Load an OpenAL buffer with the contents of an audio file.
  * The buffer's name will be the fully qualified URL.
  *
  * See the class description note regarding sound file formats.
@@ -208,6 +222,17 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALAudioSupport);
  * @return An ALBuffer containing the audio data.
  */
 - (ALBuffer*) bufferFromUrl:(NSURL*) url;
+
+/** Load an OpenAL buffer with the contents of an audio file.
+ * The buffer's name will be the fully qualified URL.
+ *
+ * See the class description note regarding sound file formats.
+ *
+ * @param url The URL of the file containing the audio data.
+ * @param mono If true, convert the sound to mono.
+ * @return An ALBuffer containing the audio data.
+ */
+- (ALBuffer*) bufferFromUrl:(NSURL*) url mono:(bool) mono;
 
 /** Load an OpenAL buffer with the contents of an audio file asynchronously.
  * This method will schedule a request to have the buffer created and filled, and then call the
@@ -225,6 +250,26 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALAudioSupport);
  */
 - (NSString*) bufferAsyncFromFile:(NSString*) filePath target:(id) target selector:(SEL) selector;
 
+/** Load an OpenAL buffer with the contents of an audio file asynchronously.
+ * This method will schedule a request to have the buffer created and filled, and then call the
+ * specified selector with the newly created buffer. <br>
+ * The buffer's name will be the fully qualified URL of the path. <br>
+ * Returns the fully qualified URL of the path, which you can match up to the buffer name in your
+ * callback method.
+ *
+ * See the class description note regarding sound file formats.
+ *
+ * @param filePath The path of the file containing the audio data.
+ * @param mono If true, convert the sound to mono.
+ * @param target The target to call when the buffer is loaded.
+ * @param selector The selector to invoke when the buffer is loaded.
+ * @return The fully qualified URL of the path.
+ */
+- (NSString*) bufferAsyncFromFile:(NSString*) filePath
+							 mono:(bool) mono
+						   target:(id) target
+						 selector:(SEL) selector;
+
 /** Load an OpenAL buffer with the contents of a URL asynchronously.
  * This method will schedule a request to have the buffer created and filled, and then call the
  * specified selector with the newly created buffer. <br>
@@ -240,6 +285,26 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALAudioSupport);
  * @return The fully qualified URL of the path.
  */
 - (NSString*) bufferAsyncFromUrl:(NSURL*) url target:(id) target selector:(SEL) selector;
+
+/** Load an OpenAL buffer with the contents of a URL asynchronously.
+ * This method will schedule a request to have the buffer created and filled, and then call the
+ * specified selector with the newly created buffer. <br>
+ * The buffer's name will be the fully qualified URL. <br>
+ * Returns the fully qualified URL, which you can match up to the buffer name in your callback
+ * method.
+ *
+ * See the class description note regarding sound file formats.
+ *
+ * @param url The URL of the file containing the audio data.
+ * @param mono If true, convert the sound to mono.
+ * @param target The target to call when the buffer is loaded.
+ * @param selector The selector to invoke when the buffer is loaded.
+ * @return The fully qualified URL of the path.
+ */
+- (NSString*) bufferAsyncFromUrl:(NSURL*) url
+							mono:(bool) mono
+						  target:(id) target
+						selector:(SEL) selector;
 
 
 #pragma mark Utility

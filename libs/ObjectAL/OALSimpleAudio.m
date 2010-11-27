@@ -43,9 +43,10 @@
 /** (INTERNAL USE) Preload a sound effect and return the preloaded buffer.
  *
  * @param filePath The path containing the sound data.
+ * @param mono If true, convert the file to mono.
  * @return The preloaded buffer.
  */
-- (ALBuffer*) internalPreloadEffect:(NSString*) filePath;
+- (ALBuffer*) internalPreloadEffect:(NSString*) filePath mono:(bool) mono;
 
 @end
 
@@ -396,7 +397,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 
 #pragma mark Sound Effects
 
-- (ALBuffer*) internalPreloadEffect:(NSString*) filePath
+- (ALBuffer*) internalPreloadEffect:(NSString*) filePath mono:(bool) mono
 {
 	ALBuffer* buffer;
 	OPTIONALLY_SYNCHRONIZED(self)
@@ -406,7 +407,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 	if(nil == buffer)
 	{
 		OAL_LOG_DEBUG(@"Effect not in cache. Loading %@", filePath);
-		buffer = [[OALAudioSupport sharedInstance] bufferFromFile:filePath];
+		buffer = [[OALAudioSupport sharedInstance] bufferFromFile:filePath mono:mono];
 		if(nil == buffer)
 		{
 			OAL_LOG_ERROR(@"Could not load effect %@", filePath);
@@ -424,6 +425,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 
 - (ALBuffer*) preloadEffect:(NSString*) filePath
 {
+	return [self preloadEffect:filePath mono:NO];
+}
+
+- (ALBuffer*) preloadEffect:(NSString*) filePath mono:(bool) mono
+{
 	if(nil == filePath)
 	{
 		OAL_LOG_ERROR(@"filePath was NULL");
@@ -440,18 +446,19 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 	pendingLoadCount++;
 	dispatch_sync(oal_dispatch_queue,
 	^{
-		retBuffer = [self internalPreloadEffect:filePath];
+		retBuffer = [self internalPreloadEffect:filePath mono:mono];
 	});
 	pendingLoadCount--;
 	return retBuffer;
 #else
-	return [self internalPreloadEffect:filePath];
+	return [self internalPreloadEffect:filePath mono:mono];
 #endif
 }
 
 #if NS_BLOCKS_AVAILABLE && OBJECTAL_USE_BLOCKS
 
 - (BOOL) preloadEffect:(NSString*) filePath
+				  mono:(bool) mono
 			completionBlock:(void(^)(ALBuffer *)) completionBlock
 {
 	if(nil == filePath)
@@ -466,7 +473,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 	^{
 		OAL_LOG_INFO(@"Preloading effect: %@", filePath);
 		
-		ALBuffer *retBuffer = [self internalPreloadEffect:filePath];
+		ALBuffer *retBuffer = [self internalPreloadEffect:filePath mono:mono];
 		if(!retBuffer)
 		{
 			 OAL_LOG_WARNING(@"%@ failed to preload.", filePath);
@@ -481,6 +488,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 }
 
 - (void) preloadEffects:(NSArray*) filePaths
+				   mono:(bool) mono
 		  progressBlock:(void (^)(uint progress, uint successCount, uint total)) progressBlock
 {
 	uint total					= [filePaths count];
@@ -499,7 +507,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 		[filePaths enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
 		 {
 			 OAL_LOG_INFO(@"Preloading effect: %@", obj);
-			 ALBuffer *result = [self internalPreloadEffect:(NSString *)obj];
+			 ALBuffer *result = [self internalPreloadEffect:(NSString *)obj mono:mono];
 			 if(!result)
 			 {
 				 OAL_LOG_WARNING(@"%@ failed to preload.", obj);
@@ -519,13 +527,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 			 });
 		 }];
 	});
-}
-#else
-- (void) preloadEffects:(NSArray*) filePaths
-	 progressInvocation:(NSInvocation *) progressInvocation
-   completionInvocation:(NSInvocation *) completionInvocation
-{
-	
 }
 #endif
 
@@ -573,7 +574,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 		OAL_LOG_ERROR(@"filePath was NULL");
 		return NO;
 	}
-	ALBuffer* buffer = [self internalPreloadEffect:filePath];
+	ALBuffer* buffer = [self internalPreloadEffect:filePath mono:NO];
 	if(nil != buffer)
 	{
 		return [channel play:buffer gain:volume pitch:pitch pan:pan loop:loop];

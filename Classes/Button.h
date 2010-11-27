@@ -17,12 +17,16 @@
 	CCNode* touchablePortion;
 	BOOL touchInProgress;
 	BOOL buttonWasDown;
+	bool scaleOnPush;
 	
 	id target;
 	SEL selector;
 }
 /** The portion of this button that is actually touchable */
 @property(nonatomic,readwrite,retain) CCNode* touchablePortion;
+
+/** If true, the button does a scaling animation when pushed. */
+@property(readwrite,assign) bool scaleOnPush;
 
 /** Create a new button.
  * @param node the node to use as a touchable portion.

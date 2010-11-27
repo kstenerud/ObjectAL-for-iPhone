@@ -11,6 +11,7 @@
 #import "Slider.h"
 #import "ImageButton.h"
 #import "ObjectAL.h"
+#import "CCLayer+AudioPanel.h"
 
 #pragma mark Private Methods
 
@@ -30,15 +31,12 @@
 
 - (id) init
 {
-	if(nil != (self = [super initWithColor:ccc4(255, 255, 255, 255)]))
+	if(nil != (self = [super initWithColor:ccc4(0, 0, 0, 0)]))
 	{
 		[self buildUI];
 
 		// We'll do an S-Curve fade.
 		fadeFunction = [[OALSCurveFunction function] retain];
-
-		firstSource.gain = 1.0f;
-		secondSource.gain = 0.0f;
 	}
 	return self;
 }
@@ -57,32 +55,28 @@
 
 - (void) buildUI
 {
+	[self buildAudioPanelWithSeparator];
+	[self addPanelTitle:@"Crossfading"];
+	[self addPanelLine1:@"Use the slider to crossfade between tracks."];
+
 	CGSize size = [[CCDirector sharedDirector] winSize];
 	CGPoint center = ccp(size.width/2, size.height/2);
 	
-	CCSprite* track;
 	CCLabel* label;
 	Slider* slider;
-	
 
-	// Crossfade slider
-	track = [CCSprite spriteWithFile:@"SliderTrackHorizontal.png"];
-	track.scaleX = 220 / track.contentSize.width;
-	slider = [HorizontalSlider sliderWithTrack:track
-										  knob:[CCSprite spriteWithFile:@"SliderKnobHorizontal.png"]
-										target:self moveSelector:@selector(onCrossfadeChanged:) dropSelector:@selector(onCrossfadeChanged:)];
-	slider.scale = 2.0f;
-	slider.anchorPoint = ccp(0.5f, 0.5f);
-	slider.position = ccp(center.x,center.y);
-	[self addChild:slider];
-	slider.value = 0;
-	label = [CCLabel labelWithString:@"Crossfade" fontName:@"Helvetica" fontSize:30];
+	label = [CCLabel labelWithString:@"Cold Funk <------> Happy Alley"
+							fontName:@"Helvetica"
+							fontSize:22];
 	label.anchorPoint = ccp(0.5f, 0);
-	label.color = ccBLACK;
-	label.position = ccp(slider.position.x,
-						 slider.position.y + slider.contentSize.height * slider.scaleY + 10);
+	label.position = ccp(center.x, 110);
 	[self addChild:label];
-
+	
+	slider = [self longPanelSliderWithTarget:self selector:@selector(onCrossfadeChanged:)];
+	slider.anchorPoint = ccp(0.5f, 0);
+	slider.position = ccp(label.position.x, label.position.y-30);
+	slider.value = 0;
+	[self addChild:slider];
 	
 	// Exit button
 	ImageButton* button = [ImageButton buttonWithImageFile:@"Exit.png" target:self selector:@selector(onExitPressed)];
@@ -103,11 +97,13 @@
 	// Since we're not going to use it for playing effects, don't give it any sources.
 	[OALSimpleAudio sharedInstance].reservedSources = 0;
 	
+	// We're using OpenAL here, but the same concept works with AudioTracks.
+	// For long duration files, AudioTracks will use SIGNIFICANTLY less ram.
 	firstSource = [[ALSource source] retain];
-	firstBuffer = [[[OALAudioSupport sharedInstance] bufferFromFile:@"ColdFunk.wav"] retain];
+	firstBuffer = [[[OALAudioSupport sharedInstance] bufferFromFile:@"ColdFunk.caf"] retain];
 	
 	secondSource = [[ALSource source] retain];
-	secondBuffer = [[[OALAudioSupport sharedInstance] bufferFromFile:@"HappyAlley.wav"] retain];
+	secondBuffer = [[[OALAudioSupport sharedInstance] bufferFromFile:@"HappyAlley.caf"] retain];
 
 	[firstSource play:firstBuffer loop:YES];
 	[secondSource play:secondBuffer loop:YES];

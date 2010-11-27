@@ -7,13 +7,19 @@
 
 #import "cocos2d.h"
 #import "ObjectAL.h"
+#import "LampButton.h"
 
 @interface FadeDemo : CCColorLayer
 {
 	ALSource* source;
+
+	LampButton* startStopSourceButton;
+	LampButton* fadeOutSourceButton;
+	LampButton* fadeInSourceButton;
 	
-	CCLabel* oalFading;
-	CCLabel* bgFading;
+	LampButton* startStopTrackButton;
+	LampButton* fadeOutTrackButton;
+	LampButton* fadeInTrackButton;
 }
 
 @end
