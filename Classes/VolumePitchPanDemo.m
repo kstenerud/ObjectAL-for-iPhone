@@ -127,7 +127,7 @@
 	source = [[ALSource source] retain];
 	
 	// "Pan" uses OpenAL positioning, so we have to force ColdFunk.caf from stereo to mono.
-	buffer = [[[OALAudioSupport sharedInstance] bufferFromFile:@"ColdFunk.caf" mono:YES] retain];
+	buffer = [[[OALAudioSupport sharedInstance] bufferFromFile:@"ColdFunk.caf" reduceToMono:YES] retain];
 	
 	[source play:buffer loop:YES];
 }

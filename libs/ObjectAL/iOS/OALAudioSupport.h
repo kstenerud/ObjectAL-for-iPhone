@@ -52,7 +52,7 @@
  * \code afconvert -f caff -d I8@@22050 sourcefile.wav destfile.caf \endcode
  *
  * Note: Stereo samples don't support positional audio, so if you plan on using positioning
- *       be sure to specify mono when loading the sample.
+ *       be sure to specify reduceToMono when loading the sample.
  */
 @interface OALAudioSupport : NSObject <AVAudioSessionDelegate>
 {
@@ -208,10 +208,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALAudioSupport);
  * See the class description note regarding sound file formats.
  *
  * @param filePath The path of the file containing the audio data.
- * @param mono If true, convert the sound to mono.
+ * @param reduceToMono If true, reduce the sample to mono.
  * @return An ALBuffer containing the audio data.
  */
-- (ALBuffer*) bufferFromFile:(NSString*) filePath mono:(bool) mono;
+- (ALBuffer*) bufferFromFile:(NSString*) filePath reduceToMono:(bool) reduceToMono;
 
 /** Load an OpenAL buffer with the contents of an audio file.
  * The buffer's name will be the fully qualified URL.
@@ -229,10 +229,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALAudioSupport);
  * See the class description note regarding sound file formats.
  *
  * @param url The URL of the file containing the audio data.
- * @param mono If true, convert the sound to mono.
+ * @param reduceToMono If true, reduce the sample to mono.
  * @return An ALBuffer containing the audio data.
  */
-- (ALBuffer*) bufferFromUrl:(NSURL*) url mono:(bool) mono;
+- (ALBuffer*) bufferFromUrl:(NSURL*) url reduceToMono:(bool) reduceToMono;
 
 /** Load an OpenAL buffer with the contents of an audio file asynchronously.
  * This method will schedule a request to have the buffer created and filled, and then call the
@@ -260,13 +260,13 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALAudioSupport);
  * See the class description note regarding sound file formats.
  *
  * @param filePath The path of the file containing the audio data.
- * @param mono If true, convert the sound to mono.
+ * @param reduceToMono If true, reduce the sample to mono.
  * @param target The target to call when the buffer is loaded.
  * @param selector The selector to invoke when the buffer is loaded.
  * @return The fully qualified URL of the path.
  */
 - (NSString*) bufferAsyncFromFile:(NSString*) filePath
-							 mono:(bool) mono
+							 reduceToMono:(bool) reduceToMono
 						   target:(id) target
 						 selector:(SEL) selector;
 
@@ -296,13 +296,13 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALAudioSupport);
  * See the class description note regarding sound file formats.
  *
  * @param url The URL of the file containing the audio data.
- * @param mono If true, convert the sound to mono.
+ * @param reduceToMono If true, reduce the sample to mono.
  * @param target The target to call when the buffer is loaded.
  * @param selector The selector to invoke when the buffer is loaded.
  * @return The fully qualified URL of the path.
  */
 - (NSString*) bufferAsyncFromUrl:(NSURL*) url
-							mono:(bool) mono
+							reduceToMono:(bool) reduceToMono
 						  target:(id) target
 						selector:(SEL) selector;
 

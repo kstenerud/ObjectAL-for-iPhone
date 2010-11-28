@@ -59,8 +59,8 @@ NSDictionary* extAudioErrorCodes = nil;
 {
 	/** The URL of the sound file to play */
 	NSURL* url;
-	/** If true, load the sound as mono */
-	bool mono;
+	/** If true, reduce the sample to mono */
+	bool reduceToMono;
 	/** The target to inform when the operation completes */
 	id target;
 	/** The selector to call when the operation completes */
@@ -70,24 +70,24 @@ NSDictionary* extAudioErrorCodes = nil;
 /** (INTERNAL USE) Create a new Asynchronous Operation.
  *
  * @param url the URL containing the sound file.
- * @param mono If true, convert the sound to mono.
+ * @param reduceToMono If true, reduce the sample to mono.
  * @param target the target to inform when the operation completes.
  * @param selector the selector to call when the operation completes.
  */ 
 + (id) operationWithUrl:(NSURL*) url
-				   mono:(bool) mono
+				   reduceToMono:(bool) reduceToMono
 				 target:(id) target
 			   selector:(SEL) selector;
 
 /** (INTERNAL USE) Initialize an Asynchronous Operation.
  *
  * @param url the URL containing the sound file.
- * @param mono If true, convert the sound to mono.
+ * @param reduceToMono If true, reduce the sample to mono.
  * @param target the target to inform when the operation completes.
  * @param selector the selector to call when the operation completes.
  */ 
 - (id) initWithUrl:(NSURL*) url
-			  mono:(bool) mono
+			  reduceToMono:(bool) reduceToMono
 			target:(id) target
 		  selector:(SEL) selector;
 
@@ -96,25 +96,25 @@ NSDictionary* extAudioErrorCodes = nil;
 @implementation OAL_AsyncALBufferLoadOperation
 
 + (id) operationWithUrl:(NSURL*) url
-				   mono:(bool) mono
+				   reduceToMono:(bool) reduceToMono
 				 target:(id) target
 			   selector:(SEL) selector
 {
 	return [[[self alloc] initWithUrl:url
-								 mono:mono
+								 reduceToMono:reduceToMono
 							   target:target
 							 selector:selector] autorelease];
 }
 
 - (id) initWithUrl:(NSURL*) urlIn
-			  mono:(bool) monoIn
+			  reduceToMono:(bool) reduceToMonoIn
 			target:(id) targetIn
 		  selector:(SEL) selectorIn
 {
 	if(nil != (self = [super init]))
 	{
 		url = [urlIn retain];
-		mono = monoIn;
+		reduceToMono = reduceToMonoIn;
 		target = targetIn;
 		selector = selectorIn;
 	}
@@ -130,7 +130,7 @@ NSDictionary* extAudioErrorCodes = nil;
 
 - (void)main
 {
-	ALBuffer* buffer = [[OALAudioSupport sharedInstance] bufferFromUrl:url mono:mono];
+	ALBuffer* buffer = [[OALAudioSupport sharedInstance] bufferFromUrl:url reduceToMono:reduceToMono];
 	[target performSelectorOnMainThread:selector withObject:buffer waitUntilDone:NO];
 }
 
@@ -362,20 +362,20 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSupport);
 
 - (ALBuffer*) bufferFromFile:(NSString*) filePath
 {
-	return [self bufferFromFile:filePath mono:NO];
+	return [self bufferFromFile:filePath reduceToMono:NO];
 }
 
-- (ALBuffer*) bufferFromFile:(NSString*) filePath mono:(bool) mono
+- (ALBuffer*) bufferFromFile:(NSString*) filePath reduceToMono:(bool) reduceToMono
 {
-	return [self bufferFromUrl:[OALAudioSupport urlForPath:filePath] mono:mono];
+	return [self bufferFromUrl:[OALAudioSupport urlForPath:filePath] reduceToMono:reduceToMono];
 }
 
 - (ALBuffer*) bufferFromUrl:(NSURL*) url
 {
-	return [self bufferFromUrl:url mono:NO];
+	return [self bufferFromUrl:url reduceToMono:NO];
 }
 
-- (ALBuffer*) bufferFromUrl:(NSURL*) url mono:(bool) mono
+- (ALBuffer*) bufferFromUrl:(NSURL*) url reduceToMono:(bool) reduceToMono
 {
 	if(nil == url)
 	{
@@ -446,7 +446,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSupport);
 	kAudioFormatFlagIsPacked;
 	audioStreamDescription.mBitsPerChannel = 16;
 	
-	if(mono)
+	if(reduceToMono)
 	{
 		audioStreamDescription.mChannelsPerFrame = 1;
 	}
@@ -541,18 +541,18 @@ done:
 						 selector:(SEL) selector
 {
 	return [self bufferAsyncFromFile:filePath
-								mono:NO
+								reduceToMono:NO
 							  target:target
 							selector:selector];
 }
 
 - (NSString*) bufferAsyncFromFile:(NSString*) filePath
-							 mono:(bool) mono
+							 reduceToMono:(bool) reduceToMono
 						   target:(id) target
 						 selector:(SEL) selector
 {
 	return [self bufferAsyncFromUrl:[OALAudioSupport urlForPath:filePath]
-							   mono:mono
+							   reduceToMono:reduceToMono
 							 target:target
 						   selector:selector];
 }
@@ -562,13 +562,13 @@ done:
 						selector:(SEL) selector
 {
 	return [self bufferAsyncFromUrl:url
-							   mono:NO
+							   reduceToMono:NO
 							 target:target
 						   selector:selector];
 }
 
 - (NSString*) bufferAsyncFromUrl:(NSURL*) url
-							mono:(bool) mono
+							reduceToMono:(bool) reduceToMono
 						  target:(id) target
 						selector:(SEL) selector
 {
@@ -576,7 +576,7 @@ done:
 	{
 		[operationQueue addOperation:
 		 [OAL_AsyncALBufferLoadOperation operationWithUrl:url
-													 mono:mono
+													 reduceToMono:reduceToMono
 												   target:target
 												 selector:selector]];
 	}
