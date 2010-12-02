@@ -273,8 +273,6 @@
 		39AD8548121032E00049990E /* TwoSourceDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 39AD853B121032E00049990E /* TwoSourceDemo.m */; };
 		39AD8549121032E00049990E /* VolumePitchPanDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 39AD853D121032E00049990E /* VolumePitchPanDemo.m */; };
 		39AD854E1210335E0049990E /* libObjectAL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 39AD84B6121031BC0049990E /* libObjectAL.a */; };
-		39B0331912621E2000AC27C9 /* IOS41LLVMWorkaround.pch in Headers */ = {isa = PBXBuildFile; fileRef = 39B0331812621E2000AC27C9 /* IOS41LLVMWorkaround.pch */; };
-		39B033371262219E00AC27C9 /* IOS41LLVMWorkaround.pch in Headers */ = {isa = PBXBuildFile; fileRef = 39B0331812621E2000AC27C9 /* IOS41LLVMWorkaround.pch */; };
 		39B0340A12623AA800AC27C9 /* OALAudioSupport.h in Headers */ = {isa = PBXBuildFile; fileRef = 39B0340612623AA800AC27C9 /* OALAudioSupport.h */; };
 		39B0340B12623AA800AC27C9 /* OALAudioSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B0340712623AA800AC27C9 /* OALAudioSupport.m */; };
 		39B034531262430E00AC27C9 /* OALSimpleAudio.h in Headers */ = {isa = PBXBuildFile; fileRef = 39B034511262430E00AC27C9 /* OALSimpleAudio.h */; };
@@ -614,7 +612,6 @@
 		39AD853B121032E00049990E /* TwoSourceDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwoSourceDemo.m; sourceTree = "<group>"; };
 		39AD853C121032E00049990E /* VolumePitchPanDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VolumePitchPanDemo.h; sourceTree = "<group>"; };
 		39AD853D121032E00049990E /* VolumePitchPanDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VolumePitchPanDemo.m; sourceTree = "<group>"; };
-		39B0331812621E2000AC27C9 /* IOS41LLVMWorkaround.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOS41LLVMWorkaround.pch; sourceTree = "<group>"; };
 		39B0340612623AA800AC27C9 /* OALAudioSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALAudioSupport.h; sourceTree = "<group>"; };
 		39B0340712623AA800AC27C9 /* OALAudioSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALAudioSupport.m; sourceTree = "<group>"; };
 		39B034511262430E00AC27C9 /* OALSimpleAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALSimpleAudio.h; sourceTree = "<group>"; };
@@ -727,7 +724,6 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				39B0331812621E2000AC27C9 /* IOS41LLVMWorkaround.pch */,
 				1F3B9A820EF2151B00286867 /* ObjectAL_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 			);
@@ -1200,7 +1196,6 @@
 				396B3987124EDA43009B84A4 /* mach_timing.h in Headers */,
 				396B3988124EDA43009B84A4 /* NSMutableArray+WeakReferences.h in Headers */,
 				396B398A124EDA43009B84A4 /* SynthesizeSingleton.h in Headers */,
-				39B0331912621E2000AC27C9 /* IOS41LLVMWorkaround.pch in Headers */,
 				39B0340A12623AA800AC27C9 /* OALAudioSupport.h in Headers */,
 				39B034531262430E00AC27C9 /* OALSimpleAudio.h in Headers */,
 				39B0373D1262A32D00AC27C9 /* ObjectALMacros.h in Headers */,
@@ -1219,7 +1214,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				39B033371262219E00AC27C9 /* IOS41LLVMWorkaround.pch in Headers */,
 				390EE7E7128355F10009054E /* CCAction.h in Headers */,
 				390EE7E9128355F10009054E /* CCActionManager.h in Headers */,
 				390EE7EB128355F10009054E /* CCAtlasNode.h in Headers */,
@@ -1690,7 +1684,6 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_SYMBOL_SEPARATION = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREFIX_HEADER = IOS41LLVMWorkaround.pch;
 				PREBINDING = NO;
 				PRODUCT_NAME = ObjectAL;
 			};
@@ -1704,7 +1697,6 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_SYMBOL_SEPARATION = NO;
-				GCC_PREFIX_HEADER = IOS41LLVMWorkaround.pch;
 				PREBINDING = NO;
 				PRODUCT_NAME = ObjectAL;
 				ZERO_LINK = NO;
@@ -1719,7 +1711,6 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_SYMBOL_SEPARATION = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREFIX_HEADER = IOS41LLVMWorkaround.pch;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				PREBINDING = NO;
 				PRODUCT_NAME = "cocos2d libraries";
@@ -1734,7 +1725,6 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_SYMBOL_SEPARATION = NO;
-				GCC_PREFIX_HEADER = IOS41LLVMWorkaround.pch;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				PREBINDING = NO;
 				PRODUCT_NAME = "cocos2d libraries";

@@ -3,7 +3,6 @@
 //
 
 #ifdef __OBJC__
-	#import "IOS41LLVMWorkaround.pch"
 	#import <Foundation/Foundation.h>
 	#import <UIKit/UIKit.h>
 	#import "ObjectAL.h"
