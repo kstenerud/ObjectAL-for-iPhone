@@ -128,6 +128,8 @@
 // index
 -(unsigned int) atlasIndexForExistantZ:(unsigned int)z;
 -(unsigned int) atlasIndexForNewZ:(int)z;
+
+int compareInts (const void * a, const void * b);
 @end
 
 @implementation CCTMXLayer

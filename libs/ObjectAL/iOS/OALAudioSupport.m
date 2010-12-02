@@ -37,6 +37,7 @@ ADD_INTERRUPT_API(OALAudioSupport);
 ADD_INTERRUPT_API(OpenALManager);
 ADD_INTERRUPT_API(OALAudioTracks);
 
+
 #define kMaxSessionActivationRetries 40
 
 /** Dictionary mapping audio session error codes to human readable descriptions.
@@ -70,7 +71,8 @@ NSDictionary* extAudioErrorCodes = nil;
 /** (INTERNAL USE) Create a new Asynchronous Operation.
  *
  * @param url the URL containing the sound file.
- * @param reduceToMono If true, reduce the sample to mono.
+ * @param reduceToMono If true, reduce the sample to mono
+ *        (stereo samples don't support panning or positional audio).
  * @param target the target to inform when the operation completes.
  * @param selector the selector to call when the operation completes.
  */ 
@@ -82,7 +84,8 @@ NSDictionary* extAudioErrorCodes = nil;
 /** (INTERNAL USE) Initialize an Asynchronous Operation.
  *
  * @param url the URL containing the sound file.
- * @param reduceToMono If true, reduce the sample to mono.
+ * @param reduceToMono If true, reduce the sample to mono
+ *        (stereo samples don't support panning or positional audio).
  * @param target the target to inform when the operation completes.
  * @param selector the selector to call when the operation completes.
  */ 
@@ -141,6 +144,8 @@ NSDictionary* extAudioErrorCodes = nil;
 #pragma mark -
 #pragma mark Private Methods
 
+SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALAudioSupport);
+
 /**
  * (INTERNAL USE) Private methods for OALAudioSupport. 
  */
@@ -185,6 +190,14 @@ NSDictionary* extAudioErrorCodes = nil;
 /** (INTERNAL USE) Update the audio session category to be compatible with the current settings.
  */
 - (void) updateFromFlags;
+
+/** (INTERNAL USE) Called by SuspendLock to suspend this object.
+ */
+- (void) onSuspend;
+
+/** (INTERNAL USE) Called by SuspendLock to unsuspend this object.
+ */
+- (void) onUnsuspend;
 
 @end
 
@@ -444,14 +457,14 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSupport);
 	audioStreamDescription.mFormatFlags = kAudioFormatFlagsNativeEndian |
 	kAudioFormatFlagIsSignedInteger |
 	kAudioFormatFlagIsPacked;
+	// Force to 16 bit since iOS doesn't seem to like 8 bit.
 	audioStreamDescription.mBitsPerChannel = 16;
 	
 	if(reduceToMono)
 	{
 		audioStreamDescription.mChannelsPerFrame = 1;
 	}
-	
-	if(audioStreamDescription.mChannelsPerFrame > 2)
+	else if(audioStreamDescription.mChannelsPerFrame > 2)
 	{
 		// Don't allow more than 2 channels (stereo)
 		OAL_LOG_WARNING(@"Audio stream for url %@ contains %d channels. Capping at 2.", url, audioStreamDescription.mChannelsPerFrame);
@@ -915,16 +928,12 @@ done:
 	}
 }
 
-/** Called by SuspendLock to suspend this object.
- */
 - (void) onSuspend
 {
 	audioSessionWasActive = self.audioSessionActive;
 	self.audioSessionActive = NO;
 }
 
-/** Called by SuspendLock to unsuspend this object.
- */
 - (void) onUnsuspend
 {
 	if(audioSessionWasActive)

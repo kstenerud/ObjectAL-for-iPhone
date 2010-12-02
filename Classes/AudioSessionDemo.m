@@ -24,7 +24,41 @@
 
 @interface AudioSessionDemo (Private)
 
+/** Build the user interface. */
 - (void) buildUI;
+
+/** Exit the demo. */
+- (void) onExitPressed;
+
+/** Play or stop a source. */
+- (void) onPlayStopSource:(LampButton*) button;
+
+/** Pause a source. */
+- (void) onPauseSource:(LampButton*) button;
+
+/** Play or stop a track. */
+- (void) onPlayStopTrack:(LampButton*) button;
+
+/** Pause a track. */
+- (void) onPauseTrack:(LampButton*) button;
+
+/** Toggle "allow ipod" setting. */
+- (void) onAllowIpod:(LampButton*) button;
+
+/** Toggle "ipod ducking" setting. */
+- (void) onIpodDucking:(LampButton*) button;
+
+/** Toggle "honor silent switch" setting. */
+- (void) onSilentSwitch:(LampButton*) button;
+
+/** Toggle "use hardware if available" setting. */
+- (void) onUseHardware:(LampButton*) button;
+
+/** Toggle session state. */
+- (void) onSessionActive:(LampButton*) button;
+
+/** Toggle suspend/resume. */
+- (void) onSuspend:(LampButton*) button;
 
 @end
 
@@ -207,7 +241,12 @@
 
 - (void) onEnterTransitionDidFinish
 {
+	// Initialize the OpenAL device and context here instead of in init so that
+	// it doesn't happen prematurely.
+
+	// We're using our own source, so don't give any to OALSimpleAudio.
 	[OALSimpleAudio sharedInstance].reservedSources = 0;
+
 	source = [[ALSource source] retain];
 	buffer = [[[OALAudioSupport sharedInstance] bufferFromFile:@"ColdFunk.caf"] retain];
 	track = [[OALAudioTrack track] retain];

@@ -66,6 +66,9 @@
  * ========================================
  *	#import "MyClass.h"
  *
+ *	// This line is optional. Use it if you've enabled GCC_WARN_UNDECLARED_SELECTOR
+ *	SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(MyClass);
+ *
  *	@implementation MyClass
  *
  *	SYNTHESIZE_SINGLETON_FOR_CLASS(MyClass);
@@ -85,38 +88,48 @@
  * your program.
  */
 
-#define SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(__CLASSNAME__)	\
+#define SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(SS_CLASSNAME)	\
 	\
-+ (__CLASSNAME__*) sharedInstance;	\
++ (SS_CLASSNAME*) sharedInstance;	\
 + (void) purgeSharedInstance;
 
 
-#define SYNTHESIZE_SINGLETON_FOR_CLASS(__CLASSNAME__)	\
+#define SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(SS_CLASSNAME) \
+@interface SS_CLASSNAME (SynthesizeSingletonPrivate)	\
+- (NSUInteger)retainCountDoNothing;	\
+- (NSUInteger)retainCountDoSomething;	\
+- (void)releaseDoNothing;	\
+- (void)releaseDoSomething;	\
+- (id)autoreleaseDoNothing;	\
+- (id)autoreleaseDoSomething; \
+@end
+
+#define SYNTHESIZE_SINGLETON_FOR_CLASS(SS_CLASSNAME)	\
 	\
-static volatile __CLASSNAME__* _##__CLASSNAME__##_sharedInstance = nil;	\
+static volatile SS_CLASSNAME* _##SS_CLASSNAME##_sharedInstance = nil;	\
 	\
-+ (__CLASSNAME__*) sharedInstanceNoSynch	\
++ (SS_CLASSNAME*) sharedInstanceNoSynch	\
 {	\
-	return (__CLASSNAME__*) _##__CLASSNAME__##_sharedInstance;	\
+	return (SS_CLASSNAME*) _##SS_CLASSNAME##_sharedInstance;	\
 }	\
 	\
-+ (__CLASSNAME__*) sharedInstanceSynch	\
++ (SS_CLASSNAME*) sharedInstanceSynch	\
 {	\
 	@synchronized(self)	\
 	{	\
-		if(nil == _##__CLASSNAME__##_sharedInstance)	\
+		if(nil == _##SS_CLASSNAME##_sharedInstance)	\
 		{	\
-			_##__CLASSNAME__##_sharedInstance = [[self alloc] init];	\
+			_##SS_CLASSNAME##_sharedInstance = [[self alloc] init];	\
 		}	\
 		else	\
 		{	\
 			NSAssert2(1==0, @"SynthesizeSingleton: %@ ERROR: +(%@ *)sharedInstance method did not get swizzled.", self, self);	\
 		}	\
 	}	\
-	return (__CLASSNAME__*) _##__CLASSNAME__##_sharedInstance;	\
+	return (SS_CLASSNAME*) _##SS_CLASSNAME##_sharedInstance;	\
 }	\
 	\
-+ (__CLASSNAME__*) sharedInstance	\
++ (SS_CLASSNAME*) sharedInstance	\
 {	\
 	return [self sharedInstanceSynch]; \
 }	\
@@ -125,10 +138,10 @@ static volatile __CLASSNAME__* _##__CLASSNAME__##_sharedInstance = nil;	\
 {	\
 	@synchronized(self)	\
 	{	\
-		if (nil == _##__CLASSNAME__##_sharedInstance)	\
+		if (nil == _##SS_CLASSNAME##_sharedInstance)	\
 		{	\
-			_##__CLASSNAME__##_sharedInstance = [super allocWithZone:zone];	\
-			if(nil != _##__CLASSNAME__##_sharedInstance)	\
+			_##SS_CLASSNAME##_sharedInstance = [super allocWithZone:zone];	\
+			if(nil != _##SS_CLASSNAME##_sharedInstance)	\
 			{	\
 				Method newSharedInstanceMethod = class_getClassMethod(self, @selector(sharedInstanceNoSynch));	\
 				method_setImplementation(class_getClassMethod(self, @selector(sharedInstance)), method_getImplementation(newSharedInstanceMethod));	\
@@ -138,22 +151,22 @@ static volatile __CLASSNAME__* _##__CLASSNAME__##_sharedInstance = nil;	\
 			}	\
 		}	\
 	}	\
-	return _##__CLASSNAME__##_sharedInstance;	\
+	return _##SS_CLASSNAME##_sharedInstance;	\
 }	\
 	\
 + (void)purgeSharedInstance	\
 {	\
 	@synchronized(self)	\
 	{	\
-		if(nil != _##__CLASSNAME__##_sharedInstance)	\
+		if(nil != _##SS_CLASSNAME##_sharedInstance)	\
 		{	\
 			Method newSharedInstanceMethod = class_getClassMethod(self, @selector(sharedInstanceSynch));	\
 			method_setImplementation(class_getClassMethod(self, @selector(sharedInstance)), method_getImplementation(newSharedInstanceMethod));	\
 			method_setImplementation(class_getInstanceMethod(self, @selector(retainCount)), class_getMethodImplementation(self, @selector(retainCountDoSomething)));	\
 			method_setImplementation(class_getInstanceMethod(self, @selector(release)), class_getMethodImplementation(self, @selector(releaseDoSomething)));	\
 			method_setImplementation(class_getInstanceMethod(self, @selector(autorelease)), class_getMethodImplementation(self, @selector(autoreleaseDoSomething)));	\
-			[_##__CLASSNAME__##_sharedInstance release];	\
-			_##__CLASSNAME__##_sharedInstance = nil;	\
+			[_##SS_CLASSNAME##_sharedInstance release];	\
+			_##SS_CLASSNAME##_sharedInstance = nil;	\
 		}	\
 	}	\
 }	\
@@ -250,6 +263,9 @@ static volatile __CLASSNAME__* _##__CLASSNAME__##_sharedInstance = nil;	\
  * ========================================
  *	#import "MyClass.h"
  *
+ *	// This line is optional. Use it if you've enabled GCC_WARN_UNDECLARED_SELECTOR
+ *	SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(MyClass);
+ *
  *	@implementation MyClass
  *
  *	SYNTHESIZE_LESSER_SINGLETON_FOR_CLASS(MyClass);
@@ -280,23 +296,23 @@ static volatile __CLASSNAME__* _##__CLASSNAME__##_sharedInstance = nil;	\
  *	}
  */
 
-#define SYNTHESIZE_LESSER_SINGLETON_FOR_CLASS(__CLASSNAME__)	\
+#define SYNTHESIZE_LESSER_SINGLETON_FOR_CLASS(SS_CLASSNAME)	\
 	\
-static volatile __CLASSNAME__* _##__CLASSNAME__##_sharedInstance = nil;	\
+static volatile SS_CLASSNAME* _##SS_CLASSNAME##_sharedInstance = nil;	\
 	\
-+ (__CLASSNAME__*) sharedInstanceNoSynch	\
++ (SS_CLASSNAME*) sharedInstanceNoSynch	\
 {	\
-	return (__CLASSNAME__*) _##__CLASSNAME__##_sharedInstance;	\
+	return (SS_CLASSNAME*) _##SS_CLASSNAME##_sharedInstance;	\
 }	\
 	\
-+ (__CLASSNAME__*) sharedInstanceSynch	\
++ (SS_CLASSNAME*) sharedInstanceSynch	\
 {	\
 	@synchronized(self)	\
 	{	\
-		if(nil == _##__CLASSNAME__##_sharedInstance)	\
+		if(nil == _##SS_CLASSNAME##_sharedInstance)	\
 		{	\
-			_##__CLASSNAME__##_sharedInstance = [[self alloc] init];	\
-			if(_##__CLASSNAME__##_sharedInstance)	\
+			_##SS_CLASSNAME##_sharedInstance = [[self alloc] init];	\
+			if(_##SS_CLASSNAME##_sharedInstance)	\
 			{	\
 				Method newSharedInstanceMethod = class_getClassMethod(self, @selector(sharedInstanceNoSynch));	\
 				method_setImplementation(class_getClassMethod(self, @selector(sharedInstance)), method_getImplementation(newSharedInstanceMethod));	\
@@ -307,10 +323,10 @@ static volatile __CLASSNAME__* _##__CLASSNAME__##_sharedInstance = nil;	\
 			NSAssert2(1==0, @"SynthesizeSingleton: %@ ERROR: +(%@ *)sharedInstance method did not get swizzled.", self, self);	\
 		}	\
 	}	\
-	return (__CLASSNAME__*) _##__CLASSNAME__##_sharedInstance;	\
+	return (SS_CLASSNAME*) _##SS_CLASSNAME##_sharedInstance;	\
 }	\
 	\
-+ (__CLASSNAME__*) sharedInstance	\
++ (SS_CLASSNAME*) sharedInstance	\
 {	\
 	return [self sharedInstanceSynch]; \
 }	\
@@ -321,21 +337,21 @@ static volatile __CLASSNAME__* _##__CLASSNAME__##_sharedInstance = nil;	\
 	{	\
 		Method newSharedInstanceMethod = class_getClassMethod(self, @selector(sharedInstanceSynch));	\
 		method_setImplementation(class_getClassMethod(self, @selector(sharedInstance)), method_getImplementation(newSharedInstanceMethod));	\
-		[_##__CLASSNAME__##_sharedInstance release];	\
-		_##__CLASSNAME__##_sharedInstance = nil;	\
+		[_##SS_CLASSNAME##_sharedInstance release];	\
+		_##SS_CLASSNAME##_sharedInstance = nil;	\
 	}	\
 }
 
 
-#define CALL_LESSER_SINGLETON_INIT_METHOD_PRE(__CLASSNAME__) \
+#define CALL_LESSER_SINGLETON_INIT_METHOD_PRE(SS_CLASSNAME) \
 	@synchronized(self)	\
 	{	\
-		if(nil == _##__CLASSNAME__##_sharedInstance)	\
+		if(nil == _##SS_CLASSNAME##_sharedInstance)	\
 		{
 
 
-#define CALL_LESSER_SINGLETON_INIT_METHOD_POST(__CLASSNAME__) \
-			if(_##__CLASSNAME__##_sharedInstance)	\
+#define CALL_LESSER_SINGLETON_INIT_METHOD_POST(SS_CLASSNAME) \
+			if(_##SS_CLASSNAME##_sharedInstance)	\
 			{	\
 				Method newSharedInstanceMethod = class_getClassMethod(self, @selector(sharedInstanceNoSynch));	\
 				method_setImplementation(class_getClassMethod(self, @selector(sharedInstance)), method_getImplementation(newSharedInstanceMethod));	\
@@ -348,9 +364,9 @@ static volatile __CLASSNAME__* _##__CLASSNAME__##_sharedInstance = nil;	\
 	}
 
 
-#define CALL_LESSER_SINGLETON_INIT_METHOD(__CLASSNAME__,__INIT_CALL__) \
-	CALL_LESSER_SINGLETON_INIT_METHOD_PRE(__CLASSNAME__); \
-	_##__CLASSNAME__##_sharedInstance = [[self alloc] __INIT_CALL__];	\
-	CALL_LESSER_SINGLETON_INIT_METHOD_POST(__CLASSNAME__)
+#define CALL_LESSER_SINGLETON_INIT_METHOD(SS_CLASSNAME,__INIT_CALL__) \
+	CALL_LESSER_SINGLETON_INIT_METHOD_PRE(SS_CLASSNAME); \
+	_##SS_CLASSNAME##_sharedInstance = [[self alloc] __INIT_CALL__];	\
+	CALL_LESSER_SINGLETON_INIT_METHOD_POST(SS_CLASSNAME)
 
 #endif /* SYNTHESIZE_SINGLETON_FOR_CLASS */

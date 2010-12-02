@@ -37,19 +37,16 @@
  * Provides iOS-specific audio support, including audio file loading, session management and
  * interrupt handling.
  *
- * <strong>Note:</strong> OpenAL is only able to play PCM (uncompressed) 8 bit or 16 bit (little
- * endian) audio files.  As such, the buffer loading routines will attempt to convert incompatible
- * sound files.  If you want to avoid the conversion cost, you can pre-convert your audio files
- * prior to adding them to your project. The <strong>afconvert</strong> command line tool is able
- * to do this conversion.
+ * <strong>Note:</strong> OpenAL is only able to play PCM (uncompressed) 16 bit (little endian)
+ * audio files (technically, it's supposed to support 8 bit as well, but this doesn't seem to
+ * work). As such, the buffer loading routines will attempt to convert incompatible sound files.
+ * If you want to avoid the conversion cost, you can pre-convert your audio files prior to
+ * adding them to your project. The <strong>afconvert</strong> command line tool is able
+ * to do this conversion. <br>
  *
  * Example: convert from a wav file to iOS compatible, 16 bits per channel, 44100KHz:
  *
  * \code afconvert -f caff -d LEI16@@44100 sourcefile.wav destfile.caf \endcode
- *
- * Example: convert from a wav file to iOS compatible, 8 bits per channel, 22050KHz:
- *
- * \code afconvert -f caff -d I8@@22050 sourcefile.wav destfile.caf \endcode
  *
  * Note: Stereo samples don't support positional audio, so if you plan on using positioning
  *       be sure to specify reduceToMono when loading the sample.
@@ -82,10 +79,10 @@
 
 #pragma mark Properties
 
-/** Override for the audio session category selection.
- * If set to something other than 0, the "allowIpod", "useHardwareIfAvailable",
- * and "honorSilentSwitch" settings will be ignored, and the specified audio session
- * category will be used instead. <br>
+/** The current audio session category.
+ * If this value is explicitly set, the other session properties "allowIpod",
+ * "useHardwareIfAvailable", "honorSilentSwitch", and "ipodDucking" may be modified
+ * to remain compatible with the category.
  *
  * @see AVAudioSessionCategory
  *
@@ -208,7 +205,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALAudioSupport);
  * See the class description note regarding sound file formats.
  *
  * @param filePath The path of the file containing the audio data.
- * @param reduceToMono If true, reduce the sample to mono.
+ * @param reduceToMono If true, reduce the sample to mono
+ *        (stereo samples don't support panning or positional audio).
  * @return An ALBuffer containing the audio data.
  */
 - (ALBuffer*) bufferFromFile:(NSString*) filePath reduceToMono:(bool) reduceToMono;
@@ -229,7 +227,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALAudioSupport);
  * See the class description note regarding sound file formats.
  *
  * @param url The URL of the file containing the audio data.
- * @param reduceToMono If true, reduce the sample to mono.
+ * @param reduceToMono If true, reduce the sample to mono
+ *        (stereo samples don't support panning or positional audio).
  * @return An ALBuffer containing the audio data.
  */
 - (ALBuffer*) bufferFromUrl:(NSURL*) url reduceToMono:(bool) reduceToMono;
@@ -260,7 +259,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALAudioSupport);
  * See the class description note regarding sound file formats.
  *
  * @param filePath The path of the file containing the audio data.
- * @param reduceToMono If true, reduce the sample to mono.
+ * @param reduceToMono If true, reduce the sample to mono
+ *        (stereo samples don't support panning or positional audio).
  * @param target The target to call when the buffer is loaded.
  * @param selector The selector to invoke when the buffer is loaded.
  * @return The fully qualified URL of the path.
@@ -296,7 +296,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALAudioSupport);
  * See the class description note regarding sound file formats.
  *
  * @param url The URL of the file containing the audio data.
- * @param reduceToMono If true, reduce the sample to mono.
+ * @param reduceToMono If true, reduce the sample to mono
+ *        (stereo samples don't support panning or positional audio).
  * @param target The target to call when the buffer is loaded.
  * @param selector The selector to invoke when the buffer is loaded.
  * @return The fully qualified URL of the path.

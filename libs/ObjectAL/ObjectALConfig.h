@@ -67,6 +67,8 @@
  * Note: The NSTimer documentation states that a timer will typically have a resolution
  * of around 0.05 to 0.1, though in practice smaller values seem to work fine. <br>
  *
+ * Note: This setting only has effect if OBJECTAL_CFG_USE_COCOS2D_ACTIONS is 0. <br>
+ *
  * Recommended setting: 1.0/30
  */
 #ifndef kActionStepInterval
@@ -108,13 +110,15 @@
 
 /** The CLANG/LLVM 1.5 compiler that ships with XCode 3.2.4 fails when compiling a method
  * which takes a struct and passes that struct or one of its components to a C function
- * from within a @synchronized(self) context when compiling for the Device in Debug
+ * from within a @@synchronized(self) context when compiling for the Device in Debug
  * configuration (Apple issue #8303765). <br>
  *
  * If this option is enabled, all synchronization will be disabled for methods which fall
  * under this category. <br>
  *
  * Note: This only takes effect if the CLANG compiler is used (__clang__ == 1) <br>
+ *
+ * Note: With XCode 3.2.5, this bug seems to be fixed. <br>
  *
  * Recommended setting: 1 for XCode 3.2.4, 0 for others.
  */

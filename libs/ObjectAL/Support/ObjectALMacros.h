@@ -27,7 +27,7 @@
 #import "ObjectALConfig.h"
 
 
-
+/* Don't clobber any existing defines by the same name */
 #ifdef LEVEL_NONE
 #define OAL_BAK_LEVEL_NONE LEVEL_NONE
 #undef LEVEL_NONE
@@ -213,7 +213,7 @@ if(noErr != (ERROR_CODE)) \
 
 
 
-
+/* Restore any backed up defines */
 #undef LEVEL_ERROR
 #ifdef OAL_BAK_LEVEL_ERROR
 #define LEVEL_ERROR OAL_BAK_LEVEL_ERROR

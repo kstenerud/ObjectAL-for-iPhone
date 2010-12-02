@@ -12,6 +12,16 @@
 #import "ObjectAL.h"
 
 
+#pragma mark Private Methods
+
+@interface TwoSourceDemo (Private)
+
+/** Exit the demo. */
+- (void) onExitPressed;
+
+@end
+
+
 #pragma mark TwoSourceDemo
 
 @implementation TwoSourceDemo

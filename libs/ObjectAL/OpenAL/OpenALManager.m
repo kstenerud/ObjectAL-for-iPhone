@@ -34,11 +34,31 @@
 
 ADD_INTERRUPT_API(ALDevice);
 
+SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OpenALManager);
+
+
+#pragma mark -
+#pragma mark Private Methods
+
+/**
+ * (INTERNAL USE) Private methods for OpenALManager.
+ */
+@interface OpenALManager (Private)
+
+/** (INTERNAL USE) Called by SuspendLock to suspend this object.
+ */
+- (void) onSuspend;
+
+/** (INTERNAL USE) Called by SuspendLock to unsuspend this object.
+ */
+- (void) onUnsuspend;
+
+@end
+
 
 #pragma mark OpenALManager
 
 @implementation OpenALManager
-
 
 #pragma mark Object Management
 

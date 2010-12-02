@@ -24,7 +24,26 @@
 
 @interface ChannelsDemo (Private)
 
+/** Build the user interface. */
 - (void) buildUI;
+
+/** Exit the demo. */
+- (void) onExitPressed;
+
+/** Play an effect on the 1 source channel. */
+- (void) on1SourceChannel:(LampButton*) button;
+
+/** Play an effect on the 2 source channel. */
+- (void) on2SourceChannel:(LampButton*) button;
+
+/** Play an effect on the 3 source channel. */
+- (void) on3SourceChannel:(LampButton*) button;
+
+/** Play an effect on the 8 source channel. */
+- (void) on8SourceChannel:(LampButton*) button;
+
+/** Turn off a source. */
+- (void) onTurnOff:(LampButton*) button source:(ALChannelSource*) source;
 
 @end
 
@@ -129,8 +148,8 @@
 
 - (void) onEnterTransitionDidFinish
 {
-	// Initialize the OpenAL device and context here so that it doesn't happen
-	// prematurely.
+	// Initialize the OpenAL device and context here instead of in init so that
+	// it doesn't happen prematurely.
 	
 	// We'll let OALSimpleAudio deal with the device and context.
 	// Since we're not going to use it for playing effects, don't give it any sources.

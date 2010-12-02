@@ -12,6 +12,16 @@
 #import "ObjectAL.h"
 
 
+#pragma mark Private Methods
+
+@interface SingleSourceDemo (Private)
+
+/** Exit the demo. */
+- (void) onExitPressed;
+
+@end
+
+
 #pragma mark SingleSourceDemo
 
 @implementation SingleSourceDemo

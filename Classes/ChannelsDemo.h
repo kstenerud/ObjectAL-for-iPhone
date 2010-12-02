@@ -14,7 +14,7 @@
  * A channel reserves audio sources and by default does not allow playback interruption.
  * In creating a channel, you can ensure exclusive access to that channel's sources, which is
  * useful when you absolutely must have a source (or multiple sources) available that won't
- * get taken by another sound playing.
+ * get interrupted and taken by another sound play request.
  *
  * The iPhone can handle up to 32 sources.  You can slice them up any way you like.
  *

@@ -43,8 +43,8 @@
  * For sound effects, it initializes OpenAL with the default ALDevice,
  * an ALContext, and an ALChannelSource consisting of all 32 interruptible
  * ALSource objects (the maximum currently allowed for iOS).
- * If you want to create your own sources as well, initialize this object using
- * [OALSimpleAudio sharedInstanceWithSources:], specifying less than 32 sources.
+ * If you want to create your own sources as well, change the reservedSources
+ * property.
  *
  * For background audio, it creates a single OALAudioTrack, which will not reserve
  * resources unless used. (you can create more OALAudioTrack objects for your own
@@ -53,8 +53,8 @@
  * This singleton also provides access to the more common configuration options
  * available in OALAudioSupport.
  *
- * All commands are delegated either to the ALChannelSource (for sound effects),
- * or to the OALAudioTrack (for BG music).
+ * All audio playback commands are delegated either to the ALChannelSource
+ * (for sound effects), or to the OALAudioTrack (for BG music).
  */
 @interface OALSimpleAudio : NSObject
 {
@@ -68,7 +68,10 @@
 	/** Cache for preloaded sound samples. */
 	NSMutableDictionary* preloadCache;
 #if NS_BLOCKS_AVAILABLE && OBJECTAL_USE_BLOCKS
-	/** Queue for preloading and async operations that use blocks. This ensures all operations are safe because they are guaranteed to run in order. */
+	/** Queue for preloading and async operations that use blocks.
+	 * This ensures all operations are safe because they are guaranteed to run
+	 * in order.
+	 */
 	dispatch_queue_t oal_dispatch_queue;
 #endif
 	/** keeping track of how many effects remain to be loaded */
@@ -160,8 +163,8 @@
 @property(readwrite,assign) bool muted;
 
 /** Enables/disables the preload cache.
- * If the preload cache is disabled, effects preloading will do nothing (BG preloading will still
- * work).
+ * If the preload cache is disabled, effects preloading will do nothing
+ * (BG preloading will still work).
  */
 @property(readwrite,assign) bool preloadCacheEnabled;
 
@@ -311,7 +314,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALSimpleAudio);
 /** Preload and cache a sound effect for later playback.
  *
  * @param filePath The path containing the sound data.
- * @param reduceToMono If true, reduce the sample to mono.
+ * @param reduceToMono If true, reduce the sample to mono
+ *        (stereo samples don't support panning or positional audio).
  */
 - (ALBuffer*) preloadEffect:(NSString*) filePath reduceToMono:(bool) reduceToMono;
 
@@ -320,7 +324,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALSimpleAudio);
 /** Asynchronous preload and cache sound effect for later playback.
  *
  * @param filePath an NSString with the path containing the sound data.
- * @param reduceToMono If true, reduce the sample to mono.
+ * @param reduceToMono If true, reduce the sample to mono
+ *        (stereo samples don't support panning or positional audio).
  * @param completionBlock Executed when loading is complete.
  */
 - (BOOL) preloadEffect:(NSString*) filePath
@@ -330,7 +335,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALSimpleAudio);
 /** Asynchronous preload and cache multiple sound effects for later playback.
  *
  * @param filePaths An NSArray of NSStrings with the paths containing the sound data.
- * @param reduceToMono If true, reduce the samples to mono.
+ * @param reduceToMono If true, reduce the samples to mono
+ *        (stereo samples don't support panning or positional audio).
  * @param progressBlock Executed regularly while file loading is in progress.
  */
 - (void) preloadEffects:(NSArray*) filePaths

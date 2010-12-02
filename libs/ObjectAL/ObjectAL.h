@@ -145,31 +145,37 @@
  OpenAL Documentation at Creative Labs</a>. <br>
  In particular, read up on the various property values for sources and listeners (such as Doppler
  Shift) in the <strong>OpenAL Programmer's Guide</strong>, and distance models in section 3 of the
- <strong>OpenAL Specification</strong>. <br>
- Also be sure to read the
- <a href="http://developer.apple.com/library/ios/#technotes/tn2008/tn2199.html">
- OpenAL FAQ from Apple</a>.
+ <strong>OpenAL Specification</strong>.
  
  
  <br> <br>
  \section audio_formats_sec Audio Formats
- According to the
- <a href="http://developer.apple.com/library/ios/#technotes/tn2008/tn2199.html">
- OpenAL FAQ from Apple</a>:
- - To use OpenAL for playback, your application typically reads audio data from disk using Extended
-   Audio File Services. In this process you convert the on-disk format, as needed, into one of the
-   OpenAL playback formats (OALAudioSupport and OALSimpleAudio do this for you).
 
- - The on-disk audio format that your application reads must be PCM (uncompressed) or a compressed
-   format that does not use hardware decompression, such as IMA-4.
- 
- - The supported playback formats for OpenAL in iPhone OS are identical to those for OpenAL in Mac
-   OS X. You can play the following linear PCM variants: mono 8-bit, mono 16-bit, stereo 8-bit, and
-   stereo 16-bit.
- 
- OALAudioTrack supports all hardware and software decoded formats as
+ The audio formats officially supported by Apple are defined
  <a href="http://developer.apple.com/library/ios/#documentation/AudioVideo/Conceptual/MultimediaPG/UsingAudio/UsingAudio.html">
- specified by Apple here</a>.
+ defined here</a>.
+ <br><br>
+ 
+ \subsection audio_formats_avaudioplayer OALAudioTrack
+
+ OALAudioTrack supports all hardware and software decoded formats.
+ <br><br>
+
+ \subsection audio_formats_openal OpenAL
+
+ OpenAL officially supports 8 or 16 bit PCM data only. However, Apple's implementation
+ only seems to work with 16 bit data. <br>
+ 
+ The effects preloading/playing methods in OALSimpleAudio and the buffer loading methods
+ in OALAudioSupport can load any audio file that can be software decoded.  However, there
+ is a cost incurred by converting to a native OpenAL format.  To avoid this, convert all of
+ your samples to a CAFF container with 16-bit little endian integer PCM format and the
+ same sample rate as "mixerOutputFrequency" in OpenALManager (by default, 44100Hz). <br>
+ 
+ This can be achieved using Apple's "afconvert" command line tool:
+
+ \code afconvert -f caff -d LEI16@44100 sourcefile.wav destfile.caf \endcode
+
 
  
  <br> <br>
@@ -506,8 +512,8 @@
  \subsection mpmovieplayercontroller_ios3 MPMoviePlayerController on iOS 3.x
  
  In iOS 3.x, MPMoviePlayerController doesn't play nice, and takes over the audio session when
- you play a video.  In order to mitigate this, you must manually interrupt OpenAL, play the video,
- and then manually end the interrupt once video playback finishes:
+ you play a video.  In order to mitigate this, you must manually suspend OpenAL, play the video,
+ and then manually unsuspend once video playback finishes:
  
  \code
 - (void) playVideo
@@ -519,8 +525,8 @@
 	else
 	{
 		// No "view" method means we are < 4.0
-		// Manually interrupt so iOS 3.x doesn't clobber our session!
-		[OpenALManager sharedInstance].interrupted = YES;
+		// Manually suspend so iOS 3.x doesn't clobber our session!
+		[OpenALManager sharedInstance].suspended = YES;
 	}
 
 	[myMoviePlayer play];
@@ -544,8 +550,8 @@
 	else
 	{
 		// No "view" method means we are < 4.0
-		// Manually end the interrupt
-		[OpenALManager sharedInstance].interrupted = NO;
+		// Manually unsuspend
+		[OpenALManager sharedInstance].suspended = NO;
 	}
 }
  \endcode
@@ -553,10 +559,10 @@
  \subsection mpmusicplayercontroller_ios4_0 MPMusicPlayerController on iOS 4.0
 
  On iOS 4.0, MPMusicPlayerController sends an interrupt when it begins playback, but doesn't send
- a corresponding "end interrupt" when it ends.  To work around this, make an "end interrupt" call
+ a corresponding "end interrupt" when it ends.  To work around this, force an "end interrupt"
  after starting playback:
  \code
-	[OALAudioSupport sharedInstance].interrupted = NO;
+	[[OALAudioSupport sharedInstance] forceEndInterruption:NO];
  \endcode
 
  

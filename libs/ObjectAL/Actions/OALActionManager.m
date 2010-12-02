@@ -28,9 +28,20 @@
 #import "mach_timing.h"
 #import "ObjectALMacros.h"
 #import "NSMutableArray+WeakReferences.h"
+#import "IOSVersion.h"
+#import <UIKit/UIKit.h>
 
 #if !OBJECTAL_USE_COCOS2D_ACTIONS
 
+SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALActionManager);
+
+@interface OALActionManager (Private)
+
+/** Resets the time delta in cases where proper time delta calculations become impossible.
+ */
+- (void) doResetTimeDelta:(NSNotification*) notification;
+
+@end
 
 #pragma mark OALActionManager
 
@@ -49,17 +60,39 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALActionManager);
 		targetActions = [[NSMutableArray arrayWithCapacity:50] retain];
 		actionsToAdd = [[NSMutableArray arrayWithCapacity:100] retain];
 		actionsToRemove = [[NSMutableArray arrayWithCapacity:100] retain];
+		
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(doResetTimeDelta:)
+													 name:UIApplicationSignificantTimeChangeNotification
+												   object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(doResetTimeDelta:)
+													 name:UIApplicationDidBecomeActiveNotification
+												   object:nil];
+		if([IOSVersion sharedInstance].version >= 4.0)
+		{
+			[[NSNotificationCenter defaultCenter] addObserver:self
+													 selector:@selector(doResetTimeDelta:)
+														 name:@"UIApplicationWillEnterForegroundNotification"
+													   object:nil];
+		}
 	}
 	return self;
 }
 
 - (void) dealloc
 {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[targets release];
 	[targetActions release];
 	[actionsToAdd release];
 	[actionsToRemove release];
 	[super dealloc];
+}
+
+- (void) doResetTimeDelta:(NSNotification*) notification
+{
+	lastTimestamp = 0;
 }
 
 
@@ -137,14 +170,23 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALActionManager);
 		}
 		[actionsToRemove removeAllObjects];
 		
-		// Update all remaining actions, if any
+		// Get the time elapsed and update timestamp.
+		// If there was a break in timing (lastTimestamp == 0), assume 0 time has elapsed.
 		uint64_t currentTime = mach_absolute_time();
+		float elapsedTime = 0;
+		if(lastTimestamp > 0)
+		{
+			elapsedTime = (float)mach_absolute_difference_seconds(currentTime, lastTimestamp);
+		}
+		lastTimestamp = currentTime;
+
+		// Update all remaining actions, if any
 		for(NSMutableArray* actions in targetActions)
 		{
 			for(OALAction* action in actions)
 			{
-				float elapsedTime = (float)mach_absolute_difference_seconds(currentTime, action.startTime);
-				float proportionComplete = elapsedTime / action.duration;
+				action.elapsed += elapsedTime;
+				float proportionComplete = action.elapsed / action.duration;
 				if(proportionComplete < 1.0f)
 				{
 					[action updateCompletion:proportionComplete];
@@ -176,6 +218,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALActionManager);
 													   selector:@selector(step:)
 													   userInfo:nil
 														repeats:YES];
+
+			// Reset timestamp since we have been off for awhile.
+			lastTimestamp = 0;
 		}
 	}
 }

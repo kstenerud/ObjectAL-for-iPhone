@@ -20,7 +20,14 @@
 
 @interface HardwareDemo (Private)
 
+/** Build the user interface. */
 - (void) buildUI;
+
+/** Exit the demo. */
+- (void) onExitPressed;
+
+/** Update method for the VU meters. */
+- (void) vuStep;
 
 @end
 

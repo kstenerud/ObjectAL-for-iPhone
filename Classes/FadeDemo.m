@@ -18,7 +18,35 @@
 
 @interface FadeDemo (Private)
 
+/** Build the user interface. */
 - (void) buildUI;
+
+/** Start/stop the background track. */
+- (void) onBackgroundPlayStop:(LampButton*) button;
+
+/** Fade out the background track. */
+- (void) onBackgroundFadeOut:(LampButton*) button;
+
+/** Fade in the background track. */
+- (void) onBackgroundFadeIn:(LampButton*) button;
+
+/** Called when the fade completes. */
+- (void) onBackgroundFadeComplete:(id) sender;
+
+/** Start/stop the OpenAL source. */
+- (void) onObjectALPlayStop:(LampButton*) button;
+
+/** Fade the source out. */
+- (void) onObjectALFadeOut:(LampButton*) button;
+
+/** Fade the source in. */
+- (void) onObjectALFadeIn:(LampButton*) button;
+
+/** Called when the fade completes. */
+- (void) onObjectALFadeComplete:(id) sender;
+
+/** Exit the demo. */
+- (void) onExitPressed;
 
 @end
 
@@ -149,8 +177,8 @@
 
 - (void) onEnterTransitionDidFinish
 {
-	// Initialize the OpenAL device and context here so that it doesn't happen
-	// prematurely.
+	// Initialize the OpenAL device and context here instead of in init so that
+	// it doesn't happen prematurely.
 	[OALSimpleAudio sharedInstance];
 }
 

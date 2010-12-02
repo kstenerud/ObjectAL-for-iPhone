@@ -116,9 +116,9 @@
  */
 @interface OALAction : NSObject
 {
-	uint64_t startTime;
 	id target;
 	float duration;
+	float elapsed;
 	bool running;
 	
 	/** If TRUE, this action is running via OALActionManager. */
@@ -131,11 +131,11 @@
 /** The target to perform the action on.  WEAK REFERENCE. */
 @property(readonly,nonatomic) id target;
 
-/** The time that the action was started, as per mach_absolute_time() */
-@property(readonly,nonatomic) uint64_t startTime;
-
 /** The duration of the action, in seconds. */
 @property(readonly,nonatomic) float duration;
+
+/** The amount of time that has elapsed for this action, in seconds. */
+@property(readwrite,nonatomic) float elapsed;
 
 /** If true, the action is currently running. */
 @property(readonly,nonatomic) bool running;

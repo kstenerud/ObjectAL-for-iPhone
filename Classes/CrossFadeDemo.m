@@ -17,7 +17,14 @@
 
 @interface CrossFadeDemo (Private)
 
+/** Build the user interface. */
 - (void) buildUI;
+
+/** Exit the demo. */
+- (void) onExitPressed;
+
+/** Change the crossfade value. */
+- (void) onCrossfadeChanged:(Slider*) slider;
 
 @end
 
@@ -90,8 +97,8 @@
 
 - (void) onEnterTransitionDidFinish
 {
-	// Initialize the OpenAL device and context here so that it doesn't happen
-	// prematurely.
+	// Initialize the OpenAL device and context here instead of in init so that
+	// it doesn't happen prematurely.
 	
 	// We'll let OALSimpleAudio deal with the device and context.
 	// Since we're not going to use it for playing effects, don't give it any sources.

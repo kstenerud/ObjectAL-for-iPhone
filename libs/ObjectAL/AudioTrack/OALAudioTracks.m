@@ -33,6 +33,8 @@
 
 ADD_INTERRUPT_API(OALAudioTrack);
 
+SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALAudioTracks);
+
 
 #pragma mark OALAudioTracks
 

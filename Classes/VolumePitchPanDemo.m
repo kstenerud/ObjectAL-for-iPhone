@@ -18,7 +18,20 @@
 
 @interface VolumePitchPanDemo (Private)
 
+/** Build the user interface. */
 - (void) buildUI;
+
+/** Exit the demo. */
+- (void) onExitPressed;
+
+/** Change the volume. */
+- (void) onVolumeChanged:(Slider*) slider;
+
+/** Change the pitch. */
+- (void) onPitchChanged:(Slider*) slider;
+
+/** Change the pan. */
+- (void) onPanChanged:(Slider*) slider;
 
 @end
 

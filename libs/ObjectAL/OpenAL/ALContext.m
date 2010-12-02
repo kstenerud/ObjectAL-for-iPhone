@@ -34,6 +34,26 @@
 
 ADD_INTERRUPT_API(ALSource);
 
+
+#pragma mark -
+#pragma mark Private Methods
+
+/**
+ * (INTERNAL USE) Private methods for ALContext.
+ */
+@interface ALContext (Private)
+
+/** (INTERNAL USE) Called by SuspendLock to suspend this object.
+ */
+- (void) onSuspend;
+
+/** (INTERNAL USE) Called by SuspendLock to unsuspend this object.
+ */
+- (void) onUnsuspend;
+
+@end
+
+
 @implementation ALContext
 
 #pragma mark Object Management

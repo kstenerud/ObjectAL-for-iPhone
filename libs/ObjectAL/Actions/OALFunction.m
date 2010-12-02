@@ -29,6 +29,8 @@
 
 #pragma mark OALLinearFunction
 
+SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALLinearFunction);
+
 @implementation OALLinearFunction
 
 
@@ -55,6 +57,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALLinearFunction);
 
 #pragma mark -
 #pragma mark OALSCurveFunction
+
+SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALSCurveFunction);
 
 @implementation OALSCurveFunction
 
@@ -84,6 +88,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSCurveFunction);
 #pragma mark -
 #pragma mark OALExponentialFunction
 
+SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALExponentialFunction);
+
 @implementation OALExponentialFunction
 
 
@@ -111,6 +117,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALExponentialFunction);
 
 #pragma mark -
 #pragma mark OALLogarithmicFunction
+
+SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALLogarithmicFunction);
 
 @implementation OALLogarithmicFunction
 

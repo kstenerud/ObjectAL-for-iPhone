@@ -29,6 +29,29 @@
 #import "OpenALManager.h"
 
 
+#pragma mark -
+#pragma mark Private Methods
+
+/**
+ * (INTERNAL USE) Private methods for ALChannelSource.
+ */
+@interface ALChannelSource (Private)
+
+/** (INTERNAL USE) Called by the action system when a fade completes.
+ */
+- (void) onFadeComplete:(id<ALSoundSource>) source;
+
+/** (INTERNAL USE) Called by the action system when a pan completes.
+ */
+- (void) onPanComplete:(id<ALSoundSource>) source;
+
+/** (INTERNAL USE) Called by the action system when a pitch change completes.
+ */
+- (void) onPitchComplete:(id<ALSoundSource>) source;
+
+@end
+
+
 @implementation ALChannelSource
 
 #pragma mark Object Management

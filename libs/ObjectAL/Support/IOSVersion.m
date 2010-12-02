@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 
 
+SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(IOSVersion);
+
+
 @implementation IOSVersion
 
 SYNTHESIZE_SINGLETON_FOR_CLASS(IOSVersion);

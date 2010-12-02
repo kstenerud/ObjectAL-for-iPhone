@@ -22,10 +22,26 @@
 
 @interface PlanetKillerDemo (Private)
 
+/** Point the ship. */
 - (void) pointTo:(float) angleInRadians;
+
+/** Shoot a bullet. */
 - (void) shoot:(float) angleInRadians;
+
+/** Remove a planet from the scene. */
 - (void) removePlanet:(CCNode*) planet;
+
+/** Remove a bullet from the scene. */
 - (void) removeBullet:(CCNode*) bullet;
+
+/** Game loop update method. */
+- (void) onGameUpdate;
+
+/** Add a planet to the scene. */
+- (void) onAddPlanet;
+
+/** Exit the demo. */
+- (void) onExitPressed;
 
 @end
 

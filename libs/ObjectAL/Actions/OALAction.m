@@ -57,8 +57,8 @@
 #pragma mark Properties
 
 @synthesize target;
-@synthesize startTime;
 @synthesize duration;
+@synthesize elapsed;
 @synthesize running;
 
 
@@ -93,7 +93,7 @@
 - (void) startAction
 {
 	running = YES;
-	startTime = mach_absolute_time();
+	elapsed = 0;
 }
 
 - (void) updateCompletion:(float) proportionComplete

@@ -33,6 +33,25 @@
 #import "OALUtilityActions.h"
 
 
+#pragma mark -
+#pragma mark Private Methods
+
+/**
+ * (INTERNAL USE) Private methods for ALSource.
+ */
+@interface ALSource (Private)
+
+/** (INTERNAL USE) Called by SuspendLock to suspend this object.
+ */
+- (void) onSuspend;
+
+/** (INTERNAL USE) Called by SuspendLock to unsuspend this object.
+ */
+- (void) onUnsuspend;
+
+@end
+
+
 @implementation ALSource
 
 #pragma mark Object Management

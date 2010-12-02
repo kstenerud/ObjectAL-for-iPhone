@@ -196,7 +196,7 @@
 #pragma mark Private Methods
 
 /**
- * (INTERNAL USE) Private interface to AudioTrack.
+ * (INTERNAL USE) Private interface to OALAudioTrack.
  */
 @interface OALAudioTrack (Private)
 
@@ -222,6 +222,14 @@
 #define SIMULATOR_BUG_WORKAROUND_END_PLAYBACK()
 
 #endif /* TARGET_IPHONE_SIMULATOR && OBJECTAL_CFG_SIMULATOR_BUG_WORKAROUND */
+
+/** (INTERNAL USE) Called by SuspendLock to suspend this object.
+ */
+- (void) onSuspend;
+
+/** (INTERNAL USE) Called by SuspendLock to unsuspend this object.
+ */
+- (void) onUnsuspend;
 
 @end
 

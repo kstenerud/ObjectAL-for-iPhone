@@ -55,6 +55,9 @@
 	
 	/** The timer which we use to update the actions. */
 	NSTimer* stepTimer;
+	
+	/** The last time that was recorded. */
+	uint64_t lastTimestamp;
 }
 
 

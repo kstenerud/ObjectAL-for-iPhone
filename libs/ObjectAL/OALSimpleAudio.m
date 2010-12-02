@@ -35,6 +35,8 @@
 #pragma mark -
 #pragma mark Private Methods
 
+SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALSimpleAudio);
+
 /**
  * (INTERNAL USE) Private interface to OALSimpleAudio.
  */
@@ -43,7 +45,8 @@
 /** (INTERNAL USE) Preload a sound effect and return the preloaded buffer.
  *
  * @param filePath The path containing the sound data.
- * @param reduceToMono If true, reduce the sample to mono.
+ * @param reduceToMono If true, reduce the sample to mono
+ *        (stereo samples don't support panning or positional audio).
  * @return The preloaded buffer.
  */
 - (ALBuffer*) internalPreloadEffect:(NSString*) filePath reduceToMono:(bool) reduceToMono;

@@ -19,8 +19,20 @@
 
 @interface AudioTrackDemo (Private)
 
+/** Add and register an audio track + file. */
 - (void) addTrack:(NSString*) filename;
+
+/** Build the user interface. */
 - (void) buildUI;
+
+/** Exit the demo. */
+- (void) onExitPressed;
+
+/** Play or stop a track. */
+- (void) onPlayStop:(LampButton*) button;
+
+/** Change the playback volume of a track. */
+- (void) onChangeVolume:(Slider*) slider;
 
 @end
 
