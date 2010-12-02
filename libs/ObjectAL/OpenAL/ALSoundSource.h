@@ -155,7 +155,7 @@
  * @param gain The gain to fade to.
  * @param duration The duration of the fade operation in seconds.
  * @param target The target to notify when the fade completes (can be nil).
- * @param selector The selector to call when the fade completes.  The selector must accept
+ * @param selector The selector to call when the fade completes. The selector must accept
  * a single parameter, which will be the object that performed the fade.
  */
 - (void) fadeTo:(float) gain
@@ -172,7 +172,7 @@
  * @param pan The value to pan to.
  * @param duration The duration of the pan operation in seconds.
  * @param target The target to notify when the pan completes (can be nil).
- * @param selector The selector to call when the pan completes.  The selector must accept
+ * @param selector The selector to call when the pan completes. The selector must accept
  * a single parameter, which will be the object that performed the pan.
  */
 - (void) panTo:(float) pan
@@ -189,7 +189,7 @@
  * @param pitch The value to change pitch to.
  * @param duration The duration of the pitch operation in seconds.
  * @param target The target to notify when the pitch change completes (can be nil).
- * @param selector The selector to call when the pitch change completes.  The selector
+ * @param selector The selector to call when the pitch change completes. The selector
  * must accept a single parameter, which will be the object that performed the pitch change.
  */
 - (void) pitchTo:(float) pitch

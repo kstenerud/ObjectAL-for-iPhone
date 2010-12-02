@@ -94,9 +94,9 @@
 #pragma mark -
 #pragma mark General Logging
 
-/** Base log call.  This is called by other logging macros.
+/** Base log call. This is called by other logging macros.
  *
- * @param FMT_STRING The format string to use.  Must contain %s for the context and %@ for the message.
+ * @param FMT_STRING The format string to use. Must contain %s for the context and %@ for the message.
  * @param CONTEXT The calling context, as a C string (typically __PRETTY_FUNCTION__).
  * @param FMT Message with NSLog() style formatting.
  * @param ... Arguments

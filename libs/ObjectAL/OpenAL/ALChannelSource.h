@@ -112,7 +112,7 @@
 /** This source's owning context. */
 @property(readonly) ALContext* context;
 
-/** All sources being used by this channel.  Do not modify! */
+/** All sources being used by this channel. Do not modify! */
 @property(readonly) ALSoundSourcePool* sourcePool;
 
 /** The number of sources reserved by this channel. */

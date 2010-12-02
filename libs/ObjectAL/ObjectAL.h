@@ -129,12 +129,12 @@
  - ALListener represents the listener of sounds originating on its context (one listener per
    context). It has position, orientation, and velocity.
  
- - ALSource is a sound emitting source that plays sound data from an ALBuffer.  It has position,
+ - ALSource is a sound emitting source that plays sound data from an ALBuffer. It has position,
    direction, velocity, as well as other properties which determine how the sound is emitted.
  
  - ALChannelSource allows you to reserve a certain number of sources for special purposes.
  
- - ALBuffer is simply a container for sound data.  Only linear PCM is supported directly, but
+ - ALBuffer is simply a container for sound data. Only linear PCM is supported directly, but
    OALAudioSupport load methods, and OALSimpleAudio effect preload and play methods, will
    automatically convert any formats that don't require hardware decoding (though conversion
    results in a longer loading time).
@@ -151,24 +151,24 @@
  <br> <br>
  \section audio_formats_sec Audio Formats
 
- The audio formats officially supported by Apple are defined
+ The audio formats officially supported by Apple are
  <a href="http://developer.apple.com/library/ios/#documentation/AudioVideo/Conceptual/MultimediaPG/UsingAudio/UsingAudio.html">
  defined here</a>.
  <br><br>
  
- \subsection audio_formats_avaudioplayer OALAudioTrack
+ \subsection audio_formats_avaudioplayer OALAudioTrack Supported Formats
 
  OALAudioTrack supports all hardware and software decoded formats.
  <br><br>
 
- \subsection audio_formats_openal OpenAL
+ \subsection audio_formats_openal OpenAL Supported Formats
 
  OpenAL officially supports 8 or 16 bit PCM data only. However, Apple's implementation
  only seems to work with 16 bit data. <br>
  
  The effects preloading/playing methods in OALSimpleAudio and the buffer loading methods
- in OALAudioSupport can load any audio file that can be software decoded.  However, there
- is a cost incurred by converting to a native OpenAL format.  To avoid this, convert all of
+ in OALAudioSupport can load any audio file that can be software decoded. However, there
+ is a cost incurred by converting to a native OpenAL format. To avoid this, convert all of
  your samples to a CAFF container with 16-bit little endian integer PCM format and the
  same sample rate as "mixerOutputFrequency" in OpenALManager (by default, 44100Hz). <br>
  
@@ -185,7 +185,7 @@
  To add ObjectAL to your project, do the following:
 
  <ol>
-	<li>Copy libs/ObjectAL from this project into your project.  You can simply drag it into the
+	<li>Copy libs/ObjectAL from this project into your project. You can simply drag it into the
 		"Groups & Files" section in xcode if you like (be sure to select "Copy items into
 		destination group's folder"). <br/>
 		Alternatively, you can build ObjectAL as a static library (as it's configured to do in the
@@ -204,8 +204,8 @@
  </ol>
  <br/>
  <strong>Note:</strong> The demos in this project use
- <a href="http://www.cocos2d-iphone.org">Cocos2d</a>, a very nice 2d game engine.  However,
- ObjectAL doesn't require it.  You can just as easily use ObjectAL in your Cocoa app or anything
+ <a href="http://www.cocos2d-iphone.org">Cocos2d</a>, a very nice 2d game engine. However,
+ ObjectAL doesn't require it. You can just as easily use ObjectAL in your Cocoa app or anything
  you wish.
  <br/> <br/>
  <strong>Note #2:</strong> You do NOT have to provide a link to the Apache license from within your
@@ -230,7 +230,7 @@
  \section configuration_sec Compile-Time Configuration
  
  <strong>ObjectALConfig.h</strong> contains configuration defines that will affect at a high level
- how ObjectAL behaves.  Look inside <strong>ObjectALConfig.h</strong> to see what can be
+ how ObjectAL behaves. Look inside <strong>ObjectALConfig.h</strong> to see what can be
  configured, and what each configuration value does. <br>
  The recommended values are fine for most users, but Cocos2D users may want to set
  OBJECTAL_USE_COCOS2D_ACTIONS so that the audio actions (such as fade) use the Cocos2D action manager.
@@ -239,7 +239,7 @@
  <br> <br>
  \section use_iossimpleaudio_sec Using OALSimpleAudio
  
- By far, the easiest component to use is OALSimpleAudio.  You sacrifice some power for
+ By far, the easiest component to use is OALSimpleAudio. You sacrifice some power for
  ease-of-use, but for many projects it is more than sufficient.
  
  Here is a code example:
@@ -341,7 +341,7 @@
  
  The OpenAL objects and OALAudioTrack offer you much more power at the cost
  of complexity.
- Here's the same thing as above, done using ObjectAL and OALAudioTrack directly:
+ Here's the same thing as above, done using OpenAL components and OALAudioTrack:
  
  \code
 // OpenALAudioTrackSample.h
@@ -484,7 +484,7 @@
  \section other_examples_sec Other Examples
  
  The demo scenes in this distribution have been crafted to demonstrate common uses of this library.
- Try them out and go through the code to see how it's done.  I've done my best to keep the code
+ Try them out and go through the code to see how it's done. I've done my best to keep the code
  readable. Really!
  
  The current demos are:
@@ -504,7 +504,7 @@
  <br> <br>
  \section ios_issues_sec iOS Issues that can impede playback
  
- Certain versions of iOS have bugs or quirks, requiring workarounds.  ObjectAL tries to handle
+ Certain versions of iOS have bugs or quirks, requiring workarounds. ObjectAL tries to handle
  most of these automatically, but there are cases that require specific handling by the developer.
  These are:
 
@@ -512,7 +512,7 @@
  \subsection mpmovieplayercontroller_ios3 MPMoviePlayerController on iOS 3.x
  
  In iOS 3.x, MPMoviePlayerController doesn't play nice, and takes over the audio session when
- you play a video.  In order to mitigate this, you must manually suspend OpenAL, play the video,
+ you play a video. In order to mitigate this, you must manually suspend OpenAL, play the video,
  and then manually unsuspend once video playback finishes:
  
  \code
@@ -533,7 +533,7 @@
 	
 	[[NSNotificationCenter defaultCenter] 
 	 addObserver:self
-	 selector:@selector(movieFinishedCallback:)                                                 
+	 selector:@selector(movieFinishedCallback:)
 	 name:MPMoviePlayerPlaybackDidFinishNotification
 	 object:myMoviePlayer];
 }
@@ -559,7 +559,7 @@
  \subsection mpmusicplayercontroller_ios4_0 MPMusicPlayerController on iOS 4.0
 
  On iOS 4.0, MPMusicPlayerController sends an interrupt when it begins playback, but doesn't send
- a corresponding "end interrupt" when it ends.  To work around this, force an "end interrupt"
+ a corresponding "end interrupt" when it ends. To work around this, force an "end interrupt"
  after starting playback:
  \code
 	[[OALAudioSupport sharedInstance] forceEndInterruption:NO];
@@ -571,8 +571,8 @@
  \section simulator_issues_sec Simulator Issues
  
  As you've likely heard time and time again, the simulator is no substitute for the real thing.
- The simulator is buggy.  It can run faster or slower than a real device.  It fails system calls
- that a real device doesn't.  It shows graphics glitches that a real device doesn't.  Sounds stop
+ The simulator is buggy. It can run faster or slower than a real device. It fails system calls
+ that a real device doesn't. It shows graphics glitches that a real device doesn't. Sounds stop
  working, clicks and static, dogs and cats living together, etc, etc.
  When things look wrong, try it on a real device before bugging people.
  
@@ -596,7 +596,7 @@
  <br>
  \subsection simulator_playback Playback Issues
  
- The simulator is notoriously finicky when it comes to audio playback.  Any number of programs
+ The simulator is notoriously finicky when it comes to audio playback. Any number of programs
  you've installed on your mac can cause the simulator to stop playing bg music, or effects, or
  both!
  
@@ -611,19 +611,19 @@
  - Go to System Preferences -> Sound -> Input, and ensure that it is using internal sound devices.
  - Go to System Preferences -> Sound -> Sound Effects, and ensure "Play user interface sound
    effects" is checked.
- - Some codecs may cause problems with sound playback.  Try removing them.
- - Programs that redirect audio can wreak havoc on the simulator.  Try removing them.
+ - Some codecs may cause problems with sound playback. Try removing them.
+ - Programs that redirect audio can wreak havoc on the simulator. Try removing them.
  
  
  <br>
  \subsection simulator_no_sound No OpenAL Sound in Simulator
 
  <strong>Note:</strong> As of XCode 3.2.3, this problem doesn't seem to be surfacing anymore.
- The workaround code is now disabled by default.  You can re-enable it by setting
+ The workaround code is now disabled by default. You can re-enable it by setting
  OBJECTAL_CFG_SIMULATOR_BUG_WORKAROUND to 1 in ObjectALConfig.h.
 
  There's a bug in the simulator that causes OpenAL-based sounds to stop playing in certain cases
- when using AVAudioPlayer (OALAudioTrack).  ObjectAL contains code to work around this issue,
+ when using AVAudioPlayer (OALAudioTrack). ObjectAL contains code to work around this issue,
  but it's not a 100% fix.
  
  
@@ -631,7 +631,7 @@
  \subsection simulator_freezing Simulator Freezups
  
  <strong>Note:</strong> As of XCode 3.2.3, this problem doesn't seem to be surfacing anymore.
- The workaround code is now disabled by default.  You can re-enable it by setting
+ The workaround code is now disabled by default. You can re-enable it by setting
  OBJECTAL_CFG_SIMULATOR_BUG_WORKAROUND to 1 in ObjectALConfig.h.
  
  There's a particularly nasty bug in the simulator's OpenAL and AVAudioPlayer implementation that

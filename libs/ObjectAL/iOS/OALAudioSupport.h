@@ -114,9 +114,9 @@
 /** Determines what to do if no other application is playing audio and allowIpod = YES
  * (NOT SUPPORTED ON THE SIMULATOR). <br>
  *
- * If NO, the application will ALWAYS use software decoding.  The advantage to this is that
+ * If NO, the application will ALWAYS use software decoding. The advantage to this is that
  * the user can background your application and then start audio playing from another
- * application.  If useHardwareIfAvailable = YES, the user won't be able to do this. <br>
+ * application. If useHardwareIfAvailable = YES, the user won't be able to do this. <br>
  *
  * If this is set to YES, the application will use hardware decoding if no other application
  * is currently playing audio. However, no other application will be able to start playing
@@ -310,7 +310,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALAudioSupport);
 
 #pragma mark Utility
 
-/** Force an interrupt end.  This can be useful in cases where a buggy OS
+/** Force an interrupt end. This can be useful in cases where a buggy OS
  * fails to end an interrupt.
  *
  * @param informDelegate If YES, also invoke "endInterruption" on the delegate.

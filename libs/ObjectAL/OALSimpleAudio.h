@@ -36,7 +36,7 @@
 #pragma mark OALSimpleAudio
 
 /**
- * A simpler interface to the ObjectAL sound library.  This singleton can be
+ * A simpler interface to the ObjectAL sound library. This singleton can be
  * used alone for simpler audio needs, or in conjunction with user-created
  * audio objects for more advanced needs (as is done in many of the demos).
  *
@@ -103,9 +103,9 @@
 /** Determines what to do if no other application is playing audio and allowIpod = YES
  * (NOT SUPPORTED ON THE SIMULATOR). <br>
  *
- * If NO, the application will ALWAYS use software decoding.  The advantage to this is that
+ * If NO, the application will ALWAYS use software decoding. The advantage to this is that
  * the user can background your application and then start audio playing from another
- * application.  If useHardwareIfAvailable = YES, the user won't be able to do this. <br>
+ * application. If useHardwareIfAvailable = YES, the user won't be able to do this. <br>
  *
  * If this is set to YES, the application will use hardware decoding if no other application
  * is currently playing audio. However, no other application will be able to start playing
@@ -357,7 +357,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALSimpleAudio);
  */
 - (void) unloadAllEffects;
 
-/** Play a sound effect with volume 1.0, pitch 1.0, pan 0.0, loop NO.  The sound will be loaded
+/** Play a sound effect with volume 1.0, pitch 1.0, pan 0.0, loop NO. The sound will be loaded
  * and cached if it wasn't already.
  *
  * @param filePath The path containing the sound data.
@@ -365,7 +365,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALSimpleAudio);
  */
 - (id<ALSoundSource>) playEffect:(NSString*) filePath;
 
-/** Play a sound effect with volume 1.0, pitch 1.0, pan 0.0.  The sound will be loaded and cached
+/** Play a sound effect with volume 1.0, pitch 1.0, pan 0.0. The sound will be loaded and cached
  * if it wasn't already.
  *
  * @param filePath The path containing the sound data.
@@ -374,7 +374,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALSimpleAudio);
  */
 - (id<ALSoundSource>) playEffect:(NSString*) filePath loop:(bool) loop;
 
-/** Play a sound effect.  The sound will be loaded and cached if it wasn't already.
+/** Play a sound effect. The sound will be loaded and cached if it wasn't already.
  *
  * @param filePath The path containing the sound data.
  * @param volume The volume (gain) to play at (0.0 - 1.0).

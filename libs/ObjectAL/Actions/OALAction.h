@@ -209,7 +209,7 @@ COCOS2D_SUBCLASS_HEADER(OALAction, CCIntervalAction);
 	/** The difference between the lowest and highest value. */
 	float delta;
 	id<OALFunction,NSObject> function;
-	/** The reverse function, if any.  When this is not null, the reverse function is used. */
+	/** The reverse function, if any. When this is not null, the reverse function is used. */
 	OALReverseFunction* reverseFunction;
 	/** The basic function that will be applied normally, or reversed. */
 	id<OALFunction,NSObject> realFunction;
@@ -255,7 +255,7 @@ COCOS2D_SUBCLASS_HEADER(OALAction, CCIntervalAction);
  *
  * @param duration The duration of this action in seconds.
  * @param startValue The "starting" value that this action will diverge from when setting the target's
- *                   property.  If NAN, use the current value from the target.
+ *                   property. If NAN, use the current value from the target.
  * @param endValue The "ending" value that this action will converge upon when setting the target's property.
  * @param function The function to apply in this action's update method.
  * @return A new action.
@@ -290,7 +290,7 @@ COCOS2D_SUBCLASS_HEADER(OALAction, CCIntervalAction);
  *
  * @param duration The duration of this action in seconds.
  * @param startValue The "starting" value that this action will diverge from when setting the target's
- *                   property.  If NAN, use the current value from the target.
+ *                   property. If NAN, use the current value from the target.
  * @param endValue The "ending" value that this action will converge upon when setting the target's property.
  * @param function The function to apply in this action's update method.
  * @return The initialized action.

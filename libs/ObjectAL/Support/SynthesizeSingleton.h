@@ -282,7 +282,7 @@ static volatile SS_CLASSNAME* _##SS_CLASSNAME##_sharedInstance = nil;	\
  *
  *
  * Note: CALL_LESSER_SINGLETON_INIT_METHOD() will not work if your
- * init call contains commas.  If you need commas (such as for varargs),
+ * init call contains commas. If you need commas (such as for varargs),
  * or other more complex initialization, use the PRE and POST macros:
  *
  *	+ (void) initSharedInstanceComplex

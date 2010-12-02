@@ -83,7 +83,7 @@
 /** The current distance model.
  * Legal values are AL_NONE, AL_INVERSE_DISTANCE, AL_INVERSE_DISTANCE_CLAMPED,
  * AL_LINEAR_DISTANCE, AL_LINEAR_DISTANCE_CLAMPED, AL_EXPONENT_DISTANCE,
- * and AL_EXPONENT_DISTANCE_CLAMPED.  See the OpenAL spec for detailed information. <br>
+ * and AL_EXPONENT_DISTANCE_CLAMPED. See the OpenAL spec for detailed information. <br>
  * Only valid when this is the current context.
  */
 @property(readwrite,assign) ALenum distanceModel;
@@ -142,7 +142,7 @@
  * @param device The device to open the context on.
  * @param outputFrequency The frequency to mix all sources to before outputting.
  * @param refreshIntervals The number of passes per second used to mix the audio sources.
- *        For games this can be 5-15.  For audio intensive apps, it should be higher.
+ *        For games this can be 5-15. For audio intensive apps, it should be higher.
  * @param synchronousContext If true, this context runs on the main thread and depends on you
  *        calling alcUpdateContext (best to leave this FALSE unless you know what you're doing).
  * @param monoSources A hint indicating how many sources should support mono.
@@ -162,7 +162,7 @@
  * @param device The device to open the context on.
  * @param outputFrequency The frequency to mix all sources to before outputting.
  * @param refreshIntervals The number of passes per second used to mix the audio sources.
- *        For games this can be 5-15.  For audio intensive apps, it should be higher.
+ *        For games this can be 5-15. For audio intensive apps, it should be higher.
  * @param synchronousContext If true, this context runs on the main thread and depends on you
  *        calling alcUpdateContext (best to leave this FALSE unless you know what you're doing).
  * @param monoSources A hint indicating how many sources should support mono.
@@ -220,7 +220,7 @@
 /** Get the address of the specified procedure (C function address).
  * Only valid when this is the current context. <br>
  * <strong>Note:</strong> The OpenAL implementation is free to return
- * a pointer even if it is not valid for this context.  Always call isExtensionPresent
+ * a pointer even if it is not valid for this context. Always call isExtensionPresent
  * first.
  *
  * @param functionName the name of the procedure to get.
@@ -231,13 +231,13 @@
 
 #pragma mark Internal Use
 
-/** (INTERNAL USE)  Used by ALSource to announce initialization.
+/** (INTERNAL USE) Used by ALSource to announce initialization.
  *
  * @param source the source that is initializing.
  */
 - (void) notifySourceInitializing:(ALSource*) source;
 
-/** (INTERNAL USE)  Used by ALSource to announce deallocation.
+/** (INTERNAL USE) Used by ALSource to announce deallocation.
  *
  * @param source the source that is deallocating.
  */

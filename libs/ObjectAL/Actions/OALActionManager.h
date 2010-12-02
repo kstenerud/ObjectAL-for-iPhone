@@ -80,13 +80,13 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALActionManager);
 
 #pragma mark Internal Use
 
-/** (INTERNAL USE)  Used by OALAction to announce that it is starting.
+/** (INTERNAL USE) Used by OALAction to announce that it is starting.
  *
  * @param action The action that is starting.
  */
 - (void) notifyActionStarted:(OALAction*) action;
 
-/** (INTERNAL USE)  Used by OALAction to announce that it is stopping.
+/** (INTERNAL USE) Used by OALAction to announce that it is stopping.
  *
  * @param action The action that is stopping.
  */

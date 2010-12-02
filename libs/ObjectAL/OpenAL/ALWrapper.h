@@ -653,7 +653,7 @@
  */
 + (NSString*) getString:(ALenum) parameter;
 
-/** Get a string list parameter.  Use this method for OpenAL parameters that return a null
+/** Get a string list parameter. Use this method for OpenAL parameters that return a null
  * separated list.
  *
  * @param parameter The parameter to fetch.
@@ -661,7 +661,7 @@
  */
 + (NSArray*) getNullSeparatedStringList:(ALenum) parameter;
 
-/** Get a string list parameter.  Use this method for OpenAL parameters that return a space
+/** Get a string list parameter. Use this method for OpenAL parameters that return a space
  * separated list.
  *
  * @param parameter The parameter to fetch.
@@ -876,7 +876,7 @@
  */
 + (NSString*) getString:(ALCdevice*) device attribute:(ALenum) attribute;
 
-/** Get a string list attribute.  Use this method for OpenAL attribute that return a null
+/** Get a string list attribute. Use this method for OpenAL attributes that return a null
  * separated list.
  *
  * @param device The device to read the attribute from.
@@ -885,7 +885,7 @@
  */
 + (NSArray*) getNullSeparatedStringList:(ALCdevice*) device attribute:(ALenum) attribute;
 
-/** Get a string list attribute.  Use this method for OpenAL attribute that return a space
+/** Get a string list attribute. Use this method for OpenAL attributes that return a space
  * separated list.
  *
  * @param device The device to read the attribute from.
@@ -978,7 +978,7 @@
  */
 + (void) setMixerOutputDataRate:(ALdouble) frequency;
 
-/** Load data into a buffer.  Unlike "bufferData", with this method the buffer will
+/** Load data into a buffer. Unlike "bufferData", with this method the buffer will
  * use the passed in data buffer direcly rather than allocating its own memory
  * and copying from the data buffer.
  *

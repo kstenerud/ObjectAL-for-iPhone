@@ -113,13 +113,13 @@
 
 #pragma mark Internal Use
 
-/** (INTERNAL USE)  Used by ALContext to announce initialization.
+/** (INTERNAL USE) Used by ALContext to announce initialization.
  *
  * @param context The context that is initializing.
  */
 - (void) notifyContextInitializing:(ALContext*) context;
 
-/** (INTERNAL USE)  Used by ALContext to announce deallocation.
+/** (INTERNAL USE) Used by ALContext to announce deallocation.
  *
  * @param context The context that is deallocating.
  */

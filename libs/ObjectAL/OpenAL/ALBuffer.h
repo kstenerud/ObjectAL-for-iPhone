@@ -68,7 +68,7 @@
 /** The frequency this buffer runs at. */
 @property(readonly) ALuint frequency;
 
-/** The name given to this buffer upon creation.  You may change it at runtime if you wish. */
+/** The name given to this buffer upon creation. You may change it at runtime if you wish. */
 @property(readwrite,retain) NSString* name;
 
 /** The size, in bytes, of the currently loaded buffer data. */
@@ -82,7 +82,7 @@
 /** Make a new buffer.
  *
  * @param name Optional name that you can use to identify this buffer in your code.
- * @param data The sound data.  Note: ALBuffer will call free() on this data when it is destroyed!
+ * @param data The sound data. Note: ALBuffer will call free() on this data when it is destroyed!
  * @param size The size of the data in bytes.
  * @param format The format of the data (see the Core Audio documentation).
  * @param frequency The sampling frequency in Hz.
@@ -97,7 +97,7 @@
 /** Initialize the buffer.
  *
  * @param name Optional name that you can use to identify this buffer in your code.
- * @param data The sound data.  Note: ALBuffer will call free() on this data when it is destroyed!
+ * @param data The sound data. Note: ALBuffer will call free() on this data when it is destroyed!
  * @param size The size of the data in bytes.
  * @param format The format of the data (see the Core Audio documentation).
  * @param frequency The sampling frequency in Hz.
