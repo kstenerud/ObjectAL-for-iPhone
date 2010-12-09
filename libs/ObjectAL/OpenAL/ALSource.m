@@ -413,8 +413,8 @@
 		{
 			[self stopActions];
 		}
-		float resultingGain = muted ? 0 : gain;
-		[ALWrapper sourcef:sourceId parameter:AL_GAIN value:resultingGain];
+		// Force a re-evaluation of gain.
+		[self setGain:gain];
 	}
 }
 
@@ -750,12 +750,10 @@
 	{
 		[ALWrapper sourcePlay:sourceId];
 		self.offsetInBytes = byteOffsetOnSuspend;
-		NSLog(@"### Start playing. state = %d", self.state);
 		
 		if(AL_PAUSED == stateOnSuspend)
 		{
 			[ALWrapper sourcePause:sourceId];
-			NSLog(@"### Pause. state = %d", self.state);
 		}
 	}
 }

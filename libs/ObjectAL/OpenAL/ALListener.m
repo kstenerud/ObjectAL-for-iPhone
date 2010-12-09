@@ -81,8 +81,8 @@
 		}
 		
 		muted = value;
-		float resultingGain = muted ? 0 : gain;
-		self.gain = resultingGain;
+		// Force a re-evaluation of gain.
+		[self setGain:gain];
 	}
 }
 

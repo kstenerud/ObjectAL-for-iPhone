@@ -381,8 +381,8 @@
 		{
 			[self stopActions];
 		}
-		float resultingGain = muted ? 0 : gain;
-		player.volume = resultingGain;
+		// Force a re-evaluation of gain.
+		[self setGain:gain];
 	}
 }
 
