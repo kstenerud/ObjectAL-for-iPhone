@@ -282,10 +282,10 @@
 		39B037F31262DAFE00AC27C9 /* OALAudioActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B037F11262DAFE00AC27C9 /* OALAudioActions.m */; };
 		39BF0C2112887C2800C83D2E /* IOSVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = 39BF0C1F12887C2800C83D2E /* IOSVersion.h */; };
 		39BF0C2212887C2800C83D2E /* IOSVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 39BF0C2012887C2800C83D2E /* IOSVersion.m */; };
-		39C49A0F12BEA77700F1E6D6 /* OALAudioSession.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C49A0D12BEA77700F1E6D6 /* OALAudioSession.h */; };
-		39C49A1012BEA77700F1E6D6 /* OALAudioSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 39C49A0E12BEA77700F1E6D6 /* OALAudioSession.m */; };
 		39C49A2C12BEADB600F1E6D6 /* OALTools.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C49A2A12BEADB600F1E6D6 /* OALTools.h */; };
 		39C49A2D12BEADB600F1E6D6 /* OALTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 39C49A2B12BEADB600F1E6D6 /* OALTools.m */; };
+		39C49A4B12BEB2AF00F1E6D6 /* OALAudioSession.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C49A4912BEB2AF00F1E6D6 /* OALAudioSession.h */; };
+		39C49A4C12BEB2AF00F1E6D6 /* OALAudioSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 39C49A4A12BEB2AF00F1E6D6 /* OALAudioSession.m */; };
 		39DF0A42129F1D210070A4D1 /* panel-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 39DF0A3B129F1D210070A4D1 /* panel-bg.png */; };
 		39DF0A43129F1D210070A4D1 /* panel-lamp-off.png in Resources */ = {isa = PBXBuildFile; fileRef = 39DF0A3C129F1D210070A4D1 /* panel-lamp-off.png */; };
 		39DF0A44129F1D210070A4D1 /* panel-lamp-on.png in Resources */ = {isa = PBXBuildFile; fileRef = 39DF0A3D129F1D210070A4D1 /* panel-lamp-on.png */; };
@@ -623,10 +623,10 @@
 		39B037F11262DAFE00AC27C9 /* OALAudioActions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALAudioActions.m; sourceTree = "<group>"; };
 		39BF0C1F12887C2800C83D2E /* IOSVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOSVersion.h; sourceTree = "<group>"; };
 		39BF0C2012887C2800C83D2E /* IOSVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOSVersion.m; sourceTree = "<group>"; };
-		39C49A0D12BEA77700F1E6D6 /* OALAudioSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALAudioSession.h; sourceTree = "<group>"; };
-		39C49A0E12BEA77700F1E6D6 /* OALAudioSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALAudioSession.m; sourceTree = "<group>"; };
 		39C49A2A12BEADB600F1E6D6 /* OALTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALTools.h; sourceTree = "<group>"; };
 		39C49A2B12BEADB600F1E6D6 /* OALTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALTools.m; sourceTree = "<group>"; };
+		39C49A4912BEB2AF00F1E6D6 /* OALAudioSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALAudioSession.h; sourceTree = "<group>"; };
+		39C49A4A12BEB2AF00F1E6D6 /* OALAudioSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALAudioSession.m; sourceTree = "<group>"; };
 		39DF0A3B129F1D210070A4D1 /* panel-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "panel-bg.png"; sourceTree = "<group>"; };
 		39DF0A3C129F1D210070A4D1 /* panel-lamp-off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "panel-lamp-off.png"; sourceTree = "<group>"; };
 		39DF0A3D129F1D210070A4D1 /* panel-lamp-on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "panel-lamp-on.png"; sourceTree = "<group>"; };
@@ -959,8 +959,8 @@
 			children = (
 				396B392D124EDA42009B84A4 /* Actions */,
 				396B3934124EDA42009B84A4 /* AudioTrack */,
-				39B0340512623AA800AC27C9 /* iOS */,
 				396B3942124EDA42009B84A4 /* OpenAL */,
+				39C49A4812BEB2AF00F1E6D6 /* Session */,
 				396B3959124EDA43009B84A4 /* Support */,
 				396B393E124EDA42009B84A4 /* LICENSE.ObjectAL.txt */,
 				39B034511262430E00AC27C9 /* OALSimpleAudio.h */,
@@ -1122,13 +1122,13 @@
 			name = Support;
 			sourceTree = "<group>";
 		};
-		39B0340512623AA800AC27C9 /* iOS */ = {
+		39C49A4812BEB2AF00F1E6D6 /* Session */ = {
 			isa = PBXGroup;
 			children = (
-				39C49A0D12BEA77700F1E6D6 /* OALAudioSession.h */,
-				39C49A0E12BEA77700F1E6D6 /* OALAudioSession.m */,
+				39C49A4912BEB2AF00F1E6D6 /* OALAudioSession.h */,
+				39C49A4A12BEB2AF00F1E6D6 /* OALAudioSession.m */,
 			);
-			path = iOS;
+			path = Session;
 			sourceTree = "<group>";
 		};
 		506EDAA3102F461B00A389B3 /* cocos2d Sources */ = {
@@ -1212,8 +1212,8 @@
 				395FE91A126936ED00A8BD6A /* OALAudioTrackNotifications.h in Headers */,
 				39BF0C2112887C2800C83D2E /* IOSVersion.h in Headers */,
 				39DFFD2C129C03AE0070A4D1 /* OALInterruptAPI.h in Headers */,
-				39C49A0F12BEA77700F1E6D6 /* OALAudioSession.h in Headers */,
 				39C49A2C12BEADB600F1E6D6 /* OALTools.h in Headers */,
+				39C49A4B12BEB2AF00F1E6D6 /* OALAudioSession.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1510,8 +1510,8 @@
 				395FE7E81268C64100A8BD6A /* HardwareDemo.m in Sources */,
 				395FE91B126936ED00A8BD6A /* OALAudioTrackNotifications.m in Sources */,
 				39BF0C2212887C2800C83D2E /* IOSVersion.m in Sources */,
-				39C49A1012BEA77700F1E6D6 /* OALAudioSession.m in Sources */,
 				39C49A2D12BEADB600F1E6D6 /* OALTools.m in Sources */,
+				39C49A4C12BEB2AF00F1E6D6 /* OALAudioSession.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
