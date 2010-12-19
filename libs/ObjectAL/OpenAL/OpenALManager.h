@@ -36,11 +36,13 @@
 /**
  * Manager class for OpenAL objects (ObjectAL).
  * Keeps track of devices that have been opened, and allows high level OpenAL management. <br>
+ * Provides methods for loading ALBuffer objects from audio files. <br>
  * The OpenAL 1.1 specification is available at
  * http://connect.creativelabs.com/openal/Documentation <br>
  * Be sure to read through it (especially the part about distance models) as ObjectAL follows the
- * OpenAL object model.
- * Alternatively, you may opt to use OALSimpleAudio for your audio needs.
+ * OpenAL object model. <br>
+ *
+ * Alternatively, you may opt to use OALSimpleAudio for a simpler interface.
  */
 @interface OpenALManager : NSObject
 {
