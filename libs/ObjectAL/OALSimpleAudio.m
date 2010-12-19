@@ -26,7 +26,7 @@
 
 #import "OALSimpleAudio.h"
 #import "ObjectALMacros.h"
-#import "OALAudioSupport.h"
+#import "OALAudioSession.h"
 #import "OpenALManager.h"
 
 // By default, reserve all 32 sources.
@@ -161,22 +161,22 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 
 - (bool) allowIpod
 {
-	return [OALAudioSupport sharedInstance].allowIpod;
+	return [OALAudioSession sharedInstance].allowIpod;
 }
 
 - (void) setAllowIpod:(bool) value
 {
-	[OALAudioSupport sharedInstance].allowIpod = value;
+	[OALAudioSession sharedInstance].allowIpod = value;
 }
 
 - (bool) useHardwareIfAvailable
 {
-	return [OALAudioSupport sharedInstance].useHardwareIfAvailable;
+	return [OALAudioSession sharedInstance].useHardwareIfAvailable;
 }
 
 - (void) setUseHardwareIfAvailable:(bool) value
 {
-	[OALAudioSupport sharedInstance].useHardwareIfAvailable = value;
+	[OALAudioSession sharedInstance].useHardwareIfAvailable = value;
 }
 
 
@@ -261,12 +261,12 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 
 - (bool) honorSilentSwitch
 {
-	return [OALAudioSupport sharedInstance].honorSilentSwitch;
+	return [OALAudioSession sharedInstance].honorSilentSwitch;
 }
 
 - (void) setHonorSilentSwitch:(bool) value
 {
-	[OALAudioSupport sharedInstance].honorSilentSwitch = value;
+	[OALAudioSession sharedInstance].honorSilentSwitch = value;
 }
 
 - (bool) bgMuted
@@ -410,7 +410,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 	if(nil == buffer)
 	{
 		OAL_LOG_DEBUG(@"Effect not in cache. Loading %@", filePath);
-		buffer = [[OALAudioSupport sharedInstance] bufferFromFile:filePath reduceToMono:reduceToMono];
+		buffer = [[OpenALManager sharedInstance] bufferFromFile:filePath reduceToMono:reduceToMono];
 		if(nil == buffer)
 		{
 			OAL_LOG_ERROR(@"Could not load effect %@", filePath);
@@ -612,17 +612,17 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 
 - (bool) suspended
 {
-	return [OALAudioSupport sharedInstance].suspended;
+	return [OALAudioSession sharedInstance].suspended;
 }
 
 - (void) setSuspended:(bool) value
 {
-	[OALAudioSupport sharedInstance].suspended = value;
+	[OALAudioSession sharedInstance].suspended = value;
 }
 
 - (bool) interrupted
 {
-	return [OALAudioSupport sharedInstance].interrupted;
+	return [OALAudioSession sharedInstance].interrupted;
 }
 
 

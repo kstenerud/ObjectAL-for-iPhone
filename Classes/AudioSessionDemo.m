@@ -225,12 +225,12 @@
 
 - (void) refreshUI
 {
-	allowIpodButton.isOn = [OALAudioSupport sharedInstance].allowIpod;
-	ipodDuckingButton.isOn = [OALAudioSupport sharedInstance].ipodDucking;
-	honorSilentSwitchButton.isOn = [OALAudioSupport sharedInstance].honorSilentSwitch;
-	useHardwareButton.isOn = [OALAudioSupport sharedInstance].useHardwareIfAvailable;
-	sessionActiveButton.isOn = [OALAudioSupport sharedInstance].audioSessionActive;
-	suspendedButton.isOn = [OALAudioSupport sharedInstance].suspended;
+	allowIpodButton.isOn = [OALAudioSession sharedInstance].allowIpod;
+	ipodDuckingButton.isOn = [OALAudioSession sharedInstance].ipodDucking;
+	honorSilentSwitchButton.isOn = [OALAudioSession sharedInstance].honorSilentSwitch;
+	useHardwareButton.isOn = [OALAudioSession sharedInstance].useHardwareIfAvailable;
+	sessionActiveButton.isOn = [OALAudioSession sharedInstance].audioSessionActive;
+	suspendedButton.isOn = [OALAudioSession sharedInstance].suspended;
 
 	playStopSource.isOn = source.playing;
 	pauseSource.isOn = source.paused;
@@ -248,7 +248,7 @@
 	[OALSimpleAudio sharedInstance].reservedSources = 0;
 
 	source = [[ALSource source] retain];
-	buffer = [[[OALAudioSupport sharedInstance] bufferFromFile:@"ColdFunk.caf"] retain];
+	buffer = [[[OpenALManager sharedInstance] bufferFromFile:@"ColdFunk.caf"] retain];
 	track = [[OALAudioTrack track] retain];
 
 	[self refreshUI];
@@ -299,33 +299,33 @@
 
 - (void) onAllowIpod:(LampButton*) button
 {
-	[OALAudioSupport sharedInstance].allowIpod = button.isOn;
+	[OALAudioSession sharedInstance].allowIpod = button.isOn;
 }
 
 - (void) onIpodDucking:(LampButton*) button
 {
-	[OALAudioSupport sharedInstance].ipodDucking = button.isOn;
+	[OALAudioSession sharedInstance].ipodDucking = button.isOn;
 }
 
 - (void) onSilentSwitch:(LampButton*) button
 {
-	[OALAudioSupport sharedInstance].honorSilentSwitch = button.isOn;
+	[OALAudioSession sharedInstance].honorSilentSwitch = button.isOn;
 }
 
 - (void) onUseHardware:(LampButton*) button
 {
-	[OALAudioSupport sharedInstance].useHardwareIfAvailable = button.isOn;
+	[OALAudioSession sharedInstance].useHardwareIfAvailable = button.isOn;
 }
 
 - (void) onSessionActive:(LampButton*) button
 {
-	[OALAudioSupport sharedInstance].audioSessionActive = button.isOn;
+	[OALAudioSession sharedInstance].audioSessionActive = button.isOn;
 	[self refreshUI];
 }
 
 - (void) onSuspend:(LampButton*) button
 {
-	[OALAudioSupport sharedInstance].suspended = button.isOn;
+	[OALAudioSession sharedInstance].suspended = button.isOn;
 	[self refreshUI];
 }
 

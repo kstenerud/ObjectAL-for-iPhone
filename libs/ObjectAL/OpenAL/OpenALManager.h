@@ -51,6 +51,9 @@
 	
 	/** Manages a double-lock between suspend and interrupt */
 	SuspendLock* suspendLock;
+
+	/** Operation queue for asynchronous loading. */
+	NSOperationQueue* operationQueue;
 }
 
 
@@ -84,6 +87,7 @@
 /** If YES, this object is interrupted. */
 @property(readonly) bool interrupted;
 
+
 #pragma mark Object Management
 
 /** Singleton implementation providing "sharedInstance" and "purgeSharedInstance" methods.
@@ -94,12 +98,142 @@
 SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OpenALManager);
 
 
+#pragma mark Buffers
+
+/** Load an OpenAL buffer with the contents of an audio file.
+ * The buffer's name will be the fully qualified URL of the path.
+ *
+ * See the class description note regarding sound file formats.
+ *
+ * @param filePath The path of the file containing the audio data.
+ * @return An ALBuffer containing the audio data.
+ */
+- (ALBuffer*) bufferFromFile:(NSString*) filePath;
+
+/** Load an OpenAL buffer with the contents of an audio file.
+ * The buffer's name will be the fully qualified URL of the path.
+ *
+ * See the class description note regarding sound file formats.
+ *
+ * @param filePath The path of the file containing the audio data.
+ * @param reduceToMono If true, reduce the sample to mono
+ *        (stereo samples don't support panning or positional audio).
+ * @return An ALBuffer containing the audio data.
+ */
+- (ALBuffer*) bufferFromFile:(NSString*) filePath reduceToMono:(bool) reduceToMono;
+
+/** Load an OpenAL buffer with the contents of an audio file.
+ * The buffer's name will be the fully qualified URL.
+ *
+ * See the class description note regarding sound file formats.
+ *
+ * @param url The URL of the file containing the audio data.
+ * @return An ALBuffer containing the audio data.
+ */
+- (ALBuffer*) bufferFromUrl:(NSURL*) url;
+
+/** Load an OpenAL buffer with the contents of an audio file.
+ * The buffer's name will be the fully qualified URL.
+ *
+ * See the class description note regarding sound file formats.
+ *
+ * @param url The URL of the file containing the audio data.
+ * @param reduceToMono If true, reduce the sample to mono
+ *        (stereo samples don't support panning or positional audio).
+ * @return An ALBuffer containing the audio data.
+ */
+- (ALBuffer*) bufferFromUrl:(NSURL*) url reduceToMono:(bool) reduceToMono;
+
+/** Load an OpenAL buffer with the contents of an audio file asynchronously.
+ * This method will schedule a request to have the buffer created and filled, and then call the
+ * specified selector with the newly created buffer. <br>
+ * The buffer's name will be the fully qualified URL of the path. <br>
+ * Returns the fully qualified URL of the path, which you can match up to the buffer name in your
+ * callback method.
+ *
+ * See the class description note regarding sound file formats.
+ *
+ * @param filePath The path of the file containing the audio data.
+ * @param target The target to call when the buffer is loaded.
+ * @param selector The selector to invoke when the buffer is loaded.
+ * @return The fully qualified URL of the path.
+ */
+- (NSString*) bufferAsyncFromFile:(NSString*) filePath target:(id) target selector:(SEL) selector;
+
+/** Load an OpenAL buffer with the contents of an audio file asynchronously.
+ * This method will schedule a request to have the buffer created and filled, and then call the
+ * specified selector with the newly created buffer. <br>
+ * The buffer's name will be the fully qualified URL of the path. <br>
+ * Returns the fully qualified URL of the path, which you can match up to the buffer name in your
+ * callback method.
+ *
+ * See the class description note regarding sound file formats.
+ *
+ * @param filePath The path of the file containing the audio data.
+ * @param reduceToMono If true, reduce the sample to mono
+ *        (stereo samples don't support panning or positional audio).
+ * @param target The target to call when the buffer is loaded.
+ * @param selector The selector to invoke when the buffer is loaded.
+ * @return The fully qualified URL of the path.
+ */
+- (NSString*) bufferAsyncFromFile:(NSString*) filePath
+					 reduceToMono:(bool) reduceToMono
+						   target:(id) target
+						 selector:(SEL) selector;
+
+/** Load an OpenAL buffer with the contents of a URL asynchronously.
+ * This method will schedule a request to have the buffer created and filled, and then call the
+ * specified selector with the newly created buffer. <br>
+ * The buffer's name will be the fully qualified URL. <br>
+ * Returns the fully qualified URL, which you can match up to the buffer name in your callback
+ * method.
+ *
+ * See the class description note regarding sound file formats.
+ *
+ * @param url The URL of the file containing the audio data.
+ * @param target The target to call when the buffer is loaded.
+ * @param selector The selector to invoke when the buffer is loaded.
+ * @return The fully qualified URL of the path.
+ */
+- (NSString*) bufferAsyncFromUrl:(NSURL*) url target:(id) target selector:(SEL) selector;
+
+/** Load an OpenAL buffer with the contents of a URL asynchronously.
+ * This method will schedule a request to have the buffer created and filled, and then call the
+ * specified selector with the newly created buffer. <br>
+ * The buffer's name will be the fully qualified URL. <br>
+ * Returns the fully qualified URL, which you can match up to the buffer name in your callback
+ * method.
+ *
+ * See the class description note regarding sound file formats.
+ *
+ * @param url The URL of the file containing the audio data.
+ * @param reduceToMono If true, reduce the sample to mono
+ *        (stereo samples don't support panning or positional audio).
+ * @param target The target to call when the buffer is loaded.
+ * @param selector The selector to invoke when the buffer is loaded.
+ * @return The fully qualified URL of the path.
+ */
+- (NSString*) bufferAsyncFromUrl:(NSURL*) url
+					reduceToMono:(bool) reduceToMono
+						  target:(id) target
+						selector:(SEL) selector;
+
+
 #pragma mark Utility
 
 /** Clear all references to sound data from ALL buffers, managed or not.
  */
 - (void) clearAllBuffers;
 
+/** Log an error if the specified ExtAudio error code indicates an error.
+ *
+ * @param errorCode: The error code returned from an OS call.
+ * @param function: The function name where the error occurred.
+ * @param description: A printf-style description of what happened.
+ */
++ (void) logExtAudioError:(OSStatus)errorCode
+				 function:(const char*) function
+			  description:(NSString*) description, ...;
 
 #pragma mark Internal Use
 

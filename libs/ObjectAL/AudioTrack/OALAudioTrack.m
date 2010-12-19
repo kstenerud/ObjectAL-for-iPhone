@@ -29,7 +29,7 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import "OALAudioActions.h"
 #import "OALAudioTracks.h"
-#import "OALAudioSupport.h"
+#import "OALTools.h"
 #import "OALUtilityActions.h"
 #import "ObjectALMacros.h"
 #import "IOSVersion.h"
@@ -628,7 +628,7 @@
 
 - (bool) preloadFile:(NSString*) path seekTime:(NSTimeInterval)seekTime
 {
-	return [self preloadUrl:[OALAudioSupport urlForPath:path] seekTime:seekTime];
+	return [self preloadUrl:[OALTools urlForPath:path] seekTime:seekTime];
 }
 
 - (bool) preloadUrlAsync:(NSURL*) url target:(id) target selector:(SEL) selector
@@ -652,7 +652,7 @@
 
 - (bool) preloadFileAsync:(NSString*) path seekTime:(NSTimeInterval)seekTime target:(id) target selector:(SEL) selector
 {
-	return [self preloadUrlAsync:[OALAudioSupport urlForPath:path] seekTime:seekTime target:target selector:selector];
+	return [self preloadUrlAsync:[OALTools urlForPath:path] seekTime:seekTime target:target selector:selector];
 }
 
 - (bool) playUrl:(NSURL*) url
@@ -675,12 +675,12 @@
 
 - (bool) playFile:(NSString*) path
 {
-	return [self playUrl:[OALAudioSupport urlForPath:path]];
+	return [self playUrl:[OALTools urlForPath:path]];
 }
 
 - (bool) playFile:(NSString*) path loops:(NSInteger) loops
 {
-	return [self playUrl:[OALAudioSupport urlForPath:path] loops:loops];
+	return [self playUrl:[OALTools urlForPath:path] loops:loops];
 }
 
 - (void) playUrlAsync:(NSURL*) url target:(id) target selector:(SEL) selector
@@ -700,7 +700,7 @@
 
 - (void) playFileAsync:(NSString*) path loops:(NSInteger) loops target:(id) target selector:(SEL) selector
 {
-	[self playUrlAsync:[OALAudioSupport urlForPath:path] loops:loops target:target selector:selector];
+	[self playUrlAsync:[OALTools urlForPath:path] loops:loops target:target selector:selector];
 }
 
 - (bool) play

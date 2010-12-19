@@ -28,7 +28,6 @@
 #import "ALWrapper.h"
 #import "ObjectALMacros.h"
 #import "NSMutableArray+WeakReferences.h"
-#import "OALAudioSupport.h"
 #import "OpenALManager.h"
 #import "OALInterruptAPI.h"
 
@@ -49,9 +48,6 @@ ADD_INTERRUPT_API(ALContext);
 	if(nil != (self = [super init]))
 	{
 		OAL_LOG_DEBUG(@"%@: Init device %@", self, deviceSpecifier);
-		// Make sure OALAudioSupport is initialized.
-		[OALAudioSupport sharedInstance];
-
 		if(nil != (device = [ALWrapper openDevice:deviceSpecifier]))
 		{
 			contexts = [[NSMutableArray mutableArrayUsingWeakReferencesWithCapacity:5] retain];

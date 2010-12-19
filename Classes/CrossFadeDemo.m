@@ -107,10 +107,10 @@
 	// We're using OpenAL here, but the same concept works with AudioTracks.
 	// For long duration files, AudioTracks will use SIGNIFICANTLY less ram.
 	firstSource = [[ALSource source] retain];
-	firstBuffer = [[[OALAudioSupport sharedInstance] bufferFromFile:@"ColdFunk.caf"] retain];
+	firstBuffer = [[[OpenALManager sharedInstance] bufferFromFile:@"ColdFunk.caf"] retain];
 	
 	secondSource = [[ALSource source] retain];
-	secondBuffer = [[[OALAudioSupport sharedInstance] bufferFromFile:@"HappyAlley.caf"] retain];
+	secondBuffer = [[[OpenALManager sharedInstance] bufferFromFile:@"HappyAlley.caf"] retain];
 
 	[firstSource play:firstBuffer loop:YES];
 	[secondSource play:secondBuffer loop:YES];

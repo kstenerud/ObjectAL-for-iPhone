@@ -27,23 +27,23 @@
 		[OpenALManager sharedInstance].currentContext = context;
 		
 		// Deal with interruptions for me!
-		[OALAudioSupport sharedInstance].handleInterruptions = YES;
+		[OALAudioSession sharedInstance].handleInterruptions = YES;
 		
 		// We don't want ipod music to keep playing since
 		// we have our own bg music.
-		[OALAudioSupport sharedInstance].allowIpod = NO;
+		[OALAudioSession sharedInstance].allowIpod = NO;
 		
 		// Mute all audio if the silent switch is turned on.
-		[OALAudioSupport sharedInstance].honorSilentSwitch = YES;
+		[OALAudioSession sharedInstance].honorSilentSwitch = YES;
 		
 		// Take all 32 sources for this channel.
 		// (we probably won't use that many but what the heck!)
 		channel = [[ALChannelSource channelWithSources:32] retain];
 		
 		// Preload the buffers so we don't have to load and play them later.
-		shootBuffer = [[[OALAudioSupport sharedInstance]
+		shootBuffer = [[[OpenALManager sharedInstance]
 						bufferFromFile:SHOOT_SOUND] retain];
-		explosionBuffer = [[[OALAudioSupport sharedInstance]
+		explosionBuffer = [[[OpenALManager sharedInstance]
 							bufferFromFile:EXPLODE_SOUND] retain];
 		
 		// Background music track.

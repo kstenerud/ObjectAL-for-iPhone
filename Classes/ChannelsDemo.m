@@ -157,7 +157,7 @@
 	
 	// This is the only sound that gets played.  Notice that a single
 	// buffer can be played by multiple sources simultaneously.
-	buffer = [[[OALAudioSupport sharedInstance] bufferFromFile:@"Pew.caf"] retain];
+	buffer = [[[OpenALManager sharedInstance] bufferFromFile:@"Pew.caf"] retain];
 
 	// Make some channels to play effects with.
 	oneSourceChannel = [[ALChannelSource channelWithSources:1] retain];

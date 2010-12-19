@@ -189,7 +189,7 @@
 #define REPORT_AUDIOSESSION_CALL(ERROR_CODE, FMT, ...) \
 if(noErr != (ERROR_CODE)) \
 { \
-	[OALAudioSupport logAudioSessionError:(ERROR_CODE) function:__PRETTY_FUNCTION__ description:(FMT), ##__VA_ARGS__]; \
+	[OALAudioSession logAudioSessionError:(ERROR_CODE) function:__PRETTY_FUNCTION__ description:(FMT), ##__VA_ARGS__]; \
 }
 
 /** Report on the specified ExtAudio error code, logging an error if the code does not indicate success.
@@ -201,7 +201,7 @@ if(noErr != (ERROR_CODE)) \
 #define REPORT_EXTAUDIO_CALL(ERROR_CODE, FMT, ...) \
 if(noErr != (ERROR_CODE)) \
 { \
-	[OALAudioSupport logExtAudioError:(ERROR_CODE) function:__PRETTY_FUNCTION__ description:(FMT), ##__VA_ARGS__]; \
+	[OpenALManager logExtAudioError:(ERROR_CODE) function:__PRETTY_FUNCTION__ description:(FMT), ##__VA_ARGS__]; \
 }
 
 #else /* OBJECTAL_CFG_LOG_LEVEL */

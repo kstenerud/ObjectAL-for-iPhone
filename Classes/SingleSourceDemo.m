@@ -93,7 +93,7 @@
 	source = [[ALSource source] retain];
 	
 	// ColdFunk.caf is stereo, which doesn't work with positioning. Reduce to mono.
-	buffer = [[[OALAudioSupport sharedInstance] bufferFromFile:@"ColdFunk.caf" reduceToMono:YES] retain];
+	buffer = [[[OpenALManager sharedInstance] bufferFromFile:@"ColdFunk.caf" reduceToMono:YES] retain];
 	
 	source.position = alpoint(planet.position.x, planet.position.y, 0);
 	//		source.maxDistance = 300;

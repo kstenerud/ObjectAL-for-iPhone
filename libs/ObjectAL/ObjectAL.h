@@ -50,7 +50,7 @@
 #import "OpenALManager.h"
 
 // Other
-#import "OALAudioSupport.h"
+#import "OALAudioSession.h"
 #import "OALSimpleAudio.h"
 
 
@@ -240,9 +240,10 @@
  \section use_iossimpleaudio_sec Using OALSimpleAudio
  
  By far, the easiest component to use is OALSimpleAudio. You sacrifice some power for
- ease-of-use, but for many projects it is more than sufficient.
+ ease-of-use, but for many projects it is more than sufficient. You can also use your own instances
+ of audio tracks, sources, buffers and such alongside of OALSimpleAudio if you want.
  
- Here is a code example:
+ Here is a code example using purely OALSimpleAudio:
  
  \code
 // OALSimpleAudioSample.h
@@ -423,8 +424,10 @@
 	// your program, so in a real program you'd be better off making a
 	// singleton object that manages the device and context, rather than
 	// allocating/deallocating it here.
-	// Most of the demos just let OALSimpleAudio manage the device and context
-	// for them.
+	//
+	// If you look at the various demos in the ObjectAL demo, you'll notice that
+	// even when they use their own sources, buffers, and tracks, they still use
+	// OALSimpleAudio as a convenient way to manage the device and context for them.
 	[context release];
 	[device release];
 	

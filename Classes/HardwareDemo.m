@@ -112,12 +112,12 @@
 	[[OALSimpleAudio sharedInstance] playBg:@"ColdFunk.caf" loop:YES];
 	[OALSimpleAudio sharedInstance].backgroundTrack.meteringEnabled = YES;
 	
-	volume = [OALAudioSupport sharedInstance].hardwareVolume;
-	muted = [OALAudioSupport sharedInstance].hardwareMuted;
-	route = [[OALAudioSupport sharedInstance].audioRoute retain];
+	volume = [OALAudioSession sharedInstance].hardwareVolume;
+	muted = [OALAudioSession sharedInstance].hardwareMuted;
+	route = [[OALAudioSession sharedInstance].audioRoute retain];
 	
 	[volumeLabel setString:[NSString stringWithFormat:@"%.2f", volume]];
-	muteLabel.isOn = [OALAudioSupport sharedInstance].hardwareMuted;
+	muteLabel.isOn = [OALAudioSession sharedInstance].hardwareMuted;
 	[routeLabel setString:[NSString stringWithFormat:@"%@", route]];
 
 	[self schedule:@selector(step) interval:0.1f];
@@ -126,16 +126,16 @@
 
 - (void) step
 {
-	float newVolume = [OALAudioSupport sharedInstance].hardwareVolume;
+	float newVolume = [OALAudioSession sharedInstance].hardwareVolume;
 	if(newVolume != volume)
 	{
 		volume = newVolume;
 		[volumeLabel setString:[NSString stringWithFormat:@"%.2f", volume]];
 	}
 
-	muteLabel.isOn = [OALAudioSupport sharedInstance].hardwareMuted;
+	muteLabel.isOn = [OALAudioSession sharedInstance].hardwareMuted;
 
-	NSString* newRoute = [OALAudioSupport sharedInstance].audioRoute;
+	NSString* newRoute = [OALAudioSession sharedInstance].audioRoute;
 	if(![newRoute isEqualToString:route])
 	{
 		[route autorelease];

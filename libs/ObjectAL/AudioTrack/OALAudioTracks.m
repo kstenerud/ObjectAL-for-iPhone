@@ -27,7 +27,6 @@
 #import "OALAudioTracks.h"
 #import "NSMutableArray+WeakReferences.h"
 #import "ObjectALMacros.h"
-#import "OALAudioSupport.h"
 #import "OALInterruptAPI.h"
 
 
@@ -49,8 +48,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioTracks);
 	if(nil != (self = [super init]))
 	{
 		OAL_LOG_DEBUG(@"%@: Init", self);
-		// Make sure OALAudioSupport is initialized.
-		[OALAudioSupport sharedInstance];
 
 		tracks = [[NSMutableArray mutableArrayUsingWeakReferencesWithCapacity:10] retain];
 		suspendLock = [[SuspendLock lockWithTarget:nil
