@@ -28,6 +28,7 @@
 #import <OpenAL/al.h>
 #import <OpenAL/alc.h>
 #import "ALContext.h"
+#import "OALSuspendHandler.h"
 
 
 #pragma mark ALDevice
@@ -35,14 +36,14 @@
 /**
  * A device is a logical mapping to an audio device through the OpenAL implementation.
  */
-@interface ALDevice : NSObject
+@interface ALDevice : NSObject <OALSuspendManager>
 {
 	ALCdevice* device;
 	/** All contexts opened from this device. */
 	NSMutableArray* contexts;
 	
-	/** Manages a double-lock between suspend and interrupt */
-	SuspendLock* suspendLock;
+	/** Handles suspending and interrupting for this object. */
+	OALSuspendHandler* suspendHandler;
 }
 
 
@@ -62,12 +63,6 @@
 
 /** The specification revision for this implementation (minor version). */
 @property(readonly) int minorVersion;
-
-/** If YES, this object is suspended. */
-@property(readwrite,assign) bool suspended;
-
-/** If YES, this object is interrupted. */
-@property(readonly) bool interrupted;
 
 
 #pragma mark Object Management

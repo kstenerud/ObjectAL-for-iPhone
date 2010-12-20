@@ -150,6 +150,10 @@
  */
 - (void) stop;
 
+/** Stop playing the current sound and set its state to AL_INITIAL.
+ */
+- (void) rewind;
+
 /** Fade to the specified gain value.
  *
  * @param gain The gain to fade to.

@@ -27,14 +27,14 @@
 #import <AVFoundation/AVFoundation.h>
 #import "OALAction.h"
 #import "OALAudioTrackNotifications.h"
-#import "SuspendLock.h"
+#import "OALSuspendHandler.h"
 
 /**
  * Plays an audio track via AVAudioPlayer.
  * Unlike AVAudioPlayer, however, it can be re-used to play another file.
  * Interruptions can be handled by OALAudioSupport (enabled by default).
  */
-@interface OALAudioTrack : NSObject <AVAudioPlayerDelegate>
+@interface OALAudioTrack : NSObject <AVAudioPlayerDelegate, OALSuspendManager>
 {
 	bool meteringEnabled;
 	bool interrupted;
@@ -72,8 +72,8 @@
 	/** The current action being applied to pan. */
 	OALAction* panAction;
 	
-	/** Manages a double-lock between suspend and interrupt */
-	SuspendLock* suspendLock;
+	/** Handles suspending and interrupting for this object. */
+	OALSuspendHandler* suspendHandler;
 }
 
 
@@ -147,12 +147,6 @@
 
 /** The number of channels in the currently loaded sound. */
 @property(readonly) NSUInteger numberOfChannels;
-
-/** If YES, this object is suspended. */
-@property(readwrite,assign) bool suspended;
-
-/** If YES, this object is interrupted. */
-@property(readonly) bool interrupted;
 
 
 #pragma mark Object Management

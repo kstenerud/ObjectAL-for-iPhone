@@ -41,13 +41,15 @@
  */
 @interface ALSource (Private)
 
-/** (INTERNAL USE) Called by SuspendLock to suspend this object.
+/** (INTERNAL USE) Called by SuspendHandler.
  */
-- (void) onSuspend;
+- (void) setSuspended:(bool) value;
 
-/** (INTERNAL USE) Called by SuspendLock to unsuspend this object.
+/** (INTERNAL USE) Callback for resuming playback after delay to
+ * get around OpenAL bug.
  */
-- (void) onUnsuspend;
+- (void) delayedResumePlayback;
+
 
 @end
 
@@ -76,6 +78,9 @@
 	if(nil != (self = [super init]))
 	{
 		OAL_LOG_DEBUG(@"%@: Init on context %@", self, contextIn);
+		
+		suspendHandler = [[OALSuspendHandler handlerWithTarget:self selector:@selector(setSuspended:)] retain];
+
 		context = [contextIn retain];
 		@synchronized([OpenALManager sharedInstance])
 		{
@@ -87,9 +92,8 @@
 		
 		[context notifySourceInitializing:self];
 		gain = [ALWrapper getSourcef:sourceId parameter:AL_GAIN];
-		suspendLock = [[SuspendLock lockWithTarget:self
-									  lockSelector:@selector(onSuspend)
-									unlockSelector:@selector(onUnsuspend)] retain];
+		
+		[context addSuspendListener:self];
 	}
 	return self;
 }
@@ -97,6 +101,7 @@
 - (void) dealloc
 {
 	OAL_LOG_DEBUG(@"%@: Dealloc", self);
+	[context removeSuspendListener:self];
 	[context notifySourceDeallocating:self];
 	
 	[gainAction stopAction];
@@ -105,7 +110,7 @@
 	[panAction release];
 	[pitchAction stopAction];
 	[pitchAction release];
-	[suspendLock release];
+	[suspendHandler release];
 
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
@@ -144,7 +149,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
@@ -183,7 +188,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
@@ -205,7 +210,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
@@ -227,7 +232,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
@@ -253,7 +258,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED_STRUCT_OP(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
@@ -285,7 +290,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
@@ -314,7 +319,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
@@ -336,7 +341,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
@@ -358,7 +363,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
@@ -380,7 +385,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
@@ -402,7 +407,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
@@ -430,7 +435,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
@@ -452,7 +457,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
@@ -474,7 +479,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
@@ -486,39 +491,54 @@
 
 - (bool) paused
 {
-	if(suspendLock.locked)
+	if(self.suspended)
 	{
-		return AL_PAUSED == stateOnSuspend;
+		return AL_PAUSED == shadowState;
 	}
 
-	return AL_PAUSED == stateOnSuspend || AL_PAUSED == self.state;
+	return AL_PAUSED == self.state;
 }
 
 - (void) setPaused:(bool) shouldPause
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
 		}
 		
+		int newState = 0;
+		
 		if(shouldPause)
 		{
-			if(AL_PLAYING == self.state && AL_PAUSED != stateOnSuspend)
+			abortPlaybackResume = YES;
+			newState = AL_PAUSED;
+			if(AL_PLAYING == self.state)
 			{
-				[ALWrapper sourcePause:sourceId];
+				if(![ALWrapper sourcePause:sourceId])
+				{
+					newState = 0;
+				}
 			}
 		}
 		else
 		{
-			if(AL_PAUSED == self.state || AL_PAUSED == stateOnSuspend)
+			newState = AL_PLAYING;
+			if(AL_PAUSED == self.state)
 			{
-				[ALWrapper sourcePlay:sourceId];
+				if(![ALWrapper sourcePlay:sourceId])
+				{
+					newState = AL_STOPPED;
+				}
 			}
 		}
-		stateOnSuspend = 0;
+		
+		if(0 != newState)
+		{
+			shadowState = newState;
+		}
 	}
 }
 
@@ -534,7 +554,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
@@ -546,9 +566,9 @@
 
 - (bool) playing
 {
-	if(suspendLock.locked)
+	if(self.suspended)
 	{
-		return AL_PLAYING == stateOnSuspend || AL_PAUSED == stateOnSuspend;
+		return AL_PLAYING == shadowState || AL_PAUSED == shadowState;
 	}
 	return AL_PLAYING == self.state || AL_PAUSED == self.state;
 }
@@ -567,7 +587,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED_STRUCT_OP(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
@@ -584,7 +604,7 @@
 
 - (void) setPan:(float) value
 {
-	if(suspendLock.locked)
+	if(self.suspended)
 	{
 		OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 		return;
@@ -605,7 +625,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
@@ -627,7 +647,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
@@ -651,7 +671,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
@@ -673,7 +693,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
@@ -687,7 +707,18 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		return [ALWrapper getSourcei:sourceId parameter:AL_SOURCE_STATE];
+		// Apple's OpenAL implementation is broken.
+		//return [ALWrapper getSourcei:sourceId parameter:AL_SOURCE_STATE];
+		
+		if(AL_INITIAL == shadowState || AL_STOPPED == shadowState)
+		{
+			return shadowState;
+		}
+		if(AL_STOPPED == [ALWrapper getSourcei:sourceId parameter:AL_SOURCE_STATE])
+		{
+			return AL_STOPPED;
+		}
+		return shadowState;
 	}
 }
 
@@ -695,13 +726,14 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
 		}
 		
 		[ALWrapper sourcei:sourceId parameter:AL_SOURCE_STATE value:value];
+		shadowState = value;
 	}
 }
 
@@ -719,7 +751,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED_STRUCT_OP(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
@@ -729,57 +761,73 @@
 	}
 }
 
-/** Called by SuspendLock to suspend this object.
- */
-- (void) onSuspend
-{
-	stateOnSuspend = self.state;
-	byteOffsetOnSuspend = self.offsetInBytes;
 
-	if(AL_PLAYING == stateOnSuspend)
-	{
-		[ALWrapper sourcePause:sourceId];
-	}
+
+#pragma mark Suspend Handler
+
+- (void) addSuspendListener:(id<OALSuspendListener>) listenerIn
+{
+	[suspendHandler addSuspendListener:listenerIn];
 }
 
-/** Called by SuspendLock to unsuspend this object.
- */
-- (void) onUnsuspend
+- (void) removeSuspendListener:(id<OALSuspendListener>) listenerIn
 {
-	if(AL_PAUSED == stateOnSuspend || AL_PLAYING == stateOnSuspend)
-	{
-		[ALWrapper sourcePlay:sourceId];
-		self.offsetInBytes = byteOffsetOnSuspend;
-		
-		if(AL_PAUSED == stateOnSuspend)
-		{
-			[ALWrapper sourcePause:sourceId];
-		}
-	}
+	[suspendHandler removeSuspendListener:listenerIn];
 }
 
-- (bool) suspended
+- (bool) manuallySuspended
 {
-	// No need to synchronize since SuspendLock does that already.
-	return suspendLock.suspendLock;
+	return suspendHandler.manuallySuspended;
 }
 
-- (void) setSuspended:(bool) value
+- (void) setManuallySuspended:(bool) value
 {
-	// No need to synchronize since SuspendLock does that already.
-	suspendLock.suspendLock = value;
+	suspendHandler.manuallySuspended = value;
 }
 
 - (bool) interrupted
 {
-	// No need to synchronize since SuspendLock does that already.
-	return suspendLock.interruptLock;
+	return suspendHandler.interrupted;
 }
 
 - (void) setInterrupted:(bool) value
 {
-	// No need to synchronize since SuspendLock does that already.
-	suspendLock.interruptLock = value;
+	suspendHandler.interrupted = value;
+}
+
+- (bool) suspended
+{
+	return suspendHandler.suspended;
+}
+
+- (void) setSuspended:(bool) value
+{
+	if(value)
+	{
+		if(AL_PLAYING == self.state)
+		{
+			[ALWrapper sourcePause:sourceId];
+		}
+	}
+	else
+	{
+		// The shadow state holds the state we had when suspending.
+		if(AL_PLAYING == shadowState)
+		{
+			// Because Apple's OpenAL implementation can't stack commands (it defers processing
+			// to a later sequence point), we have to delay resuming playback.
+			abortPlaybackResume = NO;
+			[self performSelector:@selector(delayedResumePlayback) withObject:nil afterDelay:0.03];
+		}
+	}
+}
+
+- (void) delayedResumePlayback
+{
+	if(!abortPlaybackResume)
+	{
+		[ALWrapper sourcePlay:sourceId];
+	}
 }
 
 
@@ -789,7 +837,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
@@ -810,7 +858,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return nil;
@@ -832,8 +880,14 @@
 			[self stop];
 		}
 		
-		stateOnSuspend = 0;
-		[ALWrapper sourcePlay:sourceId];
+		if([ALWrapper sourcePlay:sourceId])
+		{
+			shadowState = AL_PLAYING;
+		}
+		else
+		{
+			shadowState = AL_STOPPED;
+		}
 	}
 	return self;
 }
@@ -847,7 +901,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return nil;
@@ -867,8 +921,14 @@
 		self.buffer = bufferIn;
 		self.looping = loop;
 		
-		stateOnSuspend = 0;
-		[ALWrapper sourcePlay:sourceId];
+		if([ALWrapper sourcePlay:sourceId])
+		{
+			shadowState = AL_PLAYING;
+		}
+		else
+		{
+			shadowState = AL_STOPPED;
+		}
 	}
 	return self;
 }
@@ -877,7 +937,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return nil;
@@ -902,8 +962,14 @@
 		self.pan = panIn;
 		self.looping = loopIn;
 		
-		stateOnSuspend = 0;
-		[ALWrapper sourcePlay:sourceId];
+		if([ALWrapper sourcePlay:sourceId])
+		{
+			shadowState = AL_PLAYING;
+		}
+		else
+		{
+			shadowState = AL_STOPPED;
+		}
 	}		
 	return self;
 }
@@ -912,15 +978,33 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
 		}
 		
+		abortPlaybackResume = YES;
 		[self stopActions];
-		stateOnSuspend = 0;
 		[ALWrapper sourceStop:sourceId];
+		shadowState = AL_STOPPED;
+	}
+}
+
+- (void) rewind
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		if(self.suspended)
+		{
+			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
+			return;
+		}
+		
+		abortPlaybackResume = YES;
+		[self stopActions];
+		[ALWrapper sourceRewind:sourceId];
+		shadowState = AL_INITIAL;
 	}
 }
 
@@ -932,7 +1016,7 @@
 	// Must always be synchronized
 	@synchronized(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
@@ -952,7 +1036,7 @@
 	// Must always be synchronized
 	@synchronized(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
@@ -972,7 +1056,7 @@
 	// Must always be synchronized
 	@synchronized(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
@@ -992,7 +1076,7 @@
 	// Must always be synchronized
 	@synchronized(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
@@ -1012,7 +1096,7 @@
 	// Must always be synchronized
 	@synchronized(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
@@ -1032,7 +1116,7 @@
 	// Must always be synchronized
 	@synchronized(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
@@ -1055,7 +1139,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		[self setSuspended:NO];
+		self.manuallySuspended = NO;
 		[self stop];
 		self.buffer = nil;
 	}
@@ -1068,7 +1152,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return NO;
@@ -1087,7 +1171,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return NO;
@@ -1114,7 +1198,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return NO;
@@ -1129,7 +1213,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return NO;

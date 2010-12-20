@@ -610,19 +610,24 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 	self.bgVolume = 1.0f;
 }
 
-- (bool) suspended
+- (bool) manuallySuspended
 {
-	return [OALAudioSession sharedInstance].suspended;
+	return [OALAudioSession sharedInstance].manuallySuspended;
 }
 
-- (void) setSuspended:(bool) value
+- (void) setManuallySuspended:(bool) value
 {
-	[OALAudioSession sharedInstance].suspended = value;
+	[OALAudioSession sharedInstance].manuallySuspended = value;
 }
 
 - (bool) interrupted
 {
 	return [OALAudioSession sharedInstance].interrupted;
+}
+
+- (bool) suspended
+{
+	return [OALAudioSession sharedInstance].suspended;
 }
 
 

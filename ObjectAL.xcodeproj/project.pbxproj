@@ -191,8 +191,6 @@
 		390EE88C128355F10009054E /* ZFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 390EE7E6128355F10009054E /* ZFont.m */; };
 		3918AB1F121ABB520060C2AF /* FadeDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 3918AB1E121ABB520060C2AF /* FadeDemo.m */; };
 		3918AB23121ABBA90060C2AF /* CCLayer+Scene.m in Sources */ = {isa = PBXBuildFile; fileRef = 3918AB22121ABBA90060C2AF /* CCLayer+Scene.m */; };
-		39367EE7129B9D290015B697 /* SuspendLock.h in Headers */ = {isa = PBXBuildFile; fileRef = 39367EE5129B9D290015B697 /* SuspendLock.h */; };
-		39367EE8129B9D290015B697 /* SuspendLock.m in Sources */ = {isa = PBXBuildFile; fileRef = 39367EE6129B9D290015B697 /* SuspendLock.m */; };
 		395FE7E71268C64100A8BD6A /* HardwareDemo.h in Headers */ = {isa = PBXBuildFile; fileRef = 395FE7E51268C64100A8BD6A /* HardwareDemo.h */; };
 		395FE7E81268C64100A8BD6A /* HardwareDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 395FE7E61268C64100A8BD6A /* HardwareDemo.m */; };
 		395FE91A126936ED00A8BD6A /* OALAudioTrackNotifications.h in Headers */ = {isa = PBXBuildFile; fileRef = 395FE918126936ED00A8BD6A /* OALAudioTrackNotifications.h */; };
@@ -286,6 +284,8 @@
 		39C49A2D12BEADB600F1E6D6 /* OALTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 39C49A2B12BEADB600F1E6D6 /* OALTools.m */; };
 		39C49A4B12BEB2AF00F1E6D6 /* OALAudioSession.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C49A4912BEB2AF00F1E6D6 /* OALAudioSession.h */; };
 		39C49A4C12BEB2AF00F1E6D6 /* OALAudioSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 39C49A4A12BEB2AF00F1E6D6 /* OALAudioSession.m */; };
+		39C49A6C12BEDE4400F1E6D6 /* OALSuspendHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C49A6A12BEDE4400F1E6D6 /* OALSuspendHandler.h */; };
+		39C49A6D12BEDE4400F1E6D6 /* OALSuspendHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 39C49A6B12BEDE4400F1E6D6 /* OALSuspendHandler.m */; };
 		39DF0A42129F1D210070A4D1 /* panel-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 39DF0A3B129F1D210070A4D1 /* panel-bg.png */; };
 		39DF0A43129F1D210070A4D1 /* panel-lamp-off.png in Resources */ = {isa = PBXBuildFile; fileRef = 39DF0A3C129F1D210070A4D1 /* panel-lamp-off.png */; };
 		39DF0A44129F1D210070A4D1 /* panel-lamp-on.png in Resources */ = {isa = PBXBuildFile; fileRef = 39DF0A3D129F1D210070A4D1 /* panel-lamp-on.png */; };
@@ -297,7 +297,6 @@
 		39DF0B18129F33650070A4D1 /* CCLayer+AudioPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 39DF0B17129F33650070A4D1 /* CCLayer+AudioPanel.m */; };
 		39DF0CB9129F73DA0070A4D1 /* panel-slider-track-long.png in Resources */ = {isa = PBXBuildFile; fileRef = 39DF0CB8129F73DA0070A4D1 /* panel-slider-track-long.png */; };
 		39DF0CDE129F7AC50070A4D1 /* CallFuncWithObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 39DF0CDD129F7AC50070A4D1 /* CallFuncWithObject.m */; };
-		39DFFD2C129C03AE0070A4D1 /* OALInterruptAPI.h in Headers */ = {isa = PBXBuildFile; fileRef = 39DFFD2A129C03AE0070A4D1 /* OALInterruptAPI.h */; };
 		505574581045D68500A31725 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 506EDBA4102F4C9F00A389B3 /* AVFoundation.framework */; };
 		505574591045D68500A31725 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC6640020F83B3EA000B3E49 /* AudioToolbox.framework */; };
 		5055745A1045D68500A31725 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCCBF1B60F6022AE0040855A /* CoreGraphics.framework */; };
@@ -513,8 +512,6 @@
 		3918AB1E121ABB520060C2AF /* FadeDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FadeDemo.m; sourceTree = "<group>"; };
 		3918AB21121ABBA90060C2AF /* CCLayer+Scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCLayer+Scene.h"; sourceTree = "<group>"; };
 		3918AB22121ABBA90060C2AF /* CCLayer+Scene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CCLayer+Scene.m"; sourceTree = "<group>"; };
-		39367EE5129B9D290015B697 /* SuspendLock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuspendLock.h; sourceTree = "<group>"; };
-		39367EE6129B9D290015B697 /* SuspendLock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SuspendLock.m; sourceTree = "<group>"; };
 		395FE7E51268C64100A8BD6A /* HardwareDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HardwareDemo.h; sourceTree = "<group>"; };
 		395FE7E61268C64100A8BD6A /* HardwareDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HardwareDemo.m; sourceTree = "<group>"; };
 		395FE918126936ED00A8BD6A /* OALAudioTrackNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALAudioTrackNotifications.h; sourceTree = "<group>"; };
@@ -627,6 +624,8 @@
 		39C49A2B12BEADB600F1E6D6 /* OALTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALTools.m; sourceTree = "<group>"; };
 		39C49A4912BEB2AF00F1E6D6 /* OALAudioSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALAudioSession.h; sourceTree = "<group>"; };
 		39C49A4A12BEB2AF00F1E6D6 /* OALAudioSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALAudioSession.m; sourceTree = "<group>"; };
+		39C49A6A12BEDE4400F1E6D6 /* OALSuspendHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALSuspendHandler.h; sourceTree = "<group>"; };
+		39C49A6B12BEDE4400F1E6D6 /* OALSuspendHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALSuspendHandler.m; sourceTree = "<group>"; };
 		39DF0A3B129F1D210070A4D1 /* panel-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "panel-bg.png"; sourceTree = "<group>"; };
 		39DF0A3C129F1D210070A4D1 /* panel-lamp-off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "panel-lamp-off.png"; sourceTree = "<group>"; };
 		39DF0A3D129F1D210070A4D1 /* panel-lamp-on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "panel-lamp-on.png"; sourceTree = "<group>"; };
@@ -641,7 +640,6 @@
 		39DF0CB8129F73DA0070A4D1 /* panel-slider-track-long.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "panel-slider-track-long.png"; sourceTree = "<group>"; };
 		39DF0CDC129F7AC50070A4D1 /* CallFuncWithObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallFuncWithObject.h; sourceTree = "<group>"; };
 		39DF0CDD129F7AC50070A4D1 /* CallFuncWithObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallFuncWithObject.m; sourceTree = "<group>"; };
-		39DFFD2A129C03AE0070A4D1 /* OALInterruptAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALInterruptAPI.h; sourceTree = "<group>"; };
 		506EDB87102F4C4000A389B3 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		506EDBA4102F4C9F00A389B3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		506EE05E10304ED200A389B3 /* libcocos2d libraries.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libcocos2d libraries.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1040,10 +1038,7 @@
 				396B395B124EDA43009B84A4 /* mach_timing.h */,
 				396B395C124EDA43009B84A4 /* NSMutableArray+WeakReferences.h */,
 				396B395D124EDA43009B84A4 /* NSMutableArray+WeakReferences.m */,
-				39DFFD2A129C03AE0070A4D1 /* OALInterruptAPI.h */,
 				39B0373C1262A32D00AC27C9 /* ObjectALMacros.h */,
-				39367EE5129B9D290015B697 /* SuspendLock.h */,
-				39367EE6129B9D290015B697 /* SuspendLock.m */,
 				396B395E124EDA43009B84A4 /* SynthesizeSingleton.h */,
 				39C49A2A12BEADB600F1E6D6 /* OALTools.h */,
 				39C49A2B12BEADB600F1E6D6 /* OALTools.m */,
@@ -1127,6 +1122,8 @@
 			children = (
 				39C49A4912BEB2AF00F1E6D6 /* OALAudioSession.h */,
 				39C49A4A12BEB2AF00F1E6D6 /* OALAudioSession.m */,
+				39C49A6A12BEDE4400F1E6D6 /* OALSuspendHandler.h */,
+				39C49A6B12BEDE4400F1E6D6 /* OALSuspendHandler.m */,
 			);
 			path = Session;
 			sourceTree = "<group>";
@@ -1211,9 +1208,9 @@
 				395FE7E71268C64100A8BD6A /* HardwareDemo.h in Headers */,
 				395FE91A126936ED00A8BD6A /* OALAudioTrackNotifications.h in Headers */,
 				39BF0C2112887C2800C83D2E /* IOSVersion.h in Headers */,
-				39DFFD2C129C03AE0070A4D1 /* OALInterruptAPI.h in Headers */,
 				39C49A2C12BEADB600F1E6D6 /* OALTools.h in Headers */,
 				39C49A4B12BEB2AF00F1E6D6 /* OALAudioSession.h in Headers */,
+				39C49A6C12BEDE4400F1E6D6 /* OALSuspendHandler.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1310,7 +1307,6 @@
 				390EE888128355F10009054E /* ZAttributedString.h in Headers */,
 				390EE88A128355F10009054E /* ZAttributedStringPrivate.h in Headers */,
 				390EE88B128355F10009054E /* ZFont.h in Headers */,
-				39367EE7129B9D290015B697 /* SuspendLock.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1444,7 +1440,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "########################################################################\n#\n#  This script builds the Doxygen documentation for your project\n#  and loads the docset into Xcode. You can create a new Shell Script\n#  target or just add a new Run Script build phase to an existing target.\n#\n#  This script needs to know the Doxygen binary's path. It gets this\n#  from your build settings. To add the path to your build settings:\n#\n#  Add a User-Defined Setting to your Doxygen target's Build Info named\n#  DOXYGEN_PATH and set its value to the location of your Doxygen binary,\n#  which may be one of the following (or not):\n#\n#    Application  : /Applications/Doxygen.app/Contents/Resources/doxygen\n#    Source build : /usr/local/bin/doxygen\n#\n########################################################################\n\nDOX_SRC=\"$SOURCE_ROOT/doxygen.config\"\nDOX_TEMP=\"$TEMP_DIR/doxygen.temp\"\nDOX_DEST=\"$TEMP_DIR/doxygen.config\"\nDOX_SET=\"$TEMP_DIR/DoxygenDocs.docset\"\nDOX_NAME=\"org.doxygen.$PROJECT_NAME\"\n\ndoxset() {\n  subst=${2//\\//\\\\\\/}\n  subst=${subst//\\\"/\\\\\\\"/}\n  if [ \"$3\" != \"NO_QUOTES\" -a `expr \"$subst\" : \".*[ '].*\"` -gt 0 ]; then\n  \tsubst=\\\"$subst\\\"\n  fi\n  cat \"$DOX_DEST\" | sed -E \"s/($1[ \\t]+=[ \\t]*).*$/\\1$subst/g\" >\"$DOX_TEMP\"\n  mv -f \"$DOX_TEMP\" \"$DOX_DEST\"\n}\n\n#\n# If the config file doesn't exist, run 'doxygen -g <dest>' to create a default file.\n#\nif ! [ -f \"$DOX_SRC\" ]; then\n  echo doxygen config file does not exist\n  $DOXYGEN_PATH -g \"$DOX_SRC\"\nfi\n\n#\n#  Make a copy of the default config\n#\ncp \"$DOX_SRC\" \"$DOX_DEST\"\n\n#\n# Customize the settings we want to change\n#\ndoxset PROJECT_NAME\t\t\t\"$PROJECT_NAME\"\ndoxset INPUT\t\t\t\t\"$SOURCE_ROOT/libs/ObjectAL\"\ndoxset IMAGE_PATH\t\t\t\"$SOURCE_ROOT/diagrams\"\ndoxset OUTPUT_DIRECTORY\t\t\"$DOX_SET\"\ndoxset DOCSET_BUNDLE_ID\t\t\"$DOX_NAME\"\ndoxset RECURSIVE\t\t\tYES\ndoxset GENERATE_DOCSET\t\tYES\ndoxset GENERATE_LATEX\t\tYES\ndoxset GENERATE_XML\t\t\tYES\ndoxset QUIET\t\t\t\tYES\ndoxset TAB_SIZE\t\t\t\t4\ndoxset QT_AUTOBRIEF\t\t\tYES\ndoxset JAVADOC_AUTOBRIEF\tYES\ndoxset FULL_PATH_NAMES\t\tNO\n#doxset EXTRACT_ALL\t\t\tYES\ndoxset EXTRACT_PRIVATE\t\tNO\ndoxset EXTRACT_STATIC\t\tNO\ndoxset ALWAYS_DETAILED_SEC \tYES\ndoxset FILE_PATTERNS\t\t\"*.c *.cc *.cxx *.cpp *.c++ *.java *.h *.hh *.hxx *.hpp *.h++ *.m *.mm *.dox\" NO_QUOTES\ndoxset WARN_FORMAT\t\t\t\"\\$file:\\$line: warning: \\$text\"\n\ndoxset USE_PDFLATEX\t\tYES\ndoxset PDF_HYPERLINKS\t\tYES\n\n#\n#  Run doxygen on the updated config file.\n#  Note: doxygen creates a Makefile that does most of the heavy lifting.\n#\n$DOXYGEN_PATH \"$DOX_DEST\"\n\n#\n#  make will invoke docsetutil. Take a look at the Makefile to see how this is done.\n#\nmake -C \"$DOX_SET/html\" install\n\n#\n#  Load the doc set\n#\n/usr/bin/osascript -e 'tell application \"Xcode\" to load documentation set with path \"/Users/'$USER'/Library/Developer/Shared/Documentation/DocSets/'$DOX_NAME'.docset\"'\n\n\nexit 0";
+			shellScript = "########################################################################\n#\n#  This script builds the Doxygen documentation for your project\n#  and loads the docset into Xcode. You can create a new Shell Script\n#  target or just add a new Run Script build phase to an existing target.\n#\n#  This script needs to know the Doxygen binary's path. It gets this\n#  from your build settings. To add the path to your build settings:\n#\n#  Add a User-Defined Setting to your Doxygen target's Build Info named\n#  DOXYGEN_PATH and set its value to the location of your Doxygen binary,\n#  which may be one of the following (or not):\n#\n#    Application  : /Applications/Doxygen.app/Contents/Resources/doxygen\n#    Source build : /usr/local/bin/doxygen\n#\n########################################################################\n\nDOX_SRC=\"$SOURCE_ROOT/doxygen.config\"\nDOX_TEMP=\"$TEMP_DIR/doxygen.temp\"\nDOX_DEST=\"$TEMP_DIR/doxygen.config\"\nDOX_SET=\"$TEMP_DIR/DoxygenDocs.docset\"\nDOX_NAME=\"org.doxygen.$PROJECT_NAME\"\n\ndoxset() {\n  subst=${2//\\//\\\\\\/}\n  subst=${subst//\\\"/\\\\\\\"/}\n  if [ \"$3\" != \"NO_QUOTES\" -a `expr \"$subst\" : \".*[ '].*\"` -gt 0 ]; then\n  \tsubst=\\\"$subst\\\"\n  fi\n  cat \"$DOX_DEST\" | sed -E \"s/($1[ \\t]+=[ \\t]*).*$/\\1$subst/g\" >\"$DOX_TEMP\"\n  mv -f \"$DOX_TEMP\" \"$DOX_DEST\"\n}\n\n#\n# If the config file doesn't exist, run 'doxygen -g <dest>' to create a default file.\n#\nif ! [ -f \"$DOX_SRC\" ]; then\n  echo doxygen config file does not exist\n  $DOXYGEN_PATH -g \"$DOX_SRC\"\nfi\n\n#\n#  Make a copy of the default config\n#\ncp \"$DOX_SRC\" \"$DOX_DEST\"\n\n#\n# Customize the settings we want to change\n#\ndoxset PROJECT_NAME\t\t\t\"$PROJECT_NAME\"\ndoxset INPUT\t\t\t\t\"$SOURCE_ROOT/libs/ObjectAL\"\ndoxset IMAGE_PATH\t\t\t\"$SOURCE_ROOT/diagrams\"\ndoxset OUTPUT_DIRECTORY\t\t\"$DOX_SET\"\ndoxset DOCSET_BUNDLE_ID\t\t\"$DOX_NAME\"\ndoxset RECURSIVE\t\t\tYES\ndoxset GENERATE_DOCSET\t\tYES\ndoxset GENERATE_LATEX\t\tNO\ndoxset GENERATE_XML\t\t\tYES\ndoxset QUIET\t\t\t\tYES\ndoxset TAB_SIZE\t\t\t\t4\ndoxset QT_AUTOBRIEF\t\t\tYES\ndoxset JAVADOC_AUTOBRIEF\tYES\ndoxset FULL_PATH_NAMES\t\tNO\n#doxset EXTRACT_ALL\t\t\tYES\ndoxset EXTRACT_PRIVATE\t\tNO\ndoxset EXTRACT_STATIC\t\tNO\ndoxset ALWAYS_DETAILED_SEC \tYES\ndoxset FILE_PATTERNS\t\t\"*.c *.cc *.cxx *.cpp *.c++ *.java *.h *.hh *.hxx *.hpp *.h++ *.m *.mm *.dox\" NO_QUOTES\ndoxset WARN_FORMAT\t\t\t\"\\$file:\\$line: warning: \\$text\"\n\ndoxset USE_PDFLATEX\t\tNO\ndoxset PDF_HYPERLINKS\t\tYES\n\n#\n#  Run doxygen on the updated config file.\n#  Note: doxygen creates a Makefile that does most of the heavy lifting.\n#\n$DOXYGEN_PATH \"$DOX_DEST\"\n\n#\n#  make will invoke docsetutil. Take a look at the Makefile to see how this is done.\n#\nmake -C \"$DOX_SET/html\" install\n\n#\n#  Load the doc set\n#\n/usr/bin/osascript -e 'tell application \"Xcode\" to load documentation set with path \"/Users/'$USER'/Library/Developer/Shared/Documentation/DocSets/'$DOX_NAME'.docset\"'\n\n\nexit 0";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1512,6 +1508,7 @@
 				39BF0C2212887C2800C83D2E /* IOSVersion.m in Sources */,
 				39C49A2D12BEADB600F1E6D6 /* OALTools.m in Sources */,
 				39C49A4C12BEB2AF00F1E6D6 /* OALAudioSession.m in Sources */,
+				39C49A6D12BEDE4400F1E6D6 /* OALSuspendHandler.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1596,7 +1593,6 @@
 				390EE887128355F10009054E /* FontManager.m in Sources */,
 				390EE889128355F10009054E /* ZAttributedString.m in Sources */,
 				390EE88C128355F10009054E /* ZFont.m in Sources */,
-				39367EE8129B9D290015B697 /* SuspendLock.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

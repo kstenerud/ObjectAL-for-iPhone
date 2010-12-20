@@ -269,13 +269,14 @@
 	else
 	{
 		[source stop];
-		[self refreshUI];
 	}
+	[self refreshUI];
 }
 
 - (void) onPauseSource:(LampButton*) button
 {
 	source.paused = button.isOn;
+	[self refreshUI];
 }
 
 - (void) onPlayStopTrack:(LampButton*) button
@@ -287,13 +288,14 @@
 	else
 	{
 		[track stop];
-		[self refreshUI];
 	}
+	[self refreshUI];
 }
 
 - (void) onPauseTrack:(LampButton*) button
 {
 	track.paused = button.isOn;
+	[self refreshUI];
 }
 
 
@@ -325,7 +327,7 @@
 
 - (void) onSuspend:(LampButton*) button
 {
-	[OALAudioSession sharedInstance].suspended = button.isOn;
+	[OALAudioSession sharedInstance].manuallySuspended = button.isOn;
 	[self refreshUI];
 }
 

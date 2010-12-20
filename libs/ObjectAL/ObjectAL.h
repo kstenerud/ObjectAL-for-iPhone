@@ -529,7 +529,7 @@
 	{
 		// No "view" method means we are < 4.0
 		// Manually suspend so iOS 3.x doesn't clobber our session!
-		[OpenALManager sharedInstance].suspended = YES;
+		[OpenALManager sharedInstance].manuallySuspended = YES;
 	}
 
 	[myMoviePlayer play];
@@ -554,7 +554,7 @@
 	{
 		// No "view" method means we are < 4.0
 		// Manually unsuspend
-		[OpenALManager sharedInstance].suspended = NO;
+		[OpenALManager sharedInstance].manuallySuspended = NO;
 	}
 }
  \endcode

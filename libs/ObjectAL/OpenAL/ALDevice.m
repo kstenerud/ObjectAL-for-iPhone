@@ -25,14 +25,11 @@
 //
 
 #import "ALDevice.h"
-#import "ALWrapper.h"
-#import "ObjectALMacros.h"
 #import "NSMutableArray+WeakReferences.h"
+#import "ObjectALMacros.h"
+#import "ALWrapper.h"
 #import "OpenALManager.h"
-#import "OALInterruptAPI.h"
 
-
-ADD_INTERRUPT_API(ALContext);
 
 @implementation ALDevice
 
@@ -48,15 +45,16 @@ ADD_INTERRUPT_API(ALContext);
 	if(nil != (self = [super init]))
 	{
 		OAL_LOG_DEBUG(@"%@: Init device %@", self, deviceSpecifier);
+
+		suspendHandler = [[OALSuspendHandler handlerWithTarget:nil selector:nil] retain];
+
 		if(nil != (device = [ALWrapper openDevice:deviceSpecifier]))
 		{
 			contexts = [[NSMutableArray mutableArrayUsingWeakReferencesWithCapacity:5] retain];
 			
 			[[OpenALManager sharedInstance] notifyDeviceInitializing:self];
 		}
-		suspendLock = [[SuspendLock lockWithTarget:nil
-									  lockSelector:nil
-									unlockSelector:nil] retain];
+		[[OpenALManager sharedInstance] addSuspendListener:self];
 	}
 	return self;
 }
@@ -64,10 +62,11 @@ ADD_INTERRUPT_API(ALContext);
 - (void) dealloc
 {
 	OAL_LOG_DEBUG(@"%@: Dealloc", self);
+	[[OpenALManager sharedInstance] removeSuspendListener:self];
 	[[OpenALManager sharedInstance] notifyDeviceDeallocating:self];
 	[contexts release];
 	[ALWrapper closeDevice:device];
-	[suspendLock release];
+	[suspendHandler release];
 
 	[super dealloc];
 }
@@ -94,64 +93,41 @@ ADD_INTERRUPT_API(ALContext);
 	return [ALWrapper getInteger:device attribute:ALC_MINOR_VERSION];
 }
 
-- (bool) suspended
+#pragma mark Suspend Handler
+
+- (void) addSuspendListener:(id<OALSuspendListener>) listener
 {
-	// No need to synchronize since SuspendLock does that already.
-	return suspendLock.suspendLock;
+	[suspendHandler addSuspendListener:listener];
 }
 
-- (void) setSuspended:(bool) value
+- (void) removeSuspendListener:(id<OALSuspendListener>) listener
 {
-	// Ensure setting/resetting occurs in opposite order
-	if(value)
-	{
-		for(ALContext* context in contexts)
-		{
-			context.suspended = value;
-		}
-	}
+	[suspendHandler removeSuspendListener:listener];
+}
 
-	// No need to synchronize since SuspendLock does that already.
-	suspendLock.suspendLock = value;
+- (bool) manuallySuspended
+{
+	return suspendHandler.manuallySuspended;
+}
 
-	// Ensure setting/resetting occurs in opposite order
-	if(!value)
-	{
-		for(ALContext* context in contexts)
-		{
-			context.suspended = value;
-		}
-	}
+- (void) setManuallySuspended:(bool) value
+{
+	suspendHandler.manuallySuspended = value;
 }
 
 - (bool) interrupted
 {
-	// No need to synchronize since SuspendLock does that already.
-	return suspendLock.interruptLock;
+	return suspendHandler.interrupted;
 }
 
 - (void) setInterrupted:(bool) value
 {
-	// Ensure setting/resetting occurs in opposing order
-	if(value)
-	{
-		for(ALContext* context in contexts)
-		{
-			context.interrupted = value;
-		}
-	}
+	suspendHandler.interrupted = value;
+}
 
-	// No need to synchronize since SuspendLock does that already.
-	suspendLock.interruptLock = value;
-
-	// Ensure setting/resetting occurs in opposing order
-	if(!value)
-	{
-		for(ALContext* context in contexts)
-		{
-			context.interrupted = value;
-		}
-	}
+- (bool) suspended
+{
+	return suspendHandler.suspended;
 }
 
 

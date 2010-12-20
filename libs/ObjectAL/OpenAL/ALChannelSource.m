@@ -614,6 +614,17 @@
 	}
 }
 
+- (void) rewind
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		for(id<ALSoundSource> source in sourcePool.sources)
+		{
+			[source rewind];
+		}
+	}
+}
+
 - (void) fadeTo:(float) value duration:(float) duration target:(id) target selector:(SEL) selector
 {
 	// Must always be synchronized

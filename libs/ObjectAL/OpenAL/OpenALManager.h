@@ -28,7 +28,7 @@
 #import "SynthesizeSingleton.h"
 #import "ALContext.h"
 #import "ALDevice.h"
-#import "SuspendLock.h"
+#import "OALSuspendHandler.h"
 
 
 #pragma mark OpenALManager
@@ -44,15 +44,15 @@
  *
  * Alternatively, you may opt to use OALSimpleAudio for a simpler interface.
  */
-@interface OpenALManager : NSObject
+@interface OpenALManager : NSObject <OALSuspendManager>
 {
 	ALContext* currentContext; // WEAK reference
 	
 	/** All opened devices */
 	NSMutableArray* devices;
 	
-	/** Manages a double-lock between suspend and interrupt */
-	SuspendLock* suspendLock;
+	/** Handles suspending and interrupting for this object. */
+	OALSuspendHandler* suspendHandler;
 
 	/** Operation queue for asynchronous loading. */
 	NSOperationQueue* operationQueue;
@@ -82,12 +82,6 @@
 
 /** The frequency of the output mixer. */
 @property(readwrite,assign) ALdouble mixerOutputFrequency;
-
-/** If YES, this object is suspended. */
-@property(readwrite,assign) bool suspended;
-
-/** If YES, this object is interrupted. */
-@property(readonly) bool interrupted;
 
 
 #pragma mark Object Management

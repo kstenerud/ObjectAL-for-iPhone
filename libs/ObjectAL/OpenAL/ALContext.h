@@ -29,6 +29,8 @@
 #import <OpenAL/alc.h>
 #import "ALListener.h"
 #import "ALSource.h"
+#import "OALSuspendHandler.h"
+
 
 @class ALDevice;
 
@@ -45,7 +47,7 @@
  *
  * @see ObjectAL.currentContext
  */
-@interface ALContext : NSObject
+@interface ALContext : NSObject <OALSuspendManager>
 {
 	ALCcontext* context;
 	ALDevice* device;
@@ -56,8 +58,8 @@
 	/** This context's attributes. */
 	NSMutableArray* attributes;
 	
-	/** Manages a double-lock between suspend and interrupt */
-	SuspendLock* suspendLock;
+	/** Handles suspending and interrupting for this object. */
+	OALSuspendHandler* suspendHandler;
 }
 
 
@@ -118,12 +120,6 @@
  * Only valid when this is the current context.
  */
 @property(readonly) NSString* vendor;
-
-/** If YES, this object is suspended. */
-@property(readwrite,assign) bool suspended;
-
-/** If YES, this object is interrupted. */
-@property(readonly) bool interrupted;
 
 
 #pragma mark Object Management

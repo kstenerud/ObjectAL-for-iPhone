@@ -29,7 +29,7 @@
 #import "ALSoundSource.h"
 #import "ALBuffer.h"
 #import "OALAction.h"
-#import "SuspendLock.h"
+#import "OALSuspendHandler.h"
 
 @class ALContext;
 
@@ -40,17 +40,23 @@
  * A source represents an object that emits sound which can be heard by a listener.
  * This source can have position, velocity, and direction.
  */
-@interface ALSource : NSObject <ALSoundSource>
+@interface ALSource : NSObject <ALSoundSource, OALSuspendManager>
 {
 	unsigned int sourceId;
 	bool interruptible;
 	float gain;
 	bool muted;
 
-	/** The state of this source at the time it was suspended. */
-	int stateOnSuspend;
-	/** The byte offset of playback when this source was suspended. */
-	float byteOffsetOnSuspend;
+	/** Shadow value which keeps the correct state value
+	 * for AL_PLAYING and AL_PAUSED.
+	 * We need this due to a buggy OpenAL implementation.
+	 */
+	int shadowState;
+	
+	/** Used to abort a pending playback resume if the user calls
+	 * stop or pause.
+	 */
+	bool abortPlaybackResume;
 
 	ALBuffer* buffer;
 	ALContext* context;
@@ -64,8 +70,8 @@
 	/** Current action operating on the pitch control. */
 	OALAction* pitchAction;
 	
-	/** Manages a double-lock between suspend and interrupt */
-	SuspendLock* suspendLock;
+	/** Handles suspending and interrupting for this object. */
+	OALSuspendHandler* suspendHandler;
 }
 
 
@@ -99,12 +105,6 @@
 
 /** The state of this source. */
 @property(readwrite,assign) int state;
-
-/** If YES, this object is suspended. */
-@property(readwrite,assign) bool suspended;
-
-/** If YES, this object is interrupted. */
-@property(readonly) bool interrupted;
 
 
 #pragma mark Object Management

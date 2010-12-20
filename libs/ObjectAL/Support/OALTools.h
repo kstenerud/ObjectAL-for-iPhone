@@ -27,10 +27,20 @@
 #import <Foundation/Foundation.h>
 
 
+/**
+ * Miscellaneous tools used by ObjectAL.
+ */
 @interface OALTools : NSObject
 {
 }
 
+/** Returns the URL corresponding to the specified path.
+ * If the path is not absolute (starts with a "/"), this method will look for
+ * the file in the application's main bundle.
+ *
+ * @param path The path to convert to a URL.
+ * @return The corresponding URL or nil if a URL could not be formed.
+ */
 + (NSURL*) urlForPath:(NSString*) path;
 
 @end

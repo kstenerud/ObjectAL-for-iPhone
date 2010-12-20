@@ -27,13 +27,13 @@
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 #import "SynthesizeSingleton.h"
-#import "SuspendLock.h"
+#import "OALSuspendHandler.h"
 
 
 /**
  * Handles the audio session and interrupts.
  */
-@interface OALAudioSession : NSObject <AVAudioSessionDelegate>
+@interface OALAudioSession : NSObject <AVAudioSessionDelegate, OALSuspendManager>
 {
 	NSString* audioSessionCategory;
 	
@@ -51,8 +51,8 @@
 	/** If true, the audio session was active when the interrupt occurred. */
 	bool audioSessionWasActive;
 	
-	/** Manages a double-lock between suspend and interrupt */
-	SuspendLock* suspendLock;
+	/** Handles suspending and interrupting for this object. */
+	OALSuspendHandler* suspendHandler;
 }
 
 
@@ -130,14 +130,6 @@
 /** If true, the audio session is active */
 @property(readwrite,assign) bool audioSessionActive;
 
-/** If YES, this object is suspended.
- * Note: Suspending deactivates the audio session.
- */
-@property(readwrite,assign) bool suspended;
-
-/** If YES, this object is interrupted. */
-@property(readonly) bool interrupted;
-
 /** Get the device's final hardware output volume, as controlled by
  * the volume button on the side of the device.
  */
@@ -169,6 +161,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALAudioSession);
 
 /** Force an interrupt end. This can be useful in cases where a buggy OS
  * fails to end an interrupt.
+ *
+ * Be VERY CAREFUL when using this!
  *
  * @param informDelegate If YES, also invoke "endInterruption" on the delegate.
  */

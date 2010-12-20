@@ -11,7 +11,7 @@
 
 @interface FadeDemo : CCColorLayer
 {
-	ALSource* source;
+	id<ALSoundSource> source;
 
 	LampButton* startStopSourceButton;
 	LampButton* fadeOutSourceButton;

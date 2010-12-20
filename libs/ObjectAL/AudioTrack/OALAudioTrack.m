@@ -223,13 +223,9 @@
 
 #endif /* TARGET_IPHONE_SIMULATOR && OBJECTAL_CFG_SIMULATOR_BUG_WORKAROUND */
 
-/** (INTERNAL USE) Called by SuspendLock to suspend this object.
+/** (INTERNAL USE) Called by SuspendHandler.
  */
-- (void) onSuspend;
-
-/** (INTERNAL USE) Called by SuspendLock to unsuspend this object.
- */
-- (void) onUnsuspend;
+- (void) setSuspended:(bool) value;
 
 @end
 
@@ -250,19 +246,17 @@
 	if(nil != (self = [super init]))
 	{
 		OAL_LOG_DEBUG(@"%@: Init", self);
-		// Make sure OALAudioTracks is initialized.
-		[OALAudioTracks sharedInstance];
 		
+		suspendHandler = [[OALSuspendHandler handlerWithTarget:self selector:@selector(setSuspended:)] retain];
+
 		operationQueue = [[NSOperationQueue alloc] init];
 		operationQueue.maxConcurrentOperationCount = 1;
 		gain = 1.0f;
 		numberOfLoops = 0;
 		currentTime = 0.0;
-		suspendLock = [[SuspendLock lockWithTarget:self
-									  lockSelector:@selector(onSuspend)
-									unlockSelector:@selector(onUnsuspend)] retain];
 		
 		[[OALAudioTracks sharedInstance] notifyTrackInitializing:self];
+		[[OALAudioTracks sharedInstance] addSuspendListener:self];
 	}
 	return self;
 }
@@ -270,6 +264,7 @@
 - (void) dealloc
 {
 	OAL_LOG_DEBUG(@"%@: Dealloc", self);
+	[[OALAudioTracks sharedInstance] removeSuspendListener:self];
 	[[OALAudioTracks sharedInstance] notifyTrackDeallocating:self];
 
 	[operationQueue release];
@@ -280,7 +275,7 @@
 	[gainAction release];
 	[panAction stopAction];
 	[panAction release];
-	[suspendLock release];
+	[suspendHandler release];
 	[super dealloc];
 }
 
@@ -493,50 +488,62 @@
 	}
 }
 
-/** Called by SuspendLock to suspend this object.
- */
-- (void) onSuspend
+
+#pragma mark Suspend Handler
+
+- (void) addSuspendListener:(id<OALSuspendListener>) listenerIn
 {
-	if(self.playing && !self.paused)
-	{
-		currentTime = player.currentTime;
-		[player pause];
-	}
+	[suspendHandler addSuspendListener:listenerIn];
 }
 
-/** Called by SuspendLock to unsuspend this object.
- */
-- (void) onUnsuspend
+- (void) removeSuspendListener:(id<OALSuspendListener>) listenerIn
 {
-	if(self.playing && !self.paused)
-	{
-		player.currentTime = currentTime;
-		[player play];
-	}
+	[suspendHandler removeSuspendListener:listenerIn];
 }
 
-- (bool) suspended
+- (bool) manuallySuspended
 {
-	// No need to synchronize since SuspendLock does that already.
-	return suspendLock.suspendLock;
+	return suspendHandler.manuallySuspended;
 }
 
-- (void) setSuspended:(bool) value
+- (void) setManuallySuspended:(bool) value
 {
-	// No need to synchronize since SuspendLock does that already.
-	suspendLock.suspendLock = value;
+	suspendHandler.manuallySuspended = value;
 }
 
 - (bool) interrupted
 {
-	// No need to synchronize since SuspendLock does that already.
-	return suspendLock.interruptLock;
+	return suspendHandler.interrupted;
 }
 
 - (void) setInterrupted:(bool) value
 {
-	// No need to synchronize since SuspendLock does that already.
-	suspendLock.interruptLock = value;
+	suspendHandler.interrupted = value;
+}
+
+- (bool) suspended
+{
+	return suspendHandler.suspended;
+}
+
+- (void) setSuspended:(bool) value
+{
+	if(value)
+	{
+		if(self.playing && !self.paused)
+		{
+			currentTime = player.currentTime;
+			[player pause];
+		}
+	}
+	else
+	{
+		if(self.playing && !self.paused)
+		{
+			player.currentTime = currentTime;
+			[player play];
+		}
+	}
 }
 
 

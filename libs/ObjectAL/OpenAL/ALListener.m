@@ -43,18 +43,17 @@
 {
 	if(nil != (self = [super init]))
 	{
+		suspendHandler = [[OALSuspendHandler handlerWithTarget:nil selector:nil] retain];
+
 		context = contextIn;
 		gain = 1.0f;
-		suspendLock = [[SuspendLock lockWithTarget:nil
-									  lockSelector:nil
-									unlockSelector:nil] retain];
 	}
 	return self;
 }
 
 - (void) dealloc
 {
-	[suspendLock release];
+	[suspendHandler release];
 	[super dealloc];
 }
 
@@ -74,7 +73,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
@@ -98,7 +97,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
@@ -127,7 +126,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED_STRUCT_OP(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
@@ -151,7 +150,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED_STRUCT_OP(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
@@ -175,7 +174,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED_STRUCT_OP(self)
 	{
-		if(suspendLock.locked)
+		if(self.suspended)
 		{
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
@@ -185,28 +184,41 @@
 	}
 }
 
-- (bool) suspended
+#pragma mark Suspend Handler
+
+- (void) addSuspendListener:(id<OALSuspendListener>) listener
 {
-	// No need to synchronize since SuspendLock does that already.
-	return suspendLock.suspendLock;
+	[suspendHandler addSuspendListener:listener];
 }
 
-- (void) setSuspended:(bool) value
+- (void) removeSuspendListener:(id<OALSuspendListener>) listener
 {
-	// No need to synchronize since SuspendLock does that already.
-	suspendLock.suspendLock = value;
+	[suspendHandler removeSuspendListener:listener];
+}
+
+- (bool) manuallySuspended
+{
+	return suspendHandler.manuallySuspended;
+}
+
+- (void) setManuallySuspended:(bool) value
+{
+	suspendHandler.manuallySuspended = value;
 }
 
 - (bool) interrupted
 {
-	// No need to synchronize since SuspendLock does that already.
-	return suspendLock.interruptLock;
+	return suspendHandler.interrupted;
 }
 
 - (void) setInterrupted:(bool) value
 {
-	// No need to synchronize since SuspendLock does that already.
-	suspendLock.interruptLock = value;
+	suspendHandler.interrupted = value;
+}
+
+- (bool) suspended
+{
+	return suspendHandler.suspended;
 }
 
 @end

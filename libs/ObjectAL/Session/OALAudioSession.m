@@ -25,15 +25,8 @@
 //
 
 #import "OALAudioSession.h"
-#import "ObjectALMacros.h"
 #import <AudioToolbox/AudioToolbox.h>
-
-// TODO: Factor these out
-#import "ObjectAL.h"
-#import "OALInterruptAPI.h"
-//ADD_INTERRUPT_API(OALAudioSession);
-ADD_INTERRUPT_API(OpenALManager);
-ADD_INTERRUPT_API(OALAudioTracks);
+#import "ObjectALMacros.h"
 
 
 #define kMaxSessionActivationRetries 40
@@ -89,13 +82,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALAudioSession);
  */
 - (void) updateFromFlags;
 
-/** (INTERNAL USE) Called by SuspendLock to suspend this object.
+/** (INTERNAL USE) Called by SuspendHandler.
  */
-- (void) onSuspend;
-
-/** (INTERNAL USE) Called by SuspendLock to unsuspend this object.
- */
-- (void) onUnsuspend;
+- (void) setSuspended:(bool) value;
 
 @end
 
@@ -116,6 +105,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 	if(nil != (self = [super init]))
 	{
 		OAL_LOG_DEBUG(@"%@: Init", self);
+
+		suspendHandler = [[OALSuspendHandler handlerWithTarget:self selector:@selector(setSuspended:)] retain];
+
 		[(AVAudioSession*)[AVAudioSession sharedInstance] setDelegate:self];
 		
 		// Set up defaults
@@ -126,11 +118,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 		useHardwareIfAvailable = YES;
 		honorSilentSwitch = YES;
 		[self updateFromFlags];
-		
-		suspendLock = [[SuspendLock lockWithTarget:self
-									  lockSelector:@selector(onSuspend)
-									unlockSelector:@selector(onUnsuspend)] retain];
-		
+				
 		// Activate the audio session.
 		self.audioSessionActive = YES;
 	}
@@ -143,7 +131,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 	self.audioSessionActive = NO;
 	
 	[audioSessionCategory release];
-	[suspendLock release];
+	[suspendHandler release];
 	
 	[super dealloc];
 }
@@ -539,72 +527,63 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 	}
 }
 
-- (void) onSuspend
+
+#pragma mark Suspend Handler
+
+- (void) addSuspendListener:(id<OALSuspendListener>) listener
 {
-	audioSessionWasActive = self.audioSessionActive;
-	self.audioSessionActive = NO;
+	[suspendHandler addSuspendListener:listener];
 }
 
-- (void) onUnsuspend
+- (void) removeSuspendListener:(id<OALSuspendListener>) listener
 {
-	if(audioSessionWasActive)
-	{
-		self.audioSessionActive = YES;
-	}
+	[suspendHandler removeSuspendListener:listener];
 }
 
-- (bool) suspended
+- (bool) manuallySuspended
 {
-	// No need to synchronize since SuspendLock does that already.
-	return suspendLock.suspendLock;
+	return suspendHandler.manuallySuspended;
 }
 
-- (void) setSuspended:(bool) value
+- (void) setManuallySuspended:(bool) value
 {
-	// Ensure setting/resetting occurs in opposing order
-	if(value)
-	{
-		[OpenALManager sharedInstance].suspended = value;
-		[OALAudioTracks sharedInstance].suspended = value;
-	}
-	
-	// No need to synchronize since SuspendLock does that already.
-	suspendLock.suspendLock = value;
-	
-	// Ensure setting/resetting occurs in opposing order
-	if(!value)
-	{
-		[OpenALManager sharedInstance].suspended = value;
-		[OALAudioTracks sharedInstance].suspended = value;
-	}
+	suspendHandler.manuallySuspended = value;
 }
 
 - (bool) interrupted
 {
-	// No need to synchronize since SuspendLock does that already.
-	return suspendLock.interruptLock;
+	return suspendHandler.interrupted;
 }
 
 - (void) setInterrupted:(bool) value
 {
-	// Ensure setting/resetting occurs in opposing order
+	suspendHandler.interrupted = value;
+}
+
+- (bool) suspended
+{
+	return suspendHandler.suspended;
+}
+
+- (void) setSuspended:(bool) value
+{
+	NSLog(@"### Set suspended = %d", value);
 	if(value)
 	{
-		[OpenALManager sharedInstance].interrupted = value;
-		[OALAudioTracks sharedInstance].interrupted = value;
+		audioSessionWasActive = self.audioSessionActive;
+		self.audioSessionActive = NO;
 	}
-	
-	// No need to synchronize since SuspendLock does that already.
-	suspendLock.interruptLock = value;
-	
-	// Ensure setting/resetting occurs in opposing order
-	if(!value)
+	else
 	{
-		[OpenALManager sharedInstance].interrupted = value;
-		[OALAudioTracks sharedInstance].interrupted = value;
+		if(audioSessionWasActive)
+		{
+			self.audioSessionActive = YES;
+		}
 	}
 }
 
+
+#pragma mark Interrupt Handling
 
 // AVAudioSessionDelegate
 - (void) beginInterruption

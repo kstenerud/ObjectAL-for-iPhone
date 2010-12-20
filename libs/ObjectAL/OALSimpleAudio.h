@@ -171,11 +171,15 @@
 /** The number of items currently in the preload cache. */
 @property(readonly) NSUInteger preloadCacheCount;
 
-/** If YES, the sound system is suspended. */
-@property(readwrite,assign) bool suspended;
+/** Set to YES to manually suspend the sound system. */
+@property(readwrite,assign) bool manuallySuspended;
 
 /** If YES, the sound system is interrupted. */
 @property(readonly) bool interrupted;
+
+/** If YES, the sound system is suspended. */
+@property(readonly) bool suspended;
+
 
 
 #pragma mark Object Management
