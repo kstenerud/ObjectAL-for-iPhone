@@ -11,6 +11,8 @@ Major changes (incompatible with earlier versions):
 - SoundSource has been renamed to ALSoundSource.
 - ChannelSource has been renamed to ALChannelSource.
 - SoundSourcePool has been renamed to ALSoundSourcePool.
+- Update 2010-12-19: OALAudioSupport has been replaced by OALAudioSession, and the buffer load
+                     methods have been moved to OpenALManager.
 
 
 New Classes:
@@ -20,6 +22,7 @@ New Classes:
 - OALAction: Allows actions to be performed on audio objects.
              You can configure ObjectAL to make all actions subclasses of cocos2d actions in ObjectALConfig.h
 - OALFunction: Allows you to modify how a duration based fade, pan, or pitch gets applied in an action.
+- OALAudioSession: Manages all aspects of the iOS audio session and interrupts.
 
 
 Other changes:
