@@ -86,20 +86,24 @@
 	[[CCDirector sharedDirector] startAnimation];
 }
 
-- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {
+- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
+{
 	[[CCDirector sharedDirector] purgeCachedData];
 }
 
-- (void)applicationWillTerminate:(UIApplication *)application {
+- (void)applicationWillTerminate:(UIApplication *)application
+{
 	[[CCDirector sharedDirector] end];
 }
 
-- (void)applicationSignificantTimeChange:(UIApplication *)application {
+- (void)applicationSignificantTimeChange:(UIApplication *)application
+{
 	[[CCDirector sharedDirector] setNextDeltaTimeZero:YES];
 }
 
-- (void)dealloc {
-	[[CCDirector sharedDirector] release];
+- (void)dealloc
+{
+	[CCDirector purgeSharedDirector];
 	[window release];
 	[super dealloc];
 }

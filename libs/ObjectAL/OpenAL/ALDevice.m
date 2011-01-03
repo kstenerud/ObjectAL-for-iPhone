@@ -46,14 +46,19 @@
 	{
 		OAL_LOG_DEBUG(@"%@: Init device %@", self, deviceSpecifier);
 
-		suspendHandler = [[OALSuspendHandler handlerWithTarget:nil selector:nil] retain];
-
-		if(nil != (device = [ALWrapper openDevice:deviceSpecifier]))
+		device = [ALWrapper openDevice:deviceSpecifier];
+		if(nil == device)
 		{
-			contexts = [[NSMutableArray mutableArrayUsingWeakReferencesWithCapacity:5] retain];
-			
-			[[OpenALManager sharedInstance] notifyDeviceInitializing:self];
+			OAL_LOG_ERROR(@"%@: Failed to init device %@. Returning nil", self, deviceSpecifier);
+			[self release];
+			return nil;
 		}
+
+		suspendHandler = [[OALSuspendHandler handlerWithTarget:nil selector:nil] retain];
+		
+		contexts = [[NSMutableArray mutableArrayUsingWeakReferencesWithCapacity:5] retain];
+			
+		[[OpenALManager sharedInstance] notifyDeviceInitializing:self];
 		[[OpenALManager sharedInstance] addSuspendListener:self];
 	}
 	return self;
@@ -62,12 +67,14 @@
 - (void) dealloc
 {
 	OAL_LOG_DEBUG(@"%@: Dealloc", self);
-	[[OpenALManager sharedInstance] removeSuspendListener:self];
-	[[OpenALManager sharedInstance] notifyDeviceDeallocating:self];
-	[contexts release];
-	[ALWrapper closeDevice:device];
-	[suspendHandler release];
-
+	if(0 != device)
+	{
+		[[OpenALManager sharedInstance] removeSuspendListener:self];
+		[[OpenALManager sharedInstance] notifyDeviceDeallocating:self];
+		[contexts release];
+		[ALWrapper closeDevice:device];
+		[suspendHandler release];
+	}
 	[super dealloc];
 }
 

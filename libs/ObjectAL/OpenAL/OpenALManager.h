@@ -27,8 +27,6 @@
 #import <Foundation/Foundation.h>
 #import "SynthesizeSingleton.h"
 #import "ALContext.h"
-#import "ALDevice.h"
-#import "OALSuspendHandler.h"
 
 
 #pragma mark OpenALManager
@@ -221,15 +219,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OpenALManager);
  */
 - (void) clearAllBuffers;
 
-/** Log an error if the specified ExtAudio error code indicates an error.
- *
- * @param errorCode: The error code returned from an OS call.
- * @param function: The function name where the error occurred.
- * @param description: A printf-style description of what happened.
- */
-+ (void) logExtAudioError:(OSStatus)errorCode
-				 function:(const char*) function
-			  description:(NSString*) description, ...;
 
 #pragma mark Internal Use
 

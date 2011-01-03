@@ -26,6 +26,7 @@
 
 #import "OALTools.h"
 #import "ObjectALMacros.h"
+#import <AudioToolbox/AudioToolbox.h>
 
 
 @implementation OALTools
@@ -48,6 +49,123 @@
 	}
 	
 	return [NSURL fileURLWithPath:fullPath];
+}
+
++ (void) logExtAudioError:(OSStatus)errorCode
+				 function:(const char*) function
+			  description:(NSString*) description, ...
+{
+	if(noErr != errorCode)
+	{
+		NSString* errorString;
+		
+		switch(errorCode)
+		{
+#ifdef __IPHONE_3_1
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_3_1
+			case kExtAudioFileError_CodecUnavailableInputConsumed:
+				errorString = @"Write function interrupted - last buffer written";
+				break;
+			case kExtAudioFileError_CodecUnavailableInputNotConsumed:
+				errorString = @"Write function interrupted - last buffer not written";
+				break;
+#endif /* __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_3_1 */
+#endif /* __IPHONE_3_1 */
+			case kExtAudioFileError_InvalidProperty:
+				errorString = @"Invalid property";
+				break;
+			case kExtAudioFileError_InvalidPropertySize:
+				errorString = @"Invalid property size";
+				break;
+			case kExtAudioFileError_NonPCMClientFormat:
+				errorString = @"Non-PCM client format";
+				break;
+			case kExtAudioFileError_InvalidChannelMap:
+				errorString = @"Wrong number of channels for format";
+				break;
+			case kExtAudioFileError_InvalidOperationOrder:
+				errorString = @"Invalid operation order";
+				break;
+			case kExtAudioFileError_InvalidDataFormat:
+				errorString = @"Invalid data format";
+				break;
+			case kExtAudioFileError_MaxPacketSizeUnknown:
+				errorString = @"Max packet size unknown";
+				break;
+			case kExtAudioFileError_InvalidSeek:
+				errorString = @"Seek offset out of bounds";
+				break;
+			case kExtAudioFileError_AsyncWriteTooLarge:
+				errorString = @"Async write too large";
+				break;
+			case kExtAudioFileError_AsyncWriteBufferOverflow:
+				errorString = @"Async write could not be completed in time";
+				break;
+			default:
+				errorString = @"Unknown ext audio error";
+		}
+
+		va_list args;
+		va_start(args, description);
+		description = [[[NSString alloc] initWithFormat:description arguments:args] autorelease];
+		va_end(args);
+		OAL_LOG_ERROR_CONTEXT(function, @"%@ (error code 0x%08x: %@)", description, errorCode, errorString);
+	}
+}
+
++ (void) logAudioSessionError:(OSStatus)errorCode
+					 function:(const char*) function
+				  description:(NSString*) description, ...
+{
+	if(noErr != errorCode)
+	{
+		NSString* errorString;
+		
+		switch(errorCode)
+		{
+			case kAudioSessionNotInitialized:
+				errorString = @"Audio session not initialized";
+				break;
+			case kAudioSessionAlreadyInitialized:
+				errorString = @"Audio session already initialized";
+				break;
+			case kAudioSessionInitializationError:
+				errorString = @"Audio sesion initialization error";
+				break;
+			case kAudioSessionUnsupportedPropertyError:
+				errorString = @"Unsupported audio session property";
+				break;
+			case kAudioSessionBadPropertySizeError:
+				errorString = @"Bad audio session property size";
+				break;
+			case kAudioSessionNotActiveError:
+				errorString = @"Audio session is not active";
+				break;
+#if 0 // Documented but not implemented on iOS
+			case kAudioSessionNoHardwareError:
+				errorString = @"Hardware not available for audio session";
+				break;
+#endif
+#ifdef __IPHONE_3_1
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_3_1
+			case kAudioSessionNoCategorySet:
+				errorString = @"No audio session category set";
+				break;
+			case kAudioSessionIncompatibleCategory:
+				errorString = @"Incompatible audio session category";
+				break;
+#endif /* __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_3_1 */
+#endif /* __IPHONE_3_1 */
+			default:
+				errorString = @"Unknown audio session error";
+		}
+
+		va_list args;
+		va_start(args, description);
+		description = [[[NSString alloc] initWithFormat:description arguments:args] autorelease];
+		va_end(args);
+		OAL_LOG_ERROR_CONTEXT(function, @"%@ (error code 0x%08x: %@)", description, errorCode, errorString);
+	}
 }
 
 @end

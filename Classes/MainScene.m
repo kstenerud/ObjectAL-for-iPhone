@@ -139,14 +139,17 @@ static uint startIndex = 0;
 
 - (void) onEnterTransitionDidFinish
 {
-	/* Make sure OALSimpleAudio isn't initialized from another demo
+	/* Make sure ObjectAL isn't initialized from another demo
 	 * when returning to the main scene.
 	 *
 	 * Note: You normally wouldn't do this in a real project. I do it here
-	 * to provide a clean slate for the individual demos, which expect a
-	 * clean slate.
+	 * to provide a clean slate for the individual demos, which operate
+	 * assuming that they are running from a fresh application start.
 	 */
 	[OALSimpleAudio purgeSharedInstance];
+	[OpenALManager purgeSharedInstance];
+	[OALAudioTracks purgeSharedInstance];
+	[OALAudioSession purgeSharedInstance];
 }
 
 - (void) setStartIndex:(uint) newIndex

@@ -301,6 +301,8 @@ and when to execute the Scenes.
 /** returns a shared instance of the director */
 +(CCDirector *)sharedDirector;
 
++ (void) purgeSharedDirector;
+
 /** There are 4 types of Director.
  - kCCDirectorTypeNSTimer (default)
  - kCCDirectorTypeMainLoop

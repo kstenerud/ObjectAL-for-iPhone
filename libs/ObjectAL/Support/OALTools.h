@@ -43,4 +43,24 @@
  */
 + (NSURL*) urlForPath:(NSString*) path;
 
+/** Log an error if the specified ExtAudio error code indicates an error.
+ *
+ * @param errorCode: The error code returned from an OS call.
+ * @param function: The function name where the error occurred.
+ * @param description: A printf-style description of what happened.
+ */
++ (void) logExtAudioError:(OSStatus)errorCode
+				 function:(const char*) function
+			  description:(NSString*) description, ...;
+
+/** Log an error if the specified AudioSession error code indicates an error.
+ *
+ * @param errorCode: The error code returned from an OS call.
+ * @param function: The function name where the error occurred.
+ * @param description: A printf-style description of what happened.
+ */
++ (void) logAudioSessionError:(OSStatus)errorCode
+					 function:(const char*) function
+				  description:(NSString*) description, ...;
+
 @end

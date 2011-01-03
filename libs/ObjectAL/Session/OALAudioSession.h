@@ -163,19 +163,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALAudioSession);
  * fails to end an interrupt.
  *
  * Be VERY CAREFUL when using this!
- *
- * @param informDelegate If YES, also invoke "endInterruption" on the delegate.
  */
-- (void) forceEndInterruption:(bool) informDelegate;
-
-/** Log an error if the specified AudioSession error code indicates an error.
- *
- * @param errorCode: The error code returned from an OS call.
- * @param function: The function name where the error occurred.
- * @param description: A printf-style description of what happened.
- */
-+ (void) logAudioSessionError:(OSStatus)errorCode
-					 function:(const char*) function
-				  description:(NSString*) description, ...;
+- (void) forceEndInterruption;
 
 @end

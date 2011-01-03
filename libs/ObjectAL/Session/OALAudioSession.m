@@ -91,11 +91,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALAudioSession);
 
 @implementation OALAudioSession
 
-/** Dictionary mapping audio session error codes to human readable descriptions.
- * Key: NSNumber, Value: NSString
- */
-static NSDictionary* audioSessionErrorCodes = nil;
-
 #pragma mark Object Management
 
 SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
@@ -257,47 +252,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 	return [[self audioRoute] isEqualToString:@""];
 }
 
-
-#pragma mark Audio Error Utility
-
-+ (void) logAudioSessionError:(OSStatus)errorCode
-					 function:(const char*) function
-				  description:(NSString*) description, ...
-{
-	if(noErr != errorCode)
-	{
-		if(nil == audioSessionErrorCodes){
-			audioSessionErrorCodes = [[NSDictionary dictionaryWithObjectsAndKeys:
-									   @"Session not initialized", [NSNumber numberWithInt:kAudioSessionNotInitialized],
-									   @"Session already initialized", [NSNumber numberWithInt:kAudioSessionAlreadyInitialized],
-									   @"Sesion initialization error", [NSNumber numberWithInt:kAudioSessionInitializationError],
-									   @"Unsupported session property", [NSNumber numberWithInt:kAudioSessionUnsupportedPropertyError],
-									   @"Bad session property size", [NSNumber numberWithInt:kAudioSessionBadPropertySizeError],
-									   @"Session is not active", [NSNumber numberWithInt:kAudioSessionNotActiveError], 
-#if 0 // Documented but not implemented on iOS
-									   @"Hardware not available for session", [NSNumber numberWithInt:kAudioSessionNoHardwareError],
-#endif
-#ifdef __IPHONE_3_1
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_3_1
-									   @"No session category set", [NSNumber numberWithInt:kAudioSessionNoCategorySet],
-									   @"Incompatible session category",[NSNumber numberWithInt:kAudioSessionIncompatibleCategory],
-#endif /* __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_3_1 */
-#endif /* __IPHONE_3_1 */
-									   nil] retain];			
-		}
-		
-		NSString* errorString = [audioSessionErrorCodes objectForKey:[NSNumber numberWithInt:errorCode]];
-		if(nil == errorString)
-		{
-			errorString = @"Unknown session error";
-		}
-		va_list args;
-		va_start(args, description);
-		description = [[[NSString alloc] initWithFormat:description arguments:args] autorelease];
-		va_end(args);
-		OAL_LOG_ERROR_CONTEXT(function, @"%@ (error code 0x%08x: %@)", description, errorCode, errorString);
-	}
-}
 
 
 #pragma mark Internal Use
@@ -608,14 +562,20 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 	OAL_LOG_DEBUG(@"Received end interrupt from system.");
 	@synchronized(self)
 	{
+		bool informDelegate = YES;
+
 		if(handleInterruptions)
 		{
+			informDelegate = self.interrupted;
 			self.interrupted = NO;
 		}
 		
-		if([audioSessionDelegate respondsToSelector:@selector(endInterruption)])
+		if(informDelegate)
 		{
-			[audioSessionDelegate endInterruption];
+			if([audioSessionDelegate respondsToSelector:@selector(endInterruption)])
+			{
+				[audioSessionDelegate endInterruption];
+			}
 		}
 	}
 }
@@ -625,31 +585,46 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 	OAL_LOG_DEBUG(@"Received end interrupt with flags 0x%08x from system.", flags);
 	@synchronized(self)
 	{
+		bool informDelegate = YES;
+		
 		if(handleInterruptions)
 		{
+			informDelegate = self.interrupted;
 			self.interrupted = NO;
 		}
 		
-		if([audioSessionDelegate respondsToSelector:@selector(endInterruptionWithFlags:)])
+		if(informDelegate)
 		{
-			[audioSessionDelegate endInterruptionWithFlags:flags];
-		}
-		else if([audioSessionDelegate respondsToSelector:@selector(endInterruption)])
-		{
-			[audioSessionDelegate endInterruption];
+			if([audioSessionDelegate respondsToSelector:@selector(endInterruptionWithFlags:)])
+			{
+				[audioSessionDelegate endInterruptionWithFlags:flags];
+			}
+			else if([audioSessionDelegate respondsToSelector:@selector(endInterruption)])
+			{
+				[audioSessionDelegate endInterruption];
+			}
 		}
 	}
 }
 
-- (void) forceEndInterruption:(bool) informDelegate
+- (void) forceEndInterruption
 {
 	@synchronized(self)
 	{
-		self.interrupted = NO;
+		bool informDelegate = YES;
 		
-		if(informDelegate && [audioSessionDelegate respondsToSelector:@selector(endInterruption)])
+		if(handleInterruptions)
 		{
-			[audioSessionDelegate endInterruption];
+			informDelegate = self.interrupted;
+			self.interrupted = NO;
+		}
+		
+		if(informDelegate)
+		{
+			if([audioSessionDelegate respondsToSelector:@selector(endInterruption)])
+			{
+				[audioSessionDelegate endInterruption];
+			}
 		}
 	}
 }

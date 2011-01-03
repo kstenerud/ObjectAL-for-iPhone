@@ -191,6 +191,8 @@
 		390EE88C128355F10009054E /* ZFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 390EE7E6128355F10009054E /* ZFont.m */; };
 		3918AB1F121ABB520060C2AF /* FadeDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 3918AB1E121ABB520060C2AF /* FadeDemo.m */; };
 		3918AB23121ABBA90060C2AF /* CCLayer+Scene.m in Sources */ = {isa = PBXBuildFile; fileRef = 3918AB22121ABBA90060C2AF /* CCLayer+Scene.m */; };
+		3920498912BFF066004E8E2B /* OALAudioFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 3920498712BFF066004E8E2B /* OALAudioFile.h */; };
+		3920498A12BFF066004E8E2B /* OALAudioFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 3920498812BFF066004E8E2B /* OALAudioFile.m */; };
 		395FE7E71268C64100A8BD6A /* HardwareDemo.h in Headers */ = {isa = PBXBuildFile; fileRef = 395FE7E51268C64100A8BD6A /* HardwareDemo.h */; };
 		395FE7E81268C64100A8BD6A /* HardwareDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 395FE7E61268C64100A8BD6A /* HardwareDemo.m */; };
 		395FE91A126936ED00A8BD6A /* OALAudioTrackNotifications.h in Headers */ = {isa = PBXBuildFile; fileRef = 395FE918126936ED00A8BD6A /* OALAudioTrackNotifications.h */; };
@@ -512,6 +514,8 @@
 		3918AB1E121ABB520060C2AF /* FadeDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FadeDemo.m; sourceTree = "<group>"; };
 		3918AB21121ABBA90060C2AF /* CCLayer+Scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCLayer+Scene.h"; sourceTree = "<group>"; };
 		3918AB22121ABBA90060C2AF /* CCLayer+Scene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CCLayer+Scene.m"; sourceTree = "<group>"; };
+		3920498712BFF066004E8E2B /* OALAudioFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALAudioFile.h; sourceTree = "<group>"; };
+		3920498812BFF066004E8E2B /* OALAudioFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALAudioFile.m; sourceTree = "<group>"; };
 		395FE7E51268C64100A8BD6A /* HardwareDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HardwareDemo.h; sourceTree = "<group>"; };
 		395FE7E61268C64100A8BD6A /* HardwareDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HardwareDemo.m; sourceTree = "<group>"; };
 		395FE918126936ED00A8BD6A /* OALAudioTrackNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALAudioTrackNotifications.h; sourceTree = "<group>"; };
@@ -1042,6 +1046,8 @@
 				396B395E124EDA43009B84A4 /* SynthesizeSingleton.h */,
 				39C49A2A12BEADB600F1E6D6 /* OALTools.h */,
 				39C49A2B12BEADB600F1E6D6 /* OALTools.m */,
+				3920498712BFF066004E8E2B /* OALAudioFile.h */,
+				3920498812BFF066004E8E2B /* OALAudioFile.m */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -1211,6 +1217,7 @@
 				39C49A2C12BEADB600F1E6D6 /* OALTools.h in Headers */,
 				39C49A4B12BEB2AF00F1E6D6 /* OALAudioSession.h in Headers */,
 				39C49A6C12BEDE4400F1E6D6 /* OALSuspendHandler.h in Headers */,
+				3920498912BFF066004E8E2B /* OALAudioFile.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1509,6 +1516,7 @@
 				39C49A2D12BEADB600F1E6D6 /* OALTools.m in Sources */,
 				39C49A4C12BEB2AF00F1E6D6 /* OALAudioSession.m in Sources */,
 				39C49A6D12BEDE4400F1E6D6 /* OALSuspendHandler.m in Sources */,
+				3920498A12BFF066004E8E2B /* OALAudioFile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

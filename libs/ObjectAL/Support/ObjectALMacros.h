@@ -25,6 +25,7 @@
 //
 
 #import "ObjectALConfig.h"
+#import "OALTools.h"
 
 
 /* Don't clobber any existing defines by the same name */
@@ -189,7 +190,7 @@
 #define REPORT_AUDIOSESSION_CALL(ERROR_CODE, FMT, ...) \
 if(noErr != (ERROR_CODE)) \
 { \
-	[OALAudioSession logAudioSessionError:(ERROR_CODE) function:__PRETTY_FUNCTION__ description:(FMT), ##__VA_ARGS__]; \
+	[OALTools logAudioSessionError:(ERROR_CODE) function:__PRETTY_FUNCTION__ description:(FMT), ##__VA_ARGS__]; \
 }
 
 /** Report on the specified ExtAudio error code, logging an error if the code does not indicate success.
@@ -201,7 +202,7 @@ if(noErr != (ERROR_CODE)) \
 #define REPORT_EXTAUDIO_CALL(ERROR_CODE, FMT, ...) \
 if(noErr != (ERROR_CODE)) \
 { \
-	[OpenALManager logExtAudioError:(ERROR_CODE) function:__PRETTY_FUNCTION__ description:(FMT), ##__VA_ARGS__]; \
+	[OALTools logExtAudioError:(ERROR_CODE) function:__PRETTY_FUNCTION__ description:(FMT), ##__VA_ARGS__]; \
 }
 
 #else /* OBJECTAL_CFG_LOG_LEVEL */

@@ -111,6 +111,11 @@ static CCDirector *_sharedDirector = nil;
 	return _sharedDirector;
 }
 
++ (void) purgeSharedDirector
+{
+	[_sharedDirector release];
+}
+
 + (BOOL) setDirectorType:(ccDirectorType)type
 {
 	NSAssert(_sharedDirector==nil, @"A Director was alloced. setDirectorType must be the first call to Director");

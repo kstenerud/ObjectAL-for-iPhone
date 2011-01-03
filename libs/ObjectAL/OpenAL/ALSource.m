@@ -78,6 +78,13 @@
 	if(nil != (self = [super init]))
 	{
 		OAL_LOG_DEBUG(@"%@: Init on context %@", self, contextIn);
+
+		if(nil == contextIn)
+		{
+			OAL_LOG_ERROR(@"%@: Failed to init because context was nil. Returning nil", self);
+			[self release];
+			return nil;
+		}
 		
 		suspendHandler = [[OALSuspendHandler handlerWithTarget:self selector:@selector(setSuspended:)] retain];
 
@@ -101,35 +108,38 @@
 - (void) dealloc
 {
 	OAL_LOG_DEBUG(@"%@: Dealloc", self);
-	[context removeSuspendListener:self];
-	[context notifySourceDeallocating:self];
-	
-	[gainAction stopAction];
-	[gainAction release];
-	[panAction stopAction];
-	[panAction release];
-	[pitchAction stopAction];
-	[pitchAction release];
-	[suspendHandler release];
-
-	OPTIONALLY_SYNCHRONIZED(self)
+	if(nil != context)
 	{
-		[ALWrapper sourceStop:sourceId];
-		[ALWrapper sourcei:sourceId parameter:AL_BUFFER value:AL_NONE];
+		[context removeSuspendListener:self];
+		[context notifySourceDeallocating:self];
+		
+		[gainAction stopAction];
+		[gainAction release];
+		[panAction stopAction];
+		[panAction release];
+		[pitchAction stopAction];
+		[pitchAction release];
+		[suspendHandler release];
+		
+		OPTIONALLY_SYNCHRONIZED(self)
+		{
+			[ALWrapper sourceStop:sourceId];
+			[ALWrapper sourcei:sourceId parameter:AL_BUFFER value:AL_NONE];
+		}
+		
+		// In IOS 3.x, OpenAL doesn't stop playing right away.
+		// Release after a delay to give it some time to stop.
+		[buffer performSelector:@selector(release) withObject:nil afterDelay:0.1];
+		
+		@synchronized([OpenALManager sharedInstance])
+		{
+			ALContext* oldContext = [OpenALManager sharedInstance].currentContext;
+			[OpenALManager sharedInstance].currentContext = context;
+			[ALWrapper deleteSource:sourceId];
+			[OpenALManager sharedInstance].currentContext = oldContext;
+		}
+		[context release];
 	}
-
-	// In IOS 3.x, OpenAL doesn't stop playing right away.
-	// Release after a delay to give it some time to stop.
-	[buffer performSelector:@selector(release) withObject:nil afterDelay:0.1];
-	
-	@synchronized([OpenALManager sharedInstance])
-	{
-		ALContext* oldContext = [OpenALManager sharedInstance].currentContext;
-		[OpenALManager sharedInstance].currentContext = context;
-		[ALWrapper deleteSource:sourceId];
-		[OpenALManager sharedInstance].currentContext = oldContext;
-	}
-	[context release];
 
 	[super dealloc];
 }

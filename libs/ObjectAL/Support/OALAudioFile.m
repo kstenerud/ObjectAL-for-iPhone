@@ -1,0 +1,280 @@
+//
+//  OALAudioFile.m
+//  ObjectAL
+//
+//  Created by Karl Stenerud on 10-12-24.
+//
+// Copyright 2010 Karl Stenerud
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+// Note: You are NOT required to make the license available from within your
+// iOS application. Including it in your project is sufficient.
+//
+// Attribution is not required, but appreciated :)
+//
+
+#import "OALAudioFile.h"
+#import "ObjectALMacros.h"
+#import "OpenALManager.h"
+
+
+@implementation OALAudioFile
+
++ (OALAudioFile*) fileWithUrl:(NSURL*) url
+				 reduceToMono:(bool) reduceToMono
+{
+	return [[[self alloc] initWithUrl:url reduceToMono:reduceToMono] autorelease];
+}
+
+
+- (id) initWithUrl:(NSURL*) urlIn
+	  reduceToMono:(bool) reduceToMonoIn
+{
+	if(nil != (self = [super init]))
+	{
+		url = [urlIn retain];
+		reduceToMono = reduceToMonoIn;
+
+		OSStatus error;
+		UInt32 size;
+
+		// Open the file
+		if(noErr != (error = ExtAudioFileOpenURL((CFURLRef)url, &fileHandle)))
+		{
+			REPORT_EXTAUDIO_CALL(error, @"Could not open url %@", url);
+			goto done;
+		}
+
+		// Get some info about the file
+		size = sizeof(SInt64);
+		if(noErr != (error = ExtAudioFileGetProperty(fileHandle,
+													 kExtAudioFileProperty_FileLengthFrames,
+													 &size,
+													 &totalFrames)))
+		{
+			REPORT_EXTAUDIO_CALL(error, @"Could not get frame count for file url %@", url);
+			goto done;
+		}
+		
+		
+		size = sizeof(AudioStreamBasicDescription);
+		if(noErr != (error = ExtAudioFileGetProperty(fileHandle,
+													 kExtAudioFileProperty_FileDataFormat,
+													 &size,
+													 &description)))
+		{
+			REPORT_EXTAUDIO_CALL(error, @"Could not get audio format for file url %@", url);
+			goto done;
+		}
+		
+		// Specify the new audio format (anything not changed remains the same)
+		description.mFormatID = kAudioFormatLinearPCM;
+		description.mFormatFlags = kAudioFormatFlagsNativeEndian |
+		kAudioFormatFlagIsSignedInteger |
+		kAudioFormatFlagIsPacked;
+		// Force to 16 bit since iOS doesn't seem to like 8 bit.
+		description.mBitsPerChannel = 16;
+
+		originalChannelsPerFrame = description.mChannelsPerFrame > 2 ? 2 : description.mChannelsPerFrame;
+		if(reduceToMono)
+		{
+			description.mChannelsPerFrame = 1;
+		}
+		
+		if(description.mChannelsPerFrame > 2)
+		{
+			// Don't allow more than 2 channels (stereo)
+			OAL_LOG_WARNING(@"Audio stream in %@ contains %d channels. Capping at 2.",
+							url,
+							description.mChannelsPerFrame);
+			description.mChannelsPerFrame = 2;
+		}
+
+		description.mBytesPerFrame = description.mChannelsPerFrame * description.mBitsPerChannel / 8;
+		description.mFramesPerPacket = 1;
+		description.mBytesPerPacket = description.mBytesPerFrame * description.mFramesPerPacket;
+		
+		// Set the new audio format
+		if(noErr != (error = ExtAudioFileSetProperty(fileHandle,
+													 kExtAudioFileProperty_ClientDataFormat,
+													 sizeof(AudioStreamBasicDescription),
+													 &description)))
+		{
+			REPORT_EXTAUDIO_CALL(error, @"Could not set new audio format for file url %@", url);
+			goto done;
+		}
+		
+	done:
+		if(noErr != error)
+		{
+			[self release];
+			return nil;
+		}
+		
+	}
+	return self;
+}
+
+- (void) dealloc
+{
+	if(nil != fileHandle)
+	{
+		REPORT_EXTAUDIO_CALL(ExtAudioFileDispose(fileHandle), @"Error closing file url %@", url);
+	}
+	[url release];
+
+	[super dealloc];
+}
+
+@synthesize url;
+
+- (AudioStreamBasicDescription*) description
+{
+	return &description;
+}
+
+@synthesize totalFrames;
+
+- (bool) reduceToMono
+{
+	return reduceToMono;
+}
+
+- (void) setReduceToMono:(bool) value
+{
+	if(value != reduceToMono)
+	{
+		OSStatus error;
+		reduceToMono = value;
+		description.mChannelsPerFrame = reduceToMono ? 1 : originalChannelsPerFrame;
+		if(noErr != (error = ExtAudioFileSetProperty(fileHandle,
+													 kExtAudioFileProperty_ClientDataFormat,
+													 sizeof(AudioStreamBasicDescription),
+													 &description)))
+		{
+			REPORT_EXTAUDIO_CALL(error, @"Could not set new audio format for file url %@", url);
+		}
+	}
+}
+
+- (void*) audioDataWithStartFrame:(SInt64) startFrame
+						numFrames:(SInt64) numFrames
+					   bufferSize:(UInt32*) bufferSize
+{
+	OSStatus error;
+	UInt32 numFramesRead;
+
+	
+	// < 0 means read to the end of the file.
+	if(numFrames < 0)
+	{
+		numFrames = totalFrames - startFrame;
+	}
+	
+	// Allocate some memory to hold the data
+	UInt32 streamSizeInBytes = (UInt32)(description.mBytesPerFrame * numFrames);
+	void* streamData = malloc(streamSizeInBytes);
+	if(nil == streamData)
+	{
+		OAL_LOG_ERROR(@"Could not allocate %d bytes for audio buffer from file url %@",
+					  streamSizeInBytes,
+					  url);
+		goto onFail;
+	}
+	
+	AudioBufferList bufferList;
+	bufferList.mNumberBuffers = 1;
+	bufferList.mBuffers[0].mNumberChannels = description.mChannelsPerFrame;
+	bufferList.mBuffers[0].mDataByteSize = streamSizeInBytes;
+	bufferList.mBuffers[0].mData = streamData;
+	
+	// ExtAudioFile IO operations are not thread-safe
+	@synchronized(self)
+	{
+		if(noErr != (error = ExtAudioFileSeek(fileHandle, startFrame)))
+		{
+			REPORT_EXTAUDIO_CALL(error, @"Could not seek to %ll in file url %@",
+								 startFrame,
+								 url);
+			goto onFail;
+		}
+		
+		numFramesRead = (UInt32)numFrames;
+		if(noErr != (error = ExtAudioFileRead(fileHandle, &numFramesRead, &bufferList)))
+		{
+			REPORT_EXTAUDIO_CALL(error, @"Could not read audio data in file url %@",
+								 url);
+			goto onFail;
+		}
+	}
+	
+	if(nil != bufferSize)
+	{
+		*bufferSize = streamSizeInBytes;
+	}
+
+	return streamData;
+	
+onFail:
+	if(nil != streamData)
+	{
+		free(streamData);
+	}
+	return nil;
+}
+
+
+- (ALBuffer*) bufferNamed:(NSString*) name
+			   startFrame:(SInt64) startFrame
+				numFrames:(SInt64) numFrames
+{
+	UInt32 bufferSize;
+	void* streamData = [self audioDataWithStartFrame:startFrame numFrames:numFrames bufferSize:&bufferSize];
+	if(nil == streamData)
+	{
+		return nil;
+	}
+	
+	ALenum audioFormat;
+	if(1 == description.mChannelsPerFrame)
+	{
+		if(8 == description.mBitsPerChannel)
+		{
+			audioFormat = AL_FORMAT_MONO8;
+		}
+		else
+		{
+			audioFormat = AL_FORMAT_MONO16;
+		}
+	}
+	else
+	{
+		if(8 == description.mBitsPerChannel)
+		{
+			audioFormat = AL_FORMAT_STEREO8;
+		}
+		else
+		{
+			audioFormat = AL_FORMAT_STEREO16;
+		}
+	}
+	
+	return [ALBuffer bufferWithName:name
+							   data:streamData
+							   size:bufferSize
+							 format:audioFormat
+						  frequency:(ALsizei)description.mSampleRate];
+}
+
+@end

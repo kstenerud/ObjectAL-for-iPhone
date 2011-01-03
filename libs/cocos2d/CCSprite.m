@@ -500,7 +500,7 @@ struct transformValues_ {
 {
 	NSAssert( usesBatchNode_, @"updateTransform is only valid when CCSprite is being renderd using an CCSpriteBatchNode");
 
-	CGAffineTransform matrix;
+	CGAffineTransform matrix = CGAffineTransformIdentity;
 	
 	
 	// Optimization: if it is not visible, then do nothing

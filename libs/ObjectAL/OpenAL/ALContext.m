@@ -29,6 +29,7 @@
 #import "ObjectALMacros.h"
 #import "ALWrapper.h"
 #import "OpenALManager.h"
+#import "ALDevice.h"
 
 
 #pragma mark -
@@ -131,6 +132,13 @@
 	{
 		OAL_LOG_DEBUG(@"%@: Init on %@ with attributes 0x%08x", self, deviceIn, attributesIn);
 
+		if(nil == deviceIn)
+		{
+			OAL_LOG_ERROR(@"%@: Failed to init because device was nil. Returning nil", self);
+			[self release];
+			return nil;
+		}
+
 		suspendHandler = [[OALSuspendHandler handlerWithTarget:self selector:@selector(setSuspended:)] retain];
 
 		// Build up an ALCint array for OpenAL's createContext function.
@@ -194,20 +202,22 @@
 - (void) dealloc
 {
 	OAL_LOG_DEBUG(@"%@: Dealloc", self);
-	[device removeSuspendListener:self];
-	if([OpenALManager sharedInstance].currentContext == self)
+	if(nil != device)
 	{
-		[OpenALManager sharedInstance].currentContext = nil;
+		[device removeSuspendListener:self];
+		if([OpenALManager sharedInstance].currentContext == self)
+		{
+			[OpenALManager sharedInstance].currentContext = nil;
+		}
+		[device notifyContextDeallocating:self];
+		[sources release];
+		[self removeSuspendListener:listener];
+		[listener release];
+		[ALWrapper destroyContext:context];
+		[device release];
+		[attributes release];
+		[suspendHandler release];
 	}
-	[device notifyContextDeallocating:self];
-	[sources release];
-	[self removeSuspendListener:listener];
-	[listener release];
-	[ALWrapper destroyContext:context];
-	[device release];
-	[attributes release];
-	[suspendHandler release];
-
 	[super dealloc];
 }
 
