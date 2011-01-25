@@ -53,6 +53,8 @@
 	
 	/** Handles suspending and interrupting for this object. */
 	OALSuspendHandler* suspendHandler;
+	
+	NSDate* lastResetTime;
 }
 
 

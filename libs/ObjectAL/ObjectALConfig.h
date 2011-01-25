@@ -33,6 +33,22 @@
  */
 
 
+
+/** Resets the audio session when an error occurs that may have been caused by
+ * a messed up session.
+ *
+ * In iOS 4.2, there are situations where an underlying sound system such as
+ * mediaserverd will crash, putting the audio session in an uncertain state.
+ * If this switch is enabled, OALAudioSession will reset itself when certain
+ * kinds of audio errors occur.
+ *
+ * Recommended setting: 1 for release, possibly 0 during development.
+ */
+#ifndef OBJECTAL_CFG_RESET_AUDIO_SESSION_ON_ERROR
+#define OBJECTAL_CFG_RESET_AUDIO_SESSION_ON_ERROR 1
+#endif
+
+
 /** Enables support for methods that take blocks as arguments.
  * Blocks are only supported in iOS 4.0+, so enabling this will make your project
  * incompatible with earlier operating systems (a 3.x system will crash the moment it

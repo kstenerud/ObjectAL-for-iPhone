@@ -242,6 +242,7 @@
 		397D064C1249182A00C5BC20 /* TargetedAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 397D064B1249182A00C5BC20 /* TargetedAction.m */; };
 		397D06CB1249215200C5BC20 /* AudioTrackDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 397D06CA1249215200C5BC20 /* AudioTrackDemo.m */; };
 		397D0793124974FC00C5BC20 /* CCNode+ContentSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 397D0792124974FC00C5BC20 /* CCNode+ContentSize.m */; };
+		397E3AE012D23E3F0023D1BC /* OALNotifications.h in Headers */ = {isa = PBXBuildFile; fileRef = 397E3ADF12D23E3F0023D1BC /* OALNotifications.h */; };
 		3987EFCB1210350B00781573 /* Exit.png in Resources */ = {isa = PBXBuildFile; fileRef = 39AD850D121032430049990E /* Exit.png */; };
 		3987EFCC1210350F00781573 /* Ganymede.png in Resources */ = {isa = PBXBuildFile; fileRef = 39AD850E121032430049990E /* Ganymede.png */; };
 		3990BE1C12A01DC3006E20B2 /* vu-face.png in Resources */ = {isa = PBXBuildFile; fileRef = 3990BE1912A01DC3006E20B2 /* vu-face.png */; };
@@ -570,6 +571,7 @@
 		397D06CA1249215200C5BC20 /* AudioTrackDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioTrackDemo.m; sourceTree = "<group>"; };
 		397D0791124974FC00C5BC20 /* CCNode+ContentSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCNode+ContentSize.h"; sourceTree = "<group>"; };
 		397D0792124974FC00C5BC20 /* CCNode+ContentSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CCNode+ContentSize.m"; sourceTree = "<group>"; };
+		397E3ADF12D23E3F0023D1BC /* OALNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALNotifications.h; sourceTree = "<group>"; };
 		3990BE1912A01DC3006E20B2 /* vu-face.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "vu-face.png"; sourceTree = "<group>"; };
 		3990BE1A12A01DC3006E20B2 /* vu-needle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "vu-needle.png"; sourceTree = "<group>"; };
 		3990BE1B12A01DC3006E20B2 /* vu-shell.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "vu-shell.png"; sourceTree = "<group>"; };
@@ -1048,6 +1050,7 @@
 				39C49A2B12BEADB600F1E6D6 /* OALTools.m */,
 				3920498712BFF066004E8E2B /* OALAudioFile.h */,
 				3920498812BFF066004E8E2B /* OALAudioFile.m */,
+				397E3ADF12D23E3F0023D1BC /* OALNotifications.h */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -1218,6 +1221,7 @@
 				39C49A4B12BEB2AF00F1E6D6 /* OALAudioSession.h in Headers */,
 				39C49A6C12BEDE4400F1E6D6 /* OALSuspendHandler.h in Headers */,
 				3920498912BFF066004E8E2B /* OALAudioFile.h in Headers */,
+				397E3AE012D23E3F0023D1BC /* OALNotifications.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

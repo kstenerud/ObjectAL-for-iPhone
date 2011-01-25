@@ -116,7 +116,7 @@
 
 - (void)main
 {
-	ALBuffer* buffer = [[OpenALManager sharedInstance] bufferFromUrl:url reduceToMono:reduceToMono];
+	ALBuffer* buffer = [OALAudioFile bufferFromUrl:url reduceToMono:reduceToMono];
 	[target performSelectorOnMainThread:selector withObject:buffer waitUntilDone:NO];
 }
 
@@ -322,16 +322,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OpenALManager);
 
 - (ALBuffer*) bufferFromUrl:(NSURL*) url reduceToMono:(bool) reduceToMono
 {
-	if(nil == url)
-	{
-		OAL_LOG_ERROR(@"Cannot open NULL file / url");
-		return nil;
-	}
-	
 	OAL_LOG_DEBUG(@"Load buffer from %@", url);
-	
-	OALAudioFile* audioFile = [OALAudioFile fileWithUrl:url reduceToMono:reduceToMono];
-	return [audioFile bufferNamed:[url description] startFrame:0 numFrames:-1];
+
+	return [OALAudioFile bufferFromUrl:url reduceToMono:reduceToMono];
 }
 
 - (NSString*) bufferAsyncFromFile:(NSString*) filePath

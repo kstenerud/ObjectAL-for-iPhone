@@ -25,6 +25,7 @@
 //
 
 #import "OALAction.h"
+#import "ALTypes.h"
 
 
 #pragma mark OALGainAction

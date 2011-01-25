@@ -286,7 +286,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALSimpleAudio);
  * <strong>Note:</strong> only <strong>ONE</strong> background music
  * file may be played or preloaded at a time via OALSimpleAudio.
  * If you play or preload another file, the one currently playing
- * will stop. <br>
+ * will stop. To play multiple audio tracks, create an OALAudioTrack. <br>
  *
  * <strong>Note:</strong> pan will have no effect when running on iOS
  * versions prior to 4.0.

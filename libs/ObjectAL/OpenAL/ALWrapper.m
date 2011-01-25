@@ -26,6 +26,7 @@
 
 #import "ALWrapper.h"
 #import "ObjectALMacros.h"
+#import "OALNotifications.h"
 
 /** Check the result of an AL call, logging an error if necessary.
  *
@@ -103,6 +104,7 @@ BOOL checkIfSuccessful(const char* contextInfo)
 	if(AL_NO_ERROR != error)
 	{
 		OAL_LOG_ERROR_CONTEXT(contextInfo, @"%s (error code 0x%08x)", alGetString(error), error);
+		[[NSNotificationCenter defaultCenter] postNotificationName:OALAudioErrorNotification object:[ALWrapper class]];
 		return NO;
 	}
 	return YES;
@@ -114,6 +116,7 @@ BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device)
 	if(ALC_NO_ERROR != error)
 	{
 		OAL_LOG_ERROR_CONTEXT(contextInfo, @"%s (error code 0x%08x)", alcGetString(device, error), error);
+		[[NSNotificationCenter defaultCenter] postNotificationName:OALAudioErrorNotification object:[ALWrapper class]];
 		return NO;
 	}
 	return YES;

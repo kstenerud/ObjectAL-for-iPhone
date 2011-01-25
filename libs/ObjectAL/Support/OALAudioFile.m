@@ -26,7 +26,6 @@
 
 #import "OALAudioFile.h"
 #import "ObjectALMacros.h"
-#import "OpenALManager.h"
 
 
 @implementation OALAudioFile
@@ -48,6 +47,12 @@
 
 		OSStatus error;
 		UInt32 size;
+		
+		if(nil == url)
+		{
+			OAL_LOG_ERROR(@"Cannot open NULL file / url");
+			goto done;
+		}
 
 		// Open the file
 		if(noErr != (error = ExtAudioFileOpenURL((CFURLRef)url, &fileHandle)))
@@ -275,6 +280,16 @@ onFail:
 							   size:bufferSize
 							 format:audioFormat
 						  frequency:(ALsizei)description.mSampleRate];
+}
+
++ (ALBuffer*) bufferFromUrl:(NSURL*) url reduceToMono:(bool) reduceToMono
+{
+	id file = [[self alloc] initWithUrl:url reduceToMono:reduceToMono];
+	ALBuffer* buffer = [file bufferNamed:[url description]
+							  startFrame:0
+							   numFrames:-1];
+	[file release];
+	return buffer;
 }
 
 @end

@@ -48,8 +48,10 @@
 #import "ALChannelSource.h"
 #import "ALSoundSourcePool.h"
 #import "OpenALManager.h"
+#import "OALAudioFile.h"
 
 // Other
+#import "OALNotifications.h"
 #import "OALAudioSession.h"
 #import "OALSimpleAudio.h"
 

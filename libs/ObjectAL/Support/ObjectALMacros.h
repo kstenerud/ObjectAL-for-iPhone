@@ -179,8 +179,6 @@
 #pragma mark -
 #pragma mark Special Purpose Logging
 
-#if OBJECTAL_CFG_LOG_LEVEL > 0
-
 /** Report on the specified AudioSession error code, logging an error if the code does not indicate success.
  *
  * @param ERROR_CODE The error code.
@@ -190,8 +188,11 @@
 #define REPORT_AUDIOSESSION_CALL(ERROR_CODE, FMT, ...) \
 if(noErr != (ERROR_CODE)) \
 { \
-	[OALTools logAudioSessionError:(ERROR_CODE) function:__PRETTY_FUNCTION__ description:(FMT), ##__VA_ARGS__]; \
+	[OALTools notifyAudioSessionError:(ERROR_CODE) function:__PRETTY_FUNCTION__ description:(FMT), ##__VA_ARGS__]; \
 }
+
+
+#if OBJECTAL_CFG_LOG_LEVEL > 0
 
 /** Report on the specified ExtAudio error code, logging an error if the code does not indicate success.
  *
@@ -202,15 +203,15 @@ if(noErr != (ERROR_CODE)) \
 #define REPORT_EXTAUDIO_CALL(ERROR_CODE, FMT, ...) \
 if(noErr != (ERROR_CODE)) \
 { \
-	[OALTools logExtAudioError:(ERROR_CODE) function:__PRETTY_FUNCTION__ description:(FMT), ##__VA_ARGS__]; \
+	[OALTools notifyExtAudioError:(ERROR_CODE) function:__PRETTY_FUNCTION__ description:(FMT), ##__VA_ARGS__]; \
 }
 
-#else /* OBJECTAL_CFG_LOG_LEVEL */
+#else
 
-#define REPORT_AUDIOSESSION_CALL(ERROR_CODE, FMT, ...)
+// ExtAudio calls aren't dependent on the audio session so we'd never post an audio session error from here.
 #define REPORT_EXTAUDIO_CALL(ERROR_CODE, FMT, ...)
 
-#endif /* OBJECTAL_CFG_LOG_LEVEL */
+#endif /* OBJECTAL_CFG_LOG_LEVEL > 0 */
 
 
 

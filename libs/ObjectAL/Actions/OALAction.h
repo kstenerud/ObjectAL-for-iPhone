@@ -27,7 +27,6 @@
 #import <Foundation/Foundation.h>
 #import "OALFunction.h"
 #import "ObjectALConfig.h"
-#import "ALTypes.h"
 
 
 #if OBJECTAL_USE_COCOS2D_ACTIONS

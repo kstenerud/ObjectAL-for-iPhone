@@ -57,13 +57,14 @@
 /** The total number of audio frames in this file */
 @property(readonly) SInt64 totalFrames;
 
-/** If YES, reduce any stereo data to mono. */
+/** If YES, reduce any stereo data to mono (stereo samples don't support panning or positional audio). */
 @property(readwrite,assign) bool reduceToMono;
 
 /** Open the audio file at the specified URL.
  *
  * @param url The URL to open the audio file from.
- * @param reduceToMono If YES, reduce any stereo track to mono.
+ * @param reduceToMono If YES, reduce any stereo track to mono
+                       (stereo samples don't support panning or positional audio).
  * @return a new audio file object.
  */
 + (OALAudioFile*) fileWithUrl:(NSURL*) url
@@ -72,7 +73,8 @@
 /** Initialize this object with the audio file at the specified URL.
  *
  * @param url The URL to open the audio file from.
- * @param reduceToMono If YES, reduce any stereo track to mono.
+ * @param reduceToMono If YES, reduce any stereo track to mono
+                       (stereo samples don't support panning or positional audio).
  * @return the initialized audio file object.
  */
 - (id) initWithUrl:(NSURL*) url
@@ -99,5 +101,15 @@
 - (ALBuffer*) bufferNamed:(NSString*) name
 			   startFrame:(SInt64) startFrame
 				numFrames:(SInt64) numFrames;
+
+/** Convenience method to load the entire contents of a URL into a new ALBuffer.
+ *
+ * @param url The URL to open the audio file from.
+ * @param reduceToMono If YES, reduce any stereo track to mono
+                       (stereo samples don't support panning or positional audio).
+ * @return an ALBuffer object.
+ */
++ (ALBuffer*) bufferFromUrl:(NSURL*) url
+			   reduceToMono:(bool) reduceToMono;
 
 @end

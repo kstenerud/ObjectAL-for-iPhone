@@ -26,6 +26,7 @@
 
 #import "OALTools.h"
 #import "ObjectALMacros.h"
+#import "OALNotifications.h"
 #import <AudioToolbox/AudioToolbox.h>
 
 
@@ -51,7 +52,7 @@
 	return [NSURL fileURLWithPath:fullPath];
 }
 
-+ (void) logExtAudioError:(OSStatus)errorCode
++ (void) notifyExtAudioError:(OSStatus)errorCode
 				 function:(const char*) function
 			  description:(NSString*) description, ...
 {
@@ -113,24 +114,28 @@
 	}
 }
 
-+ (void) logAudioSessionError:(OSStatus)errorCode
++ (void) notifyAudioSessionError:(OSStatus)errorCode
 					 function:(const char*) function
 				  description:(NSString*) description, ...
 {
 	if(noErr != errorCode)
 	{
 		NSString* errorString;
+		bool postNotification = NO;
 		
 		switch(errorCode)
 		{
 			case kAudioSessionNotInitialized:
 				errorString = @"Audio session not initialized";
+				postNotification = YES;
 				break;
 			case kAudioSessionAlreadyInitialized:
 				errorString = @"Audio session already initialized";
+				postNotification = YES;
 				break;
 			case kAudioSessionInitializationError:
 				errorString = @"Audio sesion initialization error";
+				postNotification = YES;
 				break;
 			case kAudioSessionUnsupportedPropertyError:
 				errorString = @"Unsupported audio session property";
@@ -140,31 +145,43 @@
 				break;
 			case kAudioSessionNotActiveError:
 				errorString = @"Audio session is not active";
+				postNotification = YES;
 				break;
 #if 0 // Documented but not implemented on iOS
 			case kAudioSessionNoHardwareError:
 				errorString = @"Hardware not available for audio session";
+				postNotification = YES;
 				break;
 #endif
 #ifdef __IPHONE_3_1
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_3_1
 			case kAudioSessionNoCategorySet:
 				errorString = @"No audio session category set";
+				postNotification = YES;
 				break;
 			case kAudioSessionIncompatibleCategory:
 				errorString = @"Incompatible audio session category";
+				postNotification = YES;
 				break;
 #endif /* __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_3_1 */
 #endif /* __IPHONE_3_1 */
 			default:
 				errorString = @"Unknown audio session error";
+				postNotification = YES;
 		}
 
+#if OBJECTAL_CFG_LOG_LEVEL > 0
 		va_list args;
 		va_start(args, description);
 		description = [[[NSString alloc] initWithFormat:description arguments:args] autorelease];
 		va_end(args);
 		OAL_LOG_ERROR_CONTEXT(function, @"%@ (error code 0x%08x: %@)", description, errorCode, errorString);
+#endif /* OBJECTAL_CFG_LOG_LEVEL > 0 */
+		
+		if(postNotification)
+		{
+			[[NSNotificationCenter defaultCenter] postNotificationName:OALAudioErrorNotification object:self];
+		}
 	}
 }
 

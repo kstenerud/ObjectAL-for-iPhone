@@ -27,9 +27,11 @@
 #import "OALAudioSession.h"
 #import <AudioToolbox/AudioToolbox.h>
 #import "ObjectALMacros.h"
+#import "OALNotifications.h"
 
 
 #define kMaxSessionActivationRetries 40
+#define kMinTimeIntervalBetweenResets 1.0
 
 #pragma mark -
 #pragma mark Private Methods
@@ -113,7 +115,13 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 		useHardwareIfAvailable = YES;
 		honorSilentSwitch = YES;
 		[self updateFromFlags];
-				
+
+#if OBJECTAL_CFG_RESET_AUDIO_SESSION_ON_ERROR
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(onAudioError:)
+													 name:OALAudioErrorNotification object:nil];
+#endif
+
 		// Activate the audio session.
 		self.audioSessionActive = YES;
 	}
@@ -123,6 +131,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 - (void) dealloc
 {
 	OAL_LOG_DEBUG(@"%@: Dealloc", self);
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[lastResetTime release];
 	self.audioSessionActive = NO;
 	
 	[audioSessionCategory release];
@@ -481,6 +491,33 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 	}
 }
 
+- (void) onAudioError:(NSNotification*) notification
+{
+#if OBJECTAL_CFG_RESET_AUDIO_SESSION_ON_ERROR
+	if(self.suspended)
+	{
+		OAL_LOG_WARNING(@"Received audio error notification, but session is suspended. Doing nothing.");
+		return;
+	}
+
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		NSTimeInterval timeSinceLastReset = [[NSDate date] timeIntervalSinceDate:lastResetTime];
+		if(timeSinceLastReset > kMinTimeIntervalBetweenResets)
+		{
+			OAL_LOG_WARNING(@"Received audio error notification. Resetting audio session.");
+			self.manuallySuspended = YES;
+			self.manuallySuspended = NO;
+			[lastResetTime release];
+			lastResetTime = [[NSDate date] retain];
+		}
+		else
+		{
+			OAL_LOG_WARNING(@"Received audio error notification, but last reset was %f seconds ago. Doing nothing.", timeSinceLastReset);
+		}
+	}
+#endif
+}
 
 #pragma mark Suspend Handler
 
