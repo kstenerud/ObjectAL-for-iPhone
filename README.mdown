@@ -1,0 +1,57 @@
+ObjectAL for iPhone
+===================
+
+### iOS Audio, minus the headache.
+
+So you want to add audio to your app. Usually your audio needs are something like:
+
+* Play, Pause, Stop, Loop
+* Volume, Pitch, Pan, Mute
+* Maybe some "power user" stuff, such as preloading and session control
+
+
+### But you want *more* than that.
+
+* You want it to be **intuitive** and **easy**.
+* You want to get up and running **fast**.
+* But most of all, you want it to **JUST BLOODY WORK**!
+
+
+### ObjectAL removes the pain.
+
+ObjectAL shields you from the nastiness of audio programming on iOS.
+
+* It knows how to manage audio sessions.
+* It knows OpenAL and AVAudioPlayer.
+* It knows what bugs are in which iOS version, and how to work around them.
+* It knows how to navigate the arcane APIs and perform the right incantations.
+
+ObjectAL layers all that craziness away, giving you a clean, object oriented, Objective-C interface that just *works*.
+
+
+### With ObjectAL, the simple is easy, and the complex is possible.
+
+
+---------------------------------------------------------------------
+
+
+Find Out More
+-------------
+
+**Homepage:** <http://kstenerud.github.com/ObjectAL-for-iPhone>
+
+**Github:** <http://github.com/kstenerud/ObjectAL-for-iPhone>
+
+**Documentation:** ObjectAL.pdf (in the repository) or <http://kstenerud.github.com/ObjectAL-for-iPhone/documentation>
+
+**Community:** <http://groups.google.com/group/objectal-for-iphone>
+
+**Download:** <http://kstenerud.github.com/ObjectAL-for-iPhone/downloads.html>
+
+**Repository:** ` git clone http://github.com/kstenerud/ObjectAL-for-iPhone.git `
+
+
+---------------------------------------------------------------------
+
+
+ObjectAL, copyright 2009 Karl Stenerud, released under the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0)
