@@ -288,6 +288,8 @@
 
 @synthesize currentlyLoadedUrl;
 
+@synthesize preloaded;
+
 - (id<AVAudioPlayerDelegate>) delegate
 {
 	OPTIONALLY_SYNCHRONIZED(self)
@@ -528,6 +530,75 @@
 
 - (void) setSuspended:(bool) value
 {
+	/* Suspend gets a bit complicated here.
+	 * If multiple AVAudioPlayers are playing when an interrupt begins,
+	 * only one of them will resume when the interrupt finishes.
+	 * To counter this, we destroy the player and rebuild it on resume.
+	 *
+	 * Note: This has the unfortunate side effect that the OALAudioTrack
+	 * using hardware playback on resume may not be the same one!
+	 *
+	 * TODO: Need to find a way to avoid this situation.
+	 */
+	if(value)
+	{
+		if(preloaded)
+		{
+			currentTime = player.currentTime;
+			if(self.playing)
+			{
+				[player stop];
+			}
+		}
+	}
+	else
+	{
+		if(preloaded)
+		{
+			NSError* error;
+			[player release];
+			player = [[AVAudioPlayer alloc] initWithContentsOfURL:currentlyLoadedUrl error:&error];
+			if(nil != error)
+			{
+				OAL_LOG_ERROR(@"%@: Could not reload URL %@: %@",
+							  self, currentlyLoadedUrl, [error localizedDescription]);
+				[player release];
+				player = nil;
+				return;
+			}
+			
+			player.volume = muted ? 0 : gain;
+			player.numberOfLoops = numberOfLoops;
+			player.meteringEnabled = meteringEnabled;
+			player.delegate = self;
+			if([IOSVersion sharedInstance].version >= 4.0)
+			{
+				player.pan = pan;
+			}
+			
+			player.currentTime = currentTime;
+			
+			if(![player prepareToPlay])
+			{
+				OAL_LOG_ERROR(@"%@: Failed to prepareToPlay on resume: %@", self, currentlyLoadedUrl);
+				[player release];
+				player = nil;
+				return;
+			}
+			
+			if(playing)
+			{
+				playing = [player play];
+				if(paused)
+				{
+					[player pause];
+				}
+			}
+		}
+	}
+
+	
+	/*
 	if(value)
 	{
 		if(self.playing && !self.paused)
@@ -544,6 +615,7 @@
 			[player play];
 		}
 	}
+	 */
 }
 
 
@@ -617,6 +689,7 @@
 		{
 			[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:OALAudioTrackSourceChangedNotification object:self] waitUntilDone:NO];
 		}
+		preloaded = allOK;
 		return allOK;
 	}
 }
@@ -766,6 +839,7 @@
 		SIMULATOR_BUG_WORKAROUND_END_PLAYBACK();
 		paused = NO;
 		playing = NO;
+		preloaded = NO;
 	}
 }
 
@@ -952,6 +1026,7 @@
 	{
 		playing = NO;
 		paused = NO;
+		preloaded = NO;
 		SIMULATOR_BUG_WORKAROUND_END_PLAYBACK();
 	}
 	if([delegate respondsToSelector:@selector(audioPlayerDidFinishPlaying:successfully:)])
