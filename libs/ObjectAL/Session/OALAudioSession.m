@@ -88,6 +88,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALAudioSession);
  */
 - (void) setSuspended:(bool) value;
 
+/** (INTERNAL USE) Called when an audio error is signalled via
+ * notification.
+ */
+- (void) onAudioError:(NSNotification*) notification;
+
 @end
 
 
