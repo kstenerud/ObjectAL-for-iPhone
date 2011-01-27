@@ -814,7 +814,8 @@
 {
 	if(value)
 	{
-		if(AL_PLAYING == self.state)
+		shadowState = self.state;
+		if(AL_PLAYING == shadowState)
 		{
 			[ALWrapper sourcePause:sourceId];
 		}

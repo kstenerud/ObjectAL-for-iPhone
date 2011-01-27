@@ -563,7 +563,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 
 - (void) setSuspended:(bool) value
 {
-	NSLog(@"### Set suspended = %d", value);
+	OAL_LOG_DEBUG(@"setSuspended %d", value);
 	if(value)
 	{
 		audioSessionWasActive = self.audioSessionActive;
