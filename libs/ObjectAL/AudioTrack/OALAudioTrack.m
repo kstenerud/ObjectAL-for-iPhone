@@ -564,9 +564,11 @@
 	
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		bool alreadyLoaded = [[url absoluteString] isEqualToString:[currentlyLoadedUrl absoluteString]];
-		OAL_LOG_DEBUG_COND(alreadyLoaded, @"%@: %@: URL already preloaded", self, url);
+		// No longer re-using AVAudioPlayer because of bugs when using multiple players.
+		// Playing two tracks, then stopping one and starting it again will cause prepareToPlay to fail.
 		
+		bool wasPlaying = playing;
+
 		[self stopActions];
 		
 		SIMULATOR_BUG_WORKAROUND_PREPARE_PLAYBACK();
@@ -575,25 +577,19 @@
 			[player stop];
 		}
 
-		if(!alreadyLoaded)
-		{
-			[player release];
-		}
+		[player release];
 
-		if(playing)
+		if(wasPlaying)
 		{
 			[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:OALAudioTrackStoppedPlayingNotification object:self] waitUntilDone:NO];
 		}
 		
-		if(!alreadyLoaded)
+		NSError* error;
+		player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+		if(nil != error)
 		{
-			NSError* error;
-			player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
-			if(nil != error)
-			{
-				OAL_LOG_ERROR(@"%@: Could not load URL %@: %@", self, url, [error localizedDescription]);
-				return NO;
-			}
+			OAL_LOG_ERROR(@"%@: Could not load URL %@: %@", self, url, [error localizedDescription]);
+			return NO;
 		}
 		
 		player.volume = muted ? 0 : gain;
@@ -605,11 +601,8 @@
 			player.pan = pan;
 		}
 		
-		if(!alreadyLoaded)
-		{
-			[currentlyLoadedUrl release];
-			currentlyLoadedUrl = [url retain];
-		}
+		[currentlyLoadedUrl release];
+		currentlyLoadedUrl = [url retain];
 		
 		self.currentTime = seekTime;
 		playing = NO;

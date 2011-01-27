@@ -50,18 +50,6 @@
 	// You can change anytime.
 	[CCTexture2D setDefaultAlphaPixelFormat:kTexture2DPixelFormat_RGBA8888];	
 	
-	// I'm creating the OALSimpleAudio singleton here as a shortcut to initialize
-	// the underlying audio libraries, which can take some time to start up.
-	[OALSimpleAudio sharedInstance];
-
-	// I destroy it here as well because OALSimpleAudio takes all of ObjectAL's
-	// sources by default, and some of the demos would fail when they tried to use
-	// ObjectAL directly.
-	[OALSimpleAudio purgeSharedInstance];
-
-	// We want interruptions handled automatically so we don't have to worry about them.
-	[OALAudioSession sharedInstance].handleInterruptions = YES;
-
 	[[CCDirector sharedDirector] runWithScene: [MainLayer scene]];
 }
 
