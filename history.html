@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<HTML xmlns="http://www.w3.org/1999/xhtml">
+
+<HEAD>
+	<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<META name="description" content="iOS Audio development, minus the headache. ObjectAL is a free, open source audio library which provides a simpler, Objective-C interface to OpenAL and AVAudioPlayer for iOS developers">
+	<META name="keywords" content="ObjectAL, iOS, iPhone, iPod, iPad, OpenAL, AVAudioPlayer, audio, sound, library, api, development, xcode, OALSimpleAudio, OALAudioSupport, AudioTrack">
+
+	<TITLE>ObjectAL for iPhone</TITLE>
+
+	<LINK href="style.css" type="text/css" rel="stylesheet">
+</HEAD>
+
+<BODY id="history">
+<DIV id="wrapper">
+	<DIV id="main">
+		<DIV id="middle">
+			<DIV id="nav">
+				<UL>
+						<LI id="homenav"><A href="index.html">HOME</A></LI>
+						<LI id="aboutnav"><A href="about.html">ABOUT</A></LI>
+						<LI id="historynav"><A href="history.html">HISTORY</A></LI>
+						<LI id="downloadsnav"><A href="downloads.html">DOWNLOAD</A></LI>
+						<LI id="documentationnav"><A href="documentation/index.html">DOCUMENTATION</A></LI>
+						<LI id="communitynav"><A href="http://groups.google.com/group/objectal-for-iphone">COMMUNITY</A></LI>
+						<LI id="githubnav"><A href="http://github.com/kstenerud/ObjectAL-for-iPhone">GITHUB HOME</A></LI>
+				</UL>
+			</DIV>
+		</DIV>
+		<DIV id="content">
+
+<!-- Begin content -->
+
+
+<P class="title">
+	<H1>History</H1>
+</P>
+<BR>
+<H3><SPAN style="color: #93914D;">UPCOMING</SPAN>&nbsp;&nbsp;Coming in ObjectAL 2.0 (currently in master)</H3>
+<H4>Major changes (incompatible with earlier versions):</H4>
+<UL>
+	<LI><strong>BackgroundAudio</strong> has been replaced with <strong>OALAudioTrack</strong> and <strong>OALAudioTracks</strong>.</LI>
+	<LI><strong>ObjectAL</strong> has been renamed to <strong>OpenALManager</strong>.</LI>
+	<LI><strong>IphoneAudioSupport</strong> has been replaced with <strong>IOSAudioSession</strong>, with OpenAL loader functions moved to <strong>OpenALManager</strong> and <strong>OALAudioFile</strong>, and other utility functions moved to <strong>OALTools</strong>.</LI>
+	<LI><strong>SimpleIphoneAudio</strong> has been renamed to <strong>OALSimpleAudio</strong>.</LI>
+	<LI><strong>SoundSource</strong> has been renamed to <strong>ALSoundSource</strong>.</LI>
+	<LI><strong>ChannelSource</strong> has been renamed to <strong>ALChannelSource</strong>.</LI>
+	<LI><strong>SoundSourcePool</strong> has been renamed to <strong>ALSoundSourcePool</strong>.</LI>
+</UL>
+
+<H4>New Classes:</H4>
+<UL>
+	<LI><strong>OALAudioTrack:</strong> Allows more than one background audio track to play at a time.</LI>
+	<LI><strong>OALAction:</strong> Allows actions to be performed on audio objects.
+             You can configure ObjectAL to make all actions subclasses of cocos2d actions in ObjectALConfig.h</LI>
+	<LI><strong>OALFunction:</strong> Allows you to modify how a duration based fade, pan, or pitch gets applied in an action.</LI>
+</UL>
+
+<H4>Other changes:</H4>
+<UL>
+	<LI>Changed the file layout.</LI>
+	<LI>SoundSource objects (such as ALSource) support duration based fade, pan, and pitch.</LI>
+	<LI><strong>OALAudioSupport</strong> has new properties "hardwareMuted" "hardwareVolume", "audioRoute", and "ipodDucking".</LI>
+	<LI><strong>OALSimpleAudio</strong> has methods to preload multiple sound files at a time.</LI>
+	<LI><strong>OALAudioTrack</strong> supports duration based fade and pan.</LI>
+	<LI><strong>OALAudioTrack</strong> has notifications for start/stop playback and for when the source changes.</LI>
+	<LI>Audio tracks support starting playback at an arbitrary point.</LI>
+	<LI><strong>OALAudioSession</strong> and other audio objects can now be suspended manually</LI>
+	<LI>New demo: Audio Tracks.</LI>
+	<LI>New demo: Hardware Monitoring.</LI>
+	<LI>ObjectAL can now be compiled as Objective-C++ if you want.</LI>
+	<LI>Fixed crash issue when the first attempt to start the audio session fails.</LI>
+	<LI>Workaround for compiler bug when compiling for iOS4.1 with LLVM.</LI>
+	<LI>Fix for SynthesizeSingleton when using a nonstandard init method.</LI>
+	<LI>Compiles with stricter warnings.</LI>
+	<LI>Audio objects now have "volume" as an alias to "gain".</LI>
+	<LI>Fixed bug that caused distortion when loading certain formats into OpenAL.</LI>
+	<LI>Much improved audio session handling for various edge cases.</LI>
+	<LI>Better interrupt handling.</LI>
+</UL>
+
+
+<H3><SPAN style="color: #93914D;">2010-09-21</SPAN>&nbsp;&nbsp;ObjectAL 1.1 Released</H3>
+<UL>
+	<LI>Added realtime fading to ObjectAL and BackgroundAudio</LI>
+
+	<LI>Moved "allowIpod", "honorSilentSwitch", and "ipodPlaying" from
+		BackgroundAudio to IphoneAudioSupport</LI>
+
+	<LI>Added new boolean switch "useHardwareIfAvailable" to IphoneAudioSupport</LI>
+
+	<LI>IphoneAudioSupport now accepts a session category override for traditional
+		kAudioSessionProperty_AudioCategory style category setting. </LI>
+
+	<LI>Added compile-time configuration file ObjectALConfig.h</LI>
+
+	<LI>All library calls are now synchronized (can be disabled in ObjectALConfig.h)</LI>
+
+	<LI>Improved audio session handling</LI>
+
+	<LI>Compatible with CLANG-LLVM 1.5 compiler</LI>
+
+	<LI>Simulator bug workaround now disabled by default</LI>
+
+	<LI>Various bug fixes</LI>
+</UL>
+
+<H3 class="following"><SPAN style="color: #93914D;">2010-06-12</SPAN>&nbsp;&nbsp;ObjectAL 1.0 Released</H3>
+<UL>
+	<LI>First GitHib release of ObjectAL.</LI>
+</UL>
+
+<!-- End content -->
+
+</DIV>
+</DIV></DIV>
+<DIV id="footer">
+	<DIV id="footer_nav">
+		<UL>
+			<LI>ObjectAL for iPhone</LI>						   
+		</UL>
+		<P>By Karl Stenerud</P>
+		<P>Released under <A href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache v2.0 license</A></P>
+	</DIV>
+</DIV>
+</BODY></HTML>

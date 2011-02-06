@@ -2,7 +2,7 @@ DOCSET_NAME=org.doxygen.ObjectAL.docset
 DOCSET_CONTENTS=$(DOCSET_NAME)/Contents
 DOCSET_RESOURCES=$(DOCSET_CONTENTS)/Resources
 DOCSET_DOCUMENTS=$(DOCSET_RESOURCES)/Documents
-DOCSET_INSTALL=~/Library/Developer/Shared/Documentation/DocSets
+DESTDIR=~/Library/Developer/Shared/Documentation/DocSets
 XCODE_INSTALL=$(shell xcode-select -print-path)
 
 all: docset
@@ -26,10 +26,10 @@ docset:
 	rm -f $(DOCSET_RESOURCES)/Tokens.xml
 
 install: docset
-	mkdir -p $(DOCSET_INSTALL)
-	cp -R $(DOCSET_NAME) $(DOCSET_INSTALL)
+	mkdir -p $(DESTDIR)
+	cp -R $(DOCSET_NAME) $(DESTDIR)
 
 uninstall:
-	rm -rf $(DOCSET_INSTALL)
+	rm -rf $(DESTDIR)/$(DOCSET_NAME)
 
 always:

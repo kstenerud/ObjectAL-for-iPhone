@@ -49,7 +49,7 @@ h4 {
 	font: bold 14px helvetica, 'Trebuchet MS', 'lucida grande', 'lucida sans', verdana, arial, sans-serif;
 	line-height: 20px;
 	color: #413824;
-	margin: 18px 0 0 0;
+	margin: 18px 0 8px 0;
 	padding: 0;
 }
 
@@ -107,6 +107,7 @@ h4.following {
 
 #home #homenav a, 
 #about #aboutnav a, 
+#history #historynav a, 
 #downloads #downloadsnav a,
 #github #githubnav a,
 #documentation #documentationnav a {

@@ -66,6 +66,10 @@
           <Path>interface_a_l_wrapper.html</Path>
          </Node>
          <Node>
+          <Name>IOSVersion</Name>
+          <Path>interface_i_o_s_version.html</Path>
+         </Node>
+         <Node>
           <Name>NSMutableArray</Name>
           <Path>class_n_s_mutable_array.html</Path>
          </Node>
@@ -110,8 +114,12 @@
           <Path>interface_o_a_l_action_manager.html</Path>
          </Node>
          <Node>
-          <Name>OALAudioSupport</Name>
-          <Path>interface_o_a_l_audio_support.html</Path>
+          <Name>OALAudioFile</Name>
+          <Path>interface_o_a_l_audio_file.html</Path>
+         </Node>
+         <Node>
+          <Name>OALAudioSession</Name>
+          <Path>interface_o_a_l_audio_session.html</Path>
          </Node>
          <Node>
           <Name>OALAudioTrack</Name>
@@ -190,8 +198,24 @@
           <Path>interface_o_a_l_simple_audio.html</Path>
          </Node>
          <Node>
+          <Name>OALSuspendHandler</Name>
+          <Path>interface_o_a_l_suspend_handler.html</Path>
+         </Node>
+         <Node>
+          <Name>&lt;OALSuspendListener&gt;</Name>
+          <Path>protocol_o_a_l_suspend_listener-p.html</Path>
+         </Node>
+         <Node>
+          <Name>&lt;OALSuspendManager&gt;</Name>
+          <Path>protocol_o_a_l_suspend_manager-p.html</Path>
+         </Node>
+         <Node>
           <Name>OALTargetedAction</Name>
           <Path>interface_o_a_l_targeted_action.html</Path>
+         </Node>
+         <Node>
+          <Name>OALTools</Name>
+          <Path>interface_o_a_l_tools.html</Path>
          </Node>
          <Node>
           <Name>OpenALManager</Name>
@@ -210,18 +234,6 @@
          <Node>
           <Name>ALCaptureDevice</Name>
           <Path>interface_a_l_capture_device.html</Path>
-         </Node>
-         <Node>
-          <Name>ALContext</Name>
-          <Path>interface_a_l_context.html</Path>
-         </Node>
-         <Node>
-          <Name>ALDevice</Name>
-          <Path>interface_a_l_device.html</Path>
-         </Node>
-         <Node>
-          <Name>ALListener</Name>
-          <Path>interface_a_l_listener.html</Path>
          </Node>
          <Node>
           <Name>ALOrientation</Name>
@@ -256,6 +268,10 @@
          <Node>
           <Name>ALWrapper</Name>
           <Path>interface_a_l_wrapper.html</Path>
+         </Node>
+         <Node>
+          <Name>IOSVersion</Name>
+          <Path>interface_i_o_s_version.html</Path>
          </Node>
          <Node>
           <Name>NSMutableArray</Name>
@@ -352,16 +368,8 @@
           <Path>interface_o_a_l_action_manager.html</Path>
          </Node>
          <Node>
-          <Name>OALAudioSupport</Name>
-          <Path>interface_o_a_l_audio_support.html</Path>
-         </Node>
-         <Node>
-          <Name>OALAudioTrack</Name>
-          <Path>interface_o_a_l_audio_track.html</Path>
-         </Node>
-         <Node>
-          <Name>OALAudioTracks</Name>
-          <Path>interface_o_a_l_audio_tracks.html</Path>
+          <Name>OALAudioFile</Name>
+          <Path>interface_o_a_l_audio_file.html</Path>
          </Node>
          <Node>
           <Name>&lt;OALFunction&gt;</Name>
@@ -394,8 +402,56 @@
           <Path>interface_o_a_l_simple_audio.html</Path>
          </Node>
          <Node>
-          <Name>OpenALManager</Name>
-          <Path>interface_open_a_l_manager.html</Path>
+          <Name>OALSuspendHandler</Name>
+          <Path>interface_o_a_l_suspend_handler.html</Path>
+         </Node>
+         <Node>
+          <Name>&lt;OALSuspendListener&gt;</Name>
+          <Path>protocol_o_a_l_suspend_listener-p.html</Path>
+          <Subnodes>
+           <Node>
+            <Name>&lt;OALSuspendManager&gt;</Name>
+            <Path>protocol_o_a_l_suspend_manager-p.html</Path>
+            <Subnodes>
+             <Node>
+              <Name>ALContext</Name>
+              <Path>interface_a_l_context.html</Path>
+             </Node>
+             <Node>
+              <Name>ALDevice</Name>
+              <Path>interface_a_l_device.html</Path>
+             </Node>
+             <Node>
+              <Name>ALListener</Name>
+              <Path>interface_a_l_listener.html</Path>
+             </Node>
+             <Node>
+              <Name>ALSource</Name>
+              <Path>interface_a_l_source.html</Path>
+             </Node>
+             <Node>
+              <Name>OALAudioSession</Name>
+              <Path>interface_o_a_l_audio_session.html</Path>
+             </Node>
+             <Node>
+              <Name>OALAudioTrack</Name>
+              <Path>interface_o_a_l_audio_track.html</Path>
+             </Node>
+             <Node>
+              <Name>OALAudioTracks</Name>
+              <Path>interface_o_a_l_audio_tracks.html</Path>
+             </Node>
+             <Node>
+              <Name>OpenALManager</Name>
+              <Path>interface_open_a_l_manager.html</Path>
+             </Node>
+            </Subnodes>
+           </Node>
+          </Subnodes>
+         </Node>
+         <Node>
+          <Name>OALTools</Name>
+          <Path>interface_o_a_l_tools.html</Path>
          </Node>
         </Subnodes>
        </Node>

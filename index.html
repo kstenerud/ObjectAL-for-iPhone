@@ -3,8 +3,8 @@
 
 <HEAD>
 	<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<META name="description" content="A free, open source audio library which provides a simpler, Objective-C interface to OpenAL and AVAudioPlayer for iPhone developers">
-	<META name="keywords" content="ObjectAL, iPhone, iPod, iPad, OpenAL, AVAudioPlayer, audio, sound, library, api, development, xcode, SimpleIphoneAudio, IphoneAudioSupport, BackgroundAudio">
+	<META name="description" content="iOS Audio development, minus the headache. ObjectAL is a free, open source audio library which provides a simpler, Objective-C interface to OpenAL and AVAudioPlayer for iOS developers">
+	<META name="keywords" content="ObjectAL, iOS, iPhone, iPod, iPad, OpenAL, AVAudioPlayer, audio, sound, library, api, development, xcode, OALSimpleAudio, OALAudioSupport, AudioTrack">
 
 	<TITLE>ObjectAL for iPhone</TITLE>
 
@@ -19,6 +19,7 @@
 				<UL>
 						<LI id="homenav"><A href="index.html">HOME</A></LI>
 						<LI id="aboutnav"><A href="about.html">ABOUT</A></LI>
+						<LI id="historynav"><A href="history.html">HISTORY</A></LI>
 						<LI id="downloadsnav"><A href="downloads.html">DOWNLOAD</A></LI>
 						<LI id="documentationnav"><A href="documentation/index.html">DOCUMENTATION</A></LI>
 						<LI id="communitynav"><A href="http://groups.google.com/group/objectal-for-iphone">COMMUNITY</A></LI>
@@ -32,88 +33,43 @@
 
 
 <P class="title">
-	<H1> ObjectAL for iPhone</H1>
+	<H1>ObjectAL for iPhone</H1>
 </P>
-<H3></H3>
-<P class="intro">
-A free, open source audio library which provides a simpler, Objective-C
-interface to OpenAL and AVAudioPlayer for iPhone developers.
-</P>
-
 <BR>
-<H2>HISTORY</H2>
+<H3>IOS AUDIO, MINUS THE HEADACHE</H3>
+<!-- P class="intro"></P -->
+<H4>Audio should be simple</H4>
+<P>
+So you want to add audio to your app. Usually your audio needs are something like:
+</P>
+<ul>
+  <li>Play, Pause, Stop, Loop</li>
+  <li>Volume, Pitch, Pan, Mute</li>
+  <li>Maybe some "power user" stuff, such as preloading and session control</li>
+</ul>
 
+<H4>But you want <EM>more</EM> than that.</H4>
+<ul>
+  <li>You want it to be <strong>intuitive</strong> and <strong>easy</strong>.</li>
+  <li>You want to be up and running <strong>fast</strong>.</li>
+  <li>But most of all, you want it to <strong>JUST BLOODY WORK!</strong></li>
+</ul>
 
-<H3><SPAN style="color: #93914D;">UPCOMING</SPAN>&nbsp;&nbsp;Coming in ObjectAL 2.0 (currently in master)</H3>
-<H4>Major changes (incompatible with earlier versions):</H4>
-<UL>
-	<LI><strong>BackgroundAudio</strong> has been replaced with <strong>OALAudioTrack</strong> and <strong>OALAudioTracks</strong>.</LI>
-	<LI><strong>ObjectAL</strong> has been renamed to <strong>OpenALManager</strong>.</LI>
-	<LI><strong>IphoneAudioSupport</strong> has been renamed to <strong>IOSAudioSupport</strong>.</LI>
-	<LI><strong>SimpleIphoneAudio</strong> has been renamed to <strong>OALSimpleAudio</strong>.</LI>
-	<LI><strong>SoundSource</strong> has been renamed to <strong>ALSoundSource</strong>.</LI>
-	<LI><strong>ChannelSource</strong> has been renamed to <strong>ALChannelSource</strong>.</LI>
-	<LI><strong>SoundSourcePool</strong> has been renamed to <strong>ALSoundSourcePool</strong>.</LI>
-</UL>
+<H4>ObjectAL removes the pain.</H4>
+<P>
+ObjectAL shields you from the nastiness of audio programming on iOS.
+</P>
+<ul>
+  <li>It knows how to manage audio sessions.</li>
+  <li>It knows OpenAL and AVAudioPlayer.</li>
+  <li>It knows what bugs are in which iOS version, and how to work around them.</li>
+  <li>It knows how to navigate the arcane APIs and perform the right incantations.</li>
+</ul>
+<P>
+ObjectAL layers all that craziness away, giving you a clean, object oriented, Objective-C interface that just works.
+</P>
 
-<H4>New Classes:</H4>
-<UL>
-	<LI><strong>OALAudioTrack:</strong> Allows more than one background audio track to play at a time.</LI>
-	<LI><strong>OALAction:</strong> Allows actions to be performed on audio objects.
-             You can configure ObjectAL to make all actions subclasses of cocos2d actions in ObjectALConfig.h</LI>
-	<LI><strong>OALFunction:</strong> Allows you to modify how a duration based fade, pan, or pitch gets applied in an action.</LI>
-</UL>
-
-<H4>Other changes:</H4>
-<UL>
-	<LI>Changed the file layout.</LI>
-	<LI>SoundSource objects (such as ALSource) support duration based fade, pan, and pitch.</LI>
-	<LI><strong>OALAudioSupport</strong> has new properties "hardwareMuted" "hardwareVolume", "audioRoute", and "ipodDucking".</LI>
-	<LI><strong>OALSimpleAudio</strong> has methods to preload multiple sound files at a time.</LI>
-	<LI><strong>OALAudioTrack</strong> supports duration based fade and pan.</LI>
-	<LI><strong>OALAudioTrack</strong> has notifications for start/stop playback and for when the source changes.</LI>
-	<LI>Audio tracks support starting playback at an arbitrary point.</LI>
-	<LI>New demo: Audio Tracks.</LI>
-	<LI>New demo: Hardware Monitoring.</LI>
-	<LI>ObjectAL can now be compiled as Objective-C++ if you want.</LI>
-	<LI>Fixed crash issue when the first attempt to start the audio session fails.</LI>
-	<LI>Workaround for compiler bug when compiling for iOS4.1 with LLVM.</LI>
-	<LI>Fix for SynthesizeSingleton when using a nonstandard init method.</LI>
-	<LI>Compiles with stricter warnings.</LI>
-	<LI>Audio objects now have "volume" as an alias to "gain".</LI>
-	<LI>Fixed bug that caused distortion when loading certain formats into OpenAL.</LI>
-</UL>
-
-
-<H3><SPAN style="color: #93914D;">2010-09-21</SPAN>&nbsp;&nbsp;ObjectAL 1.1 Released</H3>
-<UL>
-	<LI>Added realtime fading to ObjectAL and BackgroundAudio</LI>
-
-	<LI>Moved "allowIpod", "honorSilentSwitch", and "ipodPlaying" from
-		BackgroundAudio to IphoneAudioSupport</LI>
-
-	<LI>Added new boolean switch "useHardwareIfAvailable" to IphoneAudioSupport</LI>
-
-	<LI>IphoneAudioSupport now accepts a session category override for traditional
-		kAudioSessionProperty_AudioCategory style category setting. </LI>
-
-	<LI>Added compile-time configuration file ObjectALConfig.h</LI>
-
-	<LI>All library calls are now synchronized (can be disabled in ObjectALConfig.h)</LI>
-
-	<LI>Improved audio session handling</LI>
-
-	<LI>Compatible with CLANG-LLVM 1.5 compiler</LI>
-
-	<LI>Simulator bug workaround now disabled by default</LI>
-
-	<LI>Various bug fixes</LI>
-</UL>
-
-<H3 class="following"><SPAN style="color: #93914D;">2010-06-12</SPAN>&nbsp;&nbsp;ObjectAL 1.0 Released</H3>
-<UL>
-	<LI>First GitHib release of ObjectAL.</LI>
-</UL>
+<H4>With ObjectAL, the simple is easy, and the complex is possible.</H4>
 
 <!-- End content -->
 

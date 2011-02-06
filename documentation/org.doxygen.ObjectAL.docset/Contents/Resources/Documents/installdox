@@ -53,7 +53,7 @@ foreach $sub (keys %subst)
   }
   elsif ( ! $quiet && $sub ne "_doc" && $sub ne "_cgi" )
   {
-    print "Substituting $subst{$sub} for each occurence of tag file $sub\n"; 
+    print "Substituting $subst{$sub} for each occurrence of tag file $sub\n"; 
   }
 }
 
