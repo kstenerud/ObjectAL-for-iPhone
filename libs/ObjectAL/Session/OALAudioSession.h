@@ -45,7 +45,6 @@
 	
 	bool audioSessionActive;
 	
-	/** Delegate for interruptions */
 	id<AVAudioSessionDelegate> audioSessionDelegate;
 	
 	/** If true, the audio session was active when the interrupt occurred. */
@@ -54,6 +53,9 @@
 	/** Handles suspending and interrupting for this object. */
 	OALSuspendHandler* suspendHandler;
 	
+	/** Marks the last time the audio session was reset due to error.
+	 * This is used to avoid getting stuck in a rapid-fire reset-error loop.
+	 */
 	NSDate* lastResetTime;
 }
 

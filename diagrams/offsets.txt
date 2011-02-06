@@ -1,2 +1,0 @@
-use_objectal_sec: 14
-simulator_playback: 8

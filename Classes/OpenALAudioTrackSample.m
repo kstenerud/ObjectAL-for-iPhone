@@ -22,6 +22,8 @@
 	if(nil != (self = [super init]))
 	{
 		// Create the device and context.
+		// Note that it's easier to just let OALSimpleAudio handle
+		// these rather than make and manage them yourself.
 		device = [[ALDevice deviceWithDeviceSpecifier:nil] retain];
 		context = [[ALContext contextOnDevice:device attributes:nil] retain];
 		[OpenALManager sharedInstance].currentContext = context;

@@ -101,11 +101,11 @@
  */
 @property(readwrite,assign) float pan;
 
-/** If true, background audio is muted */
+/** If true, audio track is muted */
 @property(readwrite,assign) bool muted;
 
-/** If true, background audio is in preloaded state */
-@property(readwrite,assign) bool preloaded;
+/** If true, audio track is in preloaded state */
+@property(readonly) bool preloaded;
 
 /** The number of times to loop playback (-1 = forever).
  * <strong>Note:</strong> This value will be ignored, and get changed when you call the various playXX methods.

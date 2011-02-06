@@ -85,10 +85,10 @@
  *
  * Note: This setting only has effect if OBJECTAL_CFG_USE_COCOS2D_ACTIONS is 0. <br>
  *
- * Recommended setting: 1.0/30
+ * Recommended setting: 1.0/30.0
  */
 #ifndef kActionStepInterval
-#define kActionStepInterval (1.0/30)
+#define kActionStepInterval (1.0/30.0)
 #endif
 
 
@@ -136,7 +136,7 @@
  *
  * Note: With XCode 3.2.5, this bug seems to be fixed. <br>
  *
- * Recommended setting: 1 for XCode 3.2.4, 0 for others.
+ * Recommended setting: 1 for XCode 3.2.4, 0 for all other versions.
  */
 #ifndef OBJECTAL_CFG_CLANG_LLVM_BUG_WORKAROUND
 #define OBJECTAL_CFG_CLANG_LLVM_BUG_WORKAROUND 0
@@ -149,7 +149,7 @@
  *
  * Note: With XCode 3.2.3, this bug seems to be fixed. <br>
  *
- * Recommended setting: 0 for XCode 3.2.3, 1 for earlier versions.
+ * Recommended setting: 0 for XCode 3.2.3 and later, 1 for earlier versions.
  */
 #ifndef OBJECTAL_CFG_SIMULATOR_BUG_WORKAROUND
 #define OBJECTAL_CFG_SIMULATOR_BUG_WORKAROUND 0
