@@ -37,13 +37,14 @@
 {
 	NSURL* url;
 	bool reduceToMono;
-	
+	SInt64 totalFrames;
+
+	/** A description of the audio data in this file. */
+	AudioStreamBasicDescription streamDescription;
+
 	/** The OS specific file handle */
 	ExtAudioFileRef fileHandle;
-	/** A description of the audio stream */
-	AudioStreamBasicDescription description;
-	/** The total number of audio frames in this file */
-	SInt64 totalFrames;
+
 	/** The actual number of channels in the audio data if not reducing to mono */
 	UInt32 originalChannelsPerFrame;
 }
@@ -51,8 +52,8 @@
 /** The URL of the audio file */
 @property(readonly) NSURL* url;
 
-/** A description of the audio data in this file */
-@property(readonly) AudioStreamBasicDescription* description;
+/** A description of the audio data in this file. */
+@property(readonly) AudioStreamBasicDescription* streamDescription;
 
 /** The total number of audio frames in this file */
 @property(readonly) SInt64 totalFrames;
@@ -101,6 +102,11 @@
 - (ALBuffer*) bufferNamed:(NSString*) name
 			   startFrame:(SInt64) startFrame
 				numFrames:(SInt64) numFrames;
+
+/** Close this file to free OS resources. No further operations will be possible
+ * once closed.
+ */
+- (void) close;
 
 /** Convenience method to load the entire contents of a URL into a new ALBuffer.
  *
