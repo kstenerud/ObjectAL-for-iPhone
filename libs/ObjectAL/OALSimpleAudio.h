@@ -394,6 +394,22 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALSimpleAudio);
 						   pan:(float) pan
 						  loop:(bool) loop;
 
+/** Play a sound effect from a user-supplied buffer.
+ *
+ * @param buffer The buffer containing the sound data.
+ * @param volume The volume (gain) to play at (0.0 - 1.0).
+ * @param pitch The pitch to play at (1.0 = normal pitch).
+ * @param pan Left-right panning (-1.0 = far left, 1.0 = far right).
+ * @param loop If TRUE, the sound will loop until you call "stop" on the returned sound source.
+ * @return The sound source being used for playback, or nil if an error occurred (You'll need to
+ *         keep this if you want to be able to stop a looped playback).
+ */
+- (id<ALSoundSource>) playBuffer:(ALBuffer*) buffer
+						  volume:(float) volume
+						   pitch:(float) pitch
+							 pan:(float) pan
+							loop:(bool) loop;
+
 /** Stop ALL sound effect playback.
  */
 - (void) stopAllEffects;

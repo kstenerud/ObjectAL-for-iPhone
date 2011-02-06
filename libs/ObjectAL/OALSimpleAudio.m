@@ -575,7 +575,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 	if(nil == filePath)
 	{
 		OAL_LOG_ERROR(@"filePath was NULL");
-		return NO;
+		return nil;
 	}
 	ALBuffer* buffer = [self internalPreloadEffect:filePath reduceToMono:NO];
 	if(nil != buffer)
@@ -583,6 +583,20 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 		return [channel play:buffer gain:volume pitch:pitch pan:pan loop:loop];
 	}
 	return nil;
+}
+
+- (id<ALSoundSource>) playBuffer:(ALBuffer*) buffer
+						  volume:(float) volume
+						   pitch:(float) pitch
+							 pan:(float) pan
+							loop:(bool) loop
+{
+	if(nil == buffer)
+	{
+		OAL_LOG_ERROR(@"buffer was NULL");
+		return nil;
+	}
+	return [channel play:buffer gain:volume pitch:pitch pan:pan loop:loop];
 }
 
 - (void) stopAllEffects
