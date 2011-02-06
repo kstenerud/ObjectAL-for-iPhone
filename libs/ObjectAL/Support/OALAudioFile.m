@@ -229,24 +229,20 @@
 		bufferList.mBuffers[0].mDataByteSize = streamSizeInBytes;
 		bufferList.mBuffers[0].mData = streamData;
 		
-		// ExtAudioFile IO operations are not thread-safe
-		@synchronized(self)
+		if(noErr != (error = ExtAudioFileSeek(fileHandle, startFrame)))
 		{
-			if(noErr != (error = ExtAudioFileSeek(fileHandle, startFrame)))
-			{
-				REPORT_EXTAUDIO_CALL(error, @"Could not seek to %ll in file (url = %@)",
-									 startFrame,
-									 url);
-				goto onFail;
-			}
-			
-			numFramesRead = (UInt32)numFrames;
-			if(noErr != (error = ExtAudioFileRead(fileHandle, &numFramesRead, &bufferList)))
-			{
-				REPORT_EXTAUDIO_CALL(error, @"Could not read audio data in file (url = %@)",
-									 url);
-				goto onFail;
-			}
+			REPORT_EXTAUDIO_CALL(error, @"Could not seek to %ll in file (url = %@)",
+								 startFrame,
+								 url);
+			goto onFail;
+		}
+		
+		numFramesRead = (UInt32)numFrames;
+		if(noErr != (error = ExtAudioFileRead(fileHandle, &numFramesRead, &bufferList)))
+		{
+			REPORT_EXTAUDIO_CALL(error, @"Could not read audio data in file (url = %@)",
+								 url);
+			goto onFail;
 		}
 		
 		if(nil != bufferSize)
