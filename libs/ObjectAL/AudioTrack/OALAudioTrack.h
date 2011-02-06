@@ -41,6 +41,7 @@
 	AVAudioPlayer* player;
 	NSURL* currentlyLoadedUrl;
 	bool preloaded;
+	bool autoPreload;
 	bool paused;
 	bool muted;
 	float gain;
@@ -103,6 +104,9 @@
 
 /** If true, audio track is muted */
 @property(readwrite,assign) bool muted;
+
+/** If true, automatically preload again when playback stops */
+@property(readwrite,assign) bool autoPreload;
 
 /** If true, audio track is in preloaded state */
 @property(readonly) bool preloaded;

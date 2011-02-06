@@ -72,8 +72,18 @@
 
 - (void) addTrack:(NSString*) filename
 {
+	// Make the audio tracks auto-preload so that they start as fast
+	// as possible when the button is pressed, even after stopping
+	// playback.
+	OALAudioTrack* track = [OALAudioTrack track];
+	[track preloadFile:filename];
+	track.autoPreload = YES;
+	
+	// Loop forever when playing.
+	track.numberOfLoops = -1;
+
 	[audioTrackFiles addObject:filename];
-	[audioTracks addObject:[OALAudioTrack track]];
+	[audioTracks addObject:track];
 }
 
 - (void) buildUI
@@ -144,7 +154,7 @@
 		OALAudioTrack* track = [audioTracks objectAtIndex:index];
 		if(button.isOn)
 		{
-			[track playFile:[audioTrackFiles objectAtIndex:index] loops:-1];
+			[track play];
 		}
 		else
 		{

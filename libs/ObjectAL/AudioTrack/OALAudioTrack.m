@@ -314,6 +314,8 @@
 
 @synthesize currentlyLoadedUrl;
 
+@synthesize autoPreload;
+
 @synthesize preloaded;
 
 - (id<AVAudioPlayerDelegate>) delegate
@@ -590,6 +592,9 @@
 							  self, currentlyLoadedUrl, [error localizedDescription]);
 				[player release];
 				player = nil;
+				preloaded = NO;
+				playing = NO;
+				paused = NO;
 				return;
 			}
 			
@@ -609,6 +614,9 @@
 				OAL_LOG_ERROR(@"%@: Failed to prepareToPlay on resume: %@", self, currentlyLoadedUrl);
 				[player release];
 				player = nil;
+				preloaded = NO;
+				playing = NO;
+				paused = NO;
 				return;
 			}
 			
@@ -1054,6 +1062,14 @@
 		paused = NO;
 		preloaded = NO;
 		SIMULATOR_BUG_WORKAROUND_END_PLAYBACK();
+		if(autoPreload)
+		{
+			preloaded = [player prepareToPlay];
+			if(!preloaded)
+			{
+				OAL_LOG_ERROR(@"%@: Failed to prepareToPlay: %@", self, currentlyLoadedUrl);
+			}
+		}
 	}
 	if([delegate respondsToSelector:@selector(audioPlayerDidFinishPlaying:successfully:)])
 	{
