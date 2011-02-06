@@ -93,9 +93,9 @@ doxset FILE_PATTERNS        "*.c *.cc *.cxx *.cpp *.c++ *.java *.h *.hh *.hxx *.
 doxset WARN_FORMAT          "\$file:\$line: warning: \$text"
 
 # Set all to YES for generating PDF version
-doxset GENERATE_LATEX       YES
-doxset USE_PDFLATEX         YES
-doxset PDF_HYPERLINKS       YES
+doxset GENERATE_LATEX       NO
+doxset USE_PDFLATEX         NO
+doxset PDF_HYPERLINKS       NO
 
 #
 #  Run doxygen on the updated config file.
