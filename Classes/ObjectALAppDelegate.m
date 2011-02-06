@@ -48,7 +48,11 @@
 	// Default texture format for PNG/BMP/TIFF/JPEG/GIF images
 	// It can be RGBA8888, RGBA4444, RGB5_A1, RGB565
 	// You can change anytime.
-	[CCTexture2D setDefaultAlphaPixelFormat:kTexture2DPixelFormat_RGBA8888];	
+	[CCTexture2D setDefaultAlphaPixelFormat:kTexture2DPixelFormat_RGBA8888];
+	
+	// I'm instantiating here to kick off any under-the-hood initialization.
+	// MainLayer will destroy this to provide a clean slate to the demos.
+	[OALSimpleAudio sharedInstance];
 	
 	[[CCDirector sharedDirector] runWithScene: [MainLayer scene]];
 }

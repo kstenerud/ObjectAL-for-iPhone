@@ -43,7 +43,7 @@
 {
 	if(nil != (self = [super init]))
 	{
-		suspendHandler = [[OALSuspendHandler handlerWithTarget:nil selector:nil] retain];
+		suspendHandler = [[OALSuspendHandler alloc] initWithTarget:nil selector:nil];
 
 		context = contextIn;
 		gain = 1.0f;

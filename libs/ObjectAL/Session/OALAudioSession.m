@@ -44,6 +44,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALAudioSession);
  */
 @interface OALAudioSession (Private)
 
+/** (INTERNAL USE) Close any resources belonging to the OS.
+ */
+- (void) closeOSResources;
+
 /** (INTERNAL USE) Get an AudioSession property.
  *
  * @param property The property to get.
@@ -108,7 +112,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 	{
 		OAL_LOG_DEBUG(@"%@: Init", self);
 
-		suspendHandler = [[OALSuspendHandler handlerWithTarget:self selector:@selector(setSuspended:)] retain];
+		suspendHandler = [[OALSuspendHandler alloc] initWithTarget:self selector:@selector(setSuspended:)];
 
 		[(AVAudioSession*)[AVAudioSession sharedInstance] setDelegate:self];
 		
@@ -127,6 +131,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 													 name:OALAudioErrorNotification object:nil];
 #endif
 
+		lastResetTime = [[NSDate alloc] init];
 		// Activate the audio session.
 		self.audioSessionActive = YES;
 	}
@@ -136,14 +141,25 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 - (void) dealloc
 {
 	OAL_LOG_DEBUG(@"%@: Dealloc", self);
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[lastResetTime release];
-	self.audioSessionActive = NO;
+
+	[self closeOSResources];
 	
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[lastResetTime release];	
 	[audioSessionCategory release];
 	[suspendHandler release];
 	
 	[super dealloc];
+}
+
+- (void) closeOSResources
+{
+	self.audioSessionActive = NO;
+}
+
+- (void) close
+{
+	[self closeOSResources];
 }
 
 
@@ -161,8 +177,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		[audioSessionCategory autorelease];
+		NSString* oldValue = audioSessionCategory;
 		audioSessionCategory = [value retain];
+		[oldValue release];
 		[self updateFromAudioSessionCategory];
 		[self setAudioMode];
 	}	
@@ -379,7 +396,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 
 - (void) updateFromFlags
 {
-	[audioSessionCategory autorelease];
+	[audioSessionCategory release];
 	if(honorSilentSwitch)
 	{
 		if(allowIpod)
@@ -514,7 +531,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 			self.manuallySuspended = YES;
 			self.manuallySuspended = NO;
 			[lastResetTime release];
-			lastResetTime = [[NSDate date] retain];
+			lastResetTime = [[NSDate alloc] init];
 		}
 		else
 		{

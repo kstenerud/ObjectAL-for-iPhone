@@ -59,10 +59,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALActionManager);
 {
 	if(nil != (self = [super init]))
 	{
-		targets = [[NSMutableArray mutableArrayUsingWeakReferencesWithCapacity:50] retain];
-		targetActions = [[NSMutableArray arrayWithCapacity:50] retain];
-		actionsToAdd = [[NSMutableArray arrayWithCapacity:100] retain];
-		actionsToRemove = [[NSMutableArray arrayWithCapacity:100] retain];
+		targets = [NSMutableArray newMutableArrayUsingWeakReferencesWithCapacity:50];
+		targetActions = [[NSMutableArray alloc] initWithCapacity:50];
+		actionsToAdd = [[NSMutableArray alloc] initWithCapacity:100];
+		actionsToRemove = [[NSMutableArray alloc] initWithCapacity:100];
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(doResetTimeDelta:)

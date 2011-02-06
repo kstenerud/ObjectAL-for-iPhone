@@ -40,6 +40,10 @@
  */
 @interface ALContext (Private)
 
+/** (INTERNAL USE) Close any resources belonging to the OS.
+ */
+- (void) closeOSResources;
+
 /** (INTERNAL USE) Called by SuspendHandler.
  */
 - (void) setSuspended:(bool) value;
@@ -139,7 +143,7 @@
 			return nil;
 		}
 
-		suspendHandler = [[OALSuspendHandler handlerWithTarget:self selector:@selector(setSuspended:)] retain];
+		suspendHandler = [[OALSuspendHandler alloc] initWithTarget:self selector:@selector(setSuspended:)];
 
 		// Build up an ALCint array for OpenAL's createContext function.
 		ALCint* attributesList = nil;
@@ -161,12 +165,12 @@
 		// Open the context with our list of attributes.
 		context = [ALWrapper createContext:device.device attributes:attributesList];
 		
-		listener = [[ALListener listenerForContext:self] retain];
+		listener = [[ALListener alloc] initWithContext:self];
 		
-		sources = [[NSMutableArray mutableArrayUsingWeakReferencesWithCapacity:32] retain];
+		sources = [NSMutableArray newMutableArrayUsingWeakReferencesWithCapacity:32];
 		
 		// Cache all attributes for this context.
-		attributes = [[NSMutableArray arrayWithCapacity:5] retain];
+		attributes = [[NSMutableArray alloc] initWithCapacity:5];
 		int buffSize = [ALWrapper getInteger:device.device attribute:ALC_ATTRIBUTES_SIZE];
 		if(buffSize > 0)
 		{
@@ -202,23 +206,51 @@
 - (void) dealloc
 {
 	OAL_LOG_DEBUG(@"%@: Dealloc", self);
-	if(nil != device)
-	{
-		[device removeSuspendListener:self];
-		if([OpenALManager sharedInstance].currentContext == self)
-		{
-			[OpenALManager sharedInstance].currentContext = nil;
-		}
-		[device notifyContextDeallocating:self];
-		[sources release];
-		[self removeSuspendListener:listener];
-		[listener release];
-		[ALWrapper destroyContext:context];
-		[device release];
-		[attributes release];
-		[suspendHandler release];
-	}
+
+	[self removeSuspendListener:listener];
+	[device removeSuspendListener:self];
+	[device notifyContextDeallocating:self];
+
+	[self closeOSResources];
+	
+	[sources release];
+	[listener release];
+	[device release];
+	[attributes release];
+	[suspendHandler release];
+
 	[super dealloc];
+}
+
+- (void) closeOSResources
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		if(nil != context)
+		{
+			if([OpenALManager sharedInstance].currentContext == self)
+			{
+				[OpenALManager sharedInstance].currentContext = nil;
+			}
+			[ALWrapper destroyContext:context];
+			context = nil;
+		}
+	}
+}
+
+- (void) close
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		if(nil != context)
+		{
+			[sources makeObjectsPerformSelector:@selector(close)];
+			[sources release];
+			sources = nil;
+			
+			[self closeOSResources];
+		}
+	}
 }
 
 

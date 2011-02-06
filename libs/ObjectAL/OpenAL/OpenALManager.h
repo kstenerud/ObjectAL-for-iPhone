@@ -91,6 +91,11 @@
  */
 SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OpenALManager);
 
+/** Close any OS resources in use by this object.
+ * Any operations called on this object after closing will likely fail.
+ */
+- (void) close;
+
 
 #pragma mark Buffers
 

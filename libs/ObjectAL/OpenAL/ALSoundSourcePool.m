@@ -35,6 +35,10 @@
  */
 @interface ALSoundSourcePool (Private)
 
+/** (INTERNAL USE) Close any resources belonging to the OS.
+ */
+- (void) closeOSResources;
+
 /** Move a source to the head of the list.
  *
  * @param index the index of the source to move.
@@ -67,8 +71,30 @@
 
 - (void) dealloc
 {
+	[self closeOSResources];
+
 	[sources release];
 	[super dealloc];
+}
+
+- (void) closeOSResources
+{
+	// Not directly holding any OS resources.
+}
+
+- (void) close
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		if(nil != sources)
+		{
+			[sources makeObjectsPerformSelector:@selector(close)];
+			[sources release];
+			sources = nil;
+			
+			[self closeOSResources];
+		}
+	}
 }
 
 

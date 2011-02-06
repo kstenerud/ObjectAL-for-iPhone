@@ -28,6 +28,18 @@
 #import "ObjectALMacros.h"
 
 
+/**
+ * (INTERNAL USE) Private methods for OALAudioFile. 
+ */
+@interface OALAudioFile (Private)
+
+/** (INTERNAL USE) Close any resources belonging to the OS.
+ */
+- (void) closeOSResources;
+
+@end
+
+
 @implementation OALAudioFile
 
 + (OALAudioFile*) fileWithUrl:(NSURL*) url
@@ -133,13 +145,14 @@
 
 - (void) dealloc
 {
-	[self close];
+	[self closeOSResources];
+
 	[url release];
 
 	[super dealloc];
 }
 
-- (void) close
+- (void) closeOSResources
 {
 	@synchronized(self)
 	{
@@ -149,6 +162,11 @@
 			fileHandle = nil;
 		}
 	}
+}
+
+- (void) close
+{
+	[self closeOSResources];
 }
 
 - (NSString*) description

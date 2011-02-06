@@ -31,6 +31,18 @@
 #import "OpenALManager.h"
 
 
+/**
+ * (INTERNAL USE) Private methods for ALDevice.
+ */
+@interface ALDevice (Private)
+
+/** (INTERNAL USE) Close any resources belonging to the OS.
+ */
+- (void) closeOSResources;
+
+@end
+
+
 @implementation ALDevice
 
 #pragma mark Object Management
@@ -54,9 +66,9 @@
 			return nil;
 		}
 
-		suspendHandler = [[OALSuspendHandler handlerWithTarget:nil selector:nil] retain];
+		suspendHandler = [[OALSuspendHandler alloc] initWithTarget:nil selector:nil];
 		
-		contexts = [[NSMutableArray mutableArrayUsingWeakReferencesWithCapacity:5] retain];
+		contexts = [NSMutableArray newMutableArrayUsingWeakReferencesWithCapacity:5];
 			
 		[[OpenALManager sharedInstance] notifyDeviceInitializing:self];
 		[[OpenALManager sharedInstance] addSuspendListener:self];
@@ -67,15 +79,43 @@
 - (void) dealloc
 {
 	OAL_LOG_DEBUG(@"%@: Dealloc", self);
-	if(0 != device)
-	{
-		[[OpenALManager sharedInstance] removeSuspendListener:self];
-		[[OpenALManager sharedInstance] notifyDeviceDeallocating:self];
-		[contexts release];
-		[ALWrapper closeDevice:device];
-		[suspendHandler release];
-	}
+
+	[[OpenALManager sharedInstance] removeSuspendListener:self];
+	[[OpenALManager sharedInstance] notifyDeviceDeallocating:self];
+
+	[self closeOSResources];
+	
+	[contexts release];
+	[suspendHandler release];
+
 	[super dealloc];
+}
+
+- (void) closeOSResources
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		if(nil != device)
+		{
+			[ALWrapper closeDevice:device];
+			device = nil;
+		}
+	}
+}
+
+- (void) close
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		if(nil != contexts)
+		{
+			[contexts makeObjectsPerformSelector:@selector(close)];
+			[contexts release];
+			contexts = nil;
+
+			[self closeOSResources];
+		}
+	}
 }
 
 
@@ -179,6 +219,10 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
+		if([OpenALManager sharedInstance].currentContext == context)
+		{
+			[OpenALManager sharedInstance].currentContext = nil;
+		}
 		[contexts removeObject:context];
 	}
 }

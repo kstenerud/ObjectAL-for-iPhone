@@ -108,9 +108,10 @@
 
 		va_list args;
 		va_start(args, description);
-		description = [[[NSString alloc] initWithFormat:description arguments:args] autorelease];
+		description = [[NSString alloc] initWithFormat:description arguments:args];
 		va_end(args);
 		OAL_LOG_ERROR_CONTEXT(function, @"%@ (error code 0x%08x: %@)", description, errorCode, errorString);
+		[description release];
 	}
 }
 
@@ -173,9 +174,10 @@
 #if OBJECTAL_CFG_LOG_LEVEL > 0
 		va_list args;
 		va_start(args, description);
-		description = [[[NSString alloc] initWithFormat:description arguments:args] autorelease];
+		description = [[NSString alloc] initWithFormat:description arguments:args];
 		va_end(args);
 		OAL_LOG_ERROR_CONTEXT(function, @"%@ (error code 0x%08x: %@)", description, errorCode, errorString);
+		[description release];
 #endif /* OBJECTAL_CFG_LOG_LEVEL > 0 */
 		
 		if(postNotification)

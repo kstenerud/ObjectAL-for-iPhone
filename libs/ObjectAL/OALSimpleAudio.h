@@ -196,6 +196,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALSimpleAudio);
  * audio sources (there are 32 in total) for your own use. <br>
  * <strong>Note:</strong> This method must be called ONLY ONCE, <em>BEFORE</em>
  * any attempt is made to access the shared instance.
+ * To change the reserved sources after instantiation, modify reservedSources.
  *
  * @param sources the number of sources OALSimpleAudio will reserve for itself.
  * @return The shared instance.
@@ -208,6 +209,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALSimpleAudio);
  * @return The shared instance.
  */
 - (id) initWithSources:(int) sources;
+
+/** Close any OS resources in use by this object.
+ * Any operations called on this object after closing will likely fail.
+ */
+- (void) close;
 
 
 #pragma mark Background Music

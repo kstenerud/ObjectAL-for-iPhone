@@ -8,10 +8,20 @@
 
 @implementation NSMutableArray (WeakReferences)
 
-+ (id) mutableArrayUsingWeakReferencesWithCapacity:(NSUInteger) capacity
++ (id) newMutableArrayUsingWeakReferencesWithCapacity:(NSUInteger) capacity
 {
 	CFArrayCallBacks callbacks = {0, NULL, NULL, CFCopyDescription, CFEqual};
-	return [(id)(CFArrayCreateMutable(0, capacity, &callbacks)) autorelease];
+	return (id)(CFArrayCreateMutable(0, capacity, &callbacks));
+}
+
++ (id) newMutableArrayUsingWeakReferences
+{
+	return [self newMutableArrayUsingWeakReferencesWithCapacity:0];
+}
+
++ (id) mutableArrayUsingWeakReferencesWithCapacity:(NSUInteger) capacity
+{
+	return [[self newMutableArrayUsingWeakReferencesWithCapacity:capacity] autorelease];
 }
 
 + (id) mutableArrayUsingWeakReferences

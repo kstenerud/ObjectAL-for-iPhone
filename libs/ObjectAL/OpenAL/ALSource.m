@@ -41,6 +41,10 @@
  */
 @interface ALSource (Private)
 
+/** (INTERNAL USE) Close any resources belonging to the OS.
+ */
+- (void) closeOSResources;
+
 /** (INTERNAL USE) Called by SuspendHandler.
  */
 - (void) setSuspended:(bool) value;
@@ -86,17 +90,18 @@
 			return nil;
 		}
 		
-		suspendHandler = [[OALSuspendHandler handlerWithTarget:self selector:@selector(setSuspended:)] retain];
+		suspendHandler = [[OALSuspendHandler alloc] initWithTarget:self selector:@selector(setSuspended:)];
 
 		context = [contextIn retain];
 		@synchronized([OpenALManager sharedInstance])
 		{
-			ALContext* oldContext = [OpenALManager sharedInstance].currentContext;
+			ALContext* realContext = [OpenALManager sharedInstance].currentContext;
 			[OpenALManager sharedInstance].currentContext = context;
 			sourceId = [ALWrapper genSource];
-			[OpenALManager sharedInstance].currentContext = oldContext;
+			[OpenALManager sharedInstance].currentContext = realContext;
 		}
-		
+		OAL_LOG_DEBUG(@"%@: Created source %08x", self, sourceId);
+
 		[context notifySourceInitializing:self];
 		gain = [ALWrapper getSourcef:sourceId parameter:AL_GAIN];
 		
@@ -107,41 +112,59 @@
 
 - (void) dealloc
 {
-	OAL_LOG_DEBUG(@"%@: Dealloc", self);
-	if(nil != context)
+	OAL_LOG_DEBUG(@"%@: Dealloc, sourceId = %08x", self, sourceId);
+
+	[context removeSuspendListener:self];
+	[context notifySourceDeallocating:self];
+
+	[self closeOSResources];
+	
+	[gainAction stopAction];
+	[gainAction release];
+	[panAction stopAction];
+	[panAction release];
+	[pitchAction stopAction];
+	[pitchAction release];
+	[suspendHandler release];
+	[context release];
+
+	// In IOS 3.x, OpenAL doesn't stop playing right away.
+	// Release after a delay to give it some time to stop.
+	[buffer performSelector:@selector(release) withObject:nil afterDelay:0.1];
+	
+	[super dealloc];
+}
+
+- (void) closeOSResources
+{
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		[context removeSuspendListener:self];
-		[context notifySourceDeallocating:self];
-		
-		[gainAction stopAction];
-		[gainAction release];
-		[panAction stopAction];
-		[panAction release];
-		[pitchAction stopAction];
-		[pitchAction release];
-		[suspendHandler release];
-		
-		OPTIONALLY_SYNCHRONIZED(self)
+		if((ALuint)AL_INVALID != sourceId)
 		{
 			[ALWrapper sourceStop:sourceId];
 			[ALWrapper sourcei:sourceId parameter:AL_BUFFER value:AL_NONE];
-		}
-		
-		// In IOS 3.x, OpenAL doesn't stop playing right away.
-		// Release after a delay to give it some time to stop.
-		[buffer performSelector:@selector(release) withObject:nil afterDelay:0.1];
-		
-		@synchronized([OpenALManager sharedInstance])
-		{
-			ALContext* oldContext = [OpenALManager sharedInstance].currentContext;
-			[OpenALManager sharedInstance].currentContext = context;
-			[ALWrapper deleteSource:sourceId];
-			[OpenALManager sharedInstance].currentContext = oldContext;
-		}
-		[context release];
-	}
+			
+			@synchronized([OpenALManager sharedInstance])
+			{
+				ALContext* realContext = [OpenALManager sharedInstance].currentContext;
+				if(realContext != context)
+				{
+					// Make this source's context the current one if it isn't already.
+					[OpenALManager sharedInstance].currentContext = context;
+				}
 
-	[super dealloc];
+				[ALWrapper deleteSource:sourceId];
+				
+				[OpenALManager sharedInstance].currentContext = realContext;
+			}
+			sourceId = (ALuint)AL_INVALID;
+		}
+	}
+}
+
+- (void) close
+{
+	[self closeOSResources];
 }
 
 

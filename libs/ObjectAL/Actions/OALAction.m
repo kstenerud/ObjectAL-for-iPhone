@@ -232,7 +232,7 @@
 		startValue = startValueIn;
 		endValue = endValueIn;
 		function = [functionIn retain];
-		reverseFunction = [[OALReverseFunction functionWithFunction:function] retain];
+		reverseFunction = [[OALReverseFunction alloc] initWithFunction:function];
 		realFunction = function;
 	}
 	return self;
@@ -255,8 +255,9 @@
 
 - (void) setFunction:(id <OALFunction,NSObject>) value
 {
-	[function autorelease];
+	id <OALFunction,NSObject> oldValue = function;
 	function = [value retain];
+	[oldValue release];
 	reverseFunction.function = function;
 }
 

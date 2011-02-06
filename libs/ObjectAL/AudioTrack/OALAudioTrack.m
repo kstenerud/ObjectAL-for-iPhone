@@ -199,6 +199,10 @@
  */
 @interface OALAudioTrack (Private)
 
+/** (INTERNAL USE) Close any resources belonging to the OS.
+ */
+- (void) closeOSResources;
+
 #if TARGET_IPHONE_SIMULATOR && OBJECTAL_CFG_SIMULATOR_BUG_WORKAROUND
 
 /** If the background music playback on the simulator ends (or is stopped), it mutes
@@ -246,7 +250,7 @@
 	{
 		OAL_LOG_DEBUG(@"%@: Init", self);
 		
-		suspendHandler = [[OALSuspendHandler handlerWithTarget:self selector:@selector(setSuspended:)] retain];
+		suspendHandler = [[OALSuspendHandler alloc] initWithTarget:self selector:@selector(setSuspended:)];
 
 		operationQueue = [[NSOperationQueue alloc] init];
 		operationQueue.maxConcurrentOperationCount = 1;
@@ -266,17 +270,40 @@
 	[[OALAudioTracks sharedInstance] removeSuspendListener:self];
 	[[OALAudioTracks sharedInstance] notifyTrackDeallocating:self];
 
+	[self closeOSResources];
+
+	[player release];
 	[operationQueue release];
 	[currentlyLoadedUrl release];
-	[player release];
 	[simulatorPlayerRef release];
 	[gainAction stopAction];
 	[gainAction release];
 	[panAction stopAction];
 	[panAction release];
 	[suspendHandler release];
+
 	[super dealloc];
 }
+
+- (void) closeOSResources
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		if(nil != player)
+		{
+			player.delegate = nil;
+			[player stop];
+			[player release];
+			player = nil;
+		}
+	}
+}
+
+- (void) close
+{
+	[self closeOSResources];
+}
+
 
 - (NSString*) description
 {

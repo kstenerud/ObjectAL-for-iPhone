@@ -114,6 +114,14 @@
 @property(readwrite,assign) float pan;
 
 
+#pragma mark Object Management
+
+/** Close any OS resources in use by this object.
+ * Any operations called on this object after closing will likely fail.
+ */
+- (void) close;
+
+
 #pragma mark Playback
 
 /** Play a sound.

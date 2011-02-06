@@ -22,4 +22,15 @@
  */
 + (id) mutableArrayUsingWeakReferencesWithCapacity:(NSUInteger) capacity;
 
+/** Create an NSMutableArray that uses weak references (no pending autorelease).
+ */
++ (id) newMutableArrayUsingWeakReferences;
+
+/** Create an NSMutableArray that uses weak references (no pending autorelease).
+ *
+ * @param capacity The initial capacity of the array.
+ */
++ (id) newMutableArrayUsingWeakReferencesWithCapacity:(NSUInteger) capacity;
+
+
 @end

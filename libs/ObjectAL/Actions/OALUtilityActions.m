@@ -142,10 +142,10 @@
 		else
 		{
 			// Otherwise copy it into a mutable array.
-			actions = [[NSMutableArray arrayWithArray:actionsIn] retain];
+			actions = [[NSMutableArray alloc] initWithArray:actionsIn];
 		}
 		
-		pDurations = [[NSMutableArray arrayWithCapacity:[actions count]] retain];
+		pDurations = [[NSMutableArray alloc] initWithCapacity:[actions count]];
 	}
 	return self;
 }
@@ -338,11 +338,11 @@ COCOS2D_SUBCLASS(OALSequentialActions)
 		else
 		{
 			// Otherwise copy it into a mutable array.
-			actions = [[NSMutableArray arrayWithArray:actionsIn] retain];
+			actions = [[NSMutableArray alloc] initWithArray:actionsIn];
 		}
 		
-		pDurations = [[NSMutableArray arrayWithCapacity:[actions count]] retain];
-		actionsWithDuration = [[NSMutableArray arrayWithCapacity:[actions count]] retain];
+		pDurations = [[NSMutableArray alloc] initWithCapacity:[actions count]];
+		actionsWithDuration = [[NSMutableArray alloc] initWithCapacity:[actions count]];
 	}
 	return self;
 }

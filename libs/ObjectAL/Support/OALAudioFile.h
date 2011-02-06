@@ -103,8 +103,8 @@
 			   startFrame:(SInt64) startFrame
 				numFrames:(SInt64) numFrames;
 
-/** Close this file to free OS resources. No further operations will be possible
- * once closed.
+/** Close any OS resources in use by this object.
+ * Any operations called on this object after closing will likely fail.
  */
 - (void) close;
 

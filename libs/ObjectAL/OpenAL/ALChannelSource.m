@@ -37,6 +37,10 @@
  */
 @interface ALChannelSource (Private)
 
+/** (INTERNAL USE) Close any resources belonging to the OS.
+ */
+- (void) closeOSResources;
+
 /** (INTERNAL USE) Called by the action system when a fade completes.
  */
 - (void) onFadeComplete:(id<ALSoundSource>) source;
@@ -88,20 +92,19 @@
 		looping = firstSource.looping;
 		
 		// Create some OpenAL sound sources
-		sourcePool = [[ALSoundSourcePool pool] retain];
+		sourcePool = [[ALSoundSourcePool alloc] init];
 
-		if(0 == reservedSources)
+		if(reservedSources > 0)
 		{
-			[firstSource release];
+			[sourcePool addSource:firstSource];
 		}
-		else
-		{
-			[sourcePool addSource:[firstSource autorelease]];
-		}
+		[firstSource release];
 
 		for(int i = 1; i < reservedSources; i++)
 		{
-			[sourcePool addSource:[ALSource source]];
+			ALSource* source = [[ALSource alloc] init];
+			[sourcePool addSource:source];
+			[source release];
 		}
 	}
 	return self;
@@ -110,9 +113,33 @@
 - (void) dealloc
 {
 	OAL_LOG_DEBUG(@"%@: Dealloc", self);
+	
+	[self closeOSResources];
+
 	[sourcePool release];
 	[context release];
+
 	[super dealloc];
+}
+
+- (void) closeOSResources
+{
+	// Not directly holding any OS resources.
+}
+
+- (void) close
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		if(nil != sourcePool)
+		{
+			[sourcePool close];
+			[sourcePool release];
+			sourcePool = nil;
+			
+			[self closeOSResources];
+		}
+	}
 }
 
 - (unsigned int) reservedSources
@@ -127,7 +154,7 @@
 	{
 		for(unsigned int i = currentNumSources; i < reservedSources; i++)
 		{
-			id<ALSoundSource> source = [ALSource source];
+			id<ALSoundSource> source = [[ALSource alloc] init];
 			source.pitch = pitch;
 			source.gain = gain;
 			source.maxDistance = maxDistance;
@@ -145,6 +172,7 @@
 			source.looping = looping;
 			
 			[sourcePool addSource:source];
+			[source release];
 		}
 		
 	}

@@ -33,6 +33,18 @@
 SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALAudioTracks);
 
 
+/**
+ * (INTERNAL USE) Private methods for OALAudioTracks.
+ */
+@interface OALAudioTracks (Private)
+
+/** (INTERNAL USE) Close any resources belonging to the OS.
+ */
+- (void) closeOSResources;
+
+@end
+
+
 #pragma mark OALAudioTracks
 
 @implementation OALAudioTracks
@@ -47,9 +59,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioTracks);
 	{
 		OAL_LOG_DEBUG(@"%@: Init", self);
 
-		suspendHandler = [[OALSuspendHandler handlerWithTarget:nil selector:nil] retain];
+		suspendHandler = [[OALSuspendHandler alloc] initWithTarget:nil selector:nil];
 
-		tracks = [[NSMutableArray mutableArrayUsingWeakReferencesWithCapacity:10] retain];
+		tracks = [NSMutableArray newMutableArrayUsingWeakReferencesWithCapacity:10];
 		
 		[[OALAudioSession sharedInstance] addSuspendListener:self];
 	}
@@ -61,10 +73,32 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioTracks);
 	OAL_LOG_DEBUG(@"%@: Dealloc", self);
 	[[OALAudioSession sharedInstance] removeSuspendListener:self];
 
+	[self closeOSResources];
+
 	[tracks release];
 	[suspendHandler release];
 	
 	[super dealloc];
+}
+
+- (void) closeOSResources
+{
+	// Not directly holding any OS resources.
+}
+
+- (void) close
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		if(nil != tracks)
+		{
+			[tracks makeObjectsPerformSelector:@selector(close)];
+			[tracks release];
+			tracks = nil;
+			
+			[self closeOSResources];
+		}
+	}
 }
 
 

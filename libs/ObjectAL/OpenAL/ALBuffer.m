@@ -47,6 +47,12 @@
 		OAL_LOG_DEBUG(@"%@: Init", self);
 		self.name = nameIn;
 		bufferId = [ALWrapper genBuffer];
+		if(nil == [OpenALManager sharedInstance].currentContext)
+		{
+			OAL_LOG_ERROR(@"Cannot allocate a buffer without a current context. Make sure [OpenALManager sharedInstance].currentContext is valid");
+			[self release];
+			return nil;
+		}
 		device = [[OpenALManager sharedInstance].currentContext.device retain];
 		bufferData = data;
 		format = formatIn;

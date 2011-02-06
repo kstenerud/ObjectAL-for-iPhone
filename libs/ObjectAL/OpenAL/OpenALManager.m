@@ -133,6 +133,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OpenALManager);
  */
 @interface OpenALManager (Private)
 
+/** (INTERNAL USE) Close any resources belonging to the OS.
+ */
+- (void) closeOSResources;
+
 /** (INTERNAL USE) Called by SuspendHandler.
  */
 - (void) setSuspended:(bool) value;
@@ -157,9 +161,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OpenALManager);
 	{
 		OAL_LOG_DEBUG(@"%@: Init", self);
 
-		suspendHandler = [[OALSuspendHandler handlerWithTarget:self selector:@selector(setSuspended:)] retain];
+		suspendHandler = [[OALSuspendHandler alloc] initWithTarget:self selector:@selector(setSuspended:)];
 		
-		devices = [[NSMutableArray mutableArrayUsingWeakReferencesWithCapacity:5] retain];
+		devices = [NSMutableArray newMutableArrayUsingWeakReferencesWithCapacity:5];
 
 		operationQueue = [[NSOperationQueue alloc] init];
 
@@ -172,12 +176,34 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OpenALManager);
 {
 	OAL_LOG_DEBUG(@"%@: Dealloc", self);
 	[[OALAudioSession sharedInstance] removeSuspendListener:self];
+
+	[self closeOSResources];
+
 	[operationQueue release];
-	self.currentContext = nil;
-	[devices release];
 	[suspendHandler release];
+	[devices release];
 	
 	[super dealloc];
+}
+
+- (void) closeOSResources
+{
+	// Not directly holding any OS resources.
+}
+
+- (void) close
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		if(nil != devices)
+		{
+			[devices makeObjectsPerformSelector:@selector(close)];
+			[devices release];
+			devices = nil;
+			
+			[self closeOSResources];
+		}
+	}
 }
 
 
@@ -211,8 +237,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OpenALManager);
 			return;
 		}
 		
-		[currentContext autorelease];
-		currentContext = [context retain];
+		currentContext = context;
 		[ALWrapper makeContextCurrent:currentContext.context deviceReference:currentContext.device.device];
 	}
 }

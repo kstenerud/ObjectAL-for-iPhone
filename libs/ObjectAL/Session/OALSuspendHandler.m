@@ -38,8 +38,8 @@
 {
 	if(nil != (self = [super init]))
 	{
-		listeners = [[NSMutableArray mutableArrayUsingWeakReferencesWithCapacity:10] retain];
-		manualSuspendStates = [[NSMutableArray arrayWithCapacity:10] retain];
+		listeners = [NSMutableArray newMutableArrayUsingWeakReferencesWithCapacity:10];
+		manualSuspendStates = [[NSMutableArray alloc] initWithCapacity:10];
 		suspendStatusChangeTarget = target;
 		suspendStatusChangeSelector = selector;
 	}

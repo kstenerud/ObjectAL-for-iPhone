@@ -42,6 +42,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALSimpleAudio);
  */
 @interface OALSimpleAudio (Private)
 
+/** (INTERNAL USE) Close any resources belonging to the OS.
+ */
+- (void) closeOSResources;
+
 /** (INTERNAL USE) Preload a sound effect and return the preloaded buffer.
  *
  * @param filePath The path containing the sound data.
@@ -78,12 +82,12 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 	if(nil != (self = [super init]))
 	{
 		OAL_LOG_DEBUG(@"%@: Init with %d sources", self, sources);
-		device = [[ALDevice deviceWithDeviceSpecifier:nil] retain];
-		context = [[ALContext contextOnDevice:device attributes:nil] retain];
+		device = [[ALDevice alloc] initWithDeviceSpecifier:nil];
+		context = [[ALContext alloc] initOnDevice:device attributes:nil];
 		[OpenALManager sharedInstance].currentContext = context;
-		channel = [[ALChannelSource channelWithSources:sources] retain];
+		channel = [[ALChannelSource alloc] initWithSources:sources];
 		
-		backgroundTrack = [[OALAudioTrack track] retain];
+		backgroundTrack = [[OALAudioTrack alloc] init];
 		
 #if NS_BLOCKS_AVAILABLE && OBJECTAL_USE_BLOCKS
 		oal_dispatch_queue	= dispatch_queue_create("objectal.simpleaudio.queue", NULL);
@@ -104,14 +108,48 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 	dispatch_release(oal_dispatch_queue);
 #endif
 	
+	[self closeOSResources];
+	
 	[backgroundTrack release];
 	[channel stop];
 	[channel release];
-	[preloadCache release];
 	[context release];
 	[device release];
+	[preloadCache release];
 	
 	[super dealloc];
+}
+
+- (void) closeOSResources
+{
+	// Not directly holding any OS resources.
+}
+
+- (void) close
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		if(nil != backgroundTrack)
+		{
+			[backgroundTrack close];
+			[backgroundTrack release];
+			backgroundTrack = nil;
+
+			[channel close];
+			[channel release];
+			channel = nil;
+			
+			[context close];
+			[context release];
+			context = nil;
+			
+			[device close];
+			[device release];
+			device = nil;
+
+			[self closeOSResources];
+		}
+	}
 }
 
 #pragma mark Properties
