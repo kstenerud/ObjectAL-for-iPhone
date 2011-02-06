@@ -50,6 +50,7 @@
 		device = [[OpenALManager sharedInstance].currentContext.device retain];
 		bufferData = data;
 		format = formatIn;
+		freeDataOnDestroy = YES;
 
 		[ALWrapper bufferDataStatic:bufferId format:format data:bufferData size:size frequency:frequency];
 		
@@ -64,7 +65,10 @@
 	[ALWrapper deleteBuffer:bufferId];
 	[device release];
 	[name release];
-	free(bufferData);
+	if(freeDataOnDestroy)
+	{
+		free(bufferData);
+	}
 
 	[super dealloc];
 }
@@ -106,5 +110,7 @@
 }
 
 @synthesize duration;
+
+@synthesize freeDataOnDestroy;
 
 @end

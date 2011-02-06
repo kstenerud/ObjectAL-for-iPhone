@@ -45,6 +45,7 @@
 	float duration;
 	/** The uncompressed sound data to play. */
 	void* bufferData;
+	bool freeDataOnDestroy;
 }
 
 
@@ -76,6 +77,11 @@
 
 /** The duration of the sample in this buffer, in seconds. */
 @property(readonly) float duration;
+
+/** If true, calls free() on the audio data when this object gets destroyed.
+ * Default: YES
+ */
+@property(readwrite,assign) bool freeDataOnDestroy;
 
 #pragma mark Object Management
 
