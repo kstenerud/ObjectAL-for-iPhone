@@ -26,7 +26,6 @@
 
 #import "OALAction.h"
 #import "OALActionManager.h"
-#import "mach_timing.h"
 
 
 #if !OBJECTAL_USE_COCOS2D_ACTIONS

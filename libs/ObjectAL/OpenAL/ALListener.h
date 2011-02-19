@@ -25,7 +25,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <OpenAL/al.h>
 #import "ALTypes.h"
 #import "OALSuspendHandler.h"
 

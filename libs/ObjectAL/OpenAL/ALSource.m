@@ -25,7 +25,6 @@
 //
 
 #import "ALSource.h"
-#import "mach_timing.h"
 #import "ObjectALMacros.h"
 #import "ALWrapper.h"
 #import "OpenALManager.h"

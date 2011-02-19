@@ -42,7 +42,7 @@
  */
 @interface ALSource : NSObject <ALSoundSource, OALSuspendManager>
 {
-	unsigned int sourceId;
+	ALuint sourceId;
 	bool interruptible;
 	float gain;
 	bool muted;
