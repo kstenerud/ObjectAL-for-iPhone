@@ -79,6 +79,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a channel with a number of sources.  <a href="#a562c63be7a3e5fb5313749d11ba42b9d"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_a_l_channel_source.html#a87b13ff751b90eb3db628f706ae187ba">resetToDefault</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset all sources in this channel to their default state.  <a href="#a87b13ff751b90eb3db628f706ae187ba"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_a_l_channel_source.html#ab3edbd726a439f661b2ae6274f5f1bde">closeOSResources</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">(INTERNAL USE) Close any resources belonging to the OS.  <a href="#ab3edbd726a439f661b2ae6274f5f1bde"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_a_l_channel_source.html#ad682830e0287da5e9008b99852e3575e">onFadeComplete:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">(INTERNAL USE) Called by the action system when a fade completes.  <a href="#ad682830e0287da5e9008b99852e3575e"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_a_l_channel_source.html#ac83830f18b5067c25cd1447464eef4c2">onPanComplete:</a></td></tr>
@@ -191,6 +193,24 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>A new channel. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ab3edbd726a439f661b2ae6274f5f1bde"></a><!-- doxytag: member="ALChannelSource::closeOSResources" ref="ab3edbd726a439f661b2ae6274f5f1bde" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) closeOSResources </td>
+          <td></td>
+          <td class="paramname"></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>(INTERNAL USE) Close any resources belonging to the OS. </p>
 
 </div>
 </div>
@@ -865,7 +885,7 @@ Properties</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 5 2011 21:42:53 for ObjectAL by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 19 2011 12:35:41 for ObjectAL by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

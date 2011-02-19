@@ -107,6 +107,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>audioSessionDelegate
 : <a class="el" href="interface_o_a_l_audio_session.html#a00acb2f2e01cc57732b7873d51e45bf4">OALAudioSession</a>
 </li>
+<li>autoPreload
+: <a class="el" href="interface_o_a_l_audio_track.html#afeb8287d08a67bee2a0c79561de0845f">OALAudioTrack</a>
+</li>
 <li>availableCaptureDevices
 : <a class="el" href="interface_open_a_l_manager.html#a1a4ae19f04c78f87a8a736b9f86c5c8a">OpenALManager</a>
 </li>
@@ -203,14 +206,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>delta
 : <a class="el" href="interface_o_a_l_move_by_action.html#ab7a79f1cecc67787309c23a44a4d0b0b">OALMoveByAction</a>
 </li>
-<li>description
-: <a class="el" href="interface_o_a_l_audio_file.html#ab9764625c3b5193cbc882ab3d857a5ff">OALAudioFile</a>
-</li>
 <li>device
-: <a class="el" href="interface_a_l_context.html#adf5d141849bcaad66244c4c28bcf0c16">ALContext</a>
-, <a class="el" href="interface_a_l_device.html#aa84284ff284724371ec89cfe135c06f1">ALDevice</a>
+: <a class="el" href="interface_a_l_device.html#aa84284ff284724371ec89cfe135c06f1">ALDevice</a>
 , <a class="el" href="interface_a_l_buffer.html#a935d14392d200141504b17ba717cc56e">ALBuffer</a>
 , <a class="el" href="interface_a_l_capture_device.html#a30d539407f7ea099e3de3cac887cb309">ALCaptureDevice</a>
+, <a class="el" href="interface_a_l_context.html#adf5d141849bcaad66244c4c28bcf0c16">ALContext</a>
 </li>
 <li>deviceCurrentTime
 : <a class="el" href="interface_o_a_l_audio_track.html#a87db83b13fcafbf1be4244627cd9b8cc">OALAudioTrack</a>
@@ -228,9 +228,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="interface_a_l_context.html#a370f2fdeec5cfc6b5c5a986a7305b4af">ALContext</a>
 </li>
 <li>duration
-: <a class="el" href="interface_a_l_buffer.html#a2aaf78c1d1e5f9d5376d77223e2b86a1">ALBuffer</a>
-, <a class="el" href="interface_o_a_l_audio_track.html#a786cb97dd4a5fdc430fc7fd41bd7c538">OALAudioTrack</a>
+: <a class="el" href="interface_o_a_l_audio_track.html#a786cb97dd4a5fdc430fc7fd41bd7c538">OALAudioTrack</a>
 , <a class="el" href="interface_o_a_l_action.html#a852e785eec922879b8163d6b2a90869f">OALAction</a>
+, <a class="el" href="interface_a_l_buffer.html#a2aaf78c1d1e5f9d5376d77223e2b86a1">ALBuffer</a>
 </li>
 </ul>
 
@@ -265,6 +265,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>format
 : <a class="el" href="interface_a_l_buffer.html#aa7b7822a2f7eb5a511e03aa88f91baf0">ALBuffer</a>
+</li>
+<li>freeDataOnDestroy
+: <a class="el" href="interface_a_l_buffer.html#a25dd80fcb29b58bbd2b837c420c69151">ALBuffer</a>
 </li>
 <li>frequency
 : <a class="el" href="interface_a_l_buffer.html#a608ef9d940e0bb1ebf0b21f6613addd7">ALBuffer</a>
@@ -493,9 +496,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>state
 : <a class="el" href="interface_a_l_source.html#adc272bfab4e16f21abd6dacdb86b3e67">ALSource</a>
 </li>
+<li>streamDescription
+: <a class="el" href="interface_o_a_l_audio_file.html#afc7f743bba5d8b0f6aa723b4f3d634ff">OALAudioFile</a>
+</li>
 <li>suspended
-: <a class="el" href="interface_o_a_l_simple_audio.html#ab69a9f04677acd7008b3cb4c7cb03ed9">OALSimpleAudio</a>
-, <a class="el" href="interface_o_a_l_suspend_handler.html#a81aaa6361de51cd136277298bd1e9ac8">OALSuspendHandler</a>
+: <a class="el" href="interface_o_a_l_suspend_handler.html#a81aaa6361de51cd136277298bd1e9ac8">OALSuspendHandler</a>
+, <a class="el" href="interface_o_a_l_simple_audio.html#ab69a9f04677acd7008b3cb4c7cb03ed9">OALSimpleAudio</a>
 , <a class="el" href="protocol_o_a_l_suspend_manager-p.html#a6ace189fc82d9f5acca9dc880931e6ff">&lt;OALSuspendManager&gt;</a>
 </li>
 </ul>
@@ -560,7 +566,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 5 2011 21:42:53 for ObjectAL by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 19 2011 12:35:41 for ObjectAL by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

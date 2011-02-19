@@ -78,6 +78,8 @@ Inheritance diagram for ALDevice:<!-- endSectionHeader --></div>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(id)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_a_l_device.html#a41e392182153716de489994b0ae87f1f">initWithDeviceSpecifier:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize with the specified device.  <a href="#a41e392182153716de489994b0ae87f1f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_a_l_device.html#a264b516c8dce1161ccf5b646fe97b248">close</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Close any OS resources in use by this object.  <a href="#a264b516c8dce1161ccf5b646fe97b248"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(bool)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_a_l_device.html#a56c30cad57503b0564db94b4d6d697b3">isExtensionPresent:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the specified extension is present.  <a href="#a56c30cad57503b0564db94b4d6d697b3"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_a_l_device.html#ab11563821b94f051e78d6b1d60fc970f">getProcAddress:</a></td></tr>
@@ -88,6 +90,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">(INTERNAL USE) Used by <a class="el" href="interface_a_l_context.html" title="A context encompasses a single listener and a series of sources.">ALContext</a> to announce initialization.  <a href="#a87dde6154078b310a9ec7b7c8553c493"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_a_l_device.html#a024a5262c5fd7b6f94693ead0d1f3795">notifyContextDeallocating:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">(INTERNAL USE) Used by <a class="el" href="interface_a_l_context.html" title="A context encompasses a single listener and a series of sources.">ALContext</a> to announce deallocation.  <a href="#a024a5262c5fd7b6f94693ead0d1f3795"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_a_l_device.html#a97e5e1ba1bdb24183f4e54776350b7e4">closeOSResources</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">(INTERNAL USE) Close any resources belonging to the OS.  <a href="#a97e5e1ba1bdb24183f4e54776350b7e4"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(id)&#160;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interface_a_l_device.html#a6e77c8abc083a0c854ace2f7040d9c0e">deviceWithDeviceSpecifier:</a></td></tr>
@@ -129,6 +133,43 @@ Properties</h2></td></tr>
 <div class="memdoc">
 
 <p>Clear all buffers being used by sources of contexts opened on this device. </p>
+
+</div>
+</div>
+<a class="anchor" id="a264b516c8dce1161ccf5b646fe97b248"></a><!-- doxytag: member="ALDevice::close" ref="a264b516c8dce1161ccf5b646fe97b248" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) close </td>
+          <td></td>
+          <td class="paramname"></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Close any OS resources in use by this object. </p>
+<p>Any operations called on this object after closing will likely fail. </p>
+
+</div>
+</div>
+<a class="anchor" id="a97e5e1ba1bdb24183f4e54776350b7e4"></a><!-- doxytag: member="ALDevice::closeOSResources" ref="a97e5e1ba1bdb24183f4e54776350b7e4" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) closeOSResources </td>
+          <td></td>
+          <td class="paramname"></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>(INTERNAL USE) Close any resources belonging to the OS. </p>
 
 </div>
 </div>
@@ -412,7 +453,7 @@ Properties</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 5 2011 21:42:54 for ObjectAL by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 19 2011 12:35:42 for ObjectAL by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

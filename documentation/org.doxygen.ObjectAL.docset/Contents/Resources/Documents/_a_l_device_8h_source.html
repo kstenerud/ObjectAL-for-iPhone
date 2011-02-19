@@ -74,62 +74,63 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00025"></a>00025 <span class="comment">//</span>
 <a name="l00026"></a>00026 
 <a name="l00027"></a>00027 <span class="preprocessor">#import &lt;Foundation/Foundation.h&gt;</span>
-<a name="l00028"></a>00028 <span class="preprocessor">#import &lt;OpenAL/al.h&gt;</span>
-<a name="l00029"></a>00029 <span class="preprocessor">#import &lt;OpenAL/alc.h&gt;</span>
-<a name="l00030"></a>00030 <span class="preprocessor">#import &quot;ALContext.h&quot;</span>
-<a name="l00031"></a>00031 <span class="preprocessor">#import &quot;OALSuspendHandler.h&quot;</span>
+<a name="l00028"></a>00028 <span class="preprocessor">#import &lt;OpenAL/alc.h&gt;</span>
+<a name="l00029"></a>00029 <span class="preprocessor">#import &quot;ALContext.h&quot;</span>
+<a name="l00030"></a>00030 <span class="preprocessor">#import &quot;OALSuspendHandler.h&quot;</span>
+<a name="l00031"></a>00031 
 <a name="l00032"></a>00032 
-<a name="l00033"></a>00033 
-<a name="l00034"></a>00034 <span class="preprocessor">#pragma mark ALDevice</span>
-<a name="l00035"></a>00035 <span class="preprocessor"></span>
-<a name="l00039"></a><a class="code" href="interface_a_l_device.html">00039</a> <span class="keyword">@interface </span><a class="code" href="interface_a_l_device.html" title="A device is a logical mapping to an audio device through the OpenAL implementation.">ALDevice</a> : NSObject &lt;<a class="code" href="protocol_o_a_l_suspend_manager-p.html" title="A suspend manager is a listener that also allows other objects to subscribe to receive events as the ...">OALSuspendManager</a>&gt;
-<a name="l00040"></a>00040 {
-<a name="l00041"></a>00041     ALCdevice* <a class="code" href="interface_a_l_device.html#aa84284ff284724371ec89cfe135c06f1" title="The OpenAL device pointer.">device</a>;
-<a name="l00043"></a>00043     <a class="code" href="class_n_s_mutable_array.html">NSMutableArray</a>* <a class="code" href="interface_a_l_device.html#a4cf2adfed9722f6c1e3cb38ee6452d53" title="All contexts opened from this device.">contexts</a>;
-<a name="l00044"></a><a class="code" href="interface_a_l_device.html#a4cf2adfed9722f6c1e3cb38ee6452d53">00044</a>     
-<a name="l00046"></a>00046     <a class="code" href="interface_o_a_l_suspend_handler.html" title="Provides two controls (interrupted and manuallySuspended) for suspending a slave object, and also propagates such control messages to interested listeners.">OALSuspendHandler</a>* <a class="code" href="interface_a_l_device.html#a8093a6bee527f197875c7afb311ad6ed" title="Handles suspending and interrupting for this object.">suspendHandler</a>;
-<a name="l00047"></a><a class="code" href="interface_a_l_device.html#a8093a6bee527f197875c7afb311ad6ed">00047</a> }
+<a name="l00033"></a>00033 <span class="preprocessor">#pragma mark ALDevice</span>
+<a name="l00034"></a>00034 <span class="preprocessor"></span>
+<a name="l00038"></a><a class="code" href="interface_a_l_device.html">00038</a> <span class="keyword">@interface </span><a class="code" href="interface_a_l_device.html" title="A device is a logical mapping to an audio device through the OpenAL implementation.">ALDevice</a> : NSObject &lt;<a class="code" href="protocol_o_a_l_suspend_manager-p.html" title="A suspend manager is a listener that also allows other objects to subscribe to receive events as the ...">OALSuspendManager</a>&gt;
+<a name="l00039"></a>00039 {
+<a name="l00040"></a>00040     ALCdevice* <a class="code" href="interface_a_l_device.html#aa84284ff284724371ec89cfe135c06f1" title="The OpenAL device pointer.">device</a>;
+<a name="l00042"></a>00042     <a class="code" href="class_n_s_mutable_array.html">NSMutableArray</a>* <a class="code" href="interface_a_l_device.html#a4cf2adfed9722f6c1e3cb38ee6452d53" title="All contexts opened from this device.">contexts</a>;
+<a name="l00043"></a><a class="code" href="interface_a_l_device.html#a4cf2adfed9722f6c1e3cb38ee6452d53">00043</a>     
+<a name="l00045"></a>00045     <a class="code" href="interface_o_a_l_suspend_handler.html" title="Provides two controls (interrupted and manuallySuspended) for suspending a slave object, and also propagates such control messages to interested listeners.">OALSuspendHandler</a>* <a class="code" href="interface_a_l_device.html#a8093a6bee527f197875c7afb311ad6ed" title="Handles suspending and interrupting for this object.">suspendHandler</a>;
+<a name="l00046"></a><a class="code" href="interface_a_l_device.html#a8093a6bee527f197875c7afb311ad6ed">00046</a> }
+<a name="l00047"></a>00047 
 <a name="l00048"></a>00048 
-<a name="l00049"></a>00049 
-<a name="l00050"></a>00050 <span class="preprocessor">#pragma mark Properties</span>
-<a name="l00051"></a>00051 <span class="preprocessor"></span>
-<a name="l00053"></a>00053 @property(readonly) NSArray* contexts;
-<a name="l00054"></a><a class="code" href="interface_a_l_device.html#a015f2a466835aace901c7f74bf53aa4a">00054</a> 
-<a name="l00056"></a>00056 @property(readonly) ALCdevice* device;
-<a name="l00057"></a>00057 
-<a name="l00059"></a>00059 @property(readonly) NSArray* extensions;
-<a name="l00060"></a><a class="code" href="interface_a_l_device.html#ad92fa036fe35d74127f62bd6480abd34">00060</a> 
-<a name="l00062"></a>00062 @property(readonly) <span class="keywordtype">int</span> majorVersion;
-<a name="l00063"></a><a class="code" href="interface_a_l_device.html#a47baffe6143c217ce08f9b55dd2ea6f1">00063</a> 
-<a name="l00065"></a>00065 @property(readonly) <span class="keywordtype">int</span> minorVersion;
-<a name="l00066"></a><a class="code" href="interface_a_l_device.html#a958869c60cdaecfea8c3a9a46c48346f">00066</a> 
-<a name="l00067"></a>00067 
-<a name="l00068"></a>00068 <span class="preprocessor">#pragma mark Object Management</span>
-<a name="l00069"></a>00069 <span class="preprocessor"></span>
-<a name="l00075"></a>00075 + (id) deviceWithDeviceSpecifier:(NSString*) deviceSpecifier;
-<a name="l00076"></a>00076 
-<a name="l00082"></a>00082 - (id) initWithDeviceSpecifier:(NSString*) deviceSpecifier;
-<a name="l00083"></a>00083 
-<a name="l00084"></a>00084 
-<a name="l00085"></a>00085 <span class="preprocessor">#pragma mark Extensions</span>
-<a name="l00086"></a>00086 <span class="preprocessor"></span>
-<a name="l00092"></a>00092 - (bool) isExtensionPresent:(NSString*) name;
-<a name="l00093"></a>00093 
-<a name="l00099"></a>00099 - (void*) getProcAddress:(NSString*) functionName;
-<a name="l00100"></a>00100 
-<a name="l00101"></a>00101 
-<a name="l00102"></a>00102 <span class="preprocessor">#pragma mark Utility</span>
-<a name="l00103"></a>00103 <span class="preprocessor"></span>
-<a name="l00106"></a>00106 - (void) clearBuffers;
-<a name="l00107"></a>00107 
-<a name="l00108"></a>00108 
-<a name="l00109"></a>00109 <span class="preprocessor">#pragma mark Internal Use</span>
-<a name="l00110"></a>00110 <span class="preprocessor"></span>
-<a name="l00115"></a>00115 - (void) notifyContextInitializing:(<a class="code" href="interface_a_l_context.html" title="A context encompasses a single listener and a series of sources.">ALContext</a>*) context;
-<a name="l00116"></a>00116 
-<a name="l00121"></a>00121 - (void) notifyContextDeallocating:(<a class="code" href="interface_a_l_context.html" title="A context encompasses a single listener and a series of sources.">ALContext</a>*) context;
-<a name="l00122"></a>00122 
-<a name="l00123"></a>00123 <span class="keyword">@end</span>
+<a name="l00049"></a>00049 <span class="preprocessor">#pragma mark Properties</span>
+<a name="l00050"></a>00050 <span class="preprocessor"></span>
+<a name="l00052"></a>00052 @property(readonly) NSArray* contexts;
+<a name="l00053"></a><a class="code" href="interface_a_l_device.html#a015f2a466835aace901c7f74bf53aa4a">00053</a> 
+<a name="l00055"></a>00055 @property(readonly) ALCdevice* device;
+<a name="l00056"></a>00056 
+<a name="l00058"></a>00058 @property(readonly) NSArray* extensions;
+<a name="l00059"></a><a class="code" href="interface_a_l_device.html#ad92fa036fe35d74127f62bd6480abd34">00059</a> 
+<a name="l00061"></a>00061 @property(readonly) <span class="keywordtype">int</span> majorVersion;
+<a name="l00062"></a><a class="code" href="interface_a_l_device.html#a47baffe6143c217ce08f9b55dd2ea6f1">00062</a> 
+<a name="l00064"></a>00064 @property(readonly) <span class="keywordtype">int</span> minorVersion;
+<a name="l00065"></a><a class="code" href="interface_a_l_device.html#a958869c60cdaecfea8c3a9a46c48346f">00065</a> 
+<a name="l00066"></a>00066 
+<a name="l00067"></a>00067 <span class="preprocessor">#pragma mark Object Management</span>
+<a name="l00068"></a>00068 <span class="preprocessor"></span>
+<a name="l00074"></a>00074 + (id) deviceWithDeviceSpecifier:(NSString*) deviceSpecifier;
+<a name="l00075"></a>00075 
+<a name="l00081"></a>00081 - (id) initWithDeviceSpecifier:(NSString*) deviceSpecifier;
+<a name="l00082"></a>00082 
+<a name="l00086"></a>00086 - (void) close;
+<a name="l00087"></a>00087 
+<a name="l00088"></a>00088 
+<a name="l00089"></a>00089 <span class="preprocessor">#pragma mark Extensions</span>
+<a name="l00090"></a>00090 <span class="preprocessor"></span>
+<a name="l00096"></a>00096 - (bool) isExtensionPresent:(NSString*) name;
+<a name="l00097"></a>00097 
+<a name="l00103"></a>00103 - (void*) getProcAddress:(NSString*) functionName;
+<a name="l00104"></a>00104 
+<a name="l00105"></a>00105 
+<a name="l00106"></a>00106 <span class="preprocessor">#pragma mark Utility</span>
+<a name="l00107"></a>00107 <span class="preprocessor"></span>
+<a name="l00110"></a>00110 - (void) clearBuffers;
+<a name="l00111"></a>00111 
+<a name="l00112"></a>00112 
+<a name="l00113"></a>00113 <span class="preprocessor">#pragma mark Internal Use</span>
+<a name="l00114"></a>00114 <span class="preprocessor"></span>
+<a name="l00119"></a>00119 - (void) notifyContextInitializing:(<a class="code" href="interface_a_l_context.html" title="A context encompasses a single listener and a series of sources.">ALContext</a>*) context;
+<a name="l00120"></a>00120 
+<a name="l00125"></a>00125 - (void) notifyContextDeallocating:(<a class="code" href="interface_a_l_context.html" title="A context encompasses a single listener and a series of sources.">ALContext</a>*) context;
+<a name="l00126"></a>00126 
+<a name="l00127"></a>00127 <span class="keyword">@end</span>
 </pre></div></div>
 </div>
 <!--- window showing the filter options -->
@@ -146,7 +147,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 5 2011 21:42:53 for ObjectAL by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 19 2011 12:35:41 for ObjectAL by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

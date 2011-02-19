@@ -89,44 +89,47 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00044"></a><a class="code" href="interface_a_l_buffer.html#aa7b7822a2f7eb5a511e03aa88f91baf0">00044</a>     ALenum <a class="code" href="interface_a_l_buffer.html#aa7b7822a2f7eb5a511e03aa88f91baf0" title="The format of the audio data (see al.h, AL_FORMAT_XXX).">format</a>;
 <a name="l00045"></a><a class="code" href="interface_a_l_buffer.html#a2aaf78c1d1e5f9d5376d77223e2b86a1">00045</a>     <span class="keywordtype">float</span> <a class="code" href="interface_a_l_buffer.html#a2aaf78c1d1e5f9d5376d77223e2b86a1" title="The duration of the sample in this buffer, in seconds.">duration</a>;
 <a name="l00047"></a><a class="code" href="interface_a_l_buffer.html#af9e22417f91e87266dab20e08fdff68d">00047</a>     <span class="keywordtype">void</span>* <a class="code" href="interface_a_l_buffer.html#af9e22417f91e87266dab20e08fdff68d" title="The uncompressed sound data to play.">bufferData</a>;
-<a name="l00048"></a>00048 }
-<a name="l00049"></a>00049 
+<a name="l00048"></a><a class="code" href="interface_a_l_buffer.html#a25dd80fcb29b58bbd2b837c420c69151">00048</a>     <span class="keywordtype">bool</span> <a class="code" href="interface_a_l_buffer.html#a25dd80fcb29b58bbd2b837c420c69151" title="If true, calls free() on the audio data when this object gets destroyed.">freeDataOnDestroy</a>;
+<a name="l00049"></a>00049 }
 <a name="l00050"></a>00050 
-<a name="l00051"></a>00051 <span class="preprocessor">#pragma mark Properties</span>
-<a name="l00052"></a>00052 <span class="preprocessor"></span>
-<a name="l00054"></a><a class="code" href="interface_a_l_buffer.html#a114cc112d10e7d2f7a4f4396126c54e7">00054</a> @property(readonly) ALuint bits;
-<a name="l00055"></a>00055 
-<a name="l00057"></a>00057 @property(readonly) ALuint bufferId;
-<a name="l00058"></a>00058 
-<a name="l00060"></a><a class="code" href="interface_a_l_buffer.html#ae92a2f690ed26e0fb5dbc3519bfb7db3">00060</a> @property(readonly) ALuint channels;
-<a name="l00061"></a>00061 
-<a name="l00063"></a>00063 @property(readonly) <a class="code" href="interface_a_l_device.html" title="A device is a logical mapping to an audio device through the OpenAL implementation.">ALDevice</a>* device;
-<a name="l00064"></a>00064 
-<a name="l00066"></a>00066 @property(readonly) ALenum format;
-<a name="l00067"></a>00067 
-<a name="l00069"></a><a class="code" href="interface_a_l_buffer.html#a608ef9d940e0bb1ebf0b21f6613addd7">00069</a> @property(readonly) ALuint frequency;
-<a name="l00070"></a>00070 
-<a name="l00072"></a>00072 @property(readwrite,retain) NSString* name;
-<a name="l00073"></a>00073 
-<a name="l00075"></a><a class="code" href="interface_a_l_buffer.html#abd1b2c8b783db3de94c7454f986ecd7c">00075</a> @property(readonly) ALuint size;
-<a name="l00076"></a>00076 
-<a name="l00078"></a>00078 @property(readonly) <span class="keywordtype">float</span> duration;
-<a name="l00079"></a>00079 
-<a name="l00080"></a>00080 <span class="preprocessor">#pragma mark Object Management</span>
-<a name="l00081"></a>00081 <span class="preprocessor"></span>
-<a name="l00091"></a>00091 + (id) bufferWithName:(NSString*) name
-<a name="l00092"></a>00092                  data:(<span class="keywordtype">void</span>*) data
-<a name="l00093"></a>00093                  size:(ALsizei) size
-<a name="l00094"></a>00094                format:(ALenum) format
-<a name="l00095"></a>00095             frequency:(ALsizei) frequency;
-<a name="l00096"></a>00096 
-<a name="l00106"></a>00106 - (id) initWithName:(NSString*) name
-<a name="l00107"></a>00107                data:(<span class="keywordtype">void</span>*) data
-<a name="l00108"></a>00108                size:(ALsizei) size
-<a name="l00109"></a>00109              format:(ALenum) format
-<a name="l00110"></a>00110           frequency:(ALsizei) frequency;
-<a name="l00111"></a>00111 
-<a name="l00112"></a>00112 <span class="keyword">@end</span>
+<a name="l00051"></a>00051 
+<a name="l00052"></a>00052 <span class="preprocessor">#pragma mark Properties</span>
+<a name="l00053"></a>00053 <span class="preprocessor"></span>
+<a name="l00055"></a><a class="code" href="interface_a_l_buffer.html#a114cc112d10e7d2f7a4f4396126c54e7">00055</a> @property(readonly) ALuint bits;
+<a name="l00056"></a>00056 
+<a name="l00058"></a>00058 @property(readonly) ALuint bufferId;
+<a name="l00059"></a>00059 
+<a name="l00061"></a><a class="code" href="interface_a_l_buffer.html#ae92a2f690ed26e0fb5dbc3519bfb7db3">00061</a> @property(readonly) ALuint channels;
+<a name="l00062"></a>00062 
+<a name="l00064"></a>00064 @property(readonly) <a class="code" href="interface_a_l_device.html" title="A device is a logical mapping to an audio device through the OpenAL implementation.">ALDevice</a>* device;
+<a name="l00065"></a>00065 
+<a name="l00067"></a>00067 @property(readonly) ALenum format;
+<a name="l00068"></a>00068 
+<a name="l00070"></a><a class="code" href="interface_a_l_buffer.html#a608ef9d940e0bb1ebf0b21f6613addd7">00070</a> @property(readonly) ALuint frequency;
+<a name="l00071"></a>00071 
+<a name="l00073"></a>00073 @property(readwrite,retain) NSString* name;
+<a name="l00074"></a>00074 
+<a name="l00076"></a><a class="code" href="interface_a_l_buffer.html#abd1b2c8b783db3de94c7454f986ecd7c">00076</a> @property(readonly) ALuint size;
+<a name="l00077"></a>00077 
+<a name="l00079"></a>00079 @property(readonly) <span class="keywordtype">float</span> duration;
+<a name="l00080"></a>00080 
+<a name="l00084"></a>00084 @property(readwrite,assign) <span class="keywordtype">bool</span> freeDataOnDestroy;
+<a name="l00085"></a>00085 
+<a name="l00086"></a>00086 <span class="preprocessor">#pragma mark Object Management</span>
+<a name="l00087"></a>00087 <span class="preprocessor"></span>
+<a name="l00097"></a>00097 + (id) bufferWithName:(NSString*) name
+<a name="l00098"></a>00098                  data:(<span class="keywordtype">void</span>*) data
+<a name="l00099"></a>00099                  size:(ALsizei) size
+<a name="l00100"></a>00100                format:(ALenum) format
+<a name="l00101"></a>00101             frequency:(ALsizei) frequency;
+<a name="l00102"></a>00102 
+<a name="l00112"></a>00112 - (id) initWithName:(NSString*) name
+<a name="l00113"></a>00113                data:(<span class="keywordtype">void</span>*) data
+<a name="l00114"></a>00114                size:(ALsizei) size
+<a name="l00115"></a>00115              format:(ALenum) format
+<a name="l00116"></a>00116           frequency:(ALsizei) frequency;
+<a name="l00117"></a>00117 
+<a name="l00118"></a>00118 <span class="keyword">@end</span>
 </pre></div></div>
 </div>
 <!--- window showing the filter options -->
@@ -143,7 +146,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 5 2011 21:42:53 for ObjectAL by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 19 2011 12:35:41 for ObjectAL by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

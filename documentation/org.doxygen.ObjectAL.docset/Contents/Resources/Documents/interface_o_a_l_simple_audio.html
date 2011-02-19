@@ -69,6 +69,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(id)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_o_a_l_simple_audio.html#ac06b863b88196d286fec9965f00d8bbe">initWithSources:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">(INTERNAL USE) Initialize with the specified number of reserved sources.  <a href="#ac06b863b88196d286fec9965f00d8bbe"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_o_a_l_simple_audio.html#a5154a44aac901c410e3f0106d74b798b">close</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Close any OS resources in use by this object.  <a href="#a5154a44aac901c410e3f0106d74b798b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(bool)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_o_a_l_simple_audio.html#a5c4c9d22e2ab845892b2dcbdeedb4fd9">preloadBg:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Preload background music.  <a href="#a5c4c9d22e2ab845892b2dcbdeedb4fd9"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(bool)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_o_a_l_simple_audio.html#a7866b61bc11848209d7808022bba12d1">preloadBg:seekTime:</a></td></tr>
@@ -99,12 +101,16 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Play a sound effect with volume 1.0, pitch 1.0, pan 0.0.  <a href="#ac8b6ca49c288aa541696dc971e536055"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(id&lt; <a class="el" href="protocol_a_l_sound_source-p.html">ALSoundSource</a> &gt;)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_o_a_l_simple_audio.html#a59a124225e1d1ceb054f6127c43f32bb">playEffect:volume:pitch:pan:loop:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Play a sound effect.  <a href="#a59a124225e1d1ceb054f6127c43f32bb"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(id&lt; <a class="el" href="protocol_a_l_sound_source-p.html">ALSoundSource</a> &gt;)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_o_a_l_simple_audio.html#aa0ef67a0475f628a8251081629215c19">playBuffer:volume:pitch:pan:loop:</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Play a sound effect from a user-supplied buffer.  <a href="#aa0ef67a0475f628a8251081629215c19"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_o_a_l_simple_audio.html#a2b2d303f54bf75ad9035ad09bc314431">stopAllEffects</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop ALL sound effect playback.  <a href="#a2b2d303f54bf75ad9035ad09bc314431"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_o_a_l_simple_audio.html#a7e359e4ce7701790380bb121da2a9a95">stopEverything</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop all effects and bg music.  <a href="#a7e359e4ce7701790380bb121da2a9a95"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_o_a_l_simple_audio.html#a815ddf36c1799ee2a534f8edc2b8d5e0">resetToDefault</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset everything in this object to its default state.  <a href="#a815ddf36c1799ee2a534f8edc2b8d5e0"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_o_a_l_simple_audio.html#a77daff00c677cb44471d7b900db770bc">closeOSResources</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">(INTERNAL USE) Close any resources belonging to the OS.  <a href="#a77daff00c677cb44471d7b900db770bc"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interface_a_l_buffer.html">ALBuffer</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_o_a_l_simple_audio.html#a72bb46da1fad5ad122f9c43b5490ff0a">internalPreloadEffect:reduceToMono:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">(INTERNAL USE) Preload a sound effect and return the preloaded buffer.  <a href="#a72bb46da1fad5ad122f9c43b5490ff0a"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
@@ -178,6 +184,43 @@ Properties</h2></td></tr>
 <p>This singleton also provides access to the more common configuration options available in OALAudioSupport.</p>
 <p>All audio playback commands are delegated either to the <a class="el" href="interface_a_l_channel_source.html" title="A Sound source composed of other sources.">ALChannelSource</a> (for sound effects), or to the <a class="el" href="interface_o_a_l_audio_track.html" title="Plays an audio track via AVAudioPlayer.">OALAudioTrack</a> (for BG music). </p>
 <hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a5154a44aac901c410e3f0106d74b798b"></a><!-- doxytag: member="OALSimpleAudio::close" ref="a5154a44aac901c410e3f0106d74b798b" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) close </td>
+          <td></td>
+          <td class="paramname"></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Close any OS resources in use by this object. </p>
+<p>Any operations called on this object after closing will likely fail. </p>
+
+</div>
+</div>
+<a class="anchor" id="a77daff00c677cb44471d7b900db770bc"></a><!-- doxytag: member="OALSimpleAudio::closeOSResources" ref="a77daff00c677cb44471d7b900db770bc" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) closeOSResources </td>
+          <td></td>
+          <td class="paramname"></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>(INTERNAL USE) Close any resources belonging to the OS. </p>
+
+</div>
+</div>
 <a class="anchor" id="ac06b863b88196d286fec9965f00d8bbe"></a><!-- doxytag: member="OALSimpleAudio::initWithSources:" ref="ac06b863b88196d286fec9965f00d8bbe" args="(int sources)" -->
 <div class="memitem">
 <div class="memproto">
@@ -408,6 +451,64 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>TRUE if the operation was successful. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aa0ef67a0475f628a8251081629215c19"></a><!-- doxytag: member="OALSimpleAudio::playBuffer:volume:pitch:pan:loop:" ref="aa0ef67a0475f628a8251081629215c19" args="(ALBuffer *buffer,[volume] float volume,[pitch] float pitch,[pan] float pan,[loop] bool loop)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (id&lt; <a class="el" href="protocol_a_l_sound_source-p.html">ALSoundSource</a> &gt;) playBuffer: </td>
+          <td></td>
+          <td class="paramtype">(<a class="el" href="interface_a_l_buffer.html">ALBuffer</a>*)&#160;</td>
+          <td class="paramname"> <em>buffer</em></td>
+        </tr>
+        <tr>
+          <td class="paramkey">volume:</td>
+          <td></td>
+          <td class="paramtype">(float)&#160;</td>
+          <td class="paramname"> <em>volume</em></td>
+        </tr>
+        <tr>
+          <td class="paramkey">pitch:</td>
+          <td></td>
+          <td class="paramtype">(float)&#160;</td>
+          <td class="paramname"> <em>pitch</em></td>
+        </tr>
+        <tr>
+          <td class="paramkey">pan:</td>
+          <td></td>
+          <td class="paramtype">(float)&#160;</td>
+          <td class="paramname"> <em>pan</em></td>
+        </tr>
+        <tr>
+          <td class="paramkey">loop:</td>
+          <td></td>
+          <td class="paramtype">(bool)&#160;</td>
+          <td class="paramname"> <em>loop</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Play a sound effect from a user-supplied buffer. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buffer</td><td>The buffer containing the sound data. </td></tr>
+    <tr><td class="paramname">volume</td><td>The volume (gain) to play at (0.0 - 1.0). </td></tr>
+    <tr><td class="paramname">pitch</td><td>The pitch to play at (1.0 = normal pitch). </td></tr>
+    <tr><td class="paramname">pan</td><td>Left-right panning (-1.0 = far left, 1.0 = far right). </td></tr>
+    <tr><td class="paramname">loop</td><td>If TRUE, the sound will loop until you call "stop" on the returned sound source. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>The sound source being used for playback, or nil if an error occurred (You'll need to keep this if you want to be able to stop a looped playback). </dd></dl>
 
 </div>
 </div>
@@ -696,7 +797,7 @@ Properties</h2></td></tr>
 
 <p>Start <a class="el" href="interface_o_a_l_simple_audio.html" title="A simpler interface to the ObjectAL sound library.">OALSimpleAudio</a> with the specified number of reserved sources. </p>
 <p>Call this initializer if you want to use <a class="el" href="interface_o_a_l_simple_audio.html" title="A simpler interface to the ObjectAL sound library.">OALSimpleAudio</a>, but keep some of the device's audio sources (there are 32 in total) for your own use. <br/>
- <b>Note:</b> This method must be called ONLY ONCE, <em>BEFORE</em> any attempt is made to access the shared instance.</p>
+ <b>Note:</b> This method must be called ONLY ONCE, <em>BEFORE</em> any attempt is made to access the shared instance. To change the reserved sources after instantiation, modify reservedSources.</p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">sources</td><td>the number of sources <a class="el" href="interface_o_a_l_simple_audio.html" title="A simpler interface to the ObjectAL sound library.">OALSimpleAudio</a> will reserve for itself. </td></tr>
@@ -1244,7 +1345,7 @@ Properties</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 5 2011 21:43:01 for ObjectAL by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 19 2011 12:35:49 for ObjectAL by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

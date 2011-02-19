@@ -67,6 +67,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(id)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_a_l_capture_device.html#aed4b2ea0c3be869bfbce71769f339505">initWithDeviceSpecifier:frequency:format:bufferSize:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Open the specified device.  <a href="#aed4b2ea0c3be869bfbce71769f339505"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_a_l_capture_device.html#a5fff3187bca6e0149567def36936ab3a">close</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Close any OS resources in use by this object.  <a href="#a5fff3187bca6e0149567def36936ab3a"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(bool)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_a_l_capture_device.html#afdb4b1c4e780ffc52d5098741a17e370">startCapture</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Start capturing samples.  <a href="#afdb4b1c4e780ffc52d5098741a17e370"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(bool)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_a_l_capture_device.html#ae684cc99de6badaf5d67bbc191bec478">stopCapture</a></td></tr>
@@ -77,6 +79,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the specified extension is present.  <a href="#ac53cd4310cea62b952bb2c2443fb5999"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_a_l_capture_device.html#a3f0860cdc48931e45499139d0fe4b94a">getProcAddress:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the address of the specified procedure (C function address).  <a href="#a3f0860cdc48931e45499139d0fe4b94a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_a_l_capture_device.html#a470473b5c4be35f446df65988297a572">closeOSResources</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">(INTERNAL USE) Close any resources belonging to the OS.  <a href="#a470473b5c4be35f446df65988297a572"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(id)&#160;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interface_a_l_capture_device.html#a1b0ffa07af1fd58f85fc8a4bc3b77721">deviceWithDeviceSpecifier:frequency:format:bufferSize:</a></td></tr>
@@ -99,6 +103,43 @@ Properties</h2></td></tr>
 <p>Note: This functionality is NOT implemented in iOS OpenAL! <br/>
  This class is a placeholder in case such functionality is added in a future iOS SDK. </p>
 <hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a5fff3187bca6e0149567def36936ab3a"></a><!-- doxytag: member="ALCaptureDevice::close" ref="a5fff3187bca6e0149567def36936ab3a" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) close </td>
+          <td></td>
+          <td class="paramname"></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Close any OS resources in use by this object. </p>
+<p>Any operations called on this object after closing will likely fail. </p>
+
+</div>
+</div>
+<a class="anchor" id="a470473b5c4be35f446df65988297a572"></a><!-- doxytag: member="ALCaptureDevice::closeOSResources" ref="a470473b5c4be35f446df65988297a572" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) closeOSResources </td>
+          <td></td>
+          <td class="paramname"></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>(INTERNAL USE) Close any resources belonging to the OS. </p>
+
+</div>
+</div>
 <a class="anchor" id="a1b0ffa07af1fd58f85fc8a4bc3b77721"></a><!-- doxytag: member="ALCaptureDevice::deviceWithDeviceSpecifier:frequency:format:bufferSize:" ref="a1b0ffa07af1fd58f85fc8a4bc3b77721" args="(NSString *deviceSpecifier,[frequency] ALCuint frequency,[format] ALCenum format,[bufferSize] ALCsizei bufferSize)" -->
 <div class="memitem">
 <div class="memproto">
@@ -424,7 +465,7 @@ Properties</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 5 2011 21:42:53 for ObjectAL by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 19 2011 12:35:41 for ObjectAL by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

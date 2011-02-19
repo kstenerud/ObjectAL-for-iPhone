@@ -102,14 +102,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00061"></a>00061 <span class="preprocessor"></span>
 <a name="l00067"></a>00067 SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(<a class="code" href="interface_o_a_l_audio_tracks.html" title="Keeps track of all AudioTrack objects.">OALAudioTracks</a>);
 <a name="l00068"></a>00068 
-<a name="l00069"></a>00069 
-<a name="l00070"></a>00070 <span class="preprocessor">#pragma mark Internal Use</span>
-<a name="l00071"></a>00071 <span class="preprocessor"></span>
-<a name="l00074"></a>00074 - (void) notifyTrackInitializing:(<a class="code" href="interface_o_a_l_audio_track.html" title="Plays an audio track via AVAudioPlayer.">OALAudioTrack</a>*) track;
-<a name="l00075"></a>00075 
-<a name="l00078"></a>00078 - (void) notifyTrackDeallocating:(<a class="code" href="interface_o_a_l_audio_track.html" title="Plays an audio track via AVAudioPlayer.">OALAudioTrack</a>*) track;
-<a name="l00079"></a>00079 
-<a name="l00080"></a>00080 <span class="keyword">@end</span>
+<a name="l00072"></a>00072 - (void) close;
+<a name="l00073"></a>00073 
+<a name="l00074"></a>00074 
+<a name="l00075"></a>00075 <span class="preprocessor">#pragma mark Internal Use</span>
+<a name="l00076"></a>00076 <span class="preprocessor"></span>
+<a name="l00079"></a>00079 - (void) notifyTrackInitializing:(<a class="code" href="interface_o_a_l_audio_track.html" title="Plays an audio track via AVAudioPlayer.">OALAudioTrack</a>*) track;
+<a name="l00080"></a>00080 
+<a name="l00083"></a>00083 - (void) notifyTrackDeallocating:(<a class="code" href="interface_o_a_l_audio_track.html" title="Plays an audio track via AVAudioPlayer.">OALAudioTrack</a>*) track;
+<a name="l00084"></a>00084 
+<a name="l00085"></a>00085 <span class="keyword">@end</span>
 </pre></div></div>
 </div>
 <!--- window showing the filter options -->
@@ -126,7 +128,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 5 2011 21:42:53 for ObjectAL by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 19 2011 12:35:41 for ObjectAL by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

@@ -132,6 +132,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>freeDataOnDestroy</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instp</Type>
+    </TokenIdentifier>
+    <Path>interface_a_l_buffer.html</Path>
+    <Anchor>a25dd80fcb29b58bbd2b837c420c69151</Anchor>
+    <Abstract>If true, calls free() on the audio data when this object gets destroyed.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>ALCaptureDevice</Name>
       <APILanguage>c</APILanguage>
       <Type>cl</Type>
@@ -149,6 +159,16 @@
     <Path>interface_a_l_capture_device.html</Path>
     <Anchor>aed4b2ea0c3be869bfbce71769f339505</Anchor>
     <Abstract>Open the specified device.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>close</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instm</Type>
+    </TokenIdentifier>
+    <Path>interface_a_l_capture_device.html</Path>
+    <Anchor>a5fff3187bca6e0149567def36936ab3a</Anchor>
+    <Abstract>Close any OS resources in use by this object.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -199,6 +219,16 @@
     <Path>interface_a_l_capture_device.html</Path>
     <Anchor>a3f0860cdc48931e45499139d0fe4b94a</Anchor>
     <Abstract>Get the address of the specified procedure (C function address).</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>closeOSResources</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instm</Type>
+    </TokenIdentifier>
+    <Path>interface_a_l_capture_device.html</Path>
+    <Anchor>a470473b5c4be35f446df65988297a572</Anchor>
+    <Abstract>(INTERNAL USE) Close any resources belonging to the OS.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -289,6 +319,16 @@
     <Path>interface_a_l_channel_source.html</Path>
     <Anchor>a87b13ff751b90eb3db628f706ae187ba</Anchor>
     <Abstract>Reset all sources in this channel to their default state.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>closeOSResources</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instm</Type>
+    </TokenIdentifier>
+    <Path>interface_a_l_channel_source.html</Path>
+    <Anchor>ab3edbd726a439f661b2ae6274f5f1bde</Anchor>
+    <Abstract>(INTERNAL USE) Close any resources belonging to the OS.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -702,6 +742,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>close</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instm</Type>
+    </TokenIdentifier>
+    <Path>interface_a_l_context.html</Path>
+    <Anchor>aecea919b65e362fa34138210af04621c</Anchor>
+    <Abstract>Close any OS resources in use by this object.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>process</Name>
       <APILanguage>occ</APILanguage>
       <Type>instm</Type>
@@ -779,6 +829,16 @@
     <Path>interface_a_l_context.html</Path>
     <Anchor>ad8a8d92bdf75c6a3d964030a5380b4f3</Anchor>
     <Abstract>(INTERNAL USE) Used by ALSource to announce deallocation.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>closeOSResources</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instm</Type>
+    </TokenIdentifier>
+    <Path>interface_a_l_context.html</Path>
+    <Anchor>a9be0dbea1113bd9eb3d2556e34449fad</Anchor>
+    <Abstract>(INTERNAL USE) Close any resources belonging to the OS.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -992,6 +1052,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>close</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instm</Type>
+    </TokenIdentifier>
+    <Path>interface_a_l_device.html</Path>
+    <Anchor>a264b516c8dce1161ccf5b646fe97b248</Anchor>
+    <Abstract>Close any OS resources in use by this object.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>isExtensionPresent:</Name>
       <APILanguage>occ</APILanguage>
       <Type>instm</Type>
@@ -1039,6 +1109,16 @@
     <Path>interface_a_l_device.html</Path>
     <Anchor>a024a5262c5fd7b6f94693ead0d1f3795</Anchor>
     <Abstract>(INTERNAL USE) Used by ALContext to announce deallocation.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>closeOSResources</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instm</Type>
+    </TokenIdentifier>
+    <Path>interface_a_l_device.html</Path>
+    <Anchor>a97e5e1ba1bdb24183f4e54776350b7e4</Anchor>
+    <Abstract>(INTERNAL USE) Close any resources belonging to the OS.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -1299,6 +1379,16 @@
     <Path>protocol_a_l_sound_source-p.html</Path>
     <Abstract>Manages all properties relating to an OpenAL sound source.</Abstract>
     <DeclaredIn>ALSoundSource.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>close</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>intfm</Type>
+    </TokenIdentifier>
+    <Path>protocol_a_l_sound_source-p.html</Path>
+    <Anchor>a428d9390fb4003bed241c13905c270c2</Anchor>
+    <Abstract>Close any OS resources in use by this object.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -1662,6 +1752,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>close</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instm</Type>
+    </TokenIdentifier>
+    <Path>interface_a_l_sound_source_pool.html</Path>
+    <Anchor>a5d14d35e27a01ffcf184d1f2aad2e5ba</Anchor>
+    <Abstract>Close any OS resources in use by this object.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>addSource:</Name>
       <APILanguage>occ</APILanguage>
       <Type>instm</Type>
@@ -1689,6 +1789,16 @@
     <Path>interface_a_l_sound_source_pool.html</Path>
     <Anchor>a5389ccb1f1826702087a5f1955f32f2b</Anchor>
     <Abstract>Acquire a free or freeable source from this pool.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>closeOSResources</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instm</Type>
+    </TokenIdentifier>
+    <Path>interface_a_l_sound_source_pool.html</Path>
+    <Anchor>a6ccaae9146df811ef8ef77ae55f100c4</Anchor>
+    <Abstract>(INTERNAL USE) Close any resources belonging to the OS.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -1799,6 +1909,16 @@
     <Path>interface_a_l_source.html</Path>
     <Anchor>a16535ff4472df085297aada581743d63</Anchor>
     <Abstract>Remove buffers from the buffer queue.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>closeOSResources</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instm</Type>
+    </TokenIdentifier>
+    <Path>interface_a_l_source.html</Path>
+    <Anchor>a489f5b9c245f5618f3c6714c5ba9e639</Anchor>
+    <Abstract>(INTERNAL USE) Close any resources belonging to the OS.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -3742,6 +3862,26 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>close</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instm</Type>
+    </TokenIdentifier>
+    <Path>interface_o_a_l_audio_file.html</Path>
+    <Anchor>a58aae2d9719c58a352a00723ff0485d1</Anchor>
+    <Abstract>Close any OS resources in use by this object.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>closeOSResources</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instm</Type>
+    </TokenIdentifier>
+    <Path>interface_o_a_l_audio_file.html</Path>
+    <Anchor>aa0ff27fa5c8c7f5a36745cfd7599d63d</Anchor>
+    <Abstract>(INTERNAL USE) Close any resources belonging to the OS.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>fileWithUrl:reduceToMono:</Name>
       <APILanguage>occ</APILanguage>
       <Type>clm</Type>
@@ -3762,6 +3902,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>streamDescription</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+    </TokenIdentifier>
+    <Path>interface_o_a_l_audio_file.html</Path>
+    <Anchor>a1e0a4e3c70cf6c782689d6a0d32e277b</Anchor>
+    <Abstract>A description of the audio data in this file.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>fileHandle</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -3769,16 +3919,6 @@
     <Path>interface_o_a_l_audio_file.html</Path>
     <Anchor>a66aab543fe60984f498c980caa33b081</Anchor>
     <Abstract>The OS specific file handle.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>description</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-    </TokenIdentifier>
-    <Path>interface_o_a_l_audio_file.html</Path>
-    <Anchor>a5c66f19bc7341f915a972f06d22eee52</Anchor>
-    <Abstract>A description of the audio stream.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -3802,12 +3942,12 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>description</Name>
+      <Name>streamDescription</Name>
       <APILanguage>occ</APILanguage>
       <Type>instp</Type>
     </TokenIdentifier>
     <Path>interface_o_a_l_audio_file.html</Path>
-    <Anchor>ab9764625c3b5193cbc882ab3d857a5ff</Anchor>
+    <Anchor>afc7f743bba5d8b0f6aa723b4f3d634ff</Anchor>
     <Abstract>A description of the audio data in this file.</Abstract>
   </Token>
   <Token>
@@ -3842,6 +3982,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>close</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instm</Type>
+    </TokenIdentifier>
+    <Path>interface_o_a_l_audio_session.html</Path>
+    <Anchor>ad10c4c84dab28bb83d11611f3ce2cba3</Anchor>
+    <Abstract>Close any OS resources in use by this object.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>forceEndInterruption</Name>
       <APILanguage>occ</APILanguage>
       <Type>instm</Type>
@@ -3849,6 +3999,16 @@
     <Path>interface_o_a_l_audio_session.html</Path>
     <Anchor>aa5d39a45fc2b1b80b9f4e041fbfc8f8a</Anchor>
     <Abstract>Force an interrupt end.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>closeOSResources</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instm</Type>
+    </TokenIdentifier>
+    <Path>interface_o_a_l_audio_session.html</Path>
+    <Anchor>a9bc54933c90494258796084a9a2368ef</Anchor>
+    <Abstract>(INTERNAL USE) Close any resources belonging to the OS.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -4109,6 +4269,16 @@
     <Path>interface_o_a_l_audio_track.html</Path>
     <Abstract>Plays an audio track via AVAudioPlayer.</Abstract>
     <DeclaredIn>OALAudioTrack.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>close</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instm</Type>
+    </TokenIdentifier>
+    <Path>interface_o_a_l_audio_track.html</Path>
+    <Anchor>a1eb2ee44ff0e7bdbbcc268ce27f5c25c</Anchor>
+    <Abstract>Close any OS resources in use by this object.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -4392,6 +4562,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>closeOSResources</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instm</Type>
+    </TokenIdentifier>
+    <Path>interface_o_a_l_audio_track.html</Path>
+    <Anchor>ae716faebcef67a1e9ff60dc4c3283bfa</Anchor>
+    <Abstract>(INTERNAL USE) Close any resources belonging to the OS.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>setSuspended:</Name>
       <APILanguage>occ</APILanguage>
       <Type>instm</Type>
@@ -4532,6 +4712,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>autoPreload</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instp</Type>
+    </TokenIdentifier>
+    <Path>interface_o_a_l_audio_track.html</Path>
+    <Anchor>afeb8287d08a67bee2a0c79561de0845f</Anchor>
+    <Abstract>If true, automatically preload again when playback stops.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>preloaded</Name>
       <APILanguage>occ</APILanguage>
       <Type>instp</Type>
@@ -4642,6 +4832,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>close</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instm</Type>
+    </TokenIdentifier>
+    <Path>interface_o_a_l_audio_tracks.html</Path>
+    <Anchor>a031a9b7b57eedbab4c49645a29ba4ff0</Anchor>
+    <Abstract>Close any OS resources in use by this object.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>notifyTrackInitializing:</Name>
       <APILanguage>occ</APILanguage>
       <Type>instm</Type>
@@ -4659,6 +4859,16 @@
     <Path>interface_o_a_l_audio_tracks.html</Path>
     <Anchor>ad90119144dc5e619c05cbc86cc786901</Anchor>
     <Abstract>(INTERNAL USE) Notify that a track is deallocating.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>closeOSResources</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instm</Type>
+    </TokenIdentifier>
+    <Path>interface_o_a_l_audio_tracks.html</Path>
+    <Anchor>afa4556de4ec958d1b5d58cf883474738</Anchor>
+    <Abstract>(INTERNAL USE) Close any resources belonging to the OS.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -5612,6 +5822,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>close</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instm</Type>
+    </TokenIdentifier>
+    <Path>interface_o_a_l_simple_audio.html</Path>
+    <Anchor>a5154a44aac901c410e3f0106d74b798b</Anchor>
+    <Abstract>Close any OS resources in use by this object.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>preloadBg:</Name>
       <APILanguage>occ</APILanguage>
       <Type>instm</Type>
@@ -5762,6 +5982,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>playBuffer:volume:pitch:pan:loop:</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instm</Type>
+    </TokenIdentifier>
+    <Path>interface_o_a_l_simple_audio.html</Path>
+    <Anchor>aa0ef67a0475f628a8251081629215c19</Anchor>
+    <Abstract>Play a sound effect from a user-supplied buffer.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>stopAllEffects</Name>
       <APILanguage>occ</APILanguage>
       <Type>instm</Type>
@@ -5789,6 +6019,16 @@
     <Path>interface_o_a_l_simple_audio.html</Path>
     <Anchor>a815ddf36c1799ee2a534f8edc2b8d5e0</Anchor>
     <Abstract>Reset everything in this object to its default state.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>closeOSResources</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instm</Type>
+    </TokenIdentifier>
+    <Path>interface_o_a_l_simple_audio.html</Path>
+    <Anchor>a77daff00c677cb44471d7b900db770bc</Anchor>
+    <Abstract>(INTERNAL USE) Close any resources belonging to the OS.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -6382,6 +6622,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>close</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instm</Type>
+    </TokenIdentifier>
+    <Path>interface_open_a_l_manager.html</Path>
+    <Anchor>abc281e24fc51f5bb4164fc963bb37dce</Anchor>
+    <Abstract>Close any OS resources in use by this object.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>bufferFromFile:</Name>
       <APILanguage>occ</APILanguage>
       <Type>instm</Type>
@@ -6489,6 +6739,16 @@
     <Path>interface_open_a_l_manager.html</Path>
     <Anchor>aed5070f014c7e61f407ead47578a5488</Anchor>
     <Abstract>(INTERNAL USE) Notify that a device is deallocating.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>closeOSResources</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instm</Type>
+    </TokenIdentifier>
+    <Path>interface_open_a_l_manager.html</Path>
+    <Anchor>acf3afe567a9c7ac2779c85880831073a</Anchor>
+    <Abstract>(INTERNAL USE) Close any resources belonging to the OS.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>

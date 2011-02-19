@@ -130,51 +130,56 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00114"></a><a class="code" href="protocol_a_l_sound_source-p.html#ad671b1cae40c9ab03bc1d927e7a42440">00114</a> @property(readwrite,assign) <span class="keywordtype">float</span> <a class="code" href="protocol_a_l_sound_source-p.html#ad671b1cae40c9ab03bc1d927e7a42440" title="Pan value (-1.0 = far left, 1.0 = far right).">pan</a>;
 <a name="l00115"></a>00115 
 <a name="l00116"></a>00116 
-<a name="l00117"></a>00117 <span class="preprocessor">#pragma mark Playback</span>
+<a name="l00117"></a>00117 <span class="preprocessor">#pragma mark Object Management</span>
 <a name="l00118"></a>00118 <span class="preprocessor"></span>
-<a name="l00124"></a>00124 - (id&lt;<a class="code" href="protocol_a_l_sound_source-p.html" title="Manages all properties relating to an OpenAL sound source.">ALSoundSource</a>&gt;) play:(<a class="code" href="interface_a_l_buffer.html" title="A buffer for audio data that will be played via a SoundSource.">ALBuffer</a>*) buffer;
-<a name="l00125"></a>00125 
-<a name="l00132"></a>00132 - (id&lt;<a class="code" href="protocol_a_l_sound_source-p.html" title="Manages all properties relating to an OpenAL sound source.">ALSoundSource</a>&gt;) play:(<a class="code" href="interface_a_l_buffer.html" title="A buffer for audio data that will be played via a SoundSource.">ALBuffer</a>*) buffer loop:(<span class="keywordtype">bool</span>) loop;
+<a name="l00122"></a>00122 - (void) <a class="code" href="protocol_a_l_sound_source-p.html#a428d9390fb4003bed241c13905c270c2" title="Close any OS resources in use by this object.">close</a>;
+<a name="l00123"></a>00123 
+<a name="l00124"></a>00124 
+<a name="l00125"></a>00125 <span class="preprocessor">#pragma mark Playback</span>
+<a name="l00126"></a>00126 <span class="preprocessor"></span>
+<a name="l00132"></a>00132 - (id&lt;<a class="code" href="protocol_a_l_sound_source-p.html" title="Manages all properties relating to an OpenAL sound source.">ALSoundSource</a>&gt;) play:(<a class="code" href="interface_a_l_buffer.html" title="A buffer for audio data that will be played via a SoundSource.">ALBuffer</a>*) buffer;
 <a name="l00133"></a>00133 
-<a name="l00143"></a>00143 - (id&lt;<a class="code" href="protocol_a_l_sound_source-p.html" title="Manages all properties relating to an OpenAL sound source.">ALSoundSource</a>&gt;) play:(<a class="code" href="interface_a_l_buffer.html" title="A buffer for audio data that will be played via a SoundSource.">ALBuffer</a>*) buffer
-<a name="l00144"></a>00144                     gain:(<span class="keywordtype">float</span>) gain
-<a name="l00145"></a>00145                    pitch:(<span class="keywordtype">float</span>) pitch
-<a name="l00146"></a>00146                      pan:(<span class="keywordtype">float</span>) pan
-<a name="l00147"></a>00147                     loop:(<span class="keywordtype">bool</span>) loop;
-<a name="l00148"></a>00148 
-<a name="l00151"></a>00151 - (void) <a class="code" href="protocol_a_l_sound_source-p.html#a119acad53cdadff29214f52fbd2d0fdc" title="Stop playing the current sound.">stop</a>;
-<a name="l00152"></a>00152 
-<a name="l00155"></a>00155 - (void) <a class="code" href="protocol_a_l_sound_source-p.html#a99bc638e4414f099f3381aec59c425ed" title="Stop playing the current sound and set its state to AL_INITIAL.">rewind</a>;
+<a name="l00140"></a>00140 - (id&lt;<a class="code" href="protocol_a_l_sound_source-p.html" title="Manages all properties relating to an OpenAL sound source.">ALSoundSource</a>&gt;) play:(<a class="code" href="interface_a_l_buffer.html" title="A buffer for audio data that will be played via a SoundSource.">ALBuffer</a>*) buffer loop:(<span class="keywordtype">bool</span>) loop;
+<a name="l00141"></a>00141 
+<a name="l00151"></a>00151 - (id&lt;<a class="code" href="protocol_a_l_sound_source-p.html" title="Manages all properties relating to an OpenAL sound source.">ALSoundSource</a>&gt;) play:(<a class="code" href="interface_a_l_buffer.html" title="A buffer for audio data that will be played via a SoundSource.">ALBuffer</a>*) buffer
+<a name="l00152"></a>00152                     gain:(<span class="keywordtype">float</span>) gain
+<a name="l00153"></a>00153                    pitch:(<span class="keywordtype">float</span>) pitch
+<a name="l00154"></a>00154                      pan:(<span class="keywordtype">float</span>) pan
+<a name="l00155"></a>00155                     loop:(<span class="keywordtype">bool</span>) loop;
 <a name="l00156"></a>00156 
-<a name="l00165"></a>00165 - (void) fadeTo:(<span class="keywordtype">float</span>) gain
-<a name="l00166"></a>00166        duration:(<span class="keywordtype">float</span>) duration
-<a name="l00167"></a>00167          target:(<span class="keywordtype">id</span>) target
-<a name="l00168"></a>00168        selector:(<span class="keywordtype">SEL</span>) selector;
-<a name="l00169"></a>00169 
-<a name="l00172"></a>00172 - (void) <a class="code" href="protocol_a_l_sound_source-p.html#a94a8d3fe21aec1d70c7e699d61f75dbe" title="Stop the currently running fade operation, if any.">stopFade</a>;
-<a name="l00173"></a>00173 
-<a name="l00182"></a>00182 - (void) panTo:(<span class="keywordtype">float</span>) pan
-<a name="l00183"></a>00183        duration:(<span class="keywordtype">float</span>) duration
-<a name="l00184"></a>00184          target:(<span class="keywordtype">id</span>) target
-<a name="l00185"></a>00185        selector:(<span class="keywordtype">SEL</span>) selector;
-<a name="l00186"></a>00186 
-<a name="l00189"></a>00189 - (void) <a class="code" href="protocol_a_l_sound_source-p.html#a690822667e7a6a9cb9d9c0a0fbdec465" title="Stop the currently running pan operation, if any.">stopPan</a>;
-<a name="l00190"></a>00190 
-<a name="l00199"></a>00199 - (void) pitchTo:(<span class="keywordtype">float</span>) pitch
-<a name="l00200"></a>00200        duration:(<span class="keywordtype">float</span>) duration
-<a name="l00201"></a>00201          target:(<span class="keywordtype">id</span>) target
-<a name="l00202"></a>00202        selector:(<span class="keywordtype">SEL</span>) selector;
-<a name="l00203"></a>00203 
-<a name="l00206"></a>00206 - (void) <a class="code" href="protocol_a_l_sound_source-p.html#a83b9ab3031c8b259e538e93a1071cb51" title="Stop the currently running pitch operation, if any.">stopPitch</a>;
-<a name="l00207"></a>00207 
-<a name="l00210"></a>00210 - (void) <a class="code" href="protocol_a_l_sound_source-p.html#a97f33a6e990cb3f5f94dd540977c7d2f" title="Stop any currently running fade, pan, or pitch operations.">stopActions</a>;
+<a name="l00159"></a>00159 - (void) <a class="code" href="protocol_a_l_sound_source-p.html#a119acad53cdadff29214f52fbd2d0fdc" title="Stop playing the current sound.">stop</a>;
+<a name="l00160"></a>00160 
+<a name="l00163"></a>00163 - (void) <a class="code" href="protocol_a_l_sound_source-p.html#a99bc638e4414f099f3381aec59c425ed" title="Stop playing the current sound and set its state to AL_INITIAL.">rewind</a>;
+<a name="l00164"></a>00164 
+<a name="l00173"></a>00173 - (void) fadeTo:(<span class="keywordtype">float</span>) gain
+<a name="l00174"></a>00174        duration:(<span class="keywordtype">float</span>) duration
+<a name="l00175"></a>00175          target:(<span class="keywordtype">id</span>) target
+<a name="l00176"></a>00176        selector:(<span class="keywordtype">SEL</span>) selector;
+<a name="l00177"></a>00177 
+<a name="l00180"></a>00180 - (void) <a class="code" href="protocol_a_l_sound_source-p.html#a94a8d3fe21aec1d70c7e699d61f75dbe" title="Stop the currently running fade operation, if any.">stopFade</a>;
+<a name="l00181"></a>00181 
+<a name="l00190"></a>00190 - (void) panTo:(<span class="keywordtype">float</span>) pan
+<a name="l00191"></a>00191        duration:(<span class="keywordtype">float</span>) duration
+<a name="l00192"></a>00192          target:(<span class="keywordtype">id</span>) target
+<a name="l00193"></a>00193        selector:(<span class="keywordtype">SEL</span>) selector;
+<a name="l00194"></a>00194 
+<a name="l00197"></a>00197 - (void) <a class="code" href="protocol_a_l_sound_source-p.html#a690822667e7a6a9cb9d9c0a0fbdec465" title="Stop the currently running pan operation, if any.">stopPan</a>;
+<a name="l00198"></a>00198 
+<a name="l00207"></a>00207 - (void) pitchTo:(<span class="keywordtype">float</span>) pitch
+<a name="l00208"></a>00208        duration:(<span class="keywordtype">float</span>) duration
+<a name="l00209"></a>00209          target:(<span class="keywordtype">id</span>) target
+<a name="l00210"></a>00210        selector:(<span class="keywordtype">SEL</span>) selector;
 <a name="l00211"></a>00211 
-<a name="l00212"></a>00212 
-<a name="l00213"></a>00213 <span class="preprocessor">#pragma mark Utility</span>
-<a name="l00214"></a>00214 <span class="preprocessor"></span>
-<a name="l00217"></a>00217 - (void) <a class="code" href="protocol_a_l_sound_source-p.html#a93814a7ed39528a57ea750857be35382" title="Clear any buffers this source is currently using.">clear</a>;
-<a name="l00218"></a>00218 
-<a name="l00219"></a>00219 <span class="keyword">@end</span>
+<a name="l00214"></a>00214 - (void) <a class="code" href="protocol_a_l_sound_source-p.html#a83b9ab3031c8b259e538e93a1071cb51" title="Stop the currently running pitch operation, if any.">stopPitch</a>;
+<a name="l00215"></a>00215 
+<a name="l00218"></a>00218 - (void) <a class="code" href="protocol_a_l_sound_source-p.html#a97f33a6e990cb3f5f94dd540977c7d2f" title="Stop any currently running fade, pan, or pitch operations.">stopActions</a>;
+<a name="l00219"></a>00219 
+<a name="l00220"></a>00220 
+<a name="l00221"></a>00221 <span class="preprocessor">#pragma mark Utility</span>
+<a name="l00222"></a>00222 <span class="preprocessor"></span>
+<a name="l00225"></a>00225 - (void) <a class="code" href="protocol_a_l_sound_source-p.html#a93814a7ed39528a57ea750857be35382" title="Clear any buffers this source is currently using.">clear</a>;
+<a name="l00226"></a>00226 
+<a name="l00227"></a>00227 <span class="keyword">@end</span>
 </pre></div></div>
 </div>
 <!--- window showing the filter options -->
@@ -191,7 +196,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 5 2011 21:42:53 for ObjectAL by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 19 2011 12:35:41 for ObjectAL by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

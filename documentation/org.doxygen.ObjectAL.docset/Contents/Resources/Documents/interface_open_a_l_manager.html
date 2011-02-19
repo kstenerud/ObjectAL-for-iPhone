@@ -76,6 +76,8 @@ Inheritance diagram for OpenALManager:<!-- endSectionHeader --></div>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_open_a_l_manager.html#abc281e24fc51f5bb4164fc963bb37dce">close</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Close any OS resources in use by this object.  <a href="#abc281e24fc51f5bb4164fc963bb37dce"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interface_a_l_buffer.html">ALBuffer</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_open_a_l_manager.html#a88cb8742c3473ef5cd9da683bac639ed">bufferFromFile:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an OpenAL buffer with the contents of an audio file.  <a href="#a88cb8742c3473ef5cd9da683bac639ed"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(<a class="el" href="interface_a_l_buffer.html">ALBuffer</a> *)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_open_a_l_manager.html#aeae25ca1a41e6aa4ba063083e354cce2">bufferFromFile:reduceToMono:</a></td></tr>
@@ -98,6 +100,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">(INTERNAL USE) Notify that a device is initializing.  <a href="#a773c441d3b610d3ca6a0c179e64d6642"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_open_a_l_manager.html#aed5070f014c7e61f407ead47578a5488">notifyDeviceDeallocating:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">(INTERNAL USE) Notify that a device is deallocating.  <a href="#aed5070f014c7e61f407ead47578a5488"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_open_a_l_manager.html#acf3afe567a9c7ac2779c85880831073a">closeOSResources</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">(INTERNAL USE) Close any resources belonging to the OS.  <a href="#acf3afe567a9c7ac2779c85880831073a"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_open_a_l_manager.html#a5f94f988054478501066fa27078867d7">setSuspended:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">(INTERNAL USE) Called by SuspendHandler.  <a href="#a5f94f988054478501066fa27078867d7"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pro-methods"></a>
@@ -496,6 +500,43 @@ Properties</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="abc281e24fc51f5bb4164fc963bb37dce"></a><!-- doxytag: member="OpenALManager::close" ref="abc281e24fc51f5bb4164fc963bb37dce" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) close </td>
+          <td></td>
+          <td class="paramname"></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Close any OS resources in use by this object. </p>
+<p>Any operations called on this object after closing will likely fail. </p>
+
+</div>
+</div>
+<a class="anchor" id="acf3afe567a9c7ac2779c85880831073a"></a><!-- doxytag: member="OpenALManager::closeOSResources" ref="acf3afe567a9c7ac2779c85880831073a" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) closeOSResources </td>
+          <td></td>
+          <td class="paramname"></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>(INTERNAL USE) Close any resources belonging to the OS. </p>
+
+</div>
+</div>
 <a class="anchor" id="aed5070f014c7e61f407ead47578a5488"></a><!-- doxytag: member="OpenALManager::notifyDeviceDeallocating:" ref="aed5070f014c7e61f407ead47578a5488" args="(ALDevice *device)" -->
 <div class="memitem">
 <div class="memproto">
@@ -745,7 +786,7 @@ Properties</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 5 2011 21:43:02 for ObjectAL by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 19 2011 12:35:50 for ObjectAL by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

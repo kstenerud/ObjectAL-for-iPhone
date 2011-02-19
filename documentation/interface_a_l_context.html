@@ -80,6 +80,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize this context on the specified device with attributes.  <a href="#a1a2a5ca227667708b6a8345284ee3e2b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(id)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_a_l_context.html#a7a58b365427096d9682b94bdd9cf3f60">initOnDevice:attributes:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize this context for the specified device and attributes.  <a href="#a7a58b365427096d9682b94bdd9cf3f60"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_a_l_context.html#aecea919b65e362fa34138210af04621c">close</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Close any OS resources in use by this object.  <a href="#aecea919b65e362fa34138210af04621c"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_a_l_context.html#ae73ea3e404c747986ddeee0683e2877b">process</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Process this context.  <a href="#ae73ea3e404c747986ddeee0683e2877b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_a_l_context.html#ad8e39b9d047f3a4f9dfcc63ae9e12d75">stopAllSounds</a></td></tr>
@@ -96,6 +98,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">(INTERNAL USE) Used by <a class="el" href="interface_a_l_source.html" title="A source represents an object that emits sound which can be heard by a listener.">ALSource</a> to announce initialization.  <a href="#a5d9af8ff25aabba500340f6dd6d8efe1"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_a_l_context.html#ad8a8d92bdf75c6a3d964030a5380b4f3">notifySourceDeallocating:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">(INTERNAL USE) Used by <a class="el" href="interface_a_l_source.html" title="A source represents an object that emits sound which can be heard by a listener.">ALSource</a> to announce deallocation.  <a href="#ad8a8d92bdf75c6a3d964030a5380b4f3"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_a_l_context.html#a9be0dbea1113bd9eb3d2556e34449fad">closeOSResources</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">(INTERNAL USE) Close any resources belonging to the OS.  <a href="#a9be0dbea1113bd9eb3d2556e34449fad"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_a_l_context.html#affd89223f10029849b604538068530c2">setSuspended:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">(INTERNAL USE) Called by SuspendHandler.  <a href="#affd89223f10029849b604538068530c2"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
@@ -163,6 +167,43 @@ Properties</h2></td></tr>
 <div class="memdoc">
 
 <p>Clear all buffers being used by sources in this context. </p>
+
+</div>
+</div>
+<a class="anchor" id="aecea919b65e362fa34138210af04621c"></a><!-- doxytag: member="ALContext::close" ref="aecea919b65e362fa34138210af04621c" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) close </td>
+          <td></td>
+          <td class="paramname"></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Close any OS resources in use by this object. </p>
+<p>Any operations called on this object after closing will likely fail. </p>
+
+</div>
+</div>
+<a class="anchor" id="a9be0dbea1113bd9eb3d2556e34449fad"></a><!-- doxytag: member="ALContext::closeOSResources" ref="a9be0dbea1113bd9eb3d2556e34449fad" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) closeOSResources </td>
+          <td></td>
+          <td class="paramname"></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>(INTERNAL USE) Close any resources belonging to the OS. </p>
 
 </div>
 </div>
@@ -821,7 +862,7 @@ Properties</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 5 2011 21:42:53 for ObjectAL by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 19 2011 12:35:41 for ObjectAL by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

@@ -78,148 +78,153 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00029"></a>00029 <span class="preprocessor">#import &quot;OALAudioTrackNotifications.h&quot;</span>
 <a name="l00030"></a>00030 <span class="preprocessor">#import &quot;OALSuspendHandler.h&quot;</span>
 <a name="l00031"></a><a class="code" href="interface_o_a_l_audio_track.html#a8b5c3054fee78765713823634b71091e">00031</a> 
-<a name="l00037"></a><a class="code" href="interface_o_a_l_audio_track.html#a13c3ee7fe21cb595ce1685775651808f">00037</a> <span class="keyword">@interface </span><a class="code" href="interface_o_a_l_audio_track.html" title="Plays an audio track via AVAudioPlayer.">OALAudioTrack</a> : NSObject &lt;AVAudioPlayerDelegate, <a class="code" href="protocol_o_a_l_suspend_manager-p.html" title="A suspend manager is a listener that also allows other objects to subscribe to receive events as the ...">OALSuspendManager</a>&gt;
-<a name="l00038"></a><a class="code" href="interface_o_a_l_audio_track.html#a078b12ce22450ed543b9b28df978f3c1">00038</a> {
-<a name="l00039"></a><a class="code" href="interface_o_a_l_audio_track.html#a2c328e2ddca49ad37f511493e8e174d0">00039</a>     <span class="keywordtype">bool</span> <a class="code" href="interface_o_a_l_audio_track.html#a8b5c3054fee78765713823634b71091e" title="If true, metering is enabled.">meteringEnabled</a>;
-<a name="l00040"></a><a class="code" href="interface_o_a_l_audio_track.html#ab1072e838b4a50ed92248cdba2313351">00040</a>     <span class="keywordtype">bool</span> <a class="code" href="interface_o_a_l_audio_track.html#ab4451fb342576961344824b81682064c" title="If YES, this object is interrupted.">interrupted</a>;
-<a name="l00041"></a><a class="code" href="interface_o_a_l_audio_track.html#a579802ba38fc894b61677832ead68957">00041</a>     AVAudioPlayer* <a class="code" href="interface_o_a_l_audio_track.html#a515b6d37f19b48946ead8651114de286" title="Access to the underlying AVAudioPlayer object.">player</a>;
-<a name="l00042"></a>00042     NSURL* <a class="code" href="interface_o_a_l_audio_track.html#a4668c76598c6d54cc8b54d3a62702c10" title="The URL of the currently loaded audio data.">currentlyLoadedUrl</a>;
+<a name="l00037"></a><a class="code" href="interface_o_a_l_audio_track.html#ae6d53864b20348e6bbc110c5aec24463">00037</a> <span class="keyword">@interface </span><a class="code" href="interface_o_a_l_audio_track.html" title="Plays an audio track via AVAudioPlayer.">OALAudioTrack</a> : NSObject &lt;AVAudioPlayerDelegate, <a class="code" href="protocol_o_a_l_suspend_manager-p.html" title="A suspend manager is a listener that also allows other objects to subscribe to receive events as the ...">OALSuspendManager</a>&gt;
+<a name="l00038"></a><a class="code" href="interface_o_a_l_audio_track.html#a13c3ee7fe21cb595ce1685775651808f">00038</a> {
+<a name="l00039"></a><a class="code" href="interface_o_a_l_audio_track.html#a078b12ce22450ed543b9b28df978f3c1">00039</a>     <span class="keywordtype">bool</span> <a class="code" href="interface_o_a_l_audio_track.html#a8b5c3054fee78765713823634b71091e" title="If true, metering is enabled.">meteringEnabled</a>;
+<a name="l00040"></a><a class="code" href="interface_o_a_l_audio_track.html#a2c328e2ddca49ad37f511493e8e174d0">00040</a>     <span class="keywordtype">bool</span> <a class="code" href="interface_o_a_l_audio_track.html#ab4451fb342576961344824b81682064c" title="If YES, this object is interrupted.">interrupted</a>;
+<a name="l00041"></a><a class="code" href="interface_o_a_l_audio_track.html#ab1072e838b4a50ed92248cdba2313351">00041</a>     AVAudioPlayer* <a class="code" href="interface_o_a_l_audio_track.html#a515b6d37f19b48946ead8651114de286" title="Access to the underlying AVAudioPlayer object.">player</a>;
+<a name="l00042"></a><a class="code" href="interface_o_a_l_audio_track.html#a579802ba38fc894b61677832ead68957">00042</a>     NSURL* <a class="code" href="interface_o_a_l_audio_track.html#a4668c76598c6d54cc8b54d3a62702c10" title="The URL of the currently loaded audio data.">currentlyLoadedUrl</a>;
 <a name="l00043"></a>00043     <span class="keywordtype">bool</span> <a class="code" href="interface_o_a_l_audio_track.html#a5a684d954cb44f3d30d81aa0ba2015eb" title="If true, audio track is in preloaded state.">preloaded</a>;
-<a name="l00044"></a>00044     <span class="keywordtype">bool</span> <a class="code" href="interface_o_a_l_audio_track.html#ae6d53864b20348e6bbc110c5aec24463" title="If true, pause playback.">paused</a>;
-<a name="l00045"></a>00045     <span class="keywordtype">bool</span> <a class="code" href="interface_o_a_l_audio_track.html#a13c3ee7fe21cb595ce1685775651808f" title="If true, audio track is muted.">muted</a>;
-<a name="l00046"></a>00046     <span class="keywordtype">float</span> <a class="code" href="interface_o_a_l_audio_track.html#a078b12ce22450ed543b9b28df978f3c1" title="The gain (volume) for playback (0.0 - 1.0, where 1.0 = no attenuation).">gain</a>;
-<a name="l00047"></a>00047     <span class="keywordtype">float</span> <a class="code" href="interface_o_a_l_audio_track.html#a2c328e2ddca49ad37f511493e8e174d0" title="Pan value (-1.0 = far left, 1.0 = far right).">pan</a>;
-<a name="l00048"></a><a class="code" href="interface_o_a_l_audio_track.html#a9e6cfcc5940249f4b8e59cfe8ebcf95a">00048</a>     NSInteger <a class="code" href="interface_o_a_l_audio_track.html#ab1072e838b4a50ed92248cdba2313351" title="The number of times to loop playback (-1 = forever).">numberOfLoops</a>;
-<a name="l00049"></a>00049     id&lt;AVAudioPlayerDelegate&gt; <a class="code" href="interface_o_a_l_audio_track.html#a579802ba38fc894b61677832ead68957" title="Optional object that will receive notifications for decoding errors, audio interruptions (such as an ...">delegate</a>; <span class="comment">// Weak reference</span>
-<a name="l00050"></a>00050     
-<a name="l00056"></a>00056     AVAudioPlayer* <a class="code" href="interface_o_a_l_audio_track.html#a9e6cfcc5940249f4b8e59cfe8ebcf95a" title="When the simulator is running (and the playback fix is in use), player will be copied to here...">simulatorPlayerRef</a>;
-<a name="l00057"></a>00057     
-<a name="l00061"></a>00061     NSOperationQueue* <a class="code" href="interface_o_a_l_audio_track.html#a71ca817d5e96a44c7ef3b9c7f5ae25ce" title="Operation queue for running asynchronous operations.">operationQueue</a>;
-<a name="l00062"></a>00062     
-<a name="l00067"></a>00067     <span class="keywordtype">bool</span> <a class="code" href="interface_o_a_l_audio_track.html#a05df94513ba7b9569bb7d86d3dd82663" title="If true, the audio player is currently playing.">playing</a>;
-<a name="l00068"></a>00068     NSTimeInterval <a class="code" href="interface_o_a_l_audio_track.html#adaed47c5ca9f980e75cdcbabe52c3d19" title="The current playback position in seconds from the start of the sound.">currentTime</a>;
-<a name="l00069"></a><a class="code" href="interface_o_a_l_audio_track.html#ac5faabf775420a7b194e330ed7f5cd4f">00069</a>     
-<a name="l00071"></a>00071     <a class="code" href="interface_o_a_l_action.html" title="Represents an action that can be performed on an object.">OALAction</a>* <a class="code" href="interface_o_a_l_audio_track.html#a9b92c339c474b4b1207e54053aed6288" title="The current action being applied to gain.">gainAction</a>;
-<a name="l00072"></a>00072     
-<a name="l00074"></a>00074     <a class="code" href="interface_o_a_l_action.html" title="Represents an action that can be performed on an object.">OALAction</a>* <a class="code" href="interface_o_a_l_audio_track.html#a062f856ac8ca032f3974490e89a47c80" title="The current action being applied to pan.">panAction</a>;
-<a name="l00075"></a>00075     
-<a name="l00077"></a>00077     <a class="code" href="interface_o_a_l_suspend_handler.html" title="Provides two controls (interrupted and manuallySuspended) for suspending a slave object, and also propagates such control messages to interested listeners.">OALSuspendHandler</a>* <a class="code" href="interface_o_a_l_audio_track.html#ac5faabf775420a7b194e330ed7f5cd4f" title="Handles suspending and interrupting for this object.">suspendHandler</a>;
-<a name="l00078"></a>00078 }
-<a name="l00079"></a>00079 
+<a name="l00044"></a>00044     <span class="keywordtype">bool</span> <a class="code" href="interface_o_a_l_audio_track.html#afeb8287d08a67bee2a0c79561de0845f" title="If true, automatically preload again when playback stops.">autoPreload</a>;
+<a name="l00045"></a>00045     <span class="keywordtype">bool</span> <a class="code" href="interface_o_a_l_audio_track.html#ae6d53864b20348e6bbc110c5aec24463" title="If true, pause playback.">paused</a>;
+<a name="l00046"></a>00046     <span class="keywordtype">bool</span> <a class="code" href="interface_o_a_l_audio_track.html#a13c3ee7fe21cb595ce1685775651808f" title="If true, audio track is muted.">muted</a>;
+<a name="l00047"></a>00047     <span class="keywordtype">float</span> <a class="code" href="interface_o_a_l_audio_track.html#a078b12ce22450ed543b9b28df978f3c1" title="The gain (volume) for playback (0.0 - 1.0, where 1.0 = no attenuation).">gain</a>;
+<a name="l00048"></a>00048     <span class="keywordtype">float</span> <a class="code" href="interface_o_a_l_audio_track.html#a2c328e2ddca49ad37f511493e8e174d0" title="Pan value (-1.0 = far left, 1.0 = far right).">pan</a>;
+<a name="l00049"></a><a class="code" href="interface_o_a_l_audio_track.html#a9e6cfcc5940249f4b8e59cfe8ebcf95a">00049</a>     NSInteger <a class="code" href="interface_o_a_l_audio_track.html#ab1072e838b4a50ed92248cdba2313351" title="The number of times to loop playback (-1 = forever).">numberOfLoops</a>;
+<a name="l00050"></a>00050     id&lt;AVAudioPlayerDelegate&gt; <a class="code" href="interface_o_a_l_audio_track.html#a579802ba38fc894b61677832ead68957" title="Optional object that will receive notifications for decoding errors, audio interruptions (such as an ...">delegate</a>; <span class="comment">// Weak reference</span>
+<a name="l00051"></a>00051     
+<a name="l00057"></a>00057     AVAudioPlayer* <a class="code" href="interface_o_a_l_audio_track.html#a9e6cfcc5940249f4b8e59cfe8ebcf95a" title="When the simulator is running (and the playback fix is in use), player will be copied to here...">simulatorPlayerRef</a>;
+<a name="l00058"></a>00058     
+<a name="l00062"></a>00062     NSOperationQueue* <a class="code" href="interface_o_a_l_audio_track.html#a71ca817d5e96a44c7ef3b9c7f5ae25ce" title="Operation queue for running asynchronous operations.">operationQueue</a>;
+<a name="l00063"></a>00063     
+<a name="l00068"></a>00068     <span class="keywordtype">bool</span> <a class="code" href="interface_o_a_l_audio_track.html#a05df94513ba7b9569bb7d86d3dd82663" title="If true, the audio player is currently playing.">playing</a>;
+<a name="l00069"></a>00069     NSTimeInterval <a class="code" href="interface_o_a_l_audio_track.html#adaed47c5ca9f980e75cdcbabe52c3d19" title="The current playback position in seconds from the start of the sound.">currentTime</a>;
+<a name="l00070"></a><a class="code" href="interface_o_a_l_audio_track.html#ac5faabf775420a7b194e330ed7f5cd4f">00070</a>     
+<a name="l00072"></a>00072     <a class="code" href="interface_o_a_l_action.html" title="Represents an action that can be performed on an object.">OALAction</a>* <a class="code" href="interface_o_a_l_audio_track.html#a9b92c339c474b4b1207e54053aed6288" title="The current action being applied to gain.">gainAction</a>;
+<a name="l00073"></a>00073     
+<a name="l00075"></a>00075     <a class="code" href="interface_o_a_l_action.html" title="Represents an action that can be performed on an object.">OALAction</a>* <a class="code" href="interface_o_a_l_audio_track.html#a062f856ac8ca032f3974490e89a47c80" title="The current action being applied to pan.">panAction</a>;
+<a name="l00076"></a>00076     
+<a name="l00078"></a>00078     <a class="code" href="interface_o_a_l_suspend_handler.html" title="Provides two controls (interrupted and manuallySuspended) for suspending a slave object, and also propagates such control messages to interested listeners.">OALSuspendHandler</a>* <a class="code" href="interface_o_a_l_audio_track.html#ac5faabf775420a7b194e330ed7f5cd4f" title="Handles suspending and interrupting for this object.">suspendHandler</a>;
+<a name="l00079"></a>00079 }
 <a name="l00080"></a>00080 
-<a name="l00081"></a>00081 <span class="preprocessor">#pragma mark Properties</span>
-<a name="l00082"></a>00082 <span class="preprocessor"></span>
-<a name="l00084"></a>00084 @property(readonly) NSURL* currentlyLoadedUrl;
-<a name="l00085"></a>00085 
-<a name="l00091"></a>00091 @property(readwrite,assign) <span class="keywordtype">id</span>&lt;AVAudioPlayerDelegate&gt; delegate;
-<a name="l00092"></a>00092 
-<a name="l00094"></a>00094 @property(readwrite,assign) <span class="keywordtype">float</span> gain;
-<a name="l00095"></a>00095 
-<a name="l00097"></a>00097 @property(readwrite,assign) <span class="keywordtype">float</span> volume;
-<a name="l00098"></a>00098 
-<a name="l00102"></a>00102 @property(readwrite,assign) <span class="keywordtype">float</span> pan;
-<a name="l00103"></a>00103 
-<a name="l00105"></a>00105 @property(readwrite,assign) <span class="keywordtype">bool</span> muted;
-<a name="l00106"></a>00106 
-<a name="l00108"></a>00108 @property(readonly) <span class="keywordtype">bool</span> preloaded;
-<a name="l00109"></a>00109 
-<a name="l00114"></a>00114 @property(readwrite,assign) NSInteger numberOfLoops;
-<a name="l00115"></a>00115 
-<a name="l00117"></a>00117 @property(readwrite,assign) <span class="keywordtype">bool</span> paused;
-<a name="l00118"></a>00118 
-<a name="l00123"></a>00123 @property(readonly) AVAudioPlayer* player;
-<a name="l00124"></a>00124 
-<a name="l00126"></a>00126 @property(readonly) <span class="keywordtype">bool</span> playing;
-<a name="l00127"></a>00127 
-<a name="l00131"></a>00131 @property(readwrite,assign) NSTimeInterval currentTime;
-<a name="l00132"></a>00132 
-<a name="l00147"></a>00147 @property(readonly) NSTimeInterval deviceCurrentTime;
-<a name="l00148"></a>00148 
-<a name="l00150"></a>00150 @property(readonly) NSTimeInterval duration;
-<a name="l00151"></a>00151 
-<a name="l00153"></a>00153 @property(readonly) NSUInteger numberOfChannels;
-<a name="l00154"></a>00154 
+<a name="l00081"></a>00081 
+<a name="l00082"></a>00082 <span class="preprocessor">#pragma mark Properties</span>
+<a name="l00083"></a>00083 <span class="preprocessor"></span>
+<a name="l00085"></a>00085 @property(readonly) NSURL* currentlyLoadedUrl;
+<a name="l00086"></a>00086 
+<a name="l00092"></a>00092 @property(readwrite,assign) <span class="keywordtype">id</span>&lt;AVAudioPlayerDelegate&gt; delegate;
+<a name="l00093"></a>00093 
+<a name="l00095"></a>00095 @property(readwrite,assign) <span class="keywordtype">float</span> gain;
+<a name="l00096"></a>00096 
+<a name="l00098"></a>00098 @property(readwrite,assign) <span class="keywordtype">float</span> volume;
+<a name="l00099"></a>00099 
+<a name="l00103"></a>00103 @property(readwrite,assign) <span class="keywordtype">float</span> pan;
+<a name="l00104"></a>00104 
+<a name="l00106"></a>00106 @property(readwrite,assign) <span class="keywordtype">bool</span> muted;
+<a name="l00107"></a>00107 
+<a name="l00109"></a>00109 @property(readwrite,assign) <span class="keywordtype">bool</span> autoPreload;
+<a name="l00110"></a>00110 
+<a name="l00112"></a>00112 @property(readonly) <span class="keywordtype">bool</span> preloaded;
+<a name="l00113"></a>00113 
+<a name="l00118"></a>00118 @property(readwrite,assign) NSInteger numberOfLoops;
+<a name="l00119"></a>00119 
+<a name="l00121"></a>00121 @property(readwrite,assign) <span class="keywordtype">bool</span> paused;
+<a name="l00122"></a>00122 
+<a name="l00127"></a>00127 @property(readonly) AVAudioPlayer* player;
+<a name="l00128"></a>00128 
+<a name="l00130"></a>00130 @property(readonly) <span class="keywordtype">bool</span> playing;
+<a name="l00131"></a>00131 
+<a name="l00135"></a>00135 @property(readwrite,assign) NSTimeInterval currentTime;
+<a name="l00136"></a>00136 
+<a name="l00151"></a>00151 @property(readonly) NSTimeInterval deviceCurrentTime;
+<a name="l00152"></a>00152 
+<a name="l00154"></a>00154 @property(readonly) NSTimeInterval duration;
 <a name="l00155"></a>00155 
-<a name="l00156"></a>00156 <span class="preprocessor">#pragma mark Object Management</span>
-<a name="l00157"></a>00157 <span class="preprocessor"></span>
-<a name="l00162"></a>00162 + (id) track;
-<a name="l00163"></a>00163 
-<a name="l00164"></a>00164 
-<a name="l00165"></a>00165 <span class="preprocessor">#pragma mark Playback</span>
-<a name="l00166"></a>00166 <span class="preprocessor"></span>
-<a name="l00173"></a>00173 - (bool) preloadUrl:(NSURL*) url;
-<a name="l00174"></a>00174 
-<a name="l00182"></a>00182 - (bool) preloadUrl:(NSURL*) url seekTime:(NSTimeInterval)seekTime;
+<a name="l00157"></a>00157 @property(readonly) NSUInteger numberOfChannels;
+<a name="l00158"></a>00158 
+<a name="l00159"></a>00159 
+<a name="l00160"></a>00160 <span class="preprocessor">#pragma mark Object Management</span>
+<a name="l00161"></a>00161 <span class="preprocessor"></span>
+<a name="l00166"></a>00166 + (id) track;
+<a name="l00167"></a>00167 
+<a name="l00171"></a>00171 - (void) close;
+<a name="l00172"></a>00172 
+<a name="l00173"></a>00173 
+<a name="l00174"></a>00174 <span class="preprocessor">#pragma mark Playback</span>
+<a name="l00175"></a>00175 <span class="preprocessor"></span>
+<a name="l00182"></a>00182 - (bool) preloadUrl:(NSURL*) url;
 <a name="l00183"></a>00183 
-<a name="l00190"></a>00190 - (bool) preloadFile:(NSString*) path;
-<a name="l00191"></a>00191 
-<a name="l00199"></a>00199 - (bool) preloadFile:(NSString*) path seekTime:(NSTimeInterval)seekTime;
+<a name="l00191"></a>00191 - (bool) preloadUrl:(NSURL*) url seekTime:(NSTimeInterval)seekTime;
+<a name="l00192"></a>00192 
+<a name="l00199"></a>00199 - (bool) preloadFile:(NSString*) path;
 <a name="l00200"></a>00200 
-<a name="l00209"></a>00209 - (bool) preloadUrlAsync:(NSURL*) url target:(<span class="keywordtype">id</span>) target selector:(<span class="keywordtype">SEL</span>) selector;
-<a name="l00210"></a>00210 
-<a name="l00220"></a>00220 - (bool) preloadUrlAsync:(NSURL*) url seekTime:(NSTimeInterval)seekTime target:(<span class="keywordtype">id</span>) target selector:(<span class="keywordtype">SEL</span>) selector;
-<a name="l00221"></a>00221 
-<a name="l00230"></a>00230 - (bool) preloadFileAsync:(NSString*) path target:(<span class="keywordtype">id</span>) target selector:(<span class="keywordtype">SEL</span>) selector;
-<a name="l00231"></a>00231 
-<a name="l00241"></a>00241 - (bool) preloadFileAsync:(NSString*) path seekTime:(NSTimeInterval)seekTime target:(<span class="keywordtype">id</span>) target selector:(<span class="keywordtype">SEL</span>) selector;
-<a name="l00242"></a>00242 
-<a name="l00248"></a>00248 - (bool) playUrl:(NSURL*) url;
-<a name="l00249"></a>00249 
-<a name="l00256"></a>00256 - (bool) playUrl:(NSURL*) url loops:(NSInteger) loops;
-<a name="l00257"></a>00257 
-<a name="l00263"></a>00263 - (bool) playFile:(NSString*) path;
-<a name="l00264"></a>00264 
-<a name="l00271"></a>00271 - (bool) playFile:(NSString*) path loops:(NSInteger) loops;
-<a name="l00272"></a>00272 
-<a name="l00279"></a>00279 - (void) playUrlAsync:(NSURL*) url target:(<span class="keywordtype">id</span>) target selector:(<span class="keywordtype">SEL</span>) selector;
-<a name="l00280"></a>00280 
-<a name="l00288"></a>00288 - (void) playUrlAsync:(NSURL*) url
-<a name="l00289"></a>00289                 loops:(NSInteger) loops
-<a name="l00290"></a>00290                target:(<span class="keywordtype">id</span>) target
-<a name="l00291"></a>00291              selector:(<span class="keywordtype">SEL</span>) selector;
-<a name="l00292"></a>00292 
-<a name="l00299"></a>00299 - (void) playFileAsync:(NSString*) path target:(<span class="keywordtype">id</span>) target selector:(<span class="keywordtype">SEL</span>) selector;
-<a name="l00300"></a>00300 
-<a name="l00308"></a>00308 - (void) playFileAsync:(NSString*) path
-<a name="l00309"></a>00309                  loops:(NSInteger) loops
-<a name="l00310"></a>00310                 target:(<span class="keywordtype">id</span>) target
-<a name="l00311"></a>00311               selector:(<span class="keywordtype">SEL</span>) selector;
-<a name="l00312"></a>00312 
-<a name="l00317"></a>00317 - (bool) play;
-<a name="l00318"></a>00318 
-<a name="l00323"></a>00323 - (bool) playAtTime:(NSTimeInterval) time;
-<a name="l00324"></a>00324 
-<a name="l00327"></a>00327 - (void) stop;
-<a name="l00328"></a>00328 
-<a name="l00337"></a>00337 - (void) fadeTo:(<span class="keywordtype">float</span>) gain
-<a name="l00338"></a>00338        duration:(<span class="keywordtype">float</span>) duration
-<a name="l00339"></a>00339          target:(<span class="keywordtype">id</span>) target
-<a name="l00340"></a>00340        selector:(<span class="keywordtype">SEL</span>) selector;
-<a name="l00341"></a>00341 
-<a name="l00344"></a>00344 - (void) stopFade;
-<a name="l00345"></a>00345 
-<a name="l00356"></a>00356 - (void) panTo:(<span class="keywordtype">float</span>) pan
-<a name="l00357"></a>00357        duration:(<span class="keywordtype">float</span>) duration
-<a name="l00358"></a>00358          target:(<span class="keywordtype">id</span>) target
-<a name="l00359"></a>00359        selector:(<span class="keywordtype">SEL</span>) selector;
-<a name="l00360"></a>00360 
-<a name="l00365"></a>00365 - (void) stopPan;
-<a name="l00366"></a>00366 
-<a name="l00368"></a>00368 - (void) stopActions;
+<a name="l00208"></a>00208 - (bool) preloadFile:(NSString*) path seekTime:(NSTimeInterval)seekTime;
+<a name="l00209"></a>00209 
+<a name="l00218"></a>00218 - (bool) preloadUrlAsync:(NSURL*) url target:(<span class="keywordtype">id</span>) target selector:(<span class="keywordtype">SEL</span>) selector;
+<a name="l00219"></a>00219 
+<a name="l00229"></a>00229 - (bool) preloadUrlAsync:(NSURL*) url seekTime:(NSTimeInterval)seekTime target:(<span class="keywordtype">id</span>) target selector:(<span class="keywordtype">SEL</span>) selector;
+<a name="l00230"></a>00230 
+<a name="l00239"></a>00239 - (bool) preloadFileAsync:(NSString*) path target:(<span class="keywordtype">id</span>) target selector:(<span class="keywordtype">SEL</span>) selector;
+<a name="l00240"></a>00240 
+<a name="l00250"></a>00250 - (bool) preloadFileAsync:(NSString*) path seekTime:(NSTimeInterval)seekTime target:(<span class="keywordtype">id</span>) target selector:(<span class="keywordtype">SEL</span>) selector;
+<a name="l00251"></a>00251 
+<a name="l00257"></a>00257 - (bool) playUrl:(NSURL*) url;
+<a name="l00258"></a>00258 
+<a name="l00265"></a>00265 - (bool) playUrl:(NSURL*) url loops:(NSInteger) loops;
+<a name="l00266"></a>00266 
+<a name="l00272"></a>00272 - (bool) playFile:(NSString*) path;
+<a name="l00273"></a>00273 
+<a name="l00280"></a>00280 - (bool) playFile:(NSString*) path loops:(NSInteger) loops;
+<a name="l00281"></a>00281 
+<a name="l00288"></a>00288 - (void) playUrlAsync:(NSURL*) url target:(<span class="keywordtype">id</span>) target selector:(<span class="keywordtype">SEL</span>) selector;
+<a name="l00289"></a>00289 
+<a name="l00297"></a>00297 - (void) playUrlAsync:(NSURL*) url
+<a name="l00298"></a>00298                 loops:(NSInteger) loops
+<a name="l00299"></a>00299                target:(<span class="keywordtype">id</span>) target
+<a name="l00300"></a>00300              selector:(<span class="keywordtype">SEL</span>) selector;
+<a name="l00301"></a>00301 
+<a name="l00308"></a>00308 - (void) playFileAsync:(NSString*) path target:(<span class="keywordtype">id</span>) target selector:(<span class="keywordtype">SEL</span>) selector;
+<a name="l00309"></a>00309 
+<a name="l00317"></a>00317 - (void) playFileAsync:(NSString*) path
+<a name="l00318"></a>00318                  loops:(NSInteger) loops
+<a name="l00319"></a>00319                 target:(<span class="keywordtype">id</span>) target
+<a name="l00320"></a>00320               selector:(<span class="keywordtype">SEL</span>) selector;
+<a name="l00321"></a>00321 
+<a name="l00326"></a>00326 - (bool) play;
+<a name="l00327"></a>00327 
+<a name="l00332"></a>00332 - (bool) playAtTime:(NSTimeInterval) time;
+<a name="l00333"></a>00333 
+<a name="l00336"></a>00336 - (void) stop;
+<a name="l00337"></a>00337 
+<a name="l00346"></a>00346 - (void) fadeTo:(<span class="keywordtype">float</span>) gain
+<a name="l00347"></a>00347        duration:(<span class="keywordtype">float</span>) duration
+<a name="l00348"></a>00348          target:(<span class="keywordtype">id</span>) target
+<a name="l00349"></a>00349        selector:(<span class="keywordtype">SEL</span>) selector;
+<a name="l00350"></a>00350 
+<a name="l00353"></a>00353 - (void) stopFade;
+<a name="l00354"></a>00354 
+<a name="l00365"></a>00365 - (void) panTo:(<span class="keywordtype">float</span>) pan
+<a name="l00366"></a>00366        duration:(<span class="keywordtype">float</span>) duration
+<a name="l00367"></a>00367          target:(<span class="keywordtype">id</span>) target
+<a name="l00368"></a>00368        selector:(<span class="keywordtype">SEL</span>) selector;
 <a name="l00369"></a>00369 
-<a name="l00372"></a>00372 - (void) clear;
-<a name="l00373"></a>00373 
-<a name="l00374"></a>00374 <span class="preprocessor">#pragma mark Metering</span>
-<a name="l00375"></a>00375 <span class="preprocessor"></span>
-<a name="l00377"></a>00377 @property (readwrite,assign) bool meteringEnabled;
+<a name="l00374"></a>00374 - (void) stopPan;
+<a name="l00375"></a>00375 
+<a name="l00377"></a>00377 - (void) stopActions;
 <a name="l00378"></a>00378 
-<a name="l00383"></a>00383 - (<span class="keywordtype">void</span>) updateMeters;
-<a name="l00384"></a>00384 
-<a name="l00397"></a>00397 - (<span class="keywordtype">float</span>) averagePowerForChannel:(NSUInteger)channelNumber;
-<a name="l00398"></a>00398 
-<a name="l00411"></a>00411 - (<span class="keywordtype">float</span>) peakPowerForChannel:(NSUInteger)channelNumber;
-<a name="l00412"></a>00412 
-<a name="l00413"></a>00413 @end
+<a name="l00381"></a>00381 - (void) clear;
+<a name="l00382"></a>00382 
+<a name="l00383"></a>00383 <span class="preprocessor">#pragma mark Metering</span>
+<a name="l00384"></a>00384 <span class="preprocessor"></span>
+<a name="l00386"></a>00386 @property (readwrite,assign) bool meteringEnabled;
+<a name="l00387"></a>00387 
+<a name="l00392"></a>00392 - (<span class="keywordtype">void</span>) updateMeters;
+<a name="l00393"></a>00393 
+<a name="l00406"></a>00406 - (<span class="keywordtype">float</span>) averagePowerForChannel:(NSUInteger)channelNumber;
+<a name="l00407"></a>00407 
+<a name="l00420"></a>00420 - (<span class="keywordtype">float</span>) peakPowerForChannel:(NSUInteger)channelNumber;
+<a name="l00421"></a>00421 
+<a name="l00422"></a>00422 @end
 </pre></div></div>
 </div>
 <!--- window showing the filter options -->
@@ -236,7 +241,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 5 2011 21:42:53 for ObjectAL by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 19 2011 12:35:41 for ObjectAL by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

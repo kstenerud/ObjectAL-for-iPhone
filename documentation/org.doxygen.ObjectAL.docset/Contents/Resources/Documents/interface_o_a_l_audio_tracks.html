@@ -76,10 +76,14 @@ Inheritance diagram for OALAudioTracks:<!-- endSectionHeader --></div>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_o_a_l_audio_tracks.html#a031a9b7b57eedbab4c49645a29ba4ff0">close</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Close any OS resources in use by this object.  <a href="#a031a9b7b57eedbab4c49645a29ba4ff0"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_o_a_l_audio_tracks.html#a5309e3e55af1cae31413d52012f61c40">notifyTrackInitializing:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">(INTERNAL USE) Notify that a track is initializing.  <a href="#a5309e3e55af1cae31413d52012f61c40"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_o_a_l_audio_tracks.html#ad90119144dc5e619c05cbc86cc786901">notifyTrackDeallocating:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">(INTERNAL USE) Notify that a track is deallocating.  <a href="#ad90119144dc5e619c05cbc86cc786901"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_o_a_l_audio_tracks.html#afa4556de4ec958d1b5d58cf883474738">closeOSResources</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">(INTERNAL USE) Close any resources belonging to the OS.  <a href="#afa4556de4ec958d1b5d58cf883474738"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">()&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_o_a_l_audio_tracks.html#afd811559b0c12502d33887079e978d7b">SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER</a></td></tr>
@@ -102,6 +106,43 @@ Properties</h2></td></tr>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <p>Keeps track of all AudioTrack objects. </p>
 <hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a031a9b7b57eedbab4c49645a29ba4ff0"></a><!-- doxytag: member="OALAudioTracks::close" ref="a031a9b7b57eedbab4c49645a29ba4ff0" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) close </td>
+          <td></td>
+          <td class="paramname"></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Close any OS resources in use by this object. </p>
+<p>Any operations called on this object after closing will likely fail. </p>
+
+</div>
+</div>
+<a class="anchor" id="afa4556de4ec958d1b5d58cf883474738"></a><!-- doxytag: member="OALAudioTracks::closeOSResources" ref="afa4556de4ec958d1b5d58cf883474738" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) closeOSResources </td>
+          <td></td>
+          <td class="paramname"></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>(INTERNAL USE) Close any resources belonging to the OS. </p>
+
+</div>
+</div>
 <a class="anchor" id="ad90119144dc5e619c05cbc86cc786901"></a><!-- doxytag: member="OALAudioTracks::notifyTrackDeallocating:" ref="ad90119144dc5e619c05cbc86cc786901" args="(OALAudioTrack *track)" -->
 <div class="memitem">
 <div class="memproto">
@@ -257,7 +298,7 @@ Properties</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 5 2011 21:42:57 for ObjectAL by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 19 2011 12:35:45 for ObjectAL by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

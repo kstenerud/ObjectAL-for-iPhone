@@ -74,105 +74,106 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00025"></a>00025 <span class="comment">//</span>
 <a name="l00026"></a>00026 
 <a name="l00027"></a>00027 <span class="preprocessor">#import &lt;Foundation/Foundation.h&gt;</span>
-<a name="l00028"></a>00028 <span class="preprocessor">#import &lt;OpenAL/al.h&gt;</span>
-<a name="l00029"></a>00029 <span class="preprocessor">#import &lt;OpenAL/alc.h&gt;</span>
-<a name="l00030"></a>00030 <span class="preprocessor">#import &quot;ALListener.h&quot;</span>
-<a name="l00031"></a>00031 <span class="preprocessor">#import &quot;ALSource.h&quot;</span>
-<a name="l00032"></a>00032 <span class="preprocessor">#import &quot;OALSuspendHandler.h&quot;</span>
+<a name="l00028"></a>00028 <span class="preprocessor">#import &lt;OpenAL/alc.h&gt;</span>
+<a name="l00029"></a>00029 <span class="preprocessor">#import &quot;ALListener.h&quot;</span>
+<a name="l00030"></a>00030 <span class="preprocessor">#import &quot;ALSource.h&quot;</span>
+<a name="l00031"></a>00031 <span class="preprocessor">#import &quot;OALSuspendHandler.h&quot;</span>
+<a name="l00032"></a>00032 
 <a name="l00033"></a>00033 
-<a name="l00034"></a>00034 
-<a name="l00035"></a>00035 <span class="keyword">@class</span> <a class="code" href="interface_a_l_device.html" title="A device is a logical mapping to an audio device through the OpenAL implementation.">ALDevice</a>;
+<a name="l00034"></a>00034 <span class="keyword">@class</span> <a class="code" href="interface_a_l_device.html" title="A device is a logical mapping to an audio device through the OpenAL implementation.">ALDevice</a>;
+<a name="l00035"></a>00035 
 <a name="l00036"></a>00036 
-<a name="l00037"></a>00037 
-<a name="l00038"></a>00038 <span class="preprocessor">#pragma mark ALContext</span>
-<a name="l00039"></a>00039 <span class="preprocessor"></span>
-<a name="l00050"></a><a class="code" href="interface_a_l_context.html">00050</a> <span class="keyword">@interface </span><a class="code" href="interface_a_l_context.html" title="A context encompasses a single listener and a series of sources.">ALContext</a> : NSObject &lt;<a class="code" href="protocol_o_a_l_suspend_manager-p.html" title="A suspend manager is a listener that also allows other objects to subscribe to receive events as the ...">OALSuspendManager</a>&gt;
-<a name="l00051"></a>00051 {
-<a name="l00052"></a>00052     ALCcontext* <a class="code" href="interface_a_l_context.html#aa3866be7ef4c6c872ff9925a855ccd46" title="The OpenAL context pointer.">context</a>;
-<a name="l00053"></a><a class="code" href="interface_a_l_context.html#aa3866be7ef4c6c872ff9925a855ccd46">00053</a>     <a class="code" href="interface_a_l_device.html" title="A device is a logical mapping to an audio device through the OpenAL implementation.">ALDevice</a>* <a class="code" href="interface_a_l_context.html#adf5d141849bcaad66244c4c28bcf0c16" title="The device this context was opened on.">device</a>;
-<a name="l00055"></a>00055     <a class="code" href="class_n_s_mutable_array.html">NSMutableArray</a>* <a class="code" href="interface_a_l_context.html#ac2d4425a7486fd6c375d156af4bcd41c" title="All sound sources associated with this context.">sources</a>;
-<a name="l00056"></a><a class="code" href="interface_a_l_context.html#ac2d4425a7486fd6c375d156af4bcd41c">00056</a>     <a class="code" href="interface_a_l_listener.html" title="The listener represents the user who is listening to sounds in 3D space.">ALListener</a>* <a class="code" href="interface_a_l_context.html#af477fdb909e6fefe9f75160eceb6c78b" title="This context&amp;#39;s listener.">listener</a>;
-<a name="l00057"></a><a class="code" href="interface_a_l_context.html#af477fdb909e6fefe9f75160eceb6c78b">00057</a>     <span class="keywordtype">bool</span> <a class="code" href="interface_a_l_context.html#abd64ad7210015d83b072712b9c124f79" title="If YES, this object is suspended.">suspended</a>;
-<a name="l00059"></a>00059     <a class="code" href="class_n_s_mutable_array.html">NSMutableArray</a>* <a class="code" href="interface_a_l_context.html#a076c3d290af26df8ecc6e27d46d62bff" title="This context&amp;#39;s attributes.">attributes</a>;
-<a name="l00060"></a><a class="code" href="interface_a_l_context.html#a076c3d290af26df8ecc6e27d46d62bff">00060</a>     
-<a name="l00062"></a>00062     <a class="code" href="interface_o_a_l_suspend_handler.html" title="Provides two controls (interrupted and manuallySuspended) for suspending a slave object, and also propagates such control messages to interested listeners.">OALSuspendHandler</a>* <a class="code" href="interface_a_l_context.html#af5255bc37300c3b59076155c7ee74827" title="Handles suspending and interrupting for this object.">suspendHandler</a>;
-<a name="l00063"></a><a class="code" href="interface_a_l_context.html#af5255bc37300c3b59076155c7ee74827">00063</a> }
+<a name="l00037"></a>00037 <span class="preprocessor">#pragma mark ALContext</span>
+<a name="l00038"></a>00038 <span class="preprocessor"></span>
+<a name="l00049"></a><a class="code" href="interface_a_l_context.html">00049</a> <span class="keyword">@interface </span><a class="code" href="interface_a_l_context.html" title="A context encompasses a single listener and a series of sources.">ALContext</a> : NSObject &lt;<a class="code" href="protocol_o_a_l_suspend_manager-p.html" title="A suspend manager is a listener that also allows other objects to subscribe to receive events as the ...">OALSuspendManager</a>&gt;
+<a name="l00050"></a>00050 {
+<a name="l00051"></a>00051     ALCcontext* <a class="code" href="interface_a_l_context.html#aa3866be7ef4c6c872ff9925a855ccd46" title="The OpenAL context pointer.">context</a>;
+<a name="l00052"></a><a class="code" href="interface_a_l_context.html#aa3866be7ef4c6c872ff9925a855ccd46">00052</a>     <a class="code" href="interface_a_l_device.html" title="A device is a logical mapping to an audio device through the OpenAL implementation.">ALDevice</a>* <a class="code" href="interface_a_l_context.html#adf5d141849bcaad66244c4c28bcf0c16" title="The device this context was opened on.">device</a>;
+<a name="l00054"></a>00054     <a class="code" href="class_n_s_mutable_array.html">NSMutableArray</a>* <a class="code" href="interface_a_l_context.html#ac2d4425a7486fd6c375d156af4bcd41c" title="All sound sources associated with this context.">sources</a>;
+<a name="l00055"></a><a class="code" href="interface_a_l_context.html#ac2d4425a7486fd6c375d156af4bcd41c">00055</a>     <a class="code" href="interface_a_l_listener.html" title="The listener represents the user who is listening to sounds in 3D space.">ALListener</a>* <a class="code" href="interface_a_l_context.html#af477fdb909e6fefe9f75160eceb6c78b" title="This context&amp;#39;s listener.">listener</a>;
+<a name="l00056"></a><a class="code" href="interface_a_l_context.html#af477fdb909e6fefe9f75160eceb6c78b">00056</a>     <span class="keywordtype">bool</span> <a class="code" href="interface_a_l_context.html#abd64ad7210015d83b072712b9c124f79" title="If YES, this object is suspended.">suspended</a>;
+<a name="l00058"></a>00058     <a class="code" href="class_n_s_mutable_array.html">NSMutableArray</a>* <a class="code" href="interface_a_l_context.html#a076c3d290af26df8ecc6e27d46d62bff" title="This context&amp;#39;s attributes.">attributes</a>;
+<a name="l00059"></a><a class="code" href="interface_a_l_context.html#a076c3d290af26df8ecc6e27d46d62bff">00059</a>     
+<a name="l00061"></a>00061     <a class="code" href="interface_o_a_l_suspend_handler.html" title="Provides two controls (interrupted and manuallySuspended) for suspending a slave object, and also propagates such control messages to interested listeners.">OALSuspendHandler</a>* <a class="code" href="interface_a_l_context.html#af5255bc37300c3b59076155c7ee74827" title="Handles suspending and interrupting for this object.">suspendHandler</a>;
+<a name="l00062"></a><a class="code" href="interface_a_l_context.html#af5255bc37300c3b59076155c7ee74827">00062</a> }
+<a name="l00063"></a>00063 
 <a name="l00064"></a>00064 
-<a name="l00065"></a>00065 
-<a name="l00066"></a>00066 <span class="preprocessor">#pragma mark Properties</span>
-<a name="l00067"></a>00067 <span class="preprocessor"></span>
-<a name="l00072"></a>00072 @property(readonly) NSString* alVersion;
-<a name="l00073"></a><a class="code" href="interface_a_l_context.html#a41164ebfa35d08103132ec35f25588c4">00073</a> 
-<a name="l00077"></a>00077 @property(readonly) NSArray* attributes;
-<a name="l00078"></a><a class="code" href="interface_a_l_context.html#af1485e43e4b17425bdd2d2958a9ad025">00078</a> 
-<a name="l00080"></a>00080 @property(readonly) ALCcontext* context;
-<a name="l00081"></a>00081 
-<a name="l00083"></a>00083 @property(readonly) <a class="code" href="interface_a_l_device.html" title="A device is a logical mapping to an audio device through the OpenAL implementation.">ALDevice</a>* device;
-<a name="l00084"></a>00084 
-<a name="l00091"></a>00091 @property(readwrite,assign) ALenum distanceModel;
-<a name="l00092"></a><a class="code" href="interface_a_l_context.html#a99ebbbdcada29b6d29cce450c3e9127c">00092</a> 
-<a name="l00096"></a>00096 @property(readwrite,assign) <span class="keywordtype">float</span> dopplerFactor;
-<a name="l00097"></a><a class="code" href="interface_a_l_context.html#a370f2fdeec5cfc6b5c5a986a7305b4af">00097</a> 
-<a name="l00101"></a>00101 @property(readonly) NSArray* extensions;
-<a name="l00102"></a><a class="code" href="interface_a_l_context.html#a3b91285b18c1c372e04b2737875e7289">00102</a> 
-<a name="l00104"></a>00104 @property(readonly) <a class="code" href="interface_a_l_listener.html" title="The listener represents the user who is listening to sounds in 3D space.">ALListener</a>* listener;
-<a name="l00105"></a>00105 
-<a name="l00109"></a>00109 @property(readonly) NSString* renderer;
-<a name="l00110"></a><a class="code" href="interface_a_l_context.html#aec0268fdde01a4a1f4d5fa01538dc725">00110</a> 
-<a name="l00112"></a>00112 @property(readonly) NSArray* sources;
-<a name="l00113"></a><a class="code" href="interface_a_l_context.html#a02681f6985515b625ef641837b75f381">00113</a> 
-<a name="l00117"></a>00117 @property(readwrite,assign) <span class="keywordtype">float</span> speedOfSound;
-<a name="l00118"></a><a class="code" href="interface_a_l_context.html#af0fe93e76360a05b16223e565e592668">00118</a> 
-<a name="l00122"></a>00122 @property(readonly) NSString* vendor;
-<a name="l00123"></a><a class="code" href="interface_a_l_context.html#a4de4a1efaad89945f65a592e5e23c3b8">00123</a> 
-<a name="l00124"></a>00124 
-<a name="l00125"></a>00125 <span class="preprocessor">#pragma mark Object Management</span>
-<a name="l00126"></a>00126 <span class="preprocessor"></span>
-<a name="l00134"></a>00134 + (id) contextOnDevice:(<a class="code" href="interface_a_l_device.html" title="A device is a logical mapping to an audio device through the OpenAL implementation.">ALDevice</a> *) device attributes:(NSArray*) attributes;
-<a name="l00135"></a>00135 
-<a name="l00148"></a>00148 + (id) contextOnDevice:(<a class="code" href="interface_a_l_device.html" title="A device is a logical mapping to an audio device through the OpenAL implementation.">ALDevice</a>*) device
-<a name="l00149"></a>00149        outputFrequency:(<span class="keywordtype">int</span>) outputFrequency
-<a name="l00150"></a>00150       refreshIntervals:(<span class="keywordtype">int</span>) refreshIntervals 
-<a name="l00151"></a>00151     synchronousContext:(<span class="keywordtype">bool</span>) synchronousContext
-<a name="l00152"></a>00152            monoSources:(<span class="keywordtype">int</span>) monoSources
-<a name="l00153"></a>00153          stereoSources:(<span class="keywordtype">int</span>) stereoSources;
+<a name="l00065"></a>00065 <span class="preprocessor">#pragma mark Properties</span>
+<a name="l00066"></a>00066 <span class="preprocessor"></span>
+<a name="l00071"></a>00071 @property(readonly) NSString* alVersion;
+<a name="l00072"></a><a class="code" href="interface_a_l_context.html#a41164ebfa35d08103132ec35f25588c4">00072</a> 
+<a name="l00076"></a>00076 @property(readonly) NSArray* attributes;
+<a name="l00077"></a><a class="code" href="interface_a_l_context.html#af1485e43e4b17425bdd2d2958a9ad025">00077</a> 
+<a name="l00079"></a>00079 @property(readonly) ALCcontext* context;
+<a name="l00080"></a>00080 
+<a name="l00082"></a>00082 @property(readonly) <a class="code" href="interface_a_l_device.html" title="A device is a logical mapping to an audio device through the OpenAL implementation.">ALDevice</a>* device;
+<a name="l00083"></a>00083 
+<a name="l00090"></a>00090 @property(readwrite,assign) ALenum distanceModel;
+<a name="l00091"></a><a class="code" href="interface_a_l_context.html#a99ebbbdcada29b6d29cce450c3e9127c">00091</a> 
+<a name="l00095"></a>00095 @property(readwrite,assign) <span class="keywordtype">float</span> dopplerFactor;
+<a name="l00096"></a><a class="code" href="interface_a_l_context.html#a370f2fdeec5cfc6b5c5a986a7305b4af">00096</a> 
+<a name="l00100"></a>00100 @property(readonly) NSArray* extensions;
+<a name="l00101"></a><a class="code" href="interface_a_l_context.html#a3b91285b18c1c372e04b2737875e7289">00101</a> 
+<a name="l00103"></a>00103 @property(readonly) <a class="code" href="interface_a_l_listener.html" title="The listener represents the user who is listening to sounds in 3D space.">ALListener</a>* listener;
+<a name="l00104"></a>00104 
+<a name="l00108"></a>00108 @property(readonly) NSString* renderer;
+<a name="l00109"></a><a class="code" href="interface_a_l_context.html#aec0268fdde01a4a1f4d5fa01538dc725">00109</a> 
+<a name="l00111"></a>00111 @property(readonly) NSArray* sources;
+<a name="l00112"></a><a class="code" href="interface_a_l_context.html#a02681f6985515b625ef641837b75f381">00112</a> 
+<a name="l00116"></a>00116 @property(readwrite,assign) <span class="keywordtype">float</span> speedOfSound;
+<a name="l00117"></a><a class="code" href="interface_a_l_context.html#af0fe93e76360a05b16223e565e592668">00117</a> 
+<a name="l00121"></a>00121 @property(readonly) NSString* vendor;
+<a name="l00122"></a><a class="code" href="interface_a_l_context.html#a4de4a1efaad89945f65a592e5e23c3b8">00122</a> 
+<a name="l00123"></a>00123 
+<a name="l00124"></a>00124 <span class="preprocessor">#pragma mark Object Management</span>
+<a name="l00125"></a>00125 <span class="preprocessor"></span>
+<a name="l00133"></a>00133 + (id) contextOnDevice:(<a class="code" href="interface_a_l_device.html" title="A device is a logical mapping to an audio device through the OpenAL implementation.">ALDevice</a> *) device attributes:(NSArray*) attributes;
+<a name="l00134"></a>00134 
+<a name="l00147"></a>00147 + (id) contextOnDevice:(<a class="code" href="interface_a_l_device.html" title="A device is a logical mapping to an audio device through the OpenAL implementation.">ALDevice</a>*) device
+<a name="l00148"></a>00148        outputFrequency:(<span class="keywordtype">int</span>) outputFrequency
+<a name="l00149"></a>00149       refreshIntervals:(<span class="keywordtype">int</span>) refreshIntervals 
+<a name="l00150"></a>00150     synchronousContext:(<span class="keywordtype">bool</span>) synchronousContext
+<a name="l00151"></a>00151            monoSources:(<span class="keywordtype">int</span>) monoSources
+<a name="l00152"></a>00152          stereoSources:(<span class="keywordtype">int</span>) stereoSources;
+<a name="l00153"></a>00153 
 <a name="l00154"></a>00154 
-<a name="l00155"></a>00155 
-<a name="l00168"></a>00168 - (id) initOnDevice:(<a class="code" href="interface_a_l_device.html" title="A device is a logical mapping to an audio device through the OpenAL implementation.">ALDevice</a>*) device
-<a name="l00169"></a>00169     outputFrequency:(<span class="keywordtype">int</span>) outputFrequency
-<a name="l00170"></a>00170    refreshIntervals:(<span class="keywordtype">int</span>) refreshIntervals 
-<a name="l00171"></a>00171  synchronousContext:(<span class="keywordtype">bool</span>) synchronousContext
-<a name="l00172"></a>00172         monoSources:(<span class="keywordtype">int</span>) monoSources
-<a name="l00173"></a>00173       stereoSources:(<span class="keywordtype">int</span>) stereoSources;
+<a name="l00167"></a>00167 - (id) initOnDevice:(<a class="code" href="interface_a_l_device.html" title="A device is a logical mapping to an audio device through the OpenAL implementation.">ALDevice</a>*) device
+<a name="l00168"></a>00168     outputFrequency:(<span class="keywordtype">int</span>) outputFrequency
+<a name="l00169"></a>00169    refreshIntervals:(<span class="keywordtype">int</span>) refreshIntervals 
+<a name="l00170"></a>00170  synchronousContext:(<span class="keywordtype">bool</span>) synchronousContext
+<a name="l00171"></a>00171         monoSources:(<span class="keywordtype">int</span>) monoSources
+<a name="l00172"></a>00172       stereoSources:(<span class="keywordtype">int</span>) stereoSources;
+<a name="l00173"></a>00173 
 <a name="l00174"></a>00174 
-<a name="l00175"></a>00175 
-<a name="l00183"></a>00183 - (id) initOnDevice:(<a class="code" href="interface_a_l_device.html" title="A device is a logical mapping to an audio device through the OpenAL implementation.">ALDevice</a> *) device attributes:(NSArray*) attributes;
-<a name="l00184"></a>00184 
-<a name="l00185"></a>00185 
-<a name="l00186"></a>00186 <span class="preprocessor">#pragma mark Utility</span>
-<a name="l00187"></a>00187 <span class="preprocessor"></span>
-<a name="l00190"></a>00190 - (void) process;
-<a name="l00191"></a>00191 
-<a name="l00194"></a>00194 - (void) stopAllSounds;
+<a name="l00182"></a>00182 - (id) initOnDevice:(<a class="code" href="interface_a_l_device.html" title="A device is a logical mapping to an audio device through the OpenAL implementation.">ALDevice</a> *) device attributes:(NSArray*) attributes;
+<a name="l00183"></a>00183 
+<a name="l00187"></a>00187 - (void) close;
+<a name="l00188"></a>00188 
+<a name="l00189"></a>00189 
+<a name="l00190"></a>00190 <span class="preprocessor">#pragma mark Utility</span>
+<a name="l00191"></a>00191 <span class="preprocessor"></span>
+<a name="l00194"></a>00194 - (void) process;
 <a name="l00195"></a>00195 
-<a name="l00198"></a>00198 - (void) clearBuffers;
+<a name="l00198"></a>00198 - (void) stopAllSounds;
 <a name="l00199"></a>00199 
-<a name="l00204"></a>00204 - (void) ensureContextIsCurrent;
-<a name="l00205"></a>00205 
-<a name="l00206"></a>00206 <span class="preprocessor">#pragma mark Extensions</span>
-<a name="l00207"></a>00207 <span class="preprocessor"></span>
-<a name="l00214"></a>00214 - (bool) isExtensionPresent:(NSString*) name;
-<a name="l00215"></a>00215 
-<a name="l00225"></a>00225 - (void*) getProcAddress:(NSString*) functionName;
-<a name="l00226"></a>00226 
-<a name="l00227"></a>00227 
-<a name="l00228"></a>00228 <span class="preprocessor">#pragma mark Internal Use</span>
-<a name="l00229"></a>00229 <span class="preprocessor"></span>
-<a name="l00234"></a>00234 - (void) notifySourceInitializing:(<a class="code" href="interface_a_l_source.html" title="A source represents an object that emits sound which can be heard by a listener.">ALSource</a>*) source;
-<a name="l00235"></a>00235 
-<a name="l00240"></a>00240 - (void) notifySourceDeallocating:(<a class="code" href="interface_a_l_source.html" title="A source represents an object that emits sound which can be heard by a listener.">ALSource</a>*) source;
-<a name="l00241"></a>00241 
-<a name="l00242"></a>00242 <span class="keyword">@end</span>
+<a name="l00202"></a>00202 - (void) clearBuffers;
+<a name="l00203"></a>00203 
+<a name="l00208"></a>00208 - (void) ensureContextIsCurrent;
+<a name="l00209"></a>00209 
+<a name="l00210"></a>00210 <span class="preprocessor">#pragma mark Extensions</span>
+<a name="l00211"></a>00211 <span class="preprocessor"></span>
+<a name="l00218"></a>00218 - (bool) isExtensionPresent:(NSString*) name;
+<a name="l00219"></a>00219 
+<a name="l00229"></a>00229 - (void*) getProcAddress:(NSString*) functionName;
+<a name="l00230"></a>00230 
+<a name="l00231"></a>00231 
+<a name="l00232"></a>00232 <span class="preprocessor">#pragma mark Internal Use</span>
+<a name="l00233"></a>00233 <span class="preprocessor"></span>
+<a name="l00238"></a>00238 - (void) notifySourceInitializing:(<a class="code" href="interface_a_l_source.html" title="A source represents an object that emits sound which can be heard by a listener.">ALSource</a>*) source;
+<a name="l00239"></a>00239 
+<a name="l00244"></a>00244 - (void) notifySourceDeallocating:(<a class="code" href="interface_a_l_source.html" title="A source represents an object that emits sound which can be heard by a listener.">ALSource</a>*) source;
+<a name="l00245"></a>00245 
+<a name="l00246"></a>00246 <span class="keyword">@end</span>
 </pre></div></div>
 </div>
 <!--- window showing the filter options -->
@@ -189,7 +190,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 5 2011 21:42:53 for ObjectAL by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 19 2011 12:35:41 for ObjectAL by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

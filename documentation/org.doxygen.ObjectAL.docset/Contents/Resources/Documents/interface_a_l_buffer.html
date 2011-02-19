@@ -96,6 +96,8 @@ Properties</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The size, in bytes, of the currently loaded buffer data.  <a href="#abd1b2c8b783db3de94c7454f986ecd7c"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_a_l_buffer.html#a2aaf78c1d1e5f9d5376d77223e2b86a1">duration</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The duration of the sample in this buffer, in seconds.  <a href="#a2aaf78c1d1e5f9d5376d77223e2b86a1"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_a_l_buffer.html#a25dd80fcb29b58bbd2b837c420c69151">freeDataOnDestroy</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, calls free() on the audio data when this object gets destroyed.  <a href="#a25dd80fcb29b58bbd2b837c420c69151"></a><br/></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <p>A buffer for audio data that will be played via a SoundSource. </p>
@@ -324,6 +326,22 @@ Properties</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a25dd80fcb29b58bbd2b837c420c69151"></a><!-- doxytag: member="ALBuffer::freeDataOnDestroy" ref="a25dd80fcb29b58bbd2b837c420c69151" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (bool) freeDataOnDestroy<code> [read, write, assign]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>If true, calls free() on the audio data when this object gets destroyed. </p>
+<p>Default: YES </p>
+
+</div>
+</div>
 <a class="anchor" id="a608ef9d940e0bb1ebf0b21f6613addd7"></a><!-- doxytag: member="ALBuffer::frequency" ref="a608ef9d940e0bb1ebf0b21f6613addd7" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -389,7 +407,7 @@ Properties</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 5 2011 21:42:53 for ObjectAL by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 19 2011 12:35:41 for ObjectAL by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

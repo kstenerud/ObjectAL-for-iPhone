@@ -76,8 +76,12 @@ Inheritance diagram for OALAudioSession:<!-- endSectionHeader --></div>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_o_a_l_audio_session.html#ad10c4c84dab28bb83d11611f3ce2cba3">close</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Close any OS resources in use by this object.  <a href="#ad10c4c84dab28bb83d11611f3ce2cba3"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_o_a_l_audio_session.html#aa5d39a45fc2b1b80b9f4e041fbfc8f8a">forceEndInterruption</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Force an interrupt end.  <a href="#aa5d39a45fc2b1b80b9f4e041fbfc8f8a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_o_a_l_audio_session.html#a9bc54933c90494258796084a9a2368ef">closeOSResources</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">(INTERNAL USE) Close any resources belonging to the OS.  <a href="#a9bc54933c90494258796084a9a2368ef"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(UInt32)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_o_a_l_audio_session.html#adcc9536401a084b622162b1cbf2de594">getIntProperty:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">(INTERNAL USE) Get an AudioSession property.  <a href="#adcc9536401a084b622162b1cbf2de594"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(Float32)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_o_a_l_audio_session.html#a8b398e29368c76b89287b2542fbc8a4f">getFloatProperty:</a></td></tr>
@@ -138,6 +142,43 @@ Properties</h2></td></tr>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <p>Handles the audio session and interrupts. </p>
 <hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="ad10c4c84dab28bb83d11611f3ce2cba3"></a><!-- doxytag: member="OALAudioSession::close" ref="ad10c4c84dab28bb83d11611f3ce2cba3" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) close </td>
+          <td></td>
+          <td class="paramname"></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Close any OS resources in use by this object. </p>
+<p>This will close the audio session. </p>
+
+</div>
+</div>
+<a class="anchor" id="a9bc54933c90494258796084a9a2368ef"></a><!-- doxytag: member="OALAudioSession::closeOSResources" ref="a9bc54933c90494258796084a9a2368ef" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) closeOSResources </td>
+          <td></td>
+          <td class="paramname"></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>(INTERNAL USE) Close any resources belonging to the OS. </p>
+
+</div>
+</div>
 <a class="anchor" id="aa5d39a45fc2b1b80b9f4e041fbfc8f8a"></a><!-- doxytag: member="OALAudioSession::forceEndInterruption" ref="aa5d39a45fc2b1b80b9f4e041fbfc8f8a" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -659,7 +700,7 @@ Properties</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 5 2011 21:42:56 for ObjectAL by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 19 2011 12:35:44 for ObjectAL by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

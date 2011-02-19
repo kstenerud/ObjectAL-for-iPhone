@@ -93,16 +93,18 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00049"></a>00049 <span class="preprocessor"></span>
 <a name="l00053"></a>00053 + (id) pool;
 <a name="l00054"></a>00054 
-<a name="l00055"></a>00055 
-<a name="l00056"></a>00056 <span class="preprocessor">#pragma mark Source Management</span>
-<a name="l00057"></a>00057 <span class="preprocessor"></span>
-<a name="l00062"></a>00062 - (void) addSource:(<span class="keywordtype">id</span>&lt;<a class="code" href="protocol_a_l_sound_source-p.html" title="Manages all properties relating to an OpenAL sound source.">ALSoundSource</a>&gt;) source;
-<a name="l00063"></a>00063 
-<a name="l00068"></a>00068 - (void) removeSource:(<span class="keywordtype">id</span>&lt;<a class="code" href="protocol_a_l_sound_source-p.html" title="Manages all properties relating to an OpenAL sound source.">ALSoundSource</a>&gt;) source;
-<a name="l00069"></a>00069 
-<a name="l00078"></a>00078 - (id&lt;<a class="code" href="protocol_a_l_sound_source-p.html" title="Manages all properties relating to an OpenAL sound source.">ALSoundSource</a>&gt;) getFreeSource:(<span class="keywordtype">bool</span>) attemptToInterrupt;
-<a name="l00079"></a>00079 
-<a name="l00080"></a>00080 <span class="keyword">@end</span>
+<a name="l00058"></a>00058 - (void) close;
+<a name="l00059"></a>00059 
+<a name="l00060"></a>00060 
+<a name="l00061"></a>00061 <span class="preprocessor">#pragma mark Source Management</span>
+<a name="l00062"></a>00062 <span class="preprocessor"></span>
+<a name="l00067"></a>00067 - (void) addSource:(<span class="keywordtype">id</span>&lt;<a class="code" href="protocol_a_l_sound_source-p.html" title="Manages all properties relating to an OpenAL sound source.">ALSoundSource</a>&gt;) source;
+<a name="l00068"></a>00068 
+<a name="l00073"></a>00073 - (void) removeSource:(<span class="keywordtype">id</span>&lt;<a class="code" href="protocol_a_l_sound_source-p.html" title="Manages all properties relating to an OpenAL sound source.">ALSoundSource</a>&gt;) source;
+<a name="l00074"></a>00074 
+<a name="l00083"></a>00083 - (id&lt;<a class="code" href="protocol_a_l_sound_source-p.html" title="Manages all properties relating to an OpenAL sound source.">ALSoundSource</a>&gt;) getFreeSource:(<span class="keywordtype">bool</span>) attemptToInterrupt;
+<a name="l00084"></a>00084 
+<a name="l00085"></a>00085 <span class="keyword">@end</span>
 </pre></div></div>
 </div>
 <!--- window showing the filter options -->
@@ -119,7 +121,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 5 2011 21:42:53 for ObjectAL by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 19 2011 12:35:41 for ObjectAL by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

@@ -76,6 +76,8 @@ Inheritance diagram for OALAudioTrack:<!-- endSectionHeader --></div>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_o_a_l_audio_track.html#a1eb2ee44ff0e7bdbbcc268ce27f5c25c">close</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Close any OS resources in use by this object.  <a href="#a1eb2ee44ff0e7bdbbcc268ce27f5c25c"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(bool)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_o_a_l_audio_track.html#a943d2f9b5b9e20075f4e0cff17f7511c">preloadUrl:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Preload the contents of a URL for playback.  <a href="#a943d2f9b5b9e20075f4e0cff17f7511c"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(bool)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_o_a_l_audio_track.html#a7cd2f7f50a92e486111c9900da483564">preloadUrl:seekTime:</a></td></tr>
@@ -132,6 +134,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Gives the average power for a given channel, in decibels, for the sound being played.  <a href="#a2c5a8b6bc96b917f64b7e5c63a246fe7"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(float)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_o_a_l_audio_track.html#a40ae8e32e64d1897b6439e3b4adf7ff1">peakPowerForChannel:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Gives the peak power for a given channel, in decibels, for the sound being played.  <a href="#a40ae8e32e64d1897b6439e3b4adf7ff1"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_o_a_l_audio_track.html#ae716faebcef67a1e9ff60dc4c3283bfa">closeOSResources</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">(INTERNAL USE) Close any resources belonging to the OS.  <a href="#ae716faebcef67a1e9ff60dc4c3283bfa"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_o_a_l_audio_track.html#a810a4d52acdba306bdf25391b96218d4">setSuspended:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">(INTERNAL USE) Called by SuspendHandler.  <a href="#a810a4d52acdba306bdf25391b96218d4"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
@@ -166,6 +170,8 @@ Properties</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Pan value (-1.0 = far left, 1.0 = far right).  <a href="#a2c328e2ddca49ad37f511493e8e174d0"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_o_a_l_audio_track.html#a13c3ee7fe21cb595ce1685775651808f">muted</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, audio track is muted.  <a href="#a13c3ee7fe21cb595ce1685775651808f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_o_a_l_audio_track.html#afeb8287d08a67bee2a0c79561de0845f">autoPreload</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, automatically preload again when playback stops.  <a href="#afeb8287d08a67bee2a0c79561de0845f"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_o_a_l_audio_track.html#a5a684d954cb44f3d30d81aa0ba2015eb">preloaded</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, audio track is in preloaded state.  <a href="#a5a684d954cb44f3d30d81aa0ba2015eb"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">NSInteger&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_o_a_l_audio_track.html#ab1072e838b4a50ed92248cdba2313351">numberOfLoops</a></td></tr>
@@ -237,6 +243,43 @@ Properties</h2></td></tr>
 <div class="memdoc">
 
 <p>Unload and clear all audio data, stop playing, and stop all operations. </p>
+
+</div>
+</div>
+<a class="anchor" id="a1eb2ee44ff0e7bdbbcc268ce27f5c25c"></a><!-- doxytag: member="OALAudioTrack::close" ref="a1eb2ee44ff0e7bdbbcc268ce27f5c25c" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) close </td>
+          <td></td>
+          <td class="paramname"></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Close any OS resources in use by this object. </p>
+<p>Any operations called on this object after closing will likely fail. </p>
+
+</div>
+</div>
+<a class="anchor" id="ae716faebcef67a1e9ff60dc4c3283bfa"></a><!-- doxytag: member="OALAudioTrack::closeOSResources" ref="ae716faebcef67a1e9ff60dc4c3283bfa" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) closeOSResources </td>
+          <td></td>
+          <td class="paramname"></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>(INTERNAL USE) Close any resources belonging to the OS. </p>
 
 </div>
 </div>
@@ -1282,6 +1325,21 @@ Properties</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Property Documentation</h2>
+<a class="anchor" id="afeb8287d08a67bee2a0c79561de0845f"></a><!-- doxytag: member="OALAudioTrack::autoPreload" ref="afeb8287d08a67bee2a0c79561de0845f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (bool) autoPreload<code> [read, write, assign]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>If true, automatically preload again when playback stops. </p>
+
+</div>
+</div>
 <a class="anchor" id="a4668c76598c6d54cc8b54d3a62702c10"></a><!-- doxytag: member="OALAudioTrack::currentlyLoadedUrl" ref="a4668c76598c6d54cc8b54d3a62702c10" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -1560,7 +1618,7 @@ Properties</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 5 2011 21:42:56 for ObjectAL by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 19 2011 12:35:45 for ObjectAL by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

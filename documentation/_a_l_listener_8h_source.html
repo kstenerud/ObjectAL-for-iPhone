@@ -74,47 +74,46 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00025"></a>00025 <span class="comment">//</span>
 <a name="l00026"></a>00026 
 <a name="l00027"></a>00027 <span class="preprocessor">#import &lt;Foundation/Foundation.h&gt;</span>
-<a name="l00028"></a>00028 <span class="preprocessor">#import &lt;OpenAL/al.h&gt;</span>
-<a name="l00029"></a>00029 <span class="preprocessor">#import &quot;ALTypes.h&quot;</span>
-<a name="l00030"></a>00030 <span class="preprocessor">#import &quot;OALSuspendHandler.h&quot;</span>
-<a name="l00031"></a>00031 
-<a name="l00032"></a>00032 <span class="keyword">@class</span> <a class="code" href="interface_a_l_context.html" title="A context encompasses a single listener and a series of sources.">ALContext</a>;
+<a name="l00028"></a>00028 <span class="preprocessor">#import &quot;ALTypes.h&quot;</span>
+<a name="l00029"></a>00029 <span class="preprocessor">#import &quot;OALSuspendHandler.h&quot;</span>
+<a name="l00030"></a>00030 
+<a name="l00031"></a>00031 <span class="keyword">@class</span> <a class="code" href="interface_a_l_context.html" title="A context encompasses a single listener and a series of sources.">ALContext</a>;
+<a name="l00032"></a>00032 
 <a name="l00033"></a>00033 
-<a name="l00034"></a>00034 
-<a name="l00035"></a>00035 <span class="preprocessor">#pragma mark ALListener</span>
-<a name="l00036"></a>00036 <span class="preprocessor"></span>
-<a name="l00043"></a><a class="code" href="interface_a_l_listener.html">00043</a> <span class="keyword">@interface </span><a class="code" href="interface_a_l_listener.html" title="The listener represents the user who is listening to sounds in 3D space.">ALListener</a> : NSObject &lt;<a class="code" href="protocol_o_a_l_suspend_manager-p.html" title="A suspend manager is a listener that also allows other objects to subscribe to receive events as the ...">OALSuspendManager</a>&gt;
-<a name="l00044"></a>00044 {
-<a name="l00045"></a>00045     <a class="code" href="interface_a_l_context.html" title="A context encompasses a single listener and a series of sources.">ALContext</a>* <a class="code" href="interface_a_l_listener.html#af81cc4fc7c84d260b1f45ba8af530f13" title="The context this listener belongs to.">context</a>; <span class="comment">// Weak reference</span>
-<a name="l00046"></a><a class="code" href="interface_a_l_listener.html#af81cc4fc7c84d260b1f45ba8af530f13">00046</a>     <span class="keywordtype">bool</span> <a class="code" href="interface_a_l_listener.html#a6f8fdf53db5f78d9db2311489879f04a" title="Causes this listener to stop hearing sound.">muted</a>;
-<a name="l00047"></a><a class="code" href="interface_a_l_listener.html#a6f8fdf53db5f78d9db2311489879f04a">00047</a>     <span class="keywordtype">float</span> <a class="code" href="interface_a_l_listener.html#ad847827d586c1f269ffd47d68d2cd35b" title="Gain (volume), affecting every sound this listener hears (0.0 = no sound, 1.0 = max volume)...">gain</a>;
-<a name="l00048"></a><a class="code" href="interface_a_l_listener.html#ad847827d586c1f269ffd47d68d2cd35b">00048</a>     
-<a name="l00050"></a>00050     <a class="code" href="interface_o_a_l_suspend_handler.html" title="Provides two controls (interrupted and manuallySuspended) for suspending a slave object, and also propagates such control messages to interested listeners.">OALSuspendHandler</a>* <a class="code" href="interface_a_l_listener.html#a1559146f3beb9d317660fa62c3a9a8e6" title="Handles suspending and interrupting for this object.">suspendHandler</a>;
-<a name="l00051"></a><a class="code" href="interface_a_l_listener.html#a1559146f3beb9d317660fa62c3a9a8e6">00051</a> }
+<a name="l00034"></a>00034 <span class="preprocessor">#pragma mark ALListener</span>
+<a name="l00035"></a>00035 <span class="preprocessor"></span>
+<a name="l00042"></a><a class="code" href="interface_a_l_listener.html">00042</a> <span class="keyword">@interface </span><a class="code" href="interface_a_l_listener.html" title="The listener represents the user who is listening to sounds in 3D space.">ALListener</a> : NSObject &lt;<a class="code" href="protocol_o_a_l_suspend_manager-p.html" title="A suspend manager is a listener that also allows other objects to subscribe to receive events as the ...">OALSuspendManager</a>&gt;
+<a name="l00043"></a>00043 {
+<a name="l00044"></a>00044     <a class="code" href="interface_a_l_context.html" title="A context encompasses a single listener and a series of sources.">ALContext</a>* <a class="code" href="interface_a_l_listener.html#af81cc4fc7c84d260b1f45ba8af530f13" title="The context this listener belongs to.">context</a>; <span class="comment">// Weak reference</span>
+<a name="l00045"></a><a class="code" href="interface_a_l_listener.html#af81cc4fc7c84d260b1f45ba8af530f13">00045</a>     <span class="keywordtype">bool</span> <a class="code" href="interface_a_l_listener.html#a6f8fdf53db5f78d9db2311489879f04a" title="Causes this listener to stop hearing sound.">muted</a>;
+<a name="l00046"></a><a class="code" href="interface_a_l_listener.html#a6f8fdf53db5f78d9db2311489879f04a">00046</a>     <span class="keywordtype">float</span> <a class="code" href="interface_a_l_listener.html#ad847827d586c1f269ffd47d68d2cd35b" title="Gain (volume), affecting every sound this listener hears (0.0 = no sound, 1.0 = max volume)...">gain</a>;
+<a name="l00047"></a><a class="code" href="interface_a_l_listener.html#ad847827d586c1f269ffd47d68d2cd35b">00047</a>     
+<a name="l00049"></a>00049     <a class="code" href="interface_o_a_l_suspend_handler.html" title="Provides two controls (interrupted and manuallySuspended) for suspending a slave object, and also propagates such control messages to interested listeners.">OALSuspendHandler</a>* <a class="code" href="interface_a_l_listener.html#a1559146f3beb9d317660fa62c3a9a8e6" title="Handles suspending and interrupting for this object.">suspendHandler</a>;
+<a name="l00050"></a><a class="code" href="interface_a_l_listener.html#a1559146f3beb9d317660fa62c3a9a8e6">00050</a> }
+<a name="l00051"></a>00051 
 <a name="l00052"></a>00052 
-<a name="l00053"></a>00053 
-<a name="l00054"></a>00054 <span class="preprocessor">#pragma mark Properties</span>
-<a name="l00055"></a>00055 <span class="preprocessor"></span>
-<a name="l00057"></a>00057 @property(readonly) <a class="code" href="interface_a_l_context.html" title="A context encompasses a single listener and a series of sources.">ALContext</a>* context;
-<a name="l00058"></a>00058 
-<a name="l00062"></a>00062 @property(readwrite,assign) <span class="keywordtype">bool</span> muted;
-<a name="l00063"></a>00063 
-<a name="l00067"></a>00067 @property(readwrite,assign) <span class="keywordtype">float</span> gain;
-<a name="l00068"></a>00068 
-<a name="l00072"></a>00072 @property(readwrite,assign) <a class="code" href="struct_a_l_orientation.html" title="Represents an orientation, consisting of an &amp;quot;at&amp;quot; vector (representing the &amp;quot;forward&amp;quo...">ALOrientation</a> orientation;
-<a name="l00073"></a><a class="code" href="interface_a_l_listener.html#a41c602017e2a277ea94440f26d4e0dea">00073</a> 
-<a name="l00077"></a>00077 @property(readwrite,assign) <a class="code" href="struct_a_l_point.html" title="Represents a 3-dimensional point for certain ObjectAL properties.">ALPoint</a> position;
-<a name="l00078"></a><a class="code" href="interface_a_l_listener.html#a88e1e3b0e34f8c85e279f2c4045f842e">00078</a> 
-<a name="l00082"></a>00082 @property(readwrite,assign) <a class="code" href="struct_a_l_vector.html" title="Represents a 3-dimensional vector for certain ObjectAL properties.">ALVector</a> velocity;
-<a name="l00083"></a><a class="code" href="interface_a_l_listener.html#a051619dad5dcdc586ac8f641018830f4">00083</a> 
-<a name="l00084"></a>00084 
-<a name="l00085"></a>00085 <span class="preprocessor">#pragma mark Object Management</span>
-<a name="l00086"></a>00086 <span class="preprocessor"></span>
-<a name="l00092"></a>00092 + (id) listenerForContext:(<a class="code" href="interface_a_l_context.html" title="A context encompasses a single listener and a series of sources.">ALContext</a>*) context;
-<a name="l00093"></a>00093 
-<a name="l00099"></a>00099 - (id) initWithContext:(<a class="code" href="interface_a_l_context.html" title="A context encompasses a single listener and a series of sources.">ALContext</a>*) context;
-<a name="l00100"></a>00100 
-<a name="l00101"></a>00101 <span class="keyword">@end</span>
+<a name="l00053"></a>00053 <span class="preprocessor">#pragma mark Properties</span>
+<a name="l00054"></a>00054 <span class="preprocessor"></span>
+<a name="l00056"></a>00056 @property(readonly) <a class="code" href="interface_a_l_context.html" title="A context encompasses a single listener and a series of sources.">ALContext</a>* context;
+<a name="l00057"></a>00057 
+<a name="l00061"></a>00061 @property(readwrite,assign) <span class="keywordtype">bool</span> muted;
+<a name="l00062"></a>00062 
+<a name="l00066"></a>00066 @property(readwrite,assign) <span class="keywordtype">float</span> gain;
+<a name="l00067"></a>00067 
+<a name="l00071"></a>00071 @property(readwrite,assign) <a class="code" href="struct_a_l_orientation.html" title="Represents an orientation, consisting of an &amp;quot;at&amp;quot; vector (representing the &amp;quot;forward&amp;quo...">ALOrientation</a> orientation;
+<a name="l00072"></a><a class="code" href="interface_a_l_listener.html#a41c602017e2a277ea94440f26d4e0dea">00072</a> 
+<a name="l00076"></a>00076 @property(readwrite,assign) <a class="code" href="struct_a_l_point.html" title="Represents a 3-dimensional point for certain ObjectAL properties.">ALPoint</a> position;
+<a name="l00077"></a><a class="code" href="interface_a_l_listener.html#a88e1e3b0e34f8c85e279f2c4045f842e">00077</a> 
+<a name="l00081"></a>00081 @property(readwrite,assign) <a class="code" href="struct_a_l_vector.html" title="Represents a 3-dimensional vector for certain ObjectAL properties.">ALVector</a> velocity;
+<a name="l00082"></a><a class="code" href="interface_a_l_listener.html#a051619dad5dcdc586ac8f641018830f4">00082</a> 
+<a name="l00083"></a>00083 
+<a name="l00084"></a>00084 <span class="preprocessor">#pragma mark Object Management</span>
+<a name="l00085"></a>00085 <span class="preprocessor"></span>
+<a name="l00091"></a>00091 + (id) listenerForContext:(<a class="code" href="interface_a_l_context.html" title="A context encompasses a single listener and a series of sources.">ALContext</a>*) context;
+<a name="l00092"></a>00092 
+<a name="l00098"></a>00098 - (id) initWithContext:(<a class="code" href="interface_a_l_context.html" title="A context encompasses a single listener and a series of sources.">ALContext</a>*) context;
+<a name="l00099"></a>00099 
+<a name="l00100"></a>00100 <span class="keyword">@end</span>
 </pre></div></div>
 </div>
 <!--- window showing the filter options -->
@@ -131,7 +130,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 5 2011 21:42:53 for ObjectAL by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 19 2011 12:35:41 for ObjectAL by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

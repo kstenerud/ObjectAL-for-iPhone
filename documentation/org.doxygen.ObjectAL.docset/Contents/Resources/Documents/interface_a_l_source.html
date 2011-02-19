@@ -89,6 +89,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove a buffer from the buffer queue.  <a href="#aee8870a8f94e30d0d9a5b472bbc7f0fd"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(bool)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_a_l_source.html#a16535ff4472df085297aada581743d63">unqueueBuffers:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove buffers from the buffer queue.  <a href="#a16535ff4472df085297aada581743d63"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_a_l_source.html#a489f5b9c245f5618f3c6714c5ba9e639">closeOSResources</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">(INTERNAL USE) Close any resources belonging to the OS.  <a href="#a489f5b9c245f5618f3c6714c5ba9e639"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_a_l_source.html#a0b749961bfaa5007547b9839b7951a31">setSuspended:</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">(INTERNAL USE) Called by SuspendHandler.  <a href="#a0b749961bfaa5007547b9839b7951a31"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_a_l_source.html#ae0d9e9adf6e3d2b11abe590aa8113c15">delayedResumePlayback</a></td></tr>
@@ -144,6 +146,24 @@ Properties</h2></td></tr>
 <p>A source represents an object that emits sound which can be heard by a listener. </p>
 <p>This source can have position, velocity, and direction. </p>
 <hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a489f5b9c245f5618f3c6714c5ba9e639"></a><!-- doxytag: member="ALSource::closeOSResources" ref="a489f5b9c245f5618f3c6714c5ba9e639" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) closeOSResources </td>
+          <td></td>
+          <td class="paramname"></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>(INTERNAL USE) Close any resources belonging to the OS. </p>
+
+</div>
+</div>
 <a class="anchor" id="ae0d9e9adf6e3d2b11abe590aa8113c15"></a><!-- doxytag: member="ALSource::delayedResumePlayback" ref="ae0d9e9adf6e3d2b11abe590aa8113c15" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -673,7 +693,7 @@ Properties</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 5 2011 21:42:55 for ObjectAL by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Feb 19 2011 12:35:43 for ObjectAL by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>
