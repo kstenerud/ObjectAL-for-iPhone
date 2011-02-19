@@ -10,6 +10,9 @@
 #
 ########################################################################
 
+# Set to 1 to build the latex documentation for PDF generation.
+GENERATE_PDF=0
+
 if [ "$SOURCE_ROOT"X = "X" ] || [ "$TEMP_DIR"X = "X" ] || [ "$PROJECT_NAME"X = "X" ]; then
     echo "Error: This script must be run from within XCode's build environment."
     exit 1
@@ -93,9 +96,15 @@ doxset FILE_PATTERNS        "*.c *.cc *.cxx *.cpp *.c++ *.java *.h *.hh *.hxx *.
 doxset WARN_FORMAT          "\$file:\$line: warning: \$text"
 
 # Set all to YES for generating PDF version
-doxset GENERATE_LATEX       NO
-doxset USE_PDFLATEX         NO
-doxset PDF_HYPERLINKS       NO
+if [ "$GENERATE_PDF" == "1" ]; then
+	doxset GENERATE_LATEX       YES
+	doxset USE_PDFLATEX         YES
+	doxset PDF_HYPERLINKS       YES
+else
+	doxset GENERATE_LATEX       NO
+	doxset USE_PDFLATEX         NO
+	doxset PDF_HYPERLINKS       NO
+fi
 
 #
 #  Run doxygen on the updated config file.
