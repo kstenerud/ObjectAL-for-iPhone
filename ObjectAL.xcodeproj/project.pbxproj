@@ -194,7 +194,6 @@
 		3920498912BFF066004E8E2B /* OALAudioFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 3920498712BFF066004E8E2B /* OALAudioFile.h */; };
 		3920498A12BFF066004E8E2B /* OALAudioFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 3920498812BFF066004E8E2B /* OALAudioFile.m */; };
 		395FE7E71268C64100A8BD6A /* HardwareDemo.h in Headers */ = {isa = PBXBuildFile; fileRef = 395FE7E51268C64100A8BD6A /* HardwareDemo.h */; };
-		395FE7E81268C64100A8BD6A /* HardwareDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 395FE7E61268C64100A8BD6A /* HardwareDemo.m */; };
 		395FE91A126936ED00A8BD6A /* OALAudioTrackNotifications.h in Headers */ = {isa = PBXBuildFile; fileRef = 395FE918126936ED00A8BD6A /* OALAudioTrackNotifications.h */; };
 		395FE91B126936ED00A8BD6A /* OALAudioTrackNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 395FE919126936ED00A8BD6A /* OALAudioTrackNotifications.m */; };
 		396B395F124EDA43009B84A4 /* OALAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 396B392E124EDA42009B84A4 /* OALAction.h */; };
@@ -320,6 +319,7 @@
 		DCCBF1BB0F6022AE0040855A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCCBF1BA0F6022AE0040855A /* OpenGLES.framework */; };
 		DCCBF1BD0F6022AE0040855A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCCBF1BC0F6022AE0040855A /* QuartzCore.framework */; };
 		DCCBF1BF0F6022AE0040855A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCCBF1BE0F6022AE0040855A /* UIKit.framework */; };
+		EADE8F65134BD8E900566AEF /* HardwareDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 395FE7E61268C64100A8BD6A /* HardwareDemo.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1485,6 +1485,7 @@
 				39DF0CDE129F7AC50070A4D1 /* CallFuncWithObject.m in Sources */,
 				3990BE2212A01DD0006E20B2 /* VUMeter.m in Sources */,
 				3990C18612A0717D006E20B2 /* AudioSessionDemo.m in Sources */,
+				EADE8F65134BD8E900566AEF /* HardwareDemo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1514,7 +1515,6 @@
 				39B037F31262DAFE00AC27C9 /* OALAudioActions.m in Sources */,
 				399A5E411265311900415D8D /* OALSimpleAudioSample.m in Sources */,
 				399A5E491265325600415D8D /* OpenALAudioTrackSample.m in Sources */,
-				395FE7E81268C64100A8BD6A /* HardwareDemo.m in Sources */,
 				395FE91B126936ED00A8BD6A /* OALAudioTrackNotifications.m in Sources */,
 				39BF0C2212887C2800C83D2E /* IOSVersion.m in Sources */,
 				39C49A2D12BEADB600F1E6D6 /* OALTools.m in Sources */,
