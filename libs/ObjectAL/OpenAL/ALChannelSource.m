@@ -502,7 +502,8 @@ SYNTHESIZE_DELEGATE_PROPERTY(velocity, Velocity, ALVector);
         self.referenceDistance = defaultReferenceDistance;
         self.minGain = defaultMinGain;
         self.maxGain = defaultMaxGain;
-        self.coneOuterGain = defaultConeOuterGain;
+        // Disabled due to OpenAL default ConeOuterGain value issue
+        // self.coneOuterGain = defaultConeOuterGain;
         self.coneInnerAngle = defaultConeInnerAngle;
         self.coneOuterAngle = defaultConeOuterAngle;
         self.position = defaultPosition;
@@ -533,7 +534,8 @@ SYNTHESIZE_DELEGATE_PROPERTY(velocity, Velocity, ALVector);
             source.referenceDistance = referenceDistance;
             source.minGain = minGain;
             source.maxGain = maxGain;
-            source.coneOuterGain = coneOuterGain;
+            // Disabled due to OpenAL default ConeOuterGain value issue
+            // source.coneOuterGain = coneOuterGain;
             source.coneInnerAngle = coneInnerAngle;
             source.coneOuterAngle = coneOuterAngle;
             source.position = position;
