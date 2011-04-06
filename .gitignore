@@ -1,10 +1,15 @@
-build
-*.DS_Store
 *.mode1v3
 *.pbxuser
+*.perspectivev3
+*.xcworkspacedata
+*.xcuserstate
+*.mergesave
 *.bak
 .~*
 ._*
+.DS_Store
+build
+xcuserdata
 Thumbs.db
 project.pbxproj.mergesave
 doxygen.config
