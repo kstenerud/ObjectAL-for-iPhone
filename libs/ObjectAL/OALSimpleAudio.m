@@ -228,6 +228,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 	channel.reservedSources = value;
 }
 
+@synthesize channel;
+
 @synthesize backgroundTrack;
 
 - (bool) bgPaused

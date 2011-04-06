@@ -129,6 +129,11 @@
 /** The number of sources OALSimpleAudio is using (max 32 on current iOS devices). */
 @property(readwrite,assign) unsigned int reservedSources;
 
+/** The channel source used by OALSimpleAudio.
+ * Only mess with this if you know what you are doing!
+ */
+@property(readonly) ALChannelSource* channel;
+
 /** Background audio URL */
 @property(readonly) NSURL* backgroundTrackURL;
 
