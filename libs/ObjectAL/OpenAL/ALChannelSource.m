@@ -29,6 +29,30 @@
 #import "OpenALManager.h"
 
 
+
+#define SYNTHESIZE_DELEGATE_PROPERTY(NAME, CAPSNAME, TYPE) \
+- (TYPE) NAME \
+{ \
+	OPTIONALLY_SYNCHRONIZED(self) \
+	{ \
+		return NAME; \
+	} \
+} \
+ \
+- (void) set##CAPSNAME:(TYPE) value \
+{ \
+	OPTIONALLY_SYNCHRONIZED(self) \
+	{ \
+		NAME = value; \
+		for(id<ALSoundSource> source in sourcePool.sources) \
+		{ \
+			source.NAME = value; \
+		} \
+	} \
+}
+
+
+
 #pragma mark -
 #pragma mark Private Methods
 
@@ -53,6 +77,10 @@
  */
 - (void) onPitchComplete:(id<ALSoundSource>) source;
 
+/** (INTERNAL USE) Set defaults from another channel.
+ */
+- (void) setDefaultsFromChannel:(ALChannelSource*) channel;
+
 @end
 
 
@@ -60,52 +88,25 @@
 
 #pragma mark Object Management
 
-+ (id) channelWithSources:(int) reservedSources
++ (id) channelWithSources:(unsigned int) reservedSources
 {
 	return [[[self alloc] initWithSources:reservedSources] autorelease];
 }
 
-- (id) initWithSources:(int) reservedSources
+- (id) initWithSources:(unsigned int) reservedSources
 {
 	if(nil != (self = [super init]))
 	{
 		OAL_LOG_DEBUG(@"%@: Init with %d sources", self, reservedSources);
+
 		context = [[OpenALManager sharedInstance].currentContext retain];
 
-		// Set this channel's properties from the OpenAL sound source defaults
-		id<ALSoundSource> firstSource = [[ALSource alloc] init];
-		pitch = firstSource.pitch;
-		gain = firstSource.gain;
-		maxDistance = firstSource.maxDistance;
-		rolloffFactor = firstSource.rolloffFactor;
-		referenceDistance = firstSource.referenceDistance;
-		minGain = firstSource.minGain;
-		maxGain = firstSource.maxGain;
-		coneOuterGain = firstSource.coneOuterGain;
-		coneInnerAngle = firstSource.coneInnerAngle;
-		coneOuterAngle = firstSource.coneOuterAngle;
-		position = firstSource.position;
-		velocity = firstSource.velocity;
-		direction = firstSource.direction;
-		sourceRelative = firstSource.sourceRelative;
-		sourceType = firstSource.sourceType;
-		looping = firstSource.looping;
-		
-		// Create some OpenAL sound sources
 		sourcePool = [[ALSoundSourcePool alloc] init];
 
-		if(reservedSources > 0)
-		{
-			[sourcePool addSource:firstSource];
-		}
-		[firstSource release];
-
-		for(int i = 1; i < reservedSources; i++)
-		{
-			ALSource* source = [[ALSource alloc] init];
-			[sourcePool addSource:source];
-			[source release];
-		}
+        for(unsigned int i = 0; i < reservedSources; i++)
+        {
+            [self addSource:[ALSource source]];
+        }            
 	}
 	return self;
 }
@@ -149,125 +150,23 @@
 
 - (void) setReservedSources:(unsigned int) reservedSources
 {
-	unsigned int currentNumSources = [sourcePool.sources count];
-	if(reservedSources > currentNumSources)
-	{
-		for(unsigned int i = currentNumSources; i < reservedSources; i++)
-		{
-			id<ALSoundSource> source = [[ALSource alloc] init];
-			source.pitch = pitch;
-			source.gain = gain;
-			source.maxDistance = maxDistance;
-			source.rolloffFactor = rolloffFactor;
-			source.referenceDistance = referenceDistance;
-			source.minGain = minGain;
-			source.maxGain = maxGain;
-			source.coneOuterGain = coneOuterGain;
-			source.coneInnerAngle = coneInnerAngle;
-			source.coneOuterAngle = coneOuterAngle;
-			source.position = position;
-			source.velocity = velocity;
-			source.direction = direction;
-			source.sourceRelative = sourceRelative;
-			source.looping = looping;
-			
-			[sourcePool addSource:source];
-			[source release];
-		}
-		
-	}
-	else if(reservedSources < currentNumSources)
-	{
-		while([sourcePool.sources count] > reservedSources)
-		{
-			[sourcePool removeSource:[sourcePool.sources lastObject]];
-		}
-	}
+    while(self.reservedSources < reservedSources)
+    {
+        [self addSource:nil];
+    }
+
+    while(self.reservedSources > reservedSources)
+    {
+        [self removeSource:nil];
+    }
 }
+
 
 #pragma mark Properties
 
-- (float) coneInnerAngle
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return coneInnerAngle;
-	}
-}
-
-- (void) setConeInnerAngle:(float) value
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		coneInnerAngle = value;
-		for(id<ALSoundSource> source in sourcePool.sources)
-		{
-			source.coneInnerAngle = value;
-		}
-	}
-}
-
-- (float) coneOuterAngle
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return coneOuterAngle;
-	}
-}
-
-- (void) setConeOuterAngle:(float) value
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		coneOuterAngle = value;
-		for(id<ALSoundSource> source in sourcePool.sources)
-		{
-			source.coneOuterAngle = value;
-		}
-	}
-}
-
-- (float) coneOuterGain
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return coneOuterGain;
-	}
-}
-
-- (void) setConeOuterGain:(float) value
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		coneOuterGain = value;
-		for(id<ALSoundSource> source in sourcePool.sources)
-		{
-			source.coneOuterGain = value;
-		}
-	}
-}
-
 @synthesize context;
 
-- (ALVector) direction
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return direction;
-	}
-}
-
-- (void) setDirection:(ALVector) value
-{
-	OPTIONALLY_SYNCHRONIZED_STRUCT_OP(self)
-	{
-		direction = value;
-		for(id<ALSoundSource> source in sourcePool.sources)
-		{
-			source.direction = value;
-		}
-	}
-}
+@synthesize sourcePool;
 
 - (float) volume
 {
@@ -279,183 +178,21 @@
 	self.gain = value;
 }
 
-- (float) gain
+- (float) pan
 {
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return gain;
-	}
+	return position.x;
 }
 
-- (void) setGain:(float) value
+- (void) setPan:(float) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		gain = value;
-		for(id<ALSoundSource> source in sourcePool.sources)
-		{
-			source.gain = value;
-		}
-	}
+	[self setPosition:alpoint(value, 0, 0)];
 }
 
-- (bool) interruptible
+- (int) sourceType
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		return interruptible;
-	}
-}
-
-- (void) setInterruptible:(bool) value
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		interruptible = value;
-		for(id<ALSoundSource> source in sourcePool.sources)
-		{
-			source.interruptible = value;
-		}
-	}
-}
-
-- (bool) looping
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return looping;
-	}
-}
-
-- (void) setLooping:(bool) value
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		looping = value;
-		for(id<ALSoundSource> source in sourcePool.sources)
-		{
-			source.looping = value;
-		}
-	}
-}
-
-- (float) maxDistance
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return maxDistance;
-	}
-}
-
-- (void) setMaxDistance:(float) value
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		maxDistance = value;
-		for(id<ALSoundSource> source in sourcePool.sources)
-		{
-			source.maxDistance = value;
-		}
-	}
-}
-
-- (float) maxGain
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return maxGain;
-	}
-}
-
-- (void) setMaxGain:(float) value
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		maxGain = value;
-		for(id<ALSoundSource> source in sourcePool.sources)
-		{
-			source.maxGain = value;
-		}
-	}
-}
-
-- (float) minGain
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return minGain;
-	}
-}
-
-- (void) setMinGain:(float) value
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		minGain = value;
-		for(id<ALSoundSource> source in sourcePool.sources)
-		{
-			source.minGain = value;
-		}
-	}
-}
-
-- (bool) muted
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return muted;
-	}
-}
-
-- (void) setMuted:(bool) value
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		muted = value;
-		for(id<ALSoundSource> source in sourcePool.sources)
-		{
-			source.muted = value;
-		}
-	}
-}
-
-- (bool) paused
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return paused;
-	}
-}
-
-- (void) setPaused:(bool) value
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		paused = value;
-		for(id<ALSoundSource> source in sourcePool.sources)
-		{
-			source.paused = value;
-		}
-	}
-}
-
-- (float) pitch
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return pitch;
-	}
-}
-
-- (void) setPitch:(float) value
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		pitch = value;
-		for(id<ALSoundSource> source in sourcePool.sources)
-		{
-			source.pitch = value;
-		}
+		return sourceType;
 	}
 }
 
@@ -474,125 +211,42 @@
 	return NO;
 }
 
-- (ALPoint) position
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return position;
-	}
-}
+SYNTHESIZE_DELEGATE_PROPERTY(coneInnerAngle, ConeInnerAngle, float);
 
-- (void) setPosition:(ALPoint) value
-{
-	OPTIONALLY_SYNCHRONIZED_STRUCT_OP(self)
-	{
-		position = value;
-		for(id<ALSoundSource> source in sourcePool.sources)
-		{
-			source.position = value;
-		}
-	}
-}
+SYNTHESIZE_DELEGATE_PROPERTY(coneOuterAngle, ConeOuterAngle, float);
 
-- (float) pan
-{
-	return position.x;
-}
+SYNTHESIZE_DELEGATE_PROPERTY(coneOuterGain, ConeOuterGain, float);
 
-- (void) setPan:(float) value
-{
-	[self setPosition:alpoint(value, 0, 0)];
-}
+SYNTHESIZE_DELEGATE_PROPERTY(direction, Direction, ALVector);
 
-- (float) referenceDistance
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return referenceDistance;
-	}
-}
+SYNTHESIZE_DELEGATE_PROPERTY(gain, Gain, float);
 
-- (void) setReferenceDistance:(float) value
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		referenceDistance = value;
-		for(id<ALSoundSource> source in sourcePool.sources)
-		{
-			source.referenceDistance = value;
-		}
-	}
-}
+SYNTHESIZE_DELEGATE_PROPERTY(interruptible, Interruptible, bool);
 
-- (float) rolloffFactor
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return rolloffFactor;
-	}
-}
+SYNTHESIZE_DELEGATE_PROPERTY(looping, Looping, bool);
 
-- (void) setRolloffFactor:(float) value
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		rolloffFactor = value;
-		for(id<ALSoundSource> source in sourcePool.sources)
-		{
-			source.rolloffFactor = value;
-		}
-	}
-}
+SYNTHESIZE_DELEGATE_PROPERTY(maxDistance, MaxDistance, float);
 
-- (int) sourceRelative
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return sourceRelative;
-	}
-}
+SYNTHESIZE_DELEGATE_PROPERTY(maxGain, MaxGain, float);
 
-- (void) setSourceRelative:(int) value
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		sourceRelative = value;
-		for(id<ALSoundSource> source in sourcePool.sources)
-		{
-			source.sourceRelative = value;
-		}
-	}
-}
+SYNTHESIZE_DELEGATE_PROPERTY(minGain, MinGain, float);
 
-- (int) sourceType
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return sourceType;
-	}
-}
+SYNTHESIZE_DELEGATE_PROPERTY(muted, Muted, bool);
 
-@synthesize sourcePool;
+SYNTHESIZE_DELEGATE_PROPERTY(paused, Paused, bool);
 
-- (ALVector) velocity
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return velocity;
-	}
-}
+SYNTHESIZE_DELEGATE_PROPERTY(pitch, Pitch, float);
 
-- (void) setVelocity:(ALVector) value
-{
-	OPTIONALLY_SYNCHRONIZED_STRUCT_OP(self)
-	{
-		velocity = value;
-		for(id<ALSoundSource> source in sourcePool.sources)
-		{
-			source.velocity = value;
-		}
-	}
-}
+SYNTHESIZE_DELEGATE_PROPERTY(position, Position, ALPoint);
+
+SYNTHESIZE_DELEGATE_PROPERTY(referenceDistance, ReferenceDistance, float);
+
+SYNTHESIZE_DELEGATE_PROPERTY(rolloffFactor, RolloffFactor, float);
+
+SYNTHESIZE_DELEGATE_PROPERTY(sourceRelative, SourceRelative, int);
+
+SYNTHESIZE_DELEGATE_PROPERTY(velocity, Velocity, ALVector);
+
 
 
 #pragma mark Playback
@@ -635,10 +289,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		for(id<ALSoundSource> source in sourcePool.sources)
-		{
-			[source stop];
-		}
+        [sourcePool.sources makeObjectsPerformSelector:@selector(stop)];
 	}
 }
 
@@ -646,10 +297,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		for(id<ALSoundSource> source in sourcePool.sources)
-		{
-			[source rewind];
-		}
+        [sourcePool.sources makeObjectsPerformSelector:@selector(rewind)];
 	}
 }
 
@@ -787,44 +435,175 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		for(id<ALSoundSource> source in sourcePool.sources)
-		{
-			[source clear];
-		}
+        [sourcePool.sources makeObjectsPerformSelector:@selector(clear)];
 	}
 }
 
+- (void) setDefaultsFromSource:(id<ALSoundSource>) source
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+        defaultPitch = source.pitch;
+        defaultGain = source.gain;
+        defaultMaxDistance = source.maxDistance;
+        defaultRolloffFactor = source.rolloffFactor;
+        defaultReferenceDistance = source.referenceDistance;
+        defaultMinGain = source.minGain;
+        defaultMaxGain = source.maxGain;
+        defaultConeOuterGain = source.coneOuterGain;
+        defaultConeInnerAngle = source.coneInnerAngle;
+        defaultConeOuterAngle = source.coneOuterAngle;
+        defaultPosition = source.position;
+        defaultVelocity = source.velocity;
+        defaultDirection = source.direction;
+        defaultSourceRelative = source.sourceRelative;
+        defaultSourceType = source.sourceType;
+        defaultLooping = source.looping;
+        
+        defaultsInitialized = YES;
+    }
+}
+
+- (void) setDefaultsFromChannel:(ALChannelSource*) channel
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+        defaultPitch = channel->defaultPitch;
+        defaultGain = channel->defaultGain;
+        defaultMaxDistance = channel->defaultMaxDistance;
+        defaultRolloffFactor = channel->defaultRolloffFactor;
+        defaultReferenceDistance = channel->defaultReferenceDistance;
+        defaultMinGain = channel->defaultMinGain;
+        defaultMaxGain = channel->defaultMaxGain;
+        defaultConeOuterGain = channel->defaultConeOuterGain;
+        defaultConeInnerAngle = channel->defaultConeInnerAngle;
+        defaultConeOuterAngle = channel->defaultConeOuterAngle;
+        defaultPosition = channel->defaultPosition;
+        defaultVelocity = channel->defaultVelocity;
+        defaultDirection = channel->defaultDirection;
+        defaultSourceRelative = channel->defaultSourceRelative;
+        defaultSourceType = channel->defaultSourceType;
+        defaultLooping = channel->defaultLooping;
+        
+        defaultsInitialized = YES;
+    }
+}
+
+
+
 - (void) resetToDefault
 {
-	bool removeOne = self.reservedSources > 0;
-	if(removeOne)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		self.reservedSources -= 1;
-	}
+        self.pitch = defaultPitch;
+        self.gain = defaultGain;
+        self.maxDistance = defaultMaxDistance;
+        self.rolloffFactor = defaultRolloffFactor;
+        self.referenceDistance = defaultReferenceDistance;
+        self.minGain = defaultMinGain;
+        self.maxGain = defaultMaxGain;
+        self.coneOuterGain = defaultConeOuterGain;
+        self.coneInnerAngle = defaultConeInnerAngle;
+        self.coneOuterAngle = defaultConeOuterAngle;
+        self.position = defaultPosition;
+        self.velocity = defaultVelocity;
+        self.direction = defaultDirection;
+        self.sourceRelative = defaultSourceRelative;
+        sourceType = defaultSourceType;
+        self.looping = defaultLooping;
+    }
+}
 
-	id<ALSoundSource> source = [[ALSource alloc] init];
-	self.pitch = source.pitch;
-	self.gain = source.gain;
-	self.maxDistance = source.maxDistance;
-	self.rolloffFactor = source.rolloffFactor;
-	self.referenceDistance = source.referenceDistance;
-	self.minGain = source.minGain;
-	self.maxGain = source.maxGain;
-	self.coneOuterGain = source.coneOuterGain;
-	self.coneInnerAngle = source.coneInnerAngle;
-	self.coneOuterAngle = source.coneOuterAngle;
-	self.position = source.position;
-	self.velocity = source.velocity;
-	self.direction = source.direction;
-	self.sourceRelative = source.sourceRelative;
-	sourceType = source.sourceType;
-	self.looping = source.looping;
-	[source release];
 
-	if(removeOne)
+
+- (void) addSource:(id<ALSoundSource>) source
+{
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		self.reservedSources += 1;
-	}
+        if(nil == source)
+        {
+            source = [ALSource source];
+        }
+        if(defaultsInitialized)
+        {
+            source.pitch = pitch;
+            source.gain = gain;
+            source.maxDistance = maxDistance;
+            source.rolloffFactor = rolloffFactor;
+            source.referenceDistance = referenceDistance;
+            source.minGain = minGain;
+            source.maxGain = maxGain;
+            source.coneOuterGain = coneOuterGain;
+            source.coneInnerAngle = coneInnerAngle;
+            source.coneOuterAngle = coneOuterAngle;
+            source.position = position;
+            source.velocity = velocity;
+            source.direction = direction;
+            source.sourceRelative = sourceRelative;
+            source.looping = looping;
+        }
+        else
+        {
+            [self setDefaultsFromSource:source];
+            [self resetToDefault];
+        }
+        [sourcePool addSource:source];
+    }
+}
+
+- (id<ALSoundSource>) removeSource:(id<ALSoundSource>) source
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+        if(nil == source)
+        {
+            source = [sourcePool getFreeSource:YES];
+            if(nil == source)
+            {
+                return nil;
+            }
+        }
+        [[source retain] autorelease];
+        [sourcePool removeSource:source];
+    }
+    
+    return source;
+}
+
+- (ALChannelSource*) splitChannelWithSources:(unsigned int) numSources
+{
+    ALChannelSource* newChannel;
+
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+        newChannel = [ALChannelSource channelWithSources:0];
+        [newChannel setDefaultsFromChannel:self];
+        [newChannel resetToDefault];
+        for(unsigned int i = 0; i < numSources; i++)
+        {
+            id<ALSoundSource> source = [self removeSource:nil];
+            if(nil == source)
+            {
+                break;
+            }
+            [newChannel addSource:source];
+        }
+    }
+
+    return newChannel;
+}
+
+- (void) addChannel:(ALChannelSource*) channel
+{
+    id<ALSoundSource> source;
+    
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+        while (nil != (source = [channel removeSource:nil]))
+        {
+            [self addSource:source];
+        }
+    }
 }
 
 @end

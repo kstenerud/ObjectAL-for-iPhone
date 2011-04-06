@@ -40,8 +40,12 @@
  */
 @interface ALChannelSource : NSObject <ALSoundSource>
 {
+    /** Pool holding the actual sources */
 	ALSoundSourcePool* sourcePool;
 	ALContext* context;
+    
+    /** If YES, the defaults of this channel have been initialized */
+    bool defaultsInitialized;
 
 	float pitch;
 	float gain;
@@ -61,6 +65,40 @@
 	int sourceRelative;
 	int sourceType;
 	bool looping;
+
+    /** Default pitch */
+    float defaultPitch;
+    /** Default gain */
+	float defaultGain;
+    /** Default max distance */
+	float defaultMaxDistance;
+    /** Default rolloff factor */
+	float defaultRolloffFactor;
+    /** Default reference distance */
+	float defaultReferenceDistance;
+    /** Default min gain */
+	float defaultMinGain;
+    /** Default max gain */
+	float defaultMaxGain;
+    /** Default cone outer gain */
+	float defaultConeOuterGain;
+    /** Default cone inner angle */
+	float defaultConeInnerAngle;
+    /** Default cone outer angle */
+	float defaultConeOuterAngle;
+    /** Default position */
+	ALPoint defaultPosition;
+    /** Default veloxity */
+	ALVector defaultVelocity;
+    /** Default direction */
+	ALVector defaultDirection;
+	/** Default source relative */
+	int defaultSourceRelative;
+    /** Default source type */
+	int defaultSourceType;
+    /** Default looping */
+	bool defaultLooping;
+    
 
 	bool interruptible;
 	bool muted;
@@ -125,17 +163,52 @@
  * @param reservedSources the number of sources to reserve for this channel.
  * @return A new channel.
  */
-+ (id) channelWithSources:(int) reservedSources;
++ (id) channelWithSources:(unsigned int) reservedSources;
 
 /** Initialize a channel with a number of sources.
  *
  * @param reservedSources the number of sources to reserve for this channel.
  * @return The initialized channel.
  */
-- (id) initWithSources:(int) reservedSources;
+- (id) initWithSources:(unsigned int) reservedSources;
+
+/** Set this channel's default values from those in the specified source.
+ *
+ * @param source the source to set default values from.
+ */
+- (void) setDefaultsFromSource:(id<ALSoundSource>) source;
 
 /** Reset all sources in this channel to their default state.
  */
 - (void) resetToDefault;
+
+/** Add a source to this channel.
+ *
+ * @param source The source to add.
+ */
+- (void) addSource:(id<ALSoundSource>) source;
+
+/** Remove a source from the channel.
+ *
+ * @param source The source to remove. If nil, remove any source.
+ * @return The source that was removed.
+ */
+- (id<ALSoundSource>) removeSource:(id<ALSoundSource>) source;
+
+/** Split the specified number of sources from this channel, creating a new
+ * channel.
+ *
+ * @param numSources The number of sources to split off
+ * @return A new channel with the split-off sources.
+ */
+- (ALChannelSource*) splitChannelWithSources:(unsigned int) numSources;
+
+/** Absorb another channel's sources into this one. All of the channel's sources
+ * will be moved into this channel.
+ *
+ * @param channel The channel to absorb sources from.
+ */
+- (void) addChannel:(ALChannelSource*) channel;
+
 
 @end
