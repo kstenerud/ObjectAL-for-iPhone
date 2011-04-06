@@ -26,6 +26,7 @@
 
 #import "OALSuspendHandler.h"
 #import "NSMutableArray+WeakReferences.h"
+#import <objc/message.h>
 
 @implementation OALSuspendHandler
 
