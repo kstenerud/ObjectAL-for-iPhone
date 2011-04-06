@@ -477,7 +477,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 		return nil;
 	}
 
-	OAL_LOG_WARNING_COND(pendingLoadCount > 0, @"You are loading an effect synchronously, but have pending async loads that have not completed. Your load will happen after those finish. Your thread is now stuck waiting. Next time just load everything async please.");
+    if(pendingLoadCount > 0)
+    {
+        OAL_LOG_WARNING(@"You are loading an effect synchronously, but have pending async loads that have not completed. Your load will happen after those finish. Your thread is now stuck waiting. Next time just load everything async please.");
+    }
 
 #if NS_BLOCKS_AVAILABLE && OBJECTAL_USE_BLOCKS
 	//Using blocks with the same queue used to asynch load removes the need for locking

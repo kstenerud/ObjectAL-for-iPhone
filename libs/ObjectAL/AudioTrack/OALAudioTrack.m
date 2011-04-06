@@ -350,9 +350,9 @@
 			pan = value;
 			player.pan = pan;
 		}
-		else
+		else if(pan != 0.0f)
 		{
-			OAL_LOG_WARNING_COND(pan != 0.0f, @"%@: Pan not supported on iOS %f", self, [IOSVersion sharedInstance].version);
+			OAL_LOG_WARNING(@"%@: Pan not supported on iOS %f", self, [IOSVersion sharedInstance].version);
 		}
 	}
 }

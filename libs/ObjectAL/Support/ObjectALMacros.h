@@ -105,13 +105,6 @@
 #define OAL_LOG_BASE(FMT_STRING, CONTEXT, FMT, ...)	\
 	NSLog(FMT_STRING, (CONTEXT), [NSString stringWithFormat:(FMT), ##__VA_ARGS__])
 
-#define OAL_LOG_BASE_COND(COND, FMT_STRING, CONTEXT, FMT, ...)	\
-	if(COND) \
-	{ \
-		NSLog(FMT_STRING, (CONTEXT), [NSString stringWithFormat:(FMT), ##__VA_ARGS__]); \
-	}
-
-
 /** Write a "Debug" log entry.
  *
  * @param FMT Message with NSLog() style formatting.
@@ -119,10 +112,8 @@
  */
 #if OBJECTAL_CFG_LOG_LEVEL >= 4
 #define OAL_LOG_DEBUG(FMT, ...) OAL_LOG_BASE(@"OAL Debug: %s: %@", __PRETTY_FUNCTION__, FMT, ##__VA_ARGS__)
-#define OAL_LOG_DEBUG_COND(COND, FMT, ...) OAL_LOG_BASE_COND(COND, @"OAL Debug: %s: %@", __PRETTY_FUNCTION__, FMT, ##__VA_ARGS__)
 #else /* OBJECTAL_CFG_LOG_LEVEL */
 #define OAL_LOG_DEBUG(FMT, ...)
-#define OAL_LOG_DEBUG_COND(COND, FMT, ...)
 #endif /* OBJECTAL_CFG_LOG_LEVEL */
 
 /** Write an "Info" log entry.
@@ -132,10 +123,8 @@
  */
 #if OBJECTAL_CFG_LOG_LEVEL >= 3
 #define OAL_LOG_INFO(FMT, ...) OAL_LOG_BASE(@"OAL Info: %s: %@", __PRETTY_FUNCTION__, FMT, ##__VA_ARGS__)
-#define OAL_LOG_INFO_COND(COND, FMT, ...) OAL_LOG_BASE_COND(COND, @"OAL Info: %s: %@", __PRETTY_FUNCTION__, FMT, ##__VA_ARGS__)
 #else /* OBJECTAL_CFG_LOG_LEVEL */
 #define OAL_LOG_INFO(FMT, ...)
-#define OAL_LOG_INFO_COND(COND, FMT, ...)
 #endif /* OBJECTAL_CFG_LOG_LEVEL */
 
 /** Write a "Warning" log entry.
@@ -145,10 +134,8 @@
  */
 #if OBJECTAL_CFG_LOG_LEVEL >= 2
 #define OAL_LOG_WARNING(FMT, ...) OAL_LOG_BASE(@"OAL Warning: %s: %@", __PRETTY_FUNCTION__, FMT, ##__VA_ARGS__)
-#define OAL_LOG_WARNING_COND(COND, FMT, ...) OAL_LOG_BASE_COND(COND, @"OAL Warning: %s: %@", __PRETTY_FUNCTION__, FMT, ##__VA_ARGS__)
 #else /* OBJECTAL_CFG_LOG_LEVEL */
 #define OAL_LOG_WARNING(FMT, ...)
-#define OAL_LOG_WARNING_COND(COND, FMT, ...)
 #endif /* OBJECTAL_CFG_LOG_LEVEL */
 
 /** Write an "Error" log entry.
@@ -158,10 +145,8 @@
  */
 #if OBJECTAL_CFG_LOG_LEVEL >= 1
 #define OAL_LOG_ERROR(FMT, ...) OAL_LOG_BASE(@"OAL Error: %s: %@", __PRETTY_FUNCTION__, FMT, ##__VA_ARGS__)
-#define OAL_LOG_ERROR_COND(COND, FMT, ...) OAL_LOG_BASE_COND(COND, @"OAL Error: %s: %@", __PRETTY_FUNCTION__, FMT, ##__VA_ARGS__)
 #else /* OBJECTAL_CFG_LOG_LEVEL */
 #define OAL_LOG_ERROR(FMT, ...)
-#define OAL_LOG_ERROR_COND(COND, FMT, ...)
 #endif /* OBJECTAL_CFG_LOG_LEVEL */
 
 /** Write an "Error" log entry with context.
