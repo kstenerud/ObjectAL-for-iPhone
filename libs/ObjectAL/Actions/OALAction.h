@@ -115,6 +115,7 @@
  */
 @interface OALAction : NSObject
 {
+    /** The target to perform the action on */
 	id target;
 	float duration;
 	float elapsed;

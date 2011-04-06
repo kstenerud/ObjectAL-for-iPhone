@@ -36,6 +36,7 @@
  */
 @interface OALAudioTrack : NSObject <AVAudioPlayerDelegate, OALSuspendManager>
 {
+    /** If true, this track is recording metering data */
 	bool meteringEnabled;
 	bool interrupted;
 	AVAudioPlayer* player;

@@ -173,7 +173,7 @@
 #if OBJECTAL_CFG_LOG_LEVEL >= 1
 #define OAL_LOG_ERROR_CONTEXT(CONTEXT, FMT, ...) OAL_LOG_BASE(@"OAL Error: %s: %@", CONTEXT, FMT, ##__VA_ARGS__)
 #else /* OBJECTAL_CFG_LOG_LEVEL */
-#define OAL_LOG_ERROR_CONTEXT(FMT, ...)
+#define OAL_LOG_ERROR_CONTEXT(CONTEXT, FMT, ...)
 #endif /* OBJECTAL_CFG_LOG_LEVEL */
 
 #pragma mark -

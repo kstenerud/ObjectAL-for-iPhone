@@ -35,6 +35,7 @@
  */
 @interface OALAudioSession : NSObject <AVAudioSessionDelegate, OALSuspendManager>
 {
+    /** The current audio session category */
 	NSString* audioSessionCategory;
 	
 	bool handleInterruptions;

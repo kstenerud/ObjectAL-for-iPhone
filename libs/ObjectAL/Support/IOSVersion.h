@@ -13,6 +13,7 @@
  */
 @interface IOSVersion : NSObject
 {
+    /** Holds the current iOS version */
 	float version;
 }
 /** The version of iOS being run on the current device as a float in the format x.yy */
