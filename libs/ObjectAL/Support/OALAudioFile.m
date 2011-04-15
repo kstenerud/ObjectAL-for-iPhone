@@ -267,7 +267,6 @@
                 goto onFail;
             }
             bufferOffset += streamDescription.mBytesPerFrame * numFramesRead;
-            NSLog(@"Read %lu frames out of %lu, total %lld", numFramesRead, framesToRead, numFrames);
         }
 		
 		if(nil != bufferSize)
