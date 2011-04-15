@@ -124,7 +124,7 @@
 
 - (void) setOrientation:(ALOrientation) value
 {
-	OPTIONALLY_SYNCHRONIZED_STRUCT_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		if(self.suspended)
 		{
@@ -148,7 +148,7 @@
 
 - (void) setPosition:(ALPoint) value
 {
-	OPTIONALLY_SYNCHRONIZED_STRUCT_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		if(self.suspended)
 		{
@@ -172,7 +172,7 @@
 
 - (void) setVelocity:(ALVector) value
 {
-	OPTIONALLY_SYNCHRONIZED_STRUCT_OP(self)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		if(self.suspended)
 		{

@@ -122,35 +122,3 @@
 #ifndef OBJECTAL_CFG_LOG_LEVEL
 #define OBJECTAL_CFG_LOG_LEVEL LEVEL_WARNING
 #endif
-
-
-/** The CLANG/LLVM 1.5 compiler that ships with XCode 3.2.4 fails when compiling a method
- * which takes a struct and passes that struct or one of its components to a C function
- * from within a @@synchronized(self) context when compiling for the Device in Debug
- * configuration (Apple issue #8303765). <br>
- *
- * If this option is enabled, all synchronization will be disabled for methods which fall
- * under this category. <br>
- *
- * Note: This only takes effect if the CLANG compiler is used (__clang__ == 1) <br>
- *
- * Note: With XCode 3.2.5, this bug seems to be fixed. <br>
- *
- * Recommended setting: 1 for XCode 3.2.4, 0 for all other versions.
- */
-#ifndef OBJECTAL_CFG_CLANG_LLVM_BUG_WORKAROUND
-#define OBJECTAL_CFG_CLANG_LLVM_BUG_WORKAROUND 0
-#endif
-
-
-/** When this option is enabled, ObjectAL will invoke special code when playback ends for
- * any reason on the simulator.  This is to counter a bug where the simulator would mute
- * OpenAL playback when AVAudioPlayer playback ends. <br>
- *
- * Note: With XCode 3.2.3, this bug seems to be fixed. <br>
- *
- * Recommended setting: 0 for XCode 3.2.3 and later, 1 for earlier versions.
- */
-#ifndef OBJECTAL_CFG_SIMULATOR_BUG_WORKAROUND
-#define OBJECTAL_CFG_SIMULATOR_BUG_WORKAROUND 0
-#endif

@@ -75,20 +75,6 @@
 
 
 #pragma mark -
-#pragma mark LLVM Bug Workaround
-
-#if OBJECTAL_CFG_CLANG_LLVM_BUG_WORKAROUND && __clang__
-
-#define OPTIONALLY_SYNCHRONIZED_STRUCT_OP(A)
-
-#else
-
-#define OPTIONALLY_SYNCHRONIZED_STRUCT_OP(A) OPTIONALLY_SYNCHRONIZED(A)
-
-#endif /* OBJECTAL_CFG_CLANG_LLVM_BUG_WORKAROUND */
-
-
-#pragma mark -
 #pragma mark Logging
 
 

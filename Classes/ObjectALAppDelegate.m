@@ -52,7 +52,7 @@
 	
 	// I'm instantiating here to kick off any under-the-hood initialization.
 	// MainLayer will destroy this to provide a clean slate to the demos.
-	[OALSimpleAudio sharedInstance];
+	[OALSimpleAudio sharedInstanceWithSources:0];
 	
 	[[CCDirector sharedDirector] runWithScene: [MainLayer scene]];
 }

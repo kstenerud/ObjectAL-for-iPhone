@@ -202,29 +202,6 @@
  */
 - (void) closeOSResources;
 
-#if TARGET_IPHONE_SIMULATOR && OBJECTAL_CFG_SIMULATOR_BUG_WORKAROUND
-
-/** If the background music playback on the simulator ends (or is stopped), it mutes
- * OpenAL audio.  This method works around the issue by putting the player into looped
- * playback mode with volume set to 0 until the next instruction is received.
- */
-- (void) simulatorBugWorkaroundHoldPlayer;
-
-/** Part of the simulator bug workaround
- */
-- (void) simulatorBugWorkaroundRestorePlayer;
-
-
-#define SIMULATOR_BUG_WORKAROUND_PREPARE_PLAYBACK() [self simulatorBugWorkaroundRestorePlayer]
-#define SIMULATOR_BUG_WORKAROUND_END_PLAYBACK() [self simulatorBugWorkaroundHoldPlayer]
-
-#else /* TARGET_IPHONE_SIMULATOR && OBJECTAL_CFG_SIMULATOR_BUG_WORKAROUND */
-
-#define SIMULATOR_BUG_WORKAROUND_PREPARE_PLAYBACK()
-#define SIMULATOR_BUG_WORKAROUND_END_PLAYBACK()
-
-#endif /* TARGET_IPHONE_SIMULATOR && OBJECTAL_CFG_SIMULATOR_BUG_WORKAROUND */
-
 /** (INTERNAL USE) Called by SuspendHandler.
  */
 - (void) setSuspended:(bool) value;
@@ -676,7 +653,6 @@
 
 		[self stopActions];
 		
-		SIMULATOR_BUG_WORKAROUND_PREPARE_PLAYBACK();
 		if(playing || paused)
 		{
 			[player stop];
@@ -814,7 +790,7 @@
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[self stopActions];
-		SIMULATOR_BUG_WORKAROUND_PREPARE_PLAYBACK();
+        [player stop];
 		player.currentTime = currentTime;
 		player.volume = muted ? 0 : gain;
 		player.numberOfLoops = numberOfLoops;
@@ -835,7 +811,7 @@
 		if([IOSVersion sharedInstance].version >= 4.0)
 		{
 			[self stopActions];
-			SIMULATOR_BUG_WORKAROUND_PREPARE_PLAYBACK();
+            [player stop];
 			player.currentTime = currentTime;
 			player.volume = muted ? 0 : gain;
 			player.numberOfLoops = numberOfLoops;
@@ -869,7 +845,6 @@
 		
 		self.currentTime = 0;
 		player.currentTime = 0;
-		SIMULATOR_BUG_WORKAROUND_END_PLAYBACK();
 		paused = NO;
 		playing = NO;
 		preloaded = NO;
@@ -1060,7 +1035,6 @@
 		playing = NO;
 		paused = NO;
 		preloaded = NO;
-		SIMULATOR_BUG_WORKAROUND_END_PLAYBACK();
 		if(autoPreload)
 		{
 			preloaded = [player prepareToPlay];
@@ -1077,42 +1051,5 @@
 	
 	[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:OALAudioTrackFinishedPlayingNotification object:self] waitUntilDone:NO];
 }
-
-#pragma mark -
-#pragma mark Simulator playback bug handler
-
-#if TARGET_IPHONE_SIMULATOR && OBJECTAL_CFG_SIMULATOR_BUG_WORKAROUND
-
-- (void) simulatorBugWorkaroundRestorePlayer
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		if(nil != simulatorPlayerRef)
-		{
-			player = simulatorPlayerRef;
-			simulatorPlayerRef = nil;
-			[player stop];
-			player.numberOfLoops = numberOfLoops;
-			player.volume = gain;
-		}
-	}
-}
-
-- (void) simulatorBugWorkaroundHoldPlayer
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		if(nil != player)
-		{
-			player.volume = 0;
-			player.numberOfLoops = -1;
-			[player play];
-			simulatorPlayerRef = player;
-			player = nil;
-		}
-	}
-}
-
-#endif /* TARGET_IPHONE_SIMULATOR && OBJECTAL_CFG_SIMULATOR_BUG_WORKAROUND */
 
 @end
