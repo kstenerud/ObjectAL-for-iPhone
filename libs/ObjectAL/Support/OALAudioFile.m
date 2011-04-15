@@ -222,7 +222,9 @@
 		
 		OSStatus error;
 		UInt32 numFramesRead;
-		
+        AudioBufferList bufferList;
+        UInt32 bufferOffset = 0;
+
 		
 		// < 0 means read to the end of the file.
 		if(numFrames < 0)
@@ -241,12 +243,6 @@
 			goto onFail;
 		}
 		
-		AudioBufferList bufferList;
-		bufferList.mNumberBuffers = 1;
-		bufferList.mBuffers[0].mNumberChannels = streamDescription.mChannelsPerFrame;
-		bufferList.mBuffers[0].mDataByteSize = streamSizeInBytes;
-		bufferList.mBuffers[0].mData = streamData;
-		
 		if(noErr != (error = ExtAudioFileSeek(fileHandle, startFrame)))
 		{
 			REPORT_EXTAUDIO_CALL(error, @"Could not seek to %ll in file (url = %@)",
@@ -255,13 +251,24 @@
 			goto onFail;
 		}
 		
-		numFramesRead = (UInt32)numFrames;
-		if(noErr != (error = ExtAudioFileRead(fileHandle, &numFramesRead, &bufferList)))
-		{
-			REPORT_EXTAUDIO_CALL(error, @"Could not read audio data in file (url = %@)",
-								 url);
-			goto onFail;
-		}
+        
+        bufferList.mNumberBuffers = 1;
+        bufferList.mBuffers[0].mNumberChannels = streamDescription.mChannelsPerFrame;
+        for(UInt32 framesToRead = (UInt32) numFrames; framesToRead > 0; framesToRead -= numFramesRead)
+        {
+            bufferList.mBuffers[0].mDataByteSize = streamDescription.mBytesPerFrame * framesToRead;
+            bufferList.mBuffers[0].mData = streamData + bufferOffset;
+            
+            numFramesRead = framesToRead;
+            if(noErr != (error = ExtAudioFileRead(fileHandle, &numFramesRead, &bufferList)))
+            {
+                REPORT_EXTAUDIO_CALL(error, @"Could not read audio data in file (url = %@)",
+                                     url);
+                goto onFail;
+            }
+            bufferOffset += streamDescription.mBytesPerFrame * numFramesRead;
+            NSLog(@"Read %lu frames out of %lu, total %lld", numFramesRead, framesToRead, numFrames);
+        }
 		
 		if(nil != bufferSize)
 		{
