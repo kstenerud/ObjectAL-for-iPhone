@@ -41,7 +41,7 @@
 	NSString* fullPath = path;
 	if([fullPath characterAtIndex:0] != '/')
 	{
-		fullPath = [[NSBundle mainBundle] pathForResource:[[path pathComponents] lastObject] ofType:nil];
+		fullPath = [[NSBundle mainBundle] pathForResource:path ofType:nil];
 		if(nil == fullPath)
 		{
 			OAL_LOG_ERROR(@"Could not find full path of file %@", path);
