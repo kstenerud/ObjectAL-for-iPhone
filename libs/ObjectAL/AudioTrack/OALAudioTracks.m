@@ -28,6 +28,7 @@
 #import "NSMutableArray+WeakReferences.h"
 #import "ObjectALMacros.h"
 #import "OALAudioSession.h"
+#import "IOSVersion.h"
 
 
 SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALAudioTracks);
@@ -41,6 +42,12 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALAudioTracks);
 /** (INTERNAL USE) Close any resources belonging to the OS.
  */
 - (void) closeOSResources;
+
+/** (INTERNAL USE) Read deviceCurrentTime from an audio player
+ * as a workaround for a bug in iOS devices that causes the value
+ * to reset to 0 in certain circumstances.
+ */
+- (void) pollDeviceTime;
 
 @end
 
@@ -64,7 +71,18 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioTracks);
 		tracks = [NSMutableArray newMutableArrayUsingWeakReferencesWithCapacity:10];
 		
 		[[OALAudioSession sharedInstance] addSuspendListener:self];
-	}
+
+		if([IOSVersion sharedInstance].version >= 4.0)
+		{
+            // Need to constantly poll deviceCurrentTime or else it resets to 0
+            // on devices (doesn't happen in simulator).
+            deviceTimePoller = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                                target:self
+                                                              selector:@selector(pollDeviceTime)
+                                                              userInfo:nil
+                                                               repeats:YES];
+        }
+    }
 	return self;
 }
 
@@ -72,6 +90,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioTracks);
 {
 	OAL_LOG_DEBUG(@"%@: Dealloc", self);
 	[[OALAudioSession sharedInstance] removeSuspendListener:self];
+    [deviceTimePoller invalidate];
 
 	[self closeOSResources];
 
@@ -88,7 +107,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioTracks);
 
 - (void) close
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(nil != tracks)
 		{
@@ -201,7 +220,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioTracks);
 
 - (void) notifyTrackInitializing:(OALAudioTrack*) track
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		[tracks addObject:track];
 	}
@@ -209,10 +228,22 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioTracks);
 
 - (void) notifyTrackDeallocating:(OALAudioTrack*) track
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		[tracks removeObject:track];
 	}
+}
+
+- (void) pollDeviceTime
+{
+	@synchronized(self)
+	{
+        // Only actually have to poll a single track's value to avoid the bug.
+        if([tracks count] > 0)
+        {
+            [[tracks objectAtIndex:0] deviceCurrentTime];
+        }
+    }
 }
 
 @end

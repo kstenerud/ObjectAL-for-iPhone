@@ -796,6 +796,8 @@
 		player.numberOfLoops = numberOfLoops;
 		paused = NO;
 		playing = [player play];
+        // Kick deviceCurrentTime so that it's valid next call
+        [self deviceCurrentTime];
 		if(playing)
 		{
 			[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:OALAudioTrackStartedPlayingNotification object:self] waitUntilDone:NO];
@@ -831,6 +833,19 @@
 		return NO;
 	}
 }
+
+- (bool) playAfterTrack:(OALAudioTrack*) track
+{
+    return [self playAfterTrack:track timeAdjust:0];
+}
+
+- (bool) playAfterTrack:(OALAudioTrack*) track timeAdjust:(NSTimeInterval) timeAdjust
+{
+    NSTimeInterval deviceTime = track.deviceCurrentTime;
+    NSTimeInterval trackTimeRemaining = track.duration - track.currentTime;
+    return [self playAtTime:deviceTime + trackTimeRemaining + timeAdjust];
+}
+
 
 - (void) stop
 {

@@ -329,8 +329,30 @@
 /** Plays a sound asynchronously, starting at a specified point in the audio output device’s timeline.
  *
  * <strong>Note:</strong> This will have no effect on iOS versions prior to 4.0.
+ *
+ * @param time The time (device time) to start playing at.
+ * @return YES if the playback was successfully scheduled.
  */
 - (bool) playAtTime:(NSTimeInterval) time;
+
+/** Plays the currently preloaded track asynchronously when the specified track completes.
+ *
+ * <strong>Note:</strong> This will have no effect on iOS versions prior to 4.0.
+ *
+ * @param track The track to play after
+ * @return YES if the playback was successfully scheduled.
+ */
+- (bool) playAfterTrack:(OALAudioTrack*) track;
+
+/** Plays the currently preloaded track asynchronously when the specified track completes.
+ *
+ * <strong>Note:</strong> This will have no effect on iOS versions prior to 4.0.
+ *
+ * @param track The track to play after
+ * @param timeAdjust fine-tune value added to the time start offset.
+ * @return YES if the playback was successfully scheduled.
+ */
+- (bool) playAfterTrack:(OALAudioTrack*) track timeAdjust:(NSTimeInterval) timeAdjust;
 
 /** Stop playing and stop all operations.
  */
