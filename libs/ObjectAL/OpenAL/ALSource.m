@@ -1219,7 +1219,7 @@
 		int i = 0;
 		for(ALBuffer* buf in buffers)
 		{
-			bufferIds[i] = buf.bufferId;
+			bufferIds[i++] = buf.bufferId;
 		}
 		bool result = [ALWrapper sourceQueueBuffers:sourceId numBuffers:numBuffers bufferIds:bufferIds];
 		free(bufferIds);
