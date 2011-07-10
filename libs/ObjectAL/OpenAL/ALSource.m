@@ -1200,6 +1200,32 @@
 	}
 }
 
+- (bool) queueBuffer:(ALBuffer*) bufferIn repeat: (int)times
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		if(self.suspended)
+		{
+			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
+			return NO;
+		}
+		
+		if(AL_STATIC == self.state)
+		{
+			self.buffer = nil;
+		}
+		ALuint* bufferIds = (ALuint*)malloc(sizeof(ALuint) * times);
+		ALuint bufferId = bufferIn.bufferId;
+		for(int i = 0; i < times; i++)
+		{
+			bufferIds[i] = bufferId;
+		}
+		bool result = [ALWrapper sourceQueueBuffers:sourceId numBuffers:times bufferIds:bufferIds];
+		free(bufferIds);
+		return result;
+	}
+}
+
 - (bool) queueBuffers:(NSArray*) buffers
 {
 	OPTIONALLY_SYNCHRONIZED(self)
