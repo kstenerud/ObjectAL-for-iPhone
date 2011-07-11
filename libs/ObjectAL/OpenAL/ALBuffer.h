@@ -46,6 +46,8 @@
 	/** The uncompressed sound data to play. */
 	void* bufferData;
 	bool freeDataOnDestroy;
+	/** The parent buffer (which owns the uncompressed data) */
+	ALBuffer* parentBuffer;
 }
 
 
@@ -114,5 +116,18 @@
 			   size:(ALsizei) size
 			 format:(ALenum) format
 		  frequency:(ALsizei) frequency;
+
+/** Returns a part of the buffer as a new buffer. You can use this method to split a buffer
+ * into a sub-buffers. The sub-buffers retain a reference to their parent buffer, and share
+ * the same memory. Therefore, modifying the parent buffer contents will affect its slices
+ * and vice-versa.
+ *
+ * @param name Optional name that you can use to identify the created buffer in your code.
+ * @param offset The offset in sound frames where the slice starts.
+ * @param size The size of the slice in frames.
+ * @return The requested buffer.
+ */
+- (ALBuffer*)sliceWithName:(NSString *) sliceName offset:(ALsizei) offset size:(ALsizei) size;
+
 
 @end

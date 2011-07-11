@@ -57,6 +57,7 @@
 		bufferData = data;
 		format = formatIn;
 		freeDataOnDestroy = YES;
+		parentBuffer = nil;
 
 		[ALWrapper bufferDataStatic:bufferId format:format data:bufferData size:size frequency:frequency];
 		
@@ -71,6 +72,7 @@
 	[ALWrapper deleteBuffer:bufferId];
 	[device release];
 	[name release];
+	[parentBuffer release];
 	if(freeDataOnDestroy)
 	{
 		free(bufferData);
@@ -118,5 +120,37 @@
 @synthesize duration;
 
 @synthesize freeDataOnDestroy;
+
+#pragma mark Buffer slicing
+
+- (ALBuffer*)sliceWithName:(NSString *) sliceName offset:(ALsizei) offset size:(ALsizei) size {
+	int frameSize = self.channels * self.bits / 8;
+	int byteOffset = offset * frameSize;
+	int byteSize = size * frameSize;
+
+	if (offset < 0)
+	{
+		OAL_LOG_ERROR(@"%@: Buffer offset %d is too small. Returning nil", self, offset);
+		return nil;
+	}
+
+	if (size < 1)
+	{
+		OAL_LOG_ERROR(@"%@: Buffer size %d is too small. Returning nil", self, size);
+		return nil;
+	}
+
+	if (byteOffset + byteSize > self.size)
+	{
+		OAL_LOG_ERROR(@"%@: Buffer offset+size goes beyond end of buffer (%d + %d > %d). Returning nil", self, offset, size, self.size / frameSize);
+		return nil;
+	}
+
+	ALBuffer * slice = [ALBuffer bufferWithName:sliceName data:(void*)(byteOffset + (char*)bufferData) size:byteSize
+										 format:self.format frequency:self.frequency];
+	slice.freeDataOnDestroy = NO;
+	slice->parentBuffer = [self retain];
+	return slice;
+}
 
 @end
