@@ -154,7 +154,7 @@
  * @param times the number of times to repeat the buffer in the queue.
  * @return TRUE if the operation was successful.
  */
-- (bool) queueBuffer:(ALBuffer*) bufferIn repeat: (int)times;
+- (bool) queueBuffer:(ALBuffer*) bufferIn repeats:(NSUInteger) repeats;
 
 /** Add buffers to the buffer queue.
  *
@@ -162,6 +162,15 @@
  * @return TRUE if the operation was successful.
  */
 - (bool) queueBuffers:(NSArray*) buffers;
+
+/** Add buffers to the buffer queue, repeating it multiple times.
+ * The buffers will be played in order, repeating the specified number of times.
+ *
+ * @param buffers the buffers to add to the queue.
+ * @param times the number of times to repeat the buffer in the queue.
+ * @return TRUE if the operation was successful.
+ */
+- (bool) queueBuffers:(NSArray*) buffers repeats:(NSUInteger) repeats;
 
 /** Remove a buffer from the buffer queue.
  *
