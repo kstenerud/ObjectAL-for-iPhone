@@ -196,7 +196,7 @@ static volatile SS_CLASSNAME* _##SS_CLASSNAME##_sharedInstance = nil;	\
 	return [super retainCount];	\
 }	\
 	\
-- (void)release	\
+- (oneway void)release	\
 {	\
 	NSAssert1(1==0, @"SynthesizeSingleton: %@ ERROR: -(void)release method did not get swizzled.", self);	\
 }	\
