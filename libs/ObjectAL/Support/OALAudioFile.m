@@ -267,11 +267,17 @@
                 goto onFail;
             }
             bufferOffset += streamDescription.mBytesPerFrame * numFramesRead;
+            if(numFramesRead == 0)
+            {
+                // Sometimes the stream description was wrong and you hit an EOF prematurely
+                break;
+            }
         }
 		
 		if(nil != bufferSize)
 		{
-			*bufferSize = streamSizeInBytes;
+            // Use however many bytes were actually read
+			*bufferSize = bufferOffset;
 		}
 		
 		return streamData;
