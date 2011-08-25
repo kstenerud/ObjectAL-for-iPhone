@@ -61,7 +61,7 @@
 
 		[ALWrapper bufferDataStatic:bufferId format:format data:bufferData size:size frequency:frequency];
 		
-		duration = (float)self.size / ((float)self.frequency * (float)self.bits / 8);
+		duration = (float)self.size / ((float)(self.frequency * self.channels * self.bits) / 8);
 	}
 	return self;
 }
@@ -140,7 +140,7 @@
 		return nil;
 	}
 
-	if (byteOffset + byteSize > self.size)
+	if (byteOffset + byteSize > (ALsizei)self.size)
 	{
 		OAL_LOG_ERROR(@"%@: Buffer offset+size goes beyond end of buffer (%d + %d > %d). Returning nil", self, offset, size, self.size / frameSize);
 		return nil;
