@@ -1204,7 +1204,7 @@
         NSUInteger totalTimes = repeats + 1;
 		ALuint* bufferIds = (ALuint*)malloc(sizeof(ALuint) * totalTimes);
 		ALuint bufferId = bufferIn.bufferId;
-		for(int i = 0; i < totalTimes; i++)
+		for(NSUInteger i = 0; i < totalTimes; i++)
 		{
 			bufferIds[i] = bufferId;
 		}

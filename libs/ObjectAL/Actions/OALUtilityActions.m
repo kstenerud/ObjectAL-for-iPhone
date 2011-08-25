@@ -137,7 +137,7 @@
 		if([actionsIn isKindOfClass:[NSMutableArray class]])
 		{
 			// Take ownership if it's a mutable array.
-			actions = [actionsIn retain];
+			actions = (NSMutableArray*)[actionsIn retain];
 		}
 		else
 		{
@@ -333,7 +333,7 @@ COCOS2D_SUBCLASS(OALSequentialActions)
 		if([actionsIn isKindOfClass:[NSMutableArray class]])
 		{
 			// Take ownership if it's a mutable array.
-			actions = [actionsIn retain];
+			actions = (NSMutableArray*)[actionsIn retain];
 		}
 		else
 		{
