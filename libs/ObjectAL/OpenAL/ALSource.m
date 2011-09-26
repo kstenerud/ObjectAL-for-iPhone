@@ -103,6 +103,7 @@
 
 		[context notifySourceInitializing:self];
 		gain = [ALWrapper getSourcef:sourceId parameter:AL_GAIN];
+		shadowState = AL_INITIAL;
 		
 		[context addSuspendListener:self];
 	}
@@ -541,35 +542,30 @@
 			return;
 		}
 		
-		int newState = 0;
-		
 		if(shouldPause)
 		{
-			abortPlaybackResume = YES;
-			newState = AL_PAUSED;
 			if(AL_PLAYING == self.state)
 			{
-				if(![ALWrapper sourcePause:sourceId])
+                abortPlaybackResume = YES;
+				if([ALWrapper sourcePause:sourceId])
 				{
-					newState = 0;
+					shadowState = AL_PAUSED;
 				}
 			}
 		}
 		else
 		{
-			newState = AL_PLAYING;
 			if(AL_PAUSED == self.state)
 			{
-				if(![ALWrapper sourcePlay:sourceId])
+				if([ALWrapper sourcePlay:sourceId])
+                {
+                    shadowState = AL_PLAYING;
+                }
+                else
 				{
-					newState = AL_STOPPED;
+					shadowState = AL_STOPPED;
 				}
 			}
-		}
-		
-		if(0 != newState)
-		{
-			shadowState = newState;
 		}
 	}
 }

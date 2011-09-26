@@ -148,7 +148,7 @@ static uint startIndex = 0;
 	 */
 	[OALSimpleAudio purgeSharedInstance];
 	[OpenALManager purgeSharedInstance];
-	[OALAudioTracks purgeSharedInstance];
+//	[OALAudioTracks purgeSharedInstance];
 	[OALAudioSession purgeSharedInstance];
 }
 
