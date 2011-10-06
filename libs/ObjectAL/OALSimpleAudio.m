@@ -72,31 +72,64 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 	return [[[self alloc] initWithSources:sources] autorelease];
 }
 
++ (OALSimpleAudio*) sharedInstanceWithReservedSources:(int) reservedSources
+                                          monoSources:(int) monoSources
+                                        stereoSources:(int) stereoSources
+{
+    return [[[self alloc] initWithReservedSources:reservedSources
+                                      monoSources:monoSources
+                                    stereoSources:stereoSources] autorelease];
+}
+
 - (id) init
 {
 	return [self initWithSources:kDefaultReservedSources];
 }
 
-- (id) initWithSources:(int) sources
+- (void) initCommon:(int) reservedSources
+{
+    [OpenALManager sharedInstance].currentContext = context;
+    channel = [[ALChannelSource alloc] initWithSources:reservedSources];
+    
+    backgroundTrack = [[OALAudioTrack alloc] init];
+    
+#if NS_BLOCKS_AVAILABLE && OBJECTAL_USE_BLOCKS
+    oal_dispatch_queue	= dispatch_queue_create("objectal.simpleaudio.queue", NULL);
+#endif
+    pendingLoadCount	= 0;
+    
+    self.preloadCacheEnabled = YES;
+    self.bgVolume = 1.0f;
+    self.effectsVolume = 1.0f;
+}
+
+- (id) initWithReservedSources:(int) reservedSources
+                   monoSources:(int) monoSources
+                 stereoSources:(int) stereoSources
 {
 	if(nil != (self = [super init]))
 	{
-		OAL_LOG_DEBUG(@"%@: Init with %d sources", self, sources);
+		OAL_LOG_DEBUG(@"%@: Init with %d reserved sources, %d mono, %d stereo", self, sources, monoSources, stereoSources);
 		device = [[ALDevice alloc] initWithDeviceSpecifier:nil];
-		context = [[ALContext alloc] initOnDevice:device attributes:nil];
-		[OpenALManager sharedInstance].currentContext = context;
-		channel = [[ALChannelSource alloc] initWithSources:sources];
-		
-		backgroundTrack = [[OALAudioTrack alloc] init];
-		
-#if NS_BLOCKS_AVAILABLE && OBJECTAL_USE_BLOCKS
-		oal_dispatch_queue	= dispatch_queue_create("objectal.simpleaudio.queue", NULL);
-#endif
-		pendingLoadCount	= 0;
+        context = [[ALContext alloc] initOnDevice:device
+                                  outputFrequency:44100
+                                 refreshIntervals:10
+                               synchronousContext:FALSE
+                                      monoSources:monoSources
+                                    stereoSources:stereoSources];
+        [self initCommon:reservedSources];
+	}
+	return self;
+}
 
-		self.preloadCacheEnabled = YES;
-		self.bgVolume = 1.0f;
-		self.effectsVolume = 1.0f;
+- (id) initWithSources:(int) reservedSources
+{
+	if(nil != (self = [super init]))
+	{
+		OAL_LOG_DEBUG(@"%@: Init with %d reserved sources", self, sources);
+		device = [[ALDevice alloc] initWithDeviceSpecifier:nil];
+        context = [[ALContext alloc] initOnDevice:device attributes:nil];
+        [self initCommon:reservedSources];
 	}
 	return self;
 }

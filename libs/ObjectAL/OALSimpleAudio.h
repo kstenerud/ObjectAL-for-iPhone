@@ -208,12 +208,50 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALSimpleAudio);
  */
 + (OALSimpleAudio*) sharedInstanceWithSources:(int) sources;
 
-/** (INTERNAL USE) Initialize with the specified number of reserved sources.
+/** Start OALSimpleAudio with the specified parameters.
  *
- * @param sources the number of sources to reserve when initializing.
+ * With this initializer, you can set the total number of mono and stereo sources
+ * available, as well as how many sources are to be reserved by OALSimpleAudio. <br>
+ *
+ * The number of mono and stereo sources represents the GLOBAL number of sources
+ * available for EVERYONE, not just OALSimpleAudio. Their combined values must
+ * not exceed 32 (the max allowed sources in iOS). <br>
+ *
+ * reservedSources is independent of this; it represents how many of the above
+ * mentioned sources to reserve for OALSimpleAudio's use. <br>
+ * 
+ * <strong>Note:</strong> This method must be called ONLY ONCE, <em>BEFORE</em>
+ * any attempt is made to access the shared instance. <br>
+ *
+ * @param reservedSources The number of sources to reserve for OALSimpleAudio's
+ *                        use when initializing.
+ *                        iOS currently supports up to 32 sources total.
+ * @param monoSources The GLOBAL number of sources supporting mono (default 28).
+ * @param stereoSources The GLOBAL number of sources supporting stereo (default 4).
+ *
  * @return The shared instance.
  */
-- (id) initWithSources:(int) sources;
++ (OALSimpleAudio*) sharedInstanceWithReservedSources:(int) reservedSources
+                                          monoSources:(int) monoSources
+                                        stereoSources:(int) stereoSources;
+
+/** (INTERNAL USE) Initialize with the specified number of reserved sources.
+ *
+ * @param reservedSources the number of sources to reserve when initializing.
+ * @return The shared instance.
+ */
+- (id) initWithSources:(int) reservedSources;
+
+/** (INTERNAL USE) Initialize with the specified parameters.
+ *
+ * @param reservedSources The number of sources to reserve for OALSimpleAudio's use when initializing.
+ * @param monoSources The GLOBAL number of sources supporting mono (default 28).
+ * @param stereoSources The GLOBAL number of sources supporting stereo (default 4).
+ * @return The shared instance.
+ */
+- (id) initWithReservedSources:(int) reservedSources
+                   monoSources:(int) monoSources
+                 stereoSources:(int) stereoSources;
 
 /** Close any OS resources in use by this object.
  * Any operations called on this object after closing will likely fail.

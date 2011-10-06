@@ -135,13 +135,13 @@
 /** Create a new context on the specified device with attributes.
  *
  * @param device The device to open the context on.
- * @param outputFrequency The frequency to mix all sources to before outputting.
+ * @param outputFrequency The frequency to mix all sources to before outputting (ignored by iOS).
  * @param refreshIntervals The number of passes per second used to mix the audio sources.
- *        For games this can be 5-15. For audio intensive apps, it should be higher.
+ *        For games this can be 5-15. For audio intensive apps, it should be higher (ignored by iOS).
  * @param synchronousContext If true, this context runs on the main thread and depends on you
- *        calling alcUpdateContext (best to leave this FALSE unless you know what you're doing).
- * @param monoSources A hint indicating how many sources should support mono.
- * @param stereoSources A hint indicating how many sources should support stereo.
+ *        calling alcUpdateContext (ignored by iOS).
+ * @param monoSources A hint indicating how many sources should support mono (default 28 on iOS).
+ * @param stereoSources A hint indicating how many sources should support stereo (default 4 on iOS).
  * @return A new context.
  */
 + (id) contextOnDevice:(ALDevice*) device
@@ -155,13 +155,13 @@
 /** Initialize this context on the specified device with attributes.
  *
  * @param device The device to open the context on.
- * @param outputFrequency The frequency to mix all sources to before outputting.
+ * @param outputFrequency The frequency to mix all sources to before outputting (ignored by iOS).
  * @param refreshIntervals The number of passes per second used to mix the audio sources.
- *        For games this can be 5-15. For audio intensive apps, it should be higher.
+ *        For games this can be 5-15. For audio intensive apps, it should be higher (ignored by iOS).
  * @param synchronousContext If true, this context runs on the main thread and depends on you
- *        calling alcUpdateContext (best to leave this FALSE unless you know what you're doing).
- * @param monoSources A hint indicating how many sources should support mono.
- * @param stereoSources A hint indicating how many sources should support stereo.
+ *        calling alcUpdateContext (ignored by iOS).
+ * @param monoSources A hint indicating how many sources should support mono (default 28 on iOS).
+ * @param stereoSources A hint indicating how many sources should support stereo (default 4 on iOS).
  * @return The initialized context.
  */
 - (id) initOnDevice:(ALDevice*) device
