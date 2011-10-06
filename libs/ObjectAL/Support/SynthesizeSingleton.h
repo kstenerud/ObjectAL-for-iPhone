@@ -110,7 +110,8 @@ static volatile SS_CLASSNAME* _##SS_CLASSNAME##_sharedInstance = nil;	\
 	\
 + (SS_CLASSNAME*) sharedInstanceNoSynch	\
 {	\
-	return (SS_CLASSNAME*) _##SS_CLASSNAME##_sharedInstance;	\
+    SS_CLASSNAME* instance = (SS_CLASSNAME*) _##SS_CLASSNAME##_sharedInstance; \
+    return instance;	\
 }	\
 	\
 + (SS_CLASSNAME*) sharedInstanceSynch	\
@@ -126,7 +127,8 @@ static volatile SS_CLASSNAME* _##SS_CLASSNAME##_sharedInstance = nil;	\
 			NSAssert2(1==0, @"SynthesizeSingleton: %@ ERROR: +(%@ *)sharedInstance method did not get swizzled.", self, self);	\
 		}	\
 	}	\
-	return (SS_CLASSNAME*) _##SS_CLASSNAME##_sharedInstance;	\
+    SS_CLASSNAME* instance = (SS_CLASSNAME*) _##SS_CLASSNAME##_sharedInstance; \
+    return instance;	\
 }	\
 	\
 + (SS_CLASSNAME*) sharedInstance	\
@@ -151,7 +153,8 @@ static volatile SS_CLASSNAME* _##SS_CLASSNAME##_sharedInstance = nil;	\
 			}	\
 		}	\
 	}	\
-	return _##SS_CLASSNAME##_sharedInstance;	\
+    SS_CLASSNAME* instance = (SS_CLASSNAME*) _##SS_CLASSNAME##_sharedInstance; \
+    return instance;	\
 }	\
 	\
 + (void)purgeSharedInstance	\
@@ -302,7 +305,8 @@ static volatile SS_CLASSNAME* _##SS_CLASSNAME##_sharedInstance = nil;	\
 	\
 + (SS_CLASSNAME*) sharedInstanceNoSynch	\
 {	\
-	return (SS_CLASSNAME*) _##SS_CLASSNAME##_sharedInstance;	\
+    SS_CLASSNAME* instance = (SS_CLASSNAME*) _##SS_CLASSNAME##_sharedInstance; \
+	return instance;	\
 }	\
 	\
 + (SS_CLASSNAME*) sharedInstanceSynch	\
@@ -323,7 +327,8 @@ static volatile SS_CLASSNAME* _##SS_CLASSNAME##_sharedInstance = nil;	\
 			NSAssert2(1==0, @"SynthesizeSingleton: %@ ERROR: +(%@ *)sharedInstance method did not get swizzled.", self, self);	\
 		}	\
 	}	\
-	return (SS_CLASSNAME*) _##SS_CLASSNAME##_sharedInstance;	\
+    SS_CLASSNAME* instance = (SS_CLASSNAME*) _##SS_CLASSNAME##_sharedInstance; \
+    return instance;	\
 }	\
 	\
 + (SS_CLASSNAME*) sharedInstance	\
