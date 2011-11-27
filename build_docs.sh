@@ -10,6 +10,9 @@
 #
 ########################################################################
 
+set -e
+set -u
+
 # Set to 1 to build the latex documentation for PDF generation.
 GENERATE_PDF=0
 
@@ -52,9 +55,11 @@ DOX_NAME="org.doxygen.$PROJECT_NAME"
 doxset() {
     subst=${2//\//\\\/}
     subst=${subst//\"/\\\"/}
+    set +u
     if [ "$3" != "NO_QUOTES" -a `expr "$subst" : ".*[ '].*"` -gt 0 ]; then
         subst=\"$subst\"
     fi
+    set -u
     cat "$DOX_DEST" | sed -E "s/($1[ \t]+=[ \t]*).*$/\1$subst/g" >"$DOX_TEMP"
     mv -f "$DOX_TEMP" "$DOX_DEST"
 }
@@ -70,13 +75,15 @@ fi
 #
 #  Make a copy of the default config
 #
-cp "$DOX_SRC" "$DOX_DEST"
+if [ "$DOX_SRC" != "$DOX_DEST" ]; then
+    cp "$DOX_SRC" "$DOX_DEST"
+fi
 
 #
 # Customize the settings we want to change
 #
 doxset PROJECT_NAME         "$PROJECT_NAME"
-doxset INPUT                "$SOURCE_ROOT/libs/ObjectAL"
+doxset INPUT                "$SOURCE_ROOT/ObjectAL/ObjectAL"
 doxset IMAGE_PATH           "$SOURCE_ROOT/diagrams"
 doxset OUTPUT_DIRECTORY     "$DOX_SET"
 doxset DOCSET_BUNDLE_ID     "$DOX_NAME"
