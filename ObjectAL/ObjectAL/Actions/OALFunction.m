@@ -28,6 +28,7 @@
 //
 
 #import "OALFunction.h"
+#import "ObjectALMacros.h"
 
 
 #pragma mark OALLinearFunction
@@ -158,22 +159,22 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALLogarithmicFunction);
 
 + (id) functionWithFunction:(id<OALFunction, NSObject>) function
 {
-	return [[[self alloc] initWithFunction:function] autorelease];
+	return arcsafe_autorelease([[self alloc] initWithFunction:function]);
 }
 
 - (id) initWithFunction:(id<OALFunction, NSObject>) functionIn
 {
 	if(nil != (self = [super init]))
 	{
-		function = [functionIn retain];
+		function = arcsafe_retain(functionIn);
 	}
 	return self;
 }
 
 - (void) dealloc
 {
-	[function release];
-	[super dealloc];
+	arcsafe_release(function);
+    arcsafe_super_dealloc();
 }
 
 

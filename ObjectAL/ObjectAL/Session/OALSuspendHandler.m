@@ -29,13 +29,14 @@
 
 #import "OALSuspendHandler.h"
 #import "NSMutableArray+WeakReferences.h"
+#import "ObjectALMacros.h"
 #import <objc/message.h>
 
 @implementation OALSuspendHandler
 
 + (OALSuspendHandler*) handlerWithTarget:(id) target selector:(SEL) selector
 {
-	return [[[self alloc] initWithTarget:target selector:selector] autorelease];
+	return arcsafe_autorelease([[self alloc] initWithTarget:target selector:selector]);
 }
 
 - (id) initWithTarget:(id) target selector:(SEL) selector
@@ -52,10 +53,9 @@
 
 - (void) dealloc
 {
-	[listeners release];
-	[manualSuspendStates release];
-
-	[super dealloc];
+	arcsafe_release(listeners);
+	arcsafe_release(manualSuspendStates);
+    arcsafe_super_dealloc();
 }
 
 - (void) addSuspendListener:(id<OALSuspendListener>) listener

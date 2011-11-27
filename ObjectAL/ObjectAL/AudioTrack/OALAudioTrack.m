@@ -80,15 +80,15 @@
 
 + (id) operationWithTrack:(OALAudioTrack*) track url:(NSURL*) url seekTime:(NSTimeInterval)seekTime target:(id) target selector:(SEL) selector
 {
-	return [[[self alloc] initWithTrack:track url:url seekTime:seekTime target:target selector:selector] autorelease];
+	return arcsafe_autorelease([[self alloc] initWithTrack:track url:url seekTime:seekTime target:target selector:selector]);
 }
 
 - (id) initWithTrack:(OALAudioTrack*) track url:(NSURL*) urlIn seekTime:(NSTimeInterval)seekTimeIn target:(id) targetIn selector:(SEL) selectorIn
 {
 	if(nil != (self = [super init]))
 	{
-		audioTrack = [track retain];
-		url = [urlIn retain];
+		audioTrack = arcsafe_retain(track);
+		url = arcsafe_retain(urlIn);
 		seekTime = seekTimeIn;
 		target = targetIn;
 		selector = selectorIn;
@@ -98,10 +98,9 @@
 
 - (void) dealloc
 {
-	[audioTrack release];
-	[url release];
-	
-	[super dealloc];
+	arcsafe_release(audioTrack);
+	arcsafe_release(url);
+    arcsafe_super_dealloc();
 }
 
 @end
@@ -147,7 +146,7 @@
 
 + (id) operationWithTrack:(OALAudioTrack*) track url:(NSURL*) url loops:(NSInteger) loops target:(id) target selector:(SEL) selector
 {
-	return [[[self alloc] initWithTrack:track url:url loops:loops target:target selector:selector] autorelease];
+	return arcsafe_autorelease([[self alloc] initWithTrack:track url:url loops:loops target:target selector:selector]);
 }
 
 - (id) initWithTrack:(OALAudioTrack*) track url:(NSURL*) urlIn loops:(NSInteger) loopsIn target:(id) targetIn selector:(SEL) selectorIn
@@ -220,7 +219,7 @@
 
 + (id) track
 {
-	return [[[self alloc] init] autorelease];
+	return arcsafe_autorelease([[self alloc] init]);
 }
 
 - (id) init
@@ -251,17 +250,16 @@
 
 	[self closeOSResources];
 
-	[player release];
-	[operationQueue release];
-	[currentlyLoadedUrl release];
-	[simulatorPlayerRef release];
+	arcsafe_release(player);
+	arcsafe_release(operationQueue);
+	arcsafe_release(currentlyLoadedUrl);
+	arcsafe_release(simulatorPlayerRef);
 	[gainAction stopAction];
-	[gainAction release];
+	arcsafe_release(gainAction);
 	[panAction stopAction];
-	[panAction release];
-	[suspendHandler release];
-
-	[super dealloc];
+	arcsafe_release(panAction);
+	arcsafe_release(suspendHandler);
+	arcsafe_super_dealloc();
 }
 
 - (void) closeOSResources
@@ -272,7 +270,7 @@
 		{
 			player.delegate = nil;
 			[player stop];
-			[player release];
+			arcsafe_release(player);
 			player = nil;
 		}
 	}
@@ -563,13 +561,13 @@
 		if(preloaded)
 		{
 			NSError* error;
-			[player release];
+			arcsafe_release(player);
 			player = [[AVAudioPlayer alloc] initWithContentsOfURL:currentlyLoadedUrl error:&error];
 			if(nil != error)
 			{
 				OAL_LOG_ERROR(@"%@: Could not reload URL %@: %@",
 							  self, currentlyLoadedUrl, [error localizedDescription]);
-				[player release];
+				arcsafe_release(player);
 				player = nil;
 				preloaded = NO;
 				playing = NO;
@@ -591,7 +589,7 @@
 			if(![player prepareToPlay])
 			{
 				OAL_LOG_ERROR(@"%@: Failed to prepareToPlay on resume: %@", self, currentlyLoadedUrl);
-				[player release];
+				arcsafe_release(player);
 				player = nil;
 				preloaded = NO;
 				playing = NO;
@@ -661,7 +659,7 @@
 			[player stop];
 		}
 
-		[player release];
+		arcsafe_release(player);
 
 		if(wasPlaying)
 		{
@@ -685,8 +683,8 @@
 			player.pan = pan;
 		}
 		
-		[currentlyLoadedUrl release];
-		currentlyLoadedUrl = [url retain];
+		arcsafe_release(currentlyLoadedUrl);
+		currentlyLoadedUrl = arcsafe_retain(url);
 		
 		self.currentTime = seekTime;
 		playing = NO;
@@ -885,10 +883,11 @@
 	@synchronized(self)
 	{
 		[self stopFade];
-		gainAction = [[OALSequentialActions actions:
+		gainAction = [OALSequentialActions actions:
 					   [OALGainAction actionWithDuration:duration endValue:value],
 					   [OALCallAction actionWithCallTarget:target selector:selector withObject:self],
-					   nil] retain];
+					   nil];
+        arcsafe_retain_unused(gainAction);
 		[gainAction runWithTarget:self];
 	}
 }
@@ -899,7 +898,7 @@
 	@synchronized(self)
 	{
 		[gainAction stopAction];
-		[gainAction release];
+		arcsafe_release(gainAction);
 		gainAction = nil;
 	}
 }
@@ -915,10 +914,11 @@
 		@synchronized(self)
 		{
 			[self stopPan];
-			panAction = [[OALSequentialActions actions:
+			panAction = [OALSequentialActions actions:
 						  [OALPanAction actionWithDuration:duration endValue:value],
 						  [OALCallAction actionWithCallTarget:target selector:selector withObject:self],
-						  nil] retain];
+						  nil];
+            arcsafe_retain_unused(panAction);
 			[panAction runWithTarget:self];
 		}
 	}
@@ -932,7 +932,7 @@
 		@synchronized(self)
 		{
 			[panAction stopAction];
-			[panAction release];
+			arcsafe_release(panAction);
 			panAction = nil;
 		}
 	}
@@ -943,11 +943,11 @@
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[self stopActions];
-		[currentlyLoadedUrl release];
+		arcsafe_release(currentlyLoadedUrl);
 		currentlyLoadedUrl = nil;
 		
 		[player stop];
-		[player release];
+		arcsafe_release(player);
 		player = nil;
 		playing = NO;
 		paused = NO;

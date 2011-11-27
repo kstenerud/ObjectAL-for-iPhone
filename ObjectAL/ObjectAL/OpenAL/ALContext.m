@@ -60,7 +60,7 @@
 
 + (id) contextOnDevice:(ALDevice *) device attributes:(NSArray*) attributes
 {
-	return [[[self alloc] initOnDevice:device attributes:attributes] autorelease];
+	return arcsafe_autorelease([[self alloc] initOnDevice:device attributes:attributes]);
 }
 
 + (id) contextOnDevice:(ALDevice*) device
@@ -142,7 +142,7 @@
 		if(nil == deviceIn)
 		{
 			OAL_LOG_ERROR(@"%@: Failed to init because device was nil. Returning nil", self);
-			[self release];
+			arcsafe_release(self);
 			return nil;
 		}
 
@@ -162,7 +162,7 @@
 		}
 		
 		// Notify the device that we are being created.
-		device = [deviceIn retain];
+		device = arcsafe_retain(deviceIn);
 		[device notifyContextInitializing:self];
 
 		// Open the context with our list of attributes.
@@ -216,13 +216,12 @@
 
 	[self closeOSResources];
 	
-	[sources release];
-	[listener release];
-	[device release];
-	[attributes release];
-	[suspendHandler release];
-
-	[super dealloc];
+	arcsafe_release(sources);
+	arcsafe_release(listener);
+	arcsafe_release(device);
+	arcsafe_release(attributes);
+	arcsafe_release(suspendHandler);
+	arcsafe_super_dealloc();
 }
 
 - (void) closeOSResources
@@ -248,7 +247,7 @@
 		if(nil != context)
 		{
 			[sources makeObjectsPerformSelector:@selector(close)];
-			[sources release];
+			arcsafe_release(sources);
 			sources = nil;
 			
 			[self closeOSResources];

@@ -29,6 +29,7 @@
 
 #import "OALAction.h"
 #import "OALActionManager.h"
+#import "ObjectALMacros.h"
 
 
 #if !OBJECTAL_USE_COCOS2D_ACTIONS
@@ -183,17 +184,17 @@
 + (id) actionWithDuration:(float) duration
 				 endValue:(float) endValue
 {
-	return [[[self alloc] initWithDuration:duration
-								  endValue:endValue] autorelease];
+	return arcsafe_autorelease([[self alloc] initWithDuration:duration
+                                                     endValue:endValue]);
 }
 
 + (id) actionWithDuration:(float) duration
 				 endValue:(float) endValue
 				 function:(id<OALFunction,NSObject>) function
 {
-	return [[[self alloc] initWithDuration:duration
-								  endValue:endValue
-								  function:function] autorelease];
+	return arcsafe_autorelease([[self alloc] initWithDuration:duration
+                                                     endValue:endValue
+                                                     function:function]);
 }
 
 + (id) actionWithDuration:(float) duration
@@ -201,10 +202,10 @@
 				 endValue:(float) endValue
 				 function:(id<OALFunction,NSObject>) function
 {
-	return [[[self alloc] initWithDuration:duration
-								startValue:startValue
-								  endValue:endValue
-								  function:function] autorelease];
+	return arcsafe_autorelease([[self alloc] initWithDuration:duration
+                                                   startValue:startValue
+                                                     endValue:endValue
+                                                     function:function]);
 }
 
 - (id) initWithDuration:(float) durationIn endValue:(float) endValueIn
@@ -234,7 +235,7 @@
 	{
 		startValue = startValueIn;
 		endValue = endValueIn;
-		function = [functionIn retain];
+		function = arcsafe_retain(functionIn);
 		reverseFunction = [[OALReverseFunction alloc] initWithFunction:function];
 		realFunction = function;
 	}
@@ -243,9 +244,9 @@
 
 - (void) dealloc
 {
-	[function release];
-	[reverseFunction release];
-	[super dealloc];
+	arcsafe_release(function);
+	arcsafe_release(reverseFunction);
+    arcsafe_super_dealloc();
 }
 
 
@@ -258,9 +259,8 @@
 
 - (void) setFunction:(id <OALFunction,NSObject>) value
 {
-	id <OALFunction,NSObject> oldValue = function;
-	function = [value retain];
-	[oldValue release];
+    arcsafe_autorelease_unused(function);
+	function = arcsafe_retain(value);
 	reverseFunction.function = function;
 }
 

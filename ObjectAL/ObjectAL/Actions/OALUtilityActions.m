@@ -28,6 +28,7 @@
 //
 
 #import "OALUtilityActions.h"
+#import "ObjectALMacros.h"
 
 
 #pragma mark OALTargetedAction
@@ -39,7 +40,7 @@
 
 + (id) actionWithTarget:(id) target action:(OALAction*) action
 {
-	return [[(OALTargetedAction*)[self alloc] initWithTarget:target action:action] autorelease];
+	return arcsafe_autorelease([(OALTargetedAction*)[self alloc] initWithTarget:target action:action]);
 }
 
 - (id) initWithTarget:(id) targetIn action:(OALAction*) actionIn
@@ -47,7 +48,7 @@
 	if(nil != (self = [super initWithDuration:actionIn.duration]))
 	{
 		forcedTarget = targetIn; // Weak reference
-		action = [actionIn retain];
+		action = arcsafe_retain(actionIn);
 		duration = action.duration;
 	}
 	return self;
@@ -55,8 +56,8 @@
 
 - (void) dealloc
 {
-	[action release];
-	[super dealloc];
+	arcsafe_release(action);
+    arcsafe_super_dealloc();
 }
 
 
@@ -125,12 +126,12 @@
 	}
 	va_end(params);
 	
-	return [[[self alloc] initWithActions:actions] autorelease];
+	return arcsafe_autorelease([[self alloc] initWithActions:actions]);
 }
 
 + (id) actionsFromArray:(NSArray*) actions;
 {
-	return [[[self alloc] initWithActions:actions] autorelease];
+	return arcsafe_autorelease([[self alloc] initWithActions:actions]);
 }
 
 - (id) initWithActions:(NSArray*) actionsIn
@@ -140,7 +141,7 @@
 		if([actionsIn isKindOfClass:[NSMutableArray class]])
 		{
 			// Take ownership if it's a mutable array.
-			actions = (NSMutableArray*)[actionsIn retain];
+			actions = (NSMutableArray*)arcsafe_retain(actionsIn);
 		}
 		else
 		{
@@ -155,9 +156,9 @@
 
 - (void) dealloc
 {
-	[actions release];
-	[pDurations release];
-	[super dealloc];
+	arcsafe_release(actions);
+	arcsafe_release(pDurations);
+    arcsafe_super_dealloc();
 }
 
 
@@ -321,12 +322,12 @@ COCOS2D_SUBCLASS(OALSequentialActions)
 	}
 	va_end(params);
 	
-	return [[[self alloc] initWithActions:actions] autorelease];
+	return arcsafe_autorelease([[self alloc] initWithActions:actions]);
 }
 
 + (id) actionsFromArray:(NSArray*) actions;
 {
-	return [[[self alloc] initWithActions:actions] autorelease];
+	return arcsafe_autorelease([[self alloc] initWithActions:actions]);
 }
 
 - (id) initWithActions:(NSArray*) actionsIn
@@ -336,7 +337,7 @@ COCOS2D_SUBCLASS(OALSequentialActions)
 		if([actionsIn isKindOfClass:[NSMutableArray class]])
 		{
 			// Take ownership if it's a mutable array.
-			actions = (NSMutableArray*)[actionsIn retain];
+			actions = (NSMutableArray*)arcsafe_retain(actionsIn);
 		}
 		else
 		{
@@ -352,10 +353,10 @@ COCOS2D_SUBCLASS(OALSequentialActions)
 
 - (void) dealloc
 {
-	[actions release];
-	[pDurations release];
-	[actionsWithDuration release];
-	[super dealloc];
+	arcsafe_release(actions);
+	arcsafe_release(pDurations);
+	arcsafe_release(actionsWithDuration);
+	arcsafe_super_dealloc();
 }
 
 
@@ -465,16 +466,16 @@ COCOS2D_SUBCLASS(OALConcurrentActions)
 + (id) actionWithCallTarget:(id) callTarget
 				   selector:(SEL) selector
 {
-	return [[[self alloc] initWithCallTarget:callTarget selector:selector] autorelease];
+	return arcsafe_autorelease([[self alloc] initWithCallTarget:callTarget selector:selector]);
 }
 
 + (id) actionWithCallTarget:(id) callTarget
 				   selector:(SEL) selector
 				 withObject:(id) object
 {
-	return [[[self alloc] initWithCallTarget:callTarget
-									selector:selector
-								  withObject:object] autorelease];
+	return arcsafe_autorelease([[self alloc] initWithCallTarget:callTarget
+                                                       selector:selector
+                                                     withObject:object]);
 }
 
 + (id) actionWithCallTarget:(id) callTarget
@@ -482,10 +483,10 @@ COCOS2D_SUBCLASS(OALConcurrentActions)
 				 withObject:(id) firstObject
 				 withObject:(id) secondObject
 {
-	return [[[self alloc] initWithCallTarget:callTarget
-									selector:selector
-								  withObject:firstObject
-								  withObject:secondObject] autorelease];
+	return arcsafe_autorelease([[self alloc] initWithCallTarget:callTarget
+                                                       selector:selector
+                                                     withObject:firstObject
+                                                     withObject:secondObject]);
 }
 
 - (id) initWithCallTarget:(id) callTargetIn selector:(SEL) selectorIn

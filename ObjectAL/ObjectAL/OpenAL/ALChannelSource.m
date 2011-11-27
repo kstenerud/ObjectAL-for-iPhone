@@ -93,7 +93,7 @@
 
 + (id) channelWithSources:(int) reservedSources
 {
-	return [[[self alloc] initWithSources:reservedSources] autorelease];
+	return arcsafe_autorelease([[self alloc] initWithSources:reservedSources]);
 }
 
 - (id) initWithSources:(int) reservedSources
@@ -102,7 +102,7 @@
 	{
 		OAL_LOG_DEBUG(@"%@: Init with %d sources", self, reservedSources);
 
-		context = [[OpenALManager sharedInstance].currentContext retain];
+		context = arcsafe_retain([OpenALManager sharedInstance].currentContext);
 
 		sourcePool = [[ALSoundSourcePool alloc] init];
 
@@ -120,10 +120,10 @@
 	
 	[self closeOSResources];
 
-	[sourcePool release];
-	[context release];
+	arcsafe_release(sourcePool);
+	arcsafe_release(context);
 
-	[super dealloc];
+    arcsafe_super_dealloc();
 }
 
 - (void) closeOSResources
@@ -138,7 +138,7 @@
 		if(nil != sourcePool)
 		{
 			[sourcePool close];
-			[sourcePool release];
+			arcsafe_release(sourcePool);
 			sourcePool = nil;
 			
 			[self closeOSResources];
@@ -571,7 +571,7 @@ SYNTHESIZE_DELEGATE_PROPERTY(velocity, Velocity, ALVector);
                 return nil;
             }
         }
-        [[source retain] autorelease];
+        arcsafe_autorelease_unused(arcsafe_retain(source));
         [sourcePool removeSource:source];
     }
     

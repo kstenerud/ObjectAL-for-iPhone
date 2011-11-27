@@ -60,7 +60,7 @@
 
 + (id) pool
 {
-	return [[[self alloc] init] autorelease];
+	return arcsafe_autorelease([[self alloc] init]);
 }
 
 - (id) init
@@ -76,8 +76,8 @@
 {
 	[self closeOSResources];
 
-	[sources release];
-	[super dealloc];
+	arcsafe_release(sources);
+	arcsafe_super_dealloc();
 }
 
 - (void) closeOSResources
@@ -92,7 +92,7 @@
 		if(nil != sources)
 		{
 			[sources makeObjectsPerformSelector:@selector(close)];
-			[sources release];
+			arcsafe_release(sources);
 			sources = nil;
 			
 			[self closeOSResources];
@@ -128,10 +128,10 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		id source = [[sources objectAtIndex:(NSUInteger)index] retain];
+		id source = arcsafe_retain([sources objectAtIndex:(NSUInteger)index]);
 		[sources removeObjectAtIndex:(NSUInteger)index];
 		[sources addObject:source];
-		[source release];
+		arcsafe_release(source);
 	}
 }
 

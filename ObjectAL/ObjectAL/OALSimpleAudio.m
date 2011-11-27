@@ -67,21 +67,84 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALSimpleAudio);
 
 #pragma mark Object Management
 
-SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
+
+static volatile OALSimpleAudio* _OALSimpleAudio_sharedInstance = nil;	\
+\
++ (OALSimpleAudio*) sharedInstanceNoSynch	\
+{	\
+    OALSimpleAudio* instance = (OALSimpleAudio*) _OALSimpleAudio_sharedInstance; \
+    return instance;	\
+}	\
+\
++ (OALSimpleAudio*) sharedInstanceSynch	\
+{	\
+    @synchronized(self)	\
+    {	\
+        if(nil == _OALSimpleAudio_sharedInstance)	\
+        {	\
+            _OALSimpleAudio_sharedInstance = [[self alloc] init];	\
+        }	\
+    }	\
+    return (OALSimpleAudio*) _OALSimpleAudio_sharedInstance;	\
+}	\
+\
++ (OALSimpleAudio*) sharedInstance	\
+{	\
+    return [self sharedInstanceSynch]; \
+}	\
+\
++ (id)allocWithZone:(NSZone*) zone	\
+{	\
+    @synchronized(self)	\
+    {	\
+        if (nil == _OALSimpleAudio_sharedInstance)	\
+        {	\
+            _OALSimpleAudio_sharedInstance = [super allocWithZone:zone];	\
+            if(nil != _OALSimpleAudio_sharedInstance)	\
+            {	\
+                Method newSharedInstanceMethod = class_getClassMethod(self, @selector(sharedInstanceNoSynch));	\
+                method_setImplementation(class_getClassMethod(self, @selector(sharedInstance)), method_getImplementation(newSharedInstanceMethod));	\
+            }	\
+        }	\
+    }	\
+    OALSimpleAudio* instance = (OALSimpleAudio*) _OALSimpleAudio_sharedInstance; \
+    return instance;	\
+}	\
+\
++ (void)purgeSharedInstance	\
+{	\
+    @synchronized(self)	\
+    {	\
+        if(nil != _OALSimpleAudio_sharedInstance)	\
+        {	\
+            _OALSimpleAudio_sharedInstance = nil;	\
+            Method newSharedInstanceMethod = class_getClassMethod(self, @selector(sharedInstanceSynch));	\
+            method_setImplementation(class_getClassMethod(self, @selector(sharedInstance)), method_getImplementation(newSharedInstanceMethod));	\
+        }	\
+    }	\
+}	\
+\
+- (id)copyWithZone:(NSZone *)zone	\
+{	\
+    _Pragma ( "unused(zone)" ) \
+    return self;	\
+}	\
+
+//SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 
 
 + (OALSimpleAudio*) sharedInstanceWithSources:(int) sources
 {
-	return [[[self alloc] initWithSources:sources] autorelease];
+	return arcsafe_autorelease([[self alloc] initWithSources:sources]);
 }
 
 + (OALSimpleAudio*) sharedInstanceWithReservedSources:(int) reservedSources
                                           monoSources:(int) monoSources
                                         stereoSources:(int) stereoSources
 {
-    return [[[self alloc] initWithReservedSources:reservedSources
-                                      monoSources:monoSources
-                                    stereoSources:stereoSources] autorelease];
+    return arcsafe_autorelease([[self alloc] initWithReservedSources:reservedSources
+                                                         monoSources:monoSources
+                                                       stereoSources:stereoSources]);
 }
 
 - (id) init
@@ -146,14 +209,13 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 	
 	[self closeOSResources];
 	
-	[backgroundTrack release];
+	arcsafe_release(backgroundTrack);
 	[channel stop];
-	[channel release];
-	[context release];
-	[device release];
-	[preloadCache release];
-	
-	[super dealloc];
+	arcsafe_release(channel);
+	arcsafe_release(context);
+	arcsafe_release(device);
+	arcsafe_release(preloadCache);
+	arcsafe_super_dealloc();
 }
 
 - (void) closeOSResources
@@ -168,19 +230,19 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 		if(nil != backgroundTrack)
 		{
 			[backgroundTrack close];
-			[backgroundTrack release];
+			arcsafe_release(backgroundTrack);
 			backgroundTrack = nil;
 
 			[channel close];
-			[channel release];
+			arcsafe_release(channel);
 			channel = nil;
 			
 			[context close];
-			[context release];
+			arcsafe_release(context);
 			context = nil;
 			
 			[device close];
-			[device release];
+			arcsafe_release(device);
 			device = nil;
 
 			[self closeOSResources];
@@ -225,7 +287,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 				}
 				else
 				{
-					[preloadCache release];
+					arcsafe_release(preloadCache);
 					preloadCache = nil;
 				}
 			}

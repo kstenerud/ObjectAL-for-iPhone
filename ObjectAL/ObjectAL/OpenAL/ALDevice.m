@@ -52,7 +52,7 @@
 
 + (id) deviceWithDeviceSpecifier:(NSString*) deviceSpecifier
 {
-	return [[[self alloc] initWithDeviceSpecifier:deviceSpecifier] autorelease];
+	return arcsafe_autorelease([[self alloc] initWithDeviceSpecifier:deviceSpecifier]);
 }
 
 - (id) initWithDeviceSpecifier:(NSString*) deviceSpecifier
@@ -65,7 +65,7 @@
 		if(nil == device)
 		{
 			OAL_LOG_ERROR(@"%@: Failed to init device %@. Returning nil", self, deviceSpecifier);
-			[self release];
+			arcsafe_release(self);
 			return nil;
 		}
 
@@ -88,10 +88,9 @@
 
 	[self closeOSResources];
 	
-	[contexts release];
-	[suspendHandler release];
-
-	[super dealloc];
+	arcsafe_release(contexts);
+	arcsafe_release(suspendHandler);
+	arcsafe_super_dealloc();
 }
 
 - (void) closeOSResources
@@ -113,7 +112,7 @@
 		if(nil != contexts)
 		{
 			[contexts makeObjectsPerformSelector:@selector(close)];
-			[contexts release];
+			arcsafe_release(contexts);
 			contexts = nil;
 
 			[self closeOSResources];

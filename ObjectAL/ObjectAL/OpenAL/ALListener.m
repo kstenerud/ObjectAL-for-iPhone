@@ -39,7 +39,7 @@
 
 + (id) listenerForContext:(ALContext*) context
 {
-	return [[[self alloc] initWithContext:context] autorelease];
+	return arcsafe_autorelease([[self alloc] initWithContext:context]);
 }
 
 - (id) initWithContext:(ALContext*) contextIn
@@ -56,8 +56,8 @@
 
 - (void) dealloc
 {
-	[suspendHandler release];
-	[super dealloc];
+	arcsafe_release(suspendHandler);
+	arcsafe_super_dealloc();
 }
 
 #pragma mark Properties

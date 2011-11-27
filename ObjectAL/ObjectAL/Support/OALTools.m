@@ -114,7 +114,7 @@
 		description = [[NSString alloc] initWithFormat:description arguments:args];
 		va_end(args);
 		OAL_LOG_ERROR_CONTEXT(function, @"%@ (error code 0x%08x: %@)", description, errorCode, errorString);
-		[description release];
+		arcsafe_release(description);
 	}
 }
 
@@ -180,7 +180,7 @@
 		description = [[NSString alloc] initWithFormat:description arguments:args];
 		va_end(args);
 		OAL_LOG_ERROR_CONTEXT(function, @"%@ (error code 0x%08x: %@)", description, errorCode, errorString);
-		[description release];
+		arcsafe_release(description);
 #else
         #pragma unused(function)
         #pragma unused(description)

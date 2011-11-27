@@ -95,10 +95,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioTracks);
 
 	[self closeOSResources];
 
-	[tracks release];
-	[suspendHandler release];
-	
-	[super dealloc];
+	arcsafe_release(tracks);
+	arcsafe_release(suspendHandler);
+	arcsafe_super_dealloc();
 }
 
 - (void) closeOSResources
@@ -113,7 +112,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioTracks);
 		if(nil != tracks)
 		{
 			[tracks makeObjectsPerformSelector:@selector(close)];
-			[tracks release];
+			arcsafe_release(tracks);
 			tracks = nil;
 			
 			[self closeOSResources];

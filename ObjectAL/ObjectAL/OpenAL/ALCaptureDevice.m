@@ -53,10 +53,10 @@
 						  format:(ALCenum) format
 					  bufferSize:(ALCsizei) bufferSize
 {
-	return [[[self alloc] initWithDeviceSpecifier:deviceSpecifier
-										frequency:frequency
-										   format:format
-									   bufferSize:bufferSize] autorelease];
+	return arcsafe_autorelease([[self alloc] initWithDeviceSpecifier:deviceSpecifier
+                                                           frequency:frequency
+                                                              format:format
+                                                          bufferSize:bufferSize]);
 }
 
 - (id) initWithDeviceSpecifier:(NSString*) deviceSpecifier
@@ -78,7 +78,7 @@
 {
 	[self closeOSResources];
 	
-	[super dealloc];
+	arcsafe_super_dealloc();
 }
 
 - (void) closeOSResources

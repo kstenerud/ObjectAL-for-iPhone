@@ -89,10 +89,10 @@
 				 target:(id) target
 			   selector:(SEL) selector
 {
-	return [[[self alloc] initWithUrl:url
-						 reduceToMono:reduceToMono
-							   target:target
-							 selector:selector] autorelease];
+	return arcsafe_autorelease([[self alloc] initWithUrl:url
+                                            reduceToMono:reduceToMono
+                                                  target:target
+                                                selector:selector]);
 }
 
 - (id) initWithUrl:(NSURL*) urlIn
@@ -102,7 +102,7 @@
 {
 	if(nil != (self = [super init]))
 	{
-		url = [urlIn retain];
+		url = arcsafe_retain(urlIn);
 		reduceToMono = reduceToMonoIn;
 		target = targetIn;
 		selector = selectorIn;
@@ -112,9 +112,8 @@
 
 - (void) dealloc
 {
-	[url release];
-	
-	[super dealloc];
+	arcsafe_release(url);
+	arcsafe_super_dealloc();
 }
 
 - (void)main
@@ -182,11 +181,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OpenALManager);
 
 	[self closeOSResources];
 
-	[operationQueue release];
-	[suspendHandler release];
-	[devices release];
-	
-	[super dealloc];
+	arcsafe_release(operationQueue);
+	arcsafe_release(suspendHandler);
+	arcsafe_release(devices);
+	arcsafe_super_dealloc();
 }
 
 - (void) closeOSResources
@@ -201,7 +199,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OpenALManager);
 		if(nil != devices)
 		{
 			[devices makeObjectsPerformSelector:@selector(close)];
-			[devices release];
+			arcsafe_release(devices);
 			devices = nil;
 			
 			[self closeOSResources];

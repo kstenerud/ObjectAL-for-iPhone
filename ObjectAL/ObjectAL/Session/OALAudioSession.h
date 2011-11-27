@@ -49,7 +49,7 @@
 	
 	bool audioSessionActive;
 	
-	id<AVAudioSessionDelegate> audioSessionDelegate;
+	__unsafe_unretained id<AVAudioSessionDelegate> audioSessionDelegate;
 	
 	/** If true, the audio session was active when the interrupt occurred. */
 	bool audioSessionWasActive;

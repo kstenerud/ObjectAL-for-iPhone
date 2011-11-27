@@ -38,7 +38,7 @@
  */
 @interface OALTargetedAction: OALAction
 {
-	id forcedTarget;
+	__unsafe_unretained id forcedTarget;
 	
 	/** The action that will be run on the target. */
 	OALAction* action;

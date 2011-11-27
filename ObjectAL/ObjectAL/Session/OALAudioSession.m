@@ -148,11 +148,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 	[self closeOSResources];
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[lastResetTime release];	
-	[audioSessionCategory release];
-	[suspendHandler release];
-	
-	[super dealloc];
+	arcsafe_release(lastResetTime);	
+	arcsafe_release(audioSessionCategory);
+	arcsafe_release(suspendHandler);
+	arcsafe_super_dealloc();
 }
 
 - (void) closeOSResources
@@ -180,9 +179,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		NSString* oldValue = audioSessionCategory;
-		audioSessionCategory = [value retain];
-		[oldValue release];
+        arcsafe_autorelease_unused(audioSessionCategory);
+		audioSessionCategory = arcsafe_retain(value);
 		[self updateFromAudioSessionCategory];
 		[self setAudioMode];
 	}	
@@ -329,8 +327,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 	REPORT_AUDIOSESSION_CALL(result, @"Failed to get string property %08x", property);
 	if(noErr == result)
 	{
-		[(NSString*)value autorelease];
-		return (NSString*)value;
+        NSString* stringResult = (__bridge_transfer NSString*) value;
+		return arcsafe_autorelease(stringResult);
 	}
 	return nil;
 }
@@ -399,21 +397,21 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 
 - (void) updateFromFlags
 {
-	[audioSessionCategory release];
+	arcsafe_release(audioSessionCategory);
 	if(honorSilentSwitch)
 	{
 		if(allowIpod)
 		{
-			audioSessionCategory = [AVAudioSessionCategoryAmbient retain];
+			audioSessionCategory = arcsafe_retain(AVAudioSessionCategoryAmbient);
 		}
 		else
 		{
-			audioSessionCategory = [AVAudioSessionCategorySoloAmbient retain];
+			audioSessionCategory = arcsafe_retain(AVAudioSessionCategorySoloAmbient);
 		}
 	}
 	else
 	{
-		audioSessionCategory = [AVAudioSessionCategoryPlayback retain];
+		audioSessionCategory = arcsafe_retain(AVAudioSessionCategoryPlayback);
 	}
 }
 
@@ -535,7 +533,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 			OAL_LOG_WARNING(@"Received audio error notification. Resetting audio session.");
 			self.manuallySuspended = YES;
 			self.manuallySuspended = NO;
-			[lastResetTime release];
+			arcsafe_release(lastResetTime);
 			lastResetTime = [[NSDate alloc] init];
 		}
 		else

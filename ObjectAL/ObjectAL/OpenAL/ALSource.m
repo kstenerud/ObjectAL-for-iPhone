@@ -66,12 +66,12 @@
 
 + (id) source
 {
-	return [[[self alloc] init] autorelease];
+	return arcsafe_autorelease([[self alloc] init]);
 }
 
 + (id) sourceOnContext:(ALContext*) context
 {
-	return [[[self alloc] initOnContext:context] autorelease];
+	return arcsafe_autorelease([[self alloc] initOnContext:context]);
 }
 
 - (id) init
@@ -88,13 +88,13 @@
 		if(nil == contextIn)
 		{
 			OAL_LOG_ERROR(@"%@: Failed to init because context was nil. Returning nil", self);
-			[self release];
+			arcsafe_release(self);
 			return nil;
 		}
 		
 		suspendHandler = [[OALSuspendHandler alloc] initWithTarget:self selector:@selector(setSuspended:)];
 
-		context = [contextIn retain];
+		context = arcsafe_retain(contextIn);
 		@synchronized([OpenALManager sharedInstance])
 		{
 			ALContext* realContext = [OpenALManager sharedInstance].currentContext;
@@ -123,19 +123,21 @@
 	[self closeOSResources];
 	
 	[gainAction stopAction];
-	[gainAction release];
+	arcsafe_release(gainAction);
 	[panAction stopAction];
-	[panAction release];
+	arcsafe_release(panAction);
 	[pitchAction stopAction];
-	[pitchAction release];
-	[suspendHandler release];
-	[context release];
+	arcsafe_release(pitchAction);
+	arcsafe_release(suspendHandler);
+	arcsafe_release(context);
 
 	// In IOS 3.x, OpenAL doesn't stop playing right away.
 	// Release after a delay to give it some time to stop.
+#if !__has_feature(objc_arc)
 	[buffer performSelector:@selector(release) withObject:nil afterDelay:0.1];
+#endif
 	
-	[super dealloc];
+	arcsafe_super_dealloc();
 }
 
 - (void) closeOSResources
@@ -195,9 +197,11 @@
 
 		// In IOS 3.x, OpenAL doesn't stop playing right away.
 		// Release after a delay to give it some time to stop.
+#if !__has_feature(objc_arc)
 		[buffer performSelector:@selector(release) withObject:nil afterDelay:0.1];
+#endif
 
-		buffer = [value retain];
+		buffer = arcsafe_retain(value);
 		[ALWrapper sourcei:sourceId parameter:AL_BUFFER value:(ALint)buffer.bufferId];
 	}
 }
@@ -1059,10 +1063,11 @@
 		}
 		
 		[self stopFade];
-		gainAction = [[OALSequentialActions actions:
+		gainAction = [OALSequentialActions actions:
 					   [OALGainAction actionWithDuration:duration endValue:value],
 					   [OALCallAction actionWithCallTarget:target selector:selector withObject:self],
-					   nil] retain];
+					   nil];
+        arcsafe_retain_unused(gainAction);
 		[gainAction runWithTarget:self];
 	}
 }
@@ -1079,7 +1084,7 @@
 		}
 		
 		[gainAction stopAction];
-		[gainAction release];
+		arcsafe_release(gainAction);
 		gainAction = nil;
 	}
 }
@@ -1099,11 +1104,12 @@
 		}
 		
 		[self stopPan];
-		gainAction = [[OALSequentialActions actions:
+		panAction = [OALSequentialActions actions:
 					   [OALPanAction actionWithDuration:duration endValue:value],
 					   [OALCallAction actionWithCallTarget:target selector:selector withObject:self],
-					   nil] retain];
-		[gainAction runWithTarget:self];
+					   nil];
+        arcsafe_retain_unused(panAction);
+		[panAction runWithTarget:self];
 	}
 }
 
@@ -1118,9 +1124,9 @@
 			return;
 		}
 		
-		[gainAction stopAction];
-		[gainAction release];
-		gainAction = nil;
+		[panAction stopAction];
+		arcsafe_release(panAction);
+		panAction = nil;
 	}
 }
 
@@ -1139,11 +1145,12 @@
 		}
 		
 		[self stopPitch];
-		gainAction = [[OALSequentialActions actions:
+		pitchAction = [OALSequentialActions actions:
 					   [OALPitchAction actionWithDuration:duration endValue:value],
 					   [OALCallAction actionWithCallTarget:target selector:selector withObject:self],
-					   nil] retain];
-		[gainAction runWithTarget:self];
+					   nil];
+        arcsafe_retain_unused(pitchAction);
+		[pitchAction runWithTarget:self];
 	}
 }
 
@@ -1158,9 +1165,9 @@
 			return;
 		}
 		
-		[gainAction stopAction];
-		[gainAction release];
-		gainAction = nil;
+		[pitchAction stopAction];
+		arcsafe_release(pitchAction);
+		pitchAction = nil;
 	}
 }
 

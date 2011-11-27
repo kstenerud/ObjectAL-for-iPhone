@@ -89,11 +89,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALActionManager);
 - (void) dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[targets release];
-	[targetActions release];
-	[actionsToAdd release];
-	[actionsToRemove release];
-	[super dealloc];
+	arcsafe_release(targets);
+	arcsafe_release(targetActions);
+	arcsafe_release(actionsToAdd);
+	arcsafe_release(actionsToRemove);
+	arcsafe_super_dealloc();
 }
 
 - (void) doResetTimeDelta:(NSNotification*) notification

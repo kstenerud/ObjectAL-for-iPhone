@@ -48,7 +48,7 @@
 + (OALAudioFile*) fileWithUrl:(NSURL*) url
 				 reduceToMono:(bool) reduceToMono
 {
-	return [[[self alloc] initWithUrl:url reduceToMono:reduceToMono] autorelease];
+	return arcsafe_autorelease([[self alloc] initWithUrl:url reduceToMono:reduceToMono]);
 }
 
 
@@ -57,7 +57,7 @@
 {
 	if(nil != (self = [super init]))
 	{
-		url = [urlIn retain];
+		url = arcsafe_retain(urlIn);
 		reduceToMono = reduceToMonoIn;
 
 		OSStatus error;
@@ -70,7 +70,7 @@
 		}
 
 		// Open the file
-		if(noErr != (error = ExtAudioFileOpenURL((CFURLRef)url, &fileHandle)))
+		if(noErr != (error = ExtAudioFileOpenURL((__bridge CFURLRef)url, &fileHandle)))
 		{
 			REPORT_EXTAUDIO_CALL(error, @"Could not open url %@", url);
 			goto done;
@@ -138,7 +138,7 @@
 	done:
 		if(noErr != error)
 		{
-			[self release];
+			arcsafe_release(self);
 			return nil;
 		}
 		
@@ -150,9 +150,8 @@
 {
 	[self closeOSResources];
 
-	[url release];
-
-	[super dealloc];
+	arcsafe_release(url);
+	arcsafe_super_dealloc();
 }
 
 - (void) closeOSResources
@@ -353,7 +352,7 @@
 							  startFrame:0
 							   numFrames:-1];
 	[file close];
-	[file release];
+	arcsafe_release(file);
 	return buffer;
 }
 
