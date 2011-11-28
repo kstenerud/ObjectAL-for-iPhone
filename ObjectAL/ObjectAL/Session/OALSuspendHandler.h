@@ -107,7 +107,7 @@
 	NSMutableArray* manualSuspendStates;
 	
 	/** Slave object that is notified when this object suspends or unsuspends. */
-	id suspendStatusChangeTarget;
+	__unsafe_unretained id suspendStatusChangeTarget;
 	
 	/** Selector to be invoked on suspend or unsuspend.
 	 * Takes the signature: setSelected:(bool) value

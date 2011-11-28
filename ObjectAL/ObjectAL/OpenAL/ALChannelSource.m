@@ -64,10 +64,6 @@
  */
 @interface ALChannelSource (Private)
 
-/** (INTERNAL USE) Close any resources belonging to the OS.
- */
-- (void) closeOSResources;
-
 /** (INTERNAL USE) Called by the action system when a fade completes.
  */
 - (void) onFadeComplete:(id<ALSoundSource>) source;
@@ -118,32 +114,10 @@
 {
 	OAL_LOG_DEBUG(@"%@: Dealloc", self);
 	
-	[self closeOSResources];
-
 	arcsafe_release(sourcePool);
 	arcsafe_release(context);
 
     arcsafe_super_dealloc();
-}
-
-- (void) closeOSResources
-{
-	// Not directly holding any OS resources.
-}
-
-- (void) close
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		if(nil != sourcePool)
-		{
-			[sourcePool close];
-			arcsafe_release(sourcePool);
-			sourcePool = nil;
-			
-			[self closeOSResources];
-		}
-	}
 }
 
 - (int) reservedSources
@@ -331,7 +305,10 @@ SYNTHESIZE_DELEGATE_PROPERTY(velocity, Velocity, ALVector);
 		currentFadeCallbackCount++;
 		if(currentFadeCallbackCount == expectedFadeCallbackCount)
 		{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 			[fadeCompleteTarget performSelector:fadeCompleteSelector withObject:self];
+#pragma clang diagnostic pop
 		}
 	}
 }
@@ -372,8 +349,11 @@ SYNTHESIZE_DELEGATE_PROPERTY(velocity, Velocity, ALVector);
 		currentPanCallbackCount++;
 		if(currentPanCallbackCount == expectedPanCallbackCount)
 		{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 			[panCompleteTarget performSelector:panCompleteSelector withObject:self];
 		}
+#pragma clang diagnostic pop
 	}
 }
 
@@ -413,7 +393,10 @@ SYNTHESIZE_DELEGATE_PROPERTY(velocity, Velocity, ALVector);
 		currentPitchCallbackCount++;
 		if(currentPitchCallbackCount == expectedPitchCallbackCount)
 		{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 			[pitchCompleteTarget performSelector:pitchCompleteSelector withObject:self];
+#pragma clang diagnostic pop
 		}
 	}
 }

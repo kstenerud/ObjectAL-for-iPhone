@@ -135,10 +135,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OpenALManager);
  */
 @interface OpenALManager (Private)
 
-/** (INTERNAL USE) Close any resources belonging to the OS.
- */
-- (void) closeOSResources;
-
 /** (INTERNAL USE) Called by SuspendHandler.
  */
 - (void) setSuspended:(bool) value;
@@ -179,32 +175,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OpenALManager);
 	OAL_LOG_DEBUG(@"%@: Dealloc", self);
 	[[OALAudioSession sharedInstance] removeSuspendListener:self];
 
-	[self closeOSResources];
-
 	arcsafe_release(operationQueue);
 	arcsafe_release(suspendHandler);
 	arcsafe_release(devices);
 	arcsafe_super_dealloc();
-}
-
-- (void) closeOSResources
-{
-	// Not directly holding any OS resources.
-}
-
-- (void) close
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		if(nil != devices)
-		{
-			[devices makeObjectsPerformSelector:@selector(close)];
-			arcsafe_release(devices);
-			devices = nil;
-			
-			[self closeOSResources];
-		}
-	}
 }
 
 

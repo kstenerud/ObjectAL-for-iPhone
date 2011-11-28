@@ -106,11 +106,6 @@
 			   startFrame:(SInt64) startFrame
 				numFrames:(SInt64) numFrames;
 
-/** Close any OS resources in use by this object.
- * Any operations called on this object after closing will likely fail.
- */
-- (void) close;
-
 /** Convenience method to load the entire contents of a URL into a new ALBuffer.
  *
  * @param url The URL to open the audio file from.

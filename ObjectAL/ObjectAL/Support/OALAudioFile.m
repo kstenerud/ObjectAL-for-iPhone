@@ -31,18 +31,6 @@
 #import "ObjectALMacros.h"
 
 
-/**
- * (INTERNAL USE) Private methods for OALAudioFile. 
- */
-@interface OALAudioFile (Private)
-
-/** (INTERNAL USE) Close any resources belonging to the OS.
- */
-- (void) closeOSResources;
-
-@end
-
-
 @implementation OALAudioFile
 
 + (OALAudioFile*) fileWithUrl:(NSURL*) url
@@ -148,27 +136,14 @@
 
 - (void) dealloc
 {
-	[self closeOSResources];
+    if(nil != fileHandle)
+    {
+        REPORT_EXTAUDIO_CALL(ExtAudioFileDispose(fileHandle), @"Error closing file (url = %@)", url);
+        fileHandle = nil;
+    }
 
 	arcsafe_release(url);
 	arcsafe_super_dealloc();
-}
-
-- (void) closeOSResources
-{
-	@synchronized(self)
-	{
-		if(nil != fileHandle)
-		{
-			REPORT_EXTAUDIO_CALL(ExtAudioFileDispose(fileHandle), @"Error closing file (url = %@)", url);
-			fileHandle = nil;
-		}
-	}
-}
-
-- (void) close
-{
-	[self closeOSResources];
 }
 
 - (NSString*) description
@@ -351,7 +326,6 @@
 	ALBuffer* buffer = [file bufferNamed:[url description]
 							  startFrame:0
 							   numFrames:-1];
-	[file close];
 	arcsafe_release(file);
 	return buffer;
 }

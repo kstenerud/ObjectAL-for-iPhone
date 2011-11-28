@@ -164,11 +164,6 @@
  */
 SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALAudioSession);
 
-/** Close any OS resources in use by this object.
- * This will close the audio session.
- */
-- (void) close;
-
 
 #pragma mark Utility
 

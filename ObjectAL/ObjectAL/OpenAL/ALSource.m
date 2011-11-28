@@ -43,10 +43,6 @@
  */
 @interface ALSource (Private)
 
-/** (INTERNAL USE) Close any resources belonging to the OS.
- */
-- (void) closeOSResources;
-
 /** (INTERNAL USE) Called by SuspendHandler.
  */
 - (void) setSuspended:(bool) value;
@@ -119,8 +115,6 @@
 
 	[context removeSuspendListener:self];
 	[context notifySourceDeallocating:self];
-
-	[self closeOSResources];
 	
 	[gainAction stopAction];
 	arcsafe_release(gainAction);
@@ -129,6 +123,27 @@
 	[pitchAction stopAction];
 	arcsafe_release(pitchAction);
 	arcsafe_release(suspendHandler);
+
+    if((ALuint)AL_INVALID != sourceId)
+    {
+        [ALWrapper sourceStop:sourceId];
+        [ALWrapper sourcei:sourceId parameter:AL_BUFFER value:AL_NONE];
+        
+        @synchronized([OpenALManager sharedInstance])
+        {
+            ALContext* currentContext = [OpenALManager sharedInstance].currentContext;
+            if(currentContext != context)
+            {
+                // Make this source's context the current one if it isn't already.
+                [OpenALManager sharedInstance].currentContext = context;
+            }
+            
+            [ALWrapper deleteSource:sourceId];
+            
+            [OpenALManager sharedInstance].currentContext = currentContext;
+        }
+    }
+
 	arcsafe_release(context);
 
 	// In IOS 3.x, OpenAL doesn't stop playing right away.
@@ -138,38 +153,6 @@
 #endif
 	
 	arcsafe_super_dealloc();
-}
-
-- (void) closeOSResources
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		if((ALuint)AL_INVALID != sourceId)
-		{
-			[ALWrapper sourceStop:sourceId];
-			[ALWrapper sourcei:sourceId parameter:AL_BUFFER value:AL_NONE];
-			
-			@synchronized([OpenALManager sharedInstance])
-			{
-				ALContext* realContext = [OpenALManager sharedInstance].currentContext;
-				if(realContext != context)
-				{
-					// Make this source's context the current one if it isn't already.
-					[OpenALManager sharedInstance].currentContext = context;
-				}
-
-				[ALWrapper deleteSource:sourceId];
-				
-				[OpenALManager sharedInstance].currentContext = realContext;
-			}
-			sourceId = (ALuint)AL_INVALID;
-		}
-	}
-}
-
-- (void) close
-{
-	[self closeOSResources];
 }
 
 

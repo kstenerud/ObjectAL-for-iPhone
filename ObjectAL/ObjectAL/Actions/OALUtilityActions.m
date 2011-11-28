@@ -538,6 +538,8 @@ COCOS2D_SUBCLASS(OALConcurrentActions)
 	[super startAction];
 #endif /* !OBJECTAL_USE_COCOS2D_ACTIONS */
 	
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 	switch(numObjects)
 	{
 		case 2:
@@ -549,6 +551,7 @@ COCOS2D_SUBCLASS(OALConcurrentActions)
 		default:
 			[callTarget performSelector:selector];
 	}
+#pragma clang diagnostic pop
 }
 
 #if OBJECTAL_USE_COCOS2D_ACTIONS

@@ -44,7 +44,7 @@
  */
 @interface ALListener : NSObject <OALSuspendManager>
 {
-	ALContext* context; // Weak reference
+	__unsafe_unretained ALContext* context; // Weak reference
 	bool muted;
 	float gain;
 	

@@ -34,18 +34,6 @@
 #import "OpenALManager.h"
 
 
-/**
- * (INTERNAL USE) Private methods for ALDevice.
- */
-@interface ALDevice (Private)
-
-/** (INTERNAL USE) Close any resources belonging to the OS.
- */
-- (void) closeOSResources;
-
-@end
-
-
 @implementation ALDevice
 
 #pragma mark Object Management
@@ -86,38 +74,11 @@
 	[[OpenALManager sharedInstance] removeSuspendListener:self];
 	[[OpenALManager sharedInstance] notifyDeviceDeallocating:self];
 
-	[self closeOSResources];
+    [ALWrapper closeDevice:device];
 	
 	arcsafe_release(contexts);
 	arcsafe_release(suspendHandler);
 	arcsafe_super_dealloc();
-}
-
-- (void) closeOSResources
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		if(nil != device)
-		{
-			[ALWrapper closeDevice:device];
-			device = nil;
-		}
-	}
-}
-
-- (void) close
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		if(nil != contexts)
-		{
-			[contexts makeObjectsPerformSelector:@selector(close)];
-			arcsafe_release(contexts);
-			contexts = nil;
-
-			[self closeOSResources];
-		}
-	}
 }
 
 

@@ -47,7 +47,7 @@
  */
 @interface OpenALManager : NSObject <OALSuspendManager>
 {
-	ALContext* currentContext; // WEAK reference
+	__unsafe_unretained ALContext* currentContext; // WEAK reference
 	
 	/** All opened devices */
 	NSMutableArray* devices;
@@ -93,11 +93,6 @@
  * <b>- (void) purgeSharedInstance</b>: Purge (deallocate) the shared instance.
  */
 SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OpenALManager);
-
-/** Close any OS resources in use by this object.
- * Any operations called on this object after closing will likely fail.
- */
-- (void) close;
 
 
 #pragma mark Buffers

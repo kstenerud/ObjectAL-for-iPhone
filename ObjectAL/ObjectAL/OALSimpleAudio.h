@@ -256,11 +256,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALSimpleAudio);
                    monoSources:(int) monoSources
                  stereoSources:(int) stereoSources;
 
-/** Close any OS resources in use by this object.
- * Any operations called on this object after closing will likely fail.
- */
-- (void) close;
-
 
 #pragma mark Background Music
 

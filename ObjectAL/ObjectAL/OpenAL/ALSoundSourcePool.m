@@ -38,10 +38,6 @@
  */
 @interface ALSoundSourcePool (Private)
 
-/** (INTERNAL USE) Close any resources belonging to the OS.
- */
-- (void) closeOSResources;
-
 /** Move a source to the head of the list.
  *
  * @param index the index of the source to move.
@@ -67,6 +63,7 @@
 {
 	if(nil != (self = [super init]))
 	{
+        OAL_LOG_DEBUG(@"%@: Init", self);
 		sources = [[NSMutableArray alloc] initWithCapacity:10];
 	}
 	return self;
@@ -74,30 +71,9 @@
 
 - (void) dealloc
 {
-	[self closeOSResources];
-
+	OAL_LOG_DEBUG(@"%@: Dealloc", self);
 	arcsafe_release(sources);
 	arcsafe_super_dealloc();
-}
-
-- (void) closeOSResources
-{
-	// Not directly holding any OS resources.
-}
-
-- (void) close
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		if(nil != sources)
-		{
-			[sources makeObjectsPerformSelector:@selector(close)];
-			arcsafe_release(sources);
-			sources = nil;
-			
-			[self closeOSResources];
-		}
-	}
 }
 
 

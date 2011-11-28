@@ -32,18 +32,6 @@
 #import "ObjectALMacros.h"
 
 
-/**
- * (INTERNAL USE) Private methods for ALCaptureDevice.
- */
-@interface ALCaptureDevice (Private)
-
-/** (INTERNAL USE) Close any resources belonging to the OS.
- */
-- (void) closeOSResources;
-
-@end
-
-
 @implementation ALCaptureDevice
 
 #pragma mark Object Management
@@ -76,26 +64,9 @@
 
 - (void) dealloc
 {
-	[self closeOSResources];
-	
+    [ALWrapper closeDevice:device];
+
 	arcsafe_super_dealloc();
-}
-
-- (void) closeOSResources
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		if(nil != device)
-		{
-			[ALWrapper closeDevice:device];
-			device = nil;
-		}
-	}
-}
-
-- (void) close
-{
-	[self closeOSResources];
 }
 
 

@@ -43,10 +43,6 @@
  */
 @interface ALContext (Private)
 
-/** (INTERNAL USE) Close any resources belonging to the OS.
- */
-- (void) closeOSResources;
-
 /** (INTERNAL USE) Called by SuspendHandler.
  */
 - (void) setSuspended:(bool) value;
@@ -214,45 +210,18 @@
 	[device removeSuspendListener:self];
 	[device notifyContextDeallocating:self];
 
-	[self closeOSResources];
-	
+    if([OpenALManager sharedInstance].currentContext == self)
+    {
+        [OpenALManager sharedInstance].currentContext = nil;
+    }
+    [ALWrapper destroyContext:context];
+
 	arcsafe_release(sources);
 	arcsafe_release(listener);
 	arcsafe_release(device);
 	arcsafe_release(attributes);
 	arcsafe_release(suspendHandler);
 	arcsafe_super_dealloc();
-}
-
-- (void) closeOSResources
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		if(nil != context)
-		{
-			if([OpenALManager sharedInstance].currentContext == self)
-			{
-				[OpenALManager sharedInstance].currentContext = nil;
-			}
-			[ALWrapper destroyContext:context];
-			context = nil;
-		}
-	}
-}
-
-- (void) close
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		if(nil != context)
-		{
-			[sources makeObjectsPerformSelector:@selector(close)];
-			arcsafe_release(sources);
-			sources = nil;
-			
-			[self closeOSResources];
-		}
-	}
 }
 
 

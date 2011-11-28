@@ -200,10 +200,6 @@
  */
 @interface OALAudioTrack (Private)
 
-/** (INTERNAL USE) Close any resources belonging to the OS.
- */
-- (void) closeOSResources;
-
 /** (INTERNAL USE) Called by SuspendHandler.
  */
 - (void) setSuspended:(bool) value;
@@ -248,7 +244,8 @@
 	[[OALAudioTracks sharedInstance] removeSuspendListener:self];
 	[[OALAudioTracks sharedInstance] notifyTrackDeallocating:self];
 
-	[self closeOSResources];
+    player.delegate = nil;
+    [player stop];
 
 	arcsafe_release(player);
 	arcsafe_release(operationQueue);
@@ -260,25 +257,6 @@
 	arcsafe_release(panAction);
 	arcsafe_release(suspendHandler);
 	arcsafe_super_dealloc();
-}
-
-- (void) closeOSResources
-{
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		if(nil != player)
-		{
-			player.delegate = nil;
-			[player stop];
-			arcsafe_release(player);
-			player = nil;
-		}
-	}
-}
-
-- (void) close
-{
-	[self closeOSResources];
 }
 
 

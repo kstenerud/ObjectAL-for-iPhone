@@ -47,10 +47,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALAudioSession);
  */
 @interface OALAudioSession (Private)
 
-/** (INTERNAL USE) Close any resources belonging to the OS.
- */
-- (void) closeOSResources;
-
 /** (INTERNAL USE) Get an AudioSession property.
  *
  * @param property The property to get.
@@ -145,23 +141,17 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 {
 	OAL_LOG_DEBUG(@"%@: Dealloc", self);
 
-	[self closeOSResources];
+    NSError* error;
+    if(![[AVAudioSession sharedInstance] setActive:NO error:&error])
+    {
+        OAL_LOG_ERROR(@"Could not deactivate audio session: %@", error);
+    }
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	arcsafe_release(lastResetTime);	
 	arcsafe_release(audioSessionCategory);
 	arcsafe_release(suspendHandler);
 	arcsafe_super_dealloc();
-}
-
-- (void) closeOSResources
-{
-	self.audioSessionActive = NO;
-}
-
-- (void) close
-{
-	[self closeOSResources];
 }
 
 

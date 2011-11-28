@@ -40,10 +40,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALAudioTracks);
  */
 @interface OALAudioTracks (Private)
 
-/** (INTERNAL USE) Close any resources belonging to the OS.
- */
-- (void) closeOSResources;
-
 /** (INTERNAL USE) Read deviceCurrentTime from an audio player
  * as a workaround for a bug in iOS devices that causes the value
  * to reset to 0 in certain circumstances.
@@ -93,31 +89,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioTracks);
 	[[OALAudioSession sharedInstance] removeSuspendListener:self];
     [deviceTimePoller invalidate];
 
-	[self closeOSResources];
-
 	arcsafe_release(tracks);
 	arcsafe_release(suspendHandler);
 	arcsafe_super_dealloc();
-}
-
-- (void) closeOSResources
-{
-	// Not directly holding any OS resources.
-}
-
-- (void) close
-{
-	@synchronized(self)
-	{
-		if(nil != tracks)
-		{
-			[tracks makeObjectsPerformSelector:@selector(close)];
-			arcsafe_release(tracks);
-			tracks = nil;
-			
-			[self closeOSResources];
-		}
-	}
 }
 
 
