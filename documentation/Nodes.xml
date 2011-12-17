@@ -224,6 +224,10 @@
         </Subnodes>
        </Node>
        <Node>
+        <Name>Class Index</Name>
+        <Path>classes.html</Path>
+       </Node>
+       <Node>
         <Name>Class Hierarchy</Name>
         <Path>hierarchy.html</Path>
         <Subnodes>
