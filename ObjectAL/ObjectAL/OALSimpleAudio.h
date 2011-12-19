@@ -396,13 +396,18 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALSimpleAudio);
 
 #endif
 
-/** Unload a preloaded effect.
+/** Unload a preloaded effect. Only unloads if no source is currently playing
+ * that effect (or paused with the effect loaded).
  *
  * @param filePath The path containing the sound data that was previously loaded.
+ *
+ * @return YES if the effect was unloaded. Turn on debug logging to see why an
+ *         effect was not unloaded.
  */
-- (void) unloadEffect:(NSString*) filePath;
+- (bool) unloadEffect:(NSString*) filePath;
 
-/** Unload all preloaded effects.
+/** Unload all preloaded effects that are not currently being played (paused or not).
+ * Turning on debug logging will show which effects were not unloaded.
  * It is useful to put a call to this method in
  * "applicationDidReceiveMemoryWarning" in your app delegate.
  */
