@@ -111,7 +111,7 @@
 
 		streamDescription.mBytesPerFrame = streamDescription.mChannelsPerFrame * streamDescription.mBitsPerChannel / 8;
 		streamDescription.mFramesPerPacket = 1;
-		streamDescription.mBytesPerPacket = streamDescription.mBytesPerFrame * streamDescription.mFramesPerPacket;
+		streamDescription.mBytesPerPacket = streamDescription.mBytesPerFrame * 1 /* streamDescription.mFramesPerPacket */;
 		
 		// Set the new audio format
 		if(noErr != (error = ExtAudioFileSetProperty(fileHandle,

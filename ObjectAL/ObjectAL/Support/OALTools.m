@@ -184,6 +184,7 @@
 #else
         #pragma unused(function)
         #pragma unused(description)
+        #pragma unused(errorString)
 #endif /* OBJECTAL_CFG_LOG_LEVEL > 0 */
 		
 		if(postNotification)
