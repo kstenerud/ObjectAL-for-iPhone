@@ -998,4 +998,100 @@
 					 size:(ALsizei) size
 				frequency:(ALsizei) frequency;
 
+/** Read a boolean ASA property from a listener.
+ *
+ * @param property The property to read.
+ * @return The property's value.
+ */
++ (bool) asaGetListenerb:(ALuint) property;
+
+/** Read an integer ASA property from a listener.
+ *
+ * @param property The property to read.
+ * @return The property's value.
+ */
++ (ALint) asaGetListeneri:(ALuint) property;
+
+/** Read a floating point ASA property from a listener.
+ *
+ * @param property The property to read.
+ * @return The property's value.
+ */
++ (ALfloat) asaGetListenerf:(ALuint) property;
+
+/** Write a boolean ASA value to a listener.
+ *
+ * @param property The property to write to.
+ * @param value The value to write.
+ * @return TRUE if the operation was successful.
+ */
++ (bool) asaListenerb:(ALuint) property value:(bool) value;
+
+/** Write an integer ASA value to a listener.
+ *
+ * @param property The property to write to.
+ * @param value The value to write.
+ * @return TRUE if the operation was successful.
+ */
++ (bool) asaListeneri:(ALuint) property value:(ALint) value;
+
+/** Write a floating point ASA value to a listener.
+ *
+ * @param property The property to write to.
+ * @param value The value to write.
+ * @return TRUE if the operation was successful.
+ */
++ (bool) asaListenerf:(ALuint) property value:(ALfloat) value;
+
+/** Read a boolean ASA property from a source.
+ *
+ * @param sourceId The source's ID.
+ * @param property The property to read.
+ * @return The property's value.
+ */
++ (bool) asaGetSourceb:(ALuint) sourceId property:(ALuint) property;
+
+/** Read an integer ASA property from a source.
+ *
+ * @param sourceId The source's ID.
+ * @param property The property to read.
+ * @return The property's value.
+ */
++ (ALint) asaGetSourcei:(ALuint) sourceId property:(ALuint) property;
+
+/** Read a floating point ASA property from a source.
+ *
+ * @param sourceId The source's ID.
+ * @param property The property to read.
+ * @return The property's value.
+ */
++ (ALfloat) asaGetSourcef:(ALuint) sourceId property:(ALuint) property;
+
+/** Write a boolean ASA value to a source.
+ *
+ * @param sourceId The source's ID.
+ * @param property The property to write to.
+ * @param value The value to write.
+ * @return TRUE if the operation was successful.
+ */
++ (bool) asaSourceb:(ALuint) sourceId property:(ALuint) property value:(bool) value;
+
+/** Write an integer ASA value to a source.
+ *
+ * @param sourceId The source's ID.
+ * @param property The property to write to.
+ * @param value The value to write.
+ * @return TRUE if the operation was successful.
+ */
++ (bool) asaSourcei:(ALuint) sourceId property:(ALuint) property value:(ALint) value;
+
+/** Write a floating point ASA value to a source.
+ *
+ * @param sourceId The source's ID.
+ * @param property The property to write to.
+ * @param value The value to write.
+ * @return TRUE if the operation was successful.
+ */
++ (bool) asaSourcef:(ALuint) sourceId property:(ALuint) property value:(ALfloat) value;
+
 @end

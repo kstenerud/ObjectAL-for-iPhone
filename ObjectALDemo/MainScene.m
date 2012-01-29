@@ -19,6 +19,7 @@
 #import "AudioTrackDemo.h"
 #import "HardwareDemo.h"
 #import "AudioSessionDemo.h"
+#import "ReverbDemo.h"
 
 
 #define kScenesPerPage 5
@@ -126,6 +127,7 @@ static uint startIndex = 0;
 	[self addScene:[CrossFadeDemo class] named:@"Crossfade"];
 	[self addScene:[ChannelsDemo class] named:@"Channels"];
 	[self addScene:[FadeDemo class] named:@"Fading"];
+	[self addScene:[ReverbDemo class] named:@"Reverb"];
 	[self addScene:[AudioTrackDemo class] named:@"Audio Tracks"];
 	[self addScene:[PlanetKillerDemo class] named:@"Planet Killer (OALSimpleAudio)"];
 	[self addScene:[HardwareDemo class] named:@"Hardware Monitor"];

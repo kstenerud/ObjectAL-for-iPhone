@@ -116,6 +116,24 @@
  */
 @property(readwrite,assign) float pan;
 
+/** Reverb send level (how much reverb affects this source). (iOS 5.0+)
+ * 0.0 = fully dry, 1.0 = fully wet.
+ * Default 0.
+ */
+@property(readwrite,assign) float reverbSendLevel;
+
+/** Reverb occlusion (wall/door between listener and source). (iOS 5.0+)
+ * -100.0db (most occlusion) to 0.0 (no occlusion).
+ * Default 0.
+ */
+@property(readwrite,assign) float reverbOcclusion;
+
+/** Reverb obstruction (object between listener and source). (iOS 5.0+)
+ * -100.0db (most obstruction) to 0.0 (no obstruction).
+ * Default 0.
+ */
+@property(readwrite,assign) float reverbObstruction;
+
 
 #pragma mark Object Management
 

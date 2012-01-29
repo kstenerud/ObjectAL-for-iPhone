@@ -31,6 +31,7 @@
 #import "ObjectALMacros.h"
 #import "ALWrapper.h"
 #import "ALContext.h"
+#import <OpenAL/oalMacOSX_OALExtensions.h>
 
 
 @implementation ALListener
@@ -186,6 +187,139 @@
 		[ALWrapper listener3f:AL_VELOCITY v1:value.x v2:value.y v3:value.z];
 	}
 }
+
+- (bool) reverbOn
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+        return [ALWrapper asaGetListenerb:ALC_ASA_REVERB_ON];
+	}
+}
+
+- (void) setReverbOn:(bool) reverbOn
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		if(self.suspended)
+		{
+			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
+			return;
+		}
+		
+		[ALWrapper asaListenerb:ALC_ASA_REVERB_ON value:reverbOn];
+	}
+}
+
+- (float) globalReverbLevel
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+        return [ALWrapper asaGetListenerf:ALC_ASA_REVERB_GLOBAL_LEVEL];
+	}
+}
+
+- (void) setGlobalReverbLevel:(float) globalReverbLevel
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		if(self.suspended)
+		{
+			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
+			return;
+		}
+		
+		[ALWrapper asaListenerf:ALC_ASA_REVERB_GLOBAL_LEVEL value:globalReverbLevel];
+	}
+}
+
+- (int) reverbRoomType
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+        return [ALWrapper asaGetListeneri:ALC_ASA_REVERB_ROOM_TYPE];
+	}
+}
+
+- (void) setReverbRoomType:(int) reverbRoomType
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		if(self.suspended)
+		{
+			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
+			return;
+		}
+		
+		[ALWrapper asaListeneri:ALC_ASA_REVERB_ROOM_TYPE value:reverbRoomType];
+	}
+}
+
+- (float) reverbEQGain
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+        return [ALWrapper asaGetListenerf:ALC_ASA_REVERB_EQ_GAIN];
+	}
+}
+
+- (void) setReverbEQGain:(float) reverbEQGain
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		if(self.suspended)
+		{
+			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
+			return;
+		}
+		
+		[ALWrapper asaListenerf:ALC_ASA_REVERB_EQ_GAIN value:reverbEQGain];
+	}
+}
+
+- (float) reverbEQBandwidth
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+        return [ALWrapper asaGetListenerf:ALC_ASA_REVERB_EQ_BANDWITH];
+	}
+}
+
+- (void) setReverbEQBandwidth:(float) reverbEQBandwidth
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		if(self.suspended)
+		{
+			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
+			return;
+		}
+		
+		[ALWrapper asaListenerf:ALC_ASA_REVERB_EQ_BANDWITH value:reverbEQBandwidth];
+	}
+}
+
+- (float) reverbEQFrequency
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+        return [ALWrapper asaGetListenerf:ALC_ASA_REVERB_EQ_FREQ];
+	}
+}
+
+- (void) setReverbEQFrequency:(float) reverbEQFrequency
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		if(self.suspended)
+		{
+			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
+			return;
+		}
+		
+		[ALWrapper asaListenerf:ALC_ASA_REVERB_EQ_FREQ value:reverbEQFrequency];
+	}
+}
+
 
 #pragma mark Suspend Handler
 

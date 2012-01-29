@@ -224,7 +224,11 @@ SYNTHESIZE_DELEGATE_PROPERTY(sourceRelative, SourceRelative, int);
 
 SYNTHESIZE_DELEGATE_PROPERTY(velocity, Velocity, ALVector);
 
+SYNTHESIZE_DELEGATE_PROPERTY(reverbSendLevel, ReverbSendLevel, float);
 
+SYNTHESIZE_DELEGATE_PROPERTY(reverbOcclusion, ReverbOcclusion, float);
+
+SYNTHESIZE_DELEGATE_PROPERTY(reverbObstruction, ReverbObstruction, float);
 
 #pragma mark Playback
 

@@ -24,9 +24,6 @@
 	{
 		self.touchablePortion = node;
 		
-		node.anchorPoint = ccp(0.5f, 0.5f);
-		node.position = ccp(node.contentSize.width*0.5f, node.contentSize.height*0.5f);
-		
 		touchPriority = 0;
 		targetedTouches = YES;
 		swallowTouches = YES;
@@ -184,8 +181,8 @@
 	touchablePortion = value;
 	[self addChild:touchablePortion];
 	self.contentSize = touchablePortion.contentSize;
-	touchablePortion.anchorPoint = ccp(0,0);
-	touchablePortion.position = ccp(0,0);
+	touchablePortion.anchorPoint = ccp(0.5,0.5);
+	touchablePortion.position = ccp(self.contentSize.width/2, self.contentSize.height/2);
 }
 
 @end

@@ -30,6 +30,7 @@
 #import "ALWrapper.h"
 #import "ObjectALMacros.h"
 #import "OALNotifications.h"
+#import <OpenAL/oalMacOSX_OALExtensions.h>
 
 /** Check the result of an AL call, logging an error if necessary.
  *
@@ -85,8 +86,6 @@ BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device);
 
 @implementation ALWrapper
 
-typedef ALdouble AL_APIENTRY (*alcMacOSXGetMixerOutputRateProcPtr)();
-typedef ALvoid AL_APIENTRY (*alcMacOSXMixerOutputRateProcPtr) (const ALdouble value);
 typedef ALvoid AL_APIENTRY (*alBufferDataStaticProcPtr) (const ALint bid,
 														 ALenum format,
 														 const ALvoid* data,
@@ -96,6 +95,13 @@ typedef ALvoid AL_APIENTRY (*alBufferDataStaticProcPtr) (const ALint bid,
 static alcMacOSXGetMixerOutputRateProcPtr alcGetMacOSXMixerOutputRate = NULL;
 static alcMacOSXMixerOutputRateProcPtr alcMacOSXMixerOutputRate = NULL;
 static alBufferDataStaticProcPtr alBufferDataStatic = NULL;
+
+
+static alcASAGetSourceProcPtr alcASAGetSource = NULL;
+static alcASASetSourceProcPtr alcASASetSource = NULL;
+static alcASAGetListenerProcPtr alcASAGetListener = NULL;
+static alcASASetListenerProcPtr alcASASetListener = NULL;
+
 
 
 #pragma mark -
@@ -1343,15 +1349,23 @@ BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device)
 #pragma mark -
 #pragma mark Apple Extensions
 
++ (void) initialize
+{
+    alcGetMacOSXMixerOutputRate = (alcMacOSXGetMixerOutputRateProcPtr) alcGetProcAddress(NULL, (const ALCchar*) "alcMacOSXGetMixerOutputRate");
+    alcMacOSXMixerOutputRate = (alcMacOSXMixerOutputRateProcPtr) alcGetProcAddress(NULL, (const ALCchar*) "alcMacOSXMixerOutputRate");
+    alBufferDataStatic = (alBufferDataStaticProcPtr) alcGetProcAddress(NULL, (const ALCchar*) "alBufferDataStatic");
+    alcASAGetListener = (alcASAGetListenerProcPtr) alcGetProcAddress(NULL, (const ALCchar*) "alcASAGetListener");
+    alcASASetListener = (alcASASetListenerProcPtr) alcGetProcAddress(NULL, (const ALCchar*) "alcASASetListener");
+    alcASAGetSource = (alcASAGetSourceProcPtr) alcGetProcAddress(NULL, (const ALCchar*) "alcASAGetSource");
+    alcASASetSource = (alcASASetSourceProcPtr) alcGetProcAddress(NULL, (const ALCchar*) "alcASASetSource");
+}
+
 + (ALdouble) getMixerOutputDataRate
 {
 	if(NULL == alcGetMacOSXMixerOutputRate)
 	{
-		alcGetMacOSXMixerOutputRate = (alcMacOSXGetMixerOutputRateProcPtr) alcGetProcAddress(NULL, (const ALCchar*) "alcMacOSXGetMixerOutputRate");
-		if(NULL == alcGetMacOSXMixerOutputRate)
-		{
-			OAL_LOG_ERROR(@"Could not get proc pointer for \"alcMacOSXMixerOutputRate\".");
-		}
+        OAL_LOG_WARNING(@"No proc ptr for alcGetMacOSXMixerOutputRate. Returning 0");
+        return 0;
 	}
 	
 	ALdouble result;
@@ -1367,11 +1381,8 @@ BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device)
 {
 	if(NULL == alcMacOSXMixerOutputRate)
 	{
-		alcMacOSXMixerOutputRate = (alcMacOSXMixerOutputRateProcPtr) alcGetProcAddress(NULL, (const ALCchar*) "alcMacOSXMixerOutputRate");
-		if(NULL == alcMacOSXMixerOutputRate)
-		{
-			OAL_LOG_ERROR(@"Could not get proc pointer for \"alcMacOSXMixerOutputRate\".");
-		}
+        OAL_LOG_WARNING(@"No proc ptr for alcMacOSXMixerOutputRate");
+        return;
 	}
 	
 	alcMacOSXMixerOutputRate(frequency);
@@ -1381,11 +1392,8 @@ BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device)
 {
 	if(NULL == alBufferDataStatic)
 	{
-		alBufferDataStatic = (alBufferDataStaticProcPtr) alcGetProcAddress(NULL, (const ALCchar*) "alBufferDataStatic");
-		if(NULL == alBufferDataStatic)
-		{
-			OAL_LOG_ERROR(@"Could not get proc pointer for \"alBufferDataStatic\".");
-		}
+        OAL_LOG_WARNING(@"No proc ptr for alBufferDataStatic. Returning false");
+        return false;
 	}
 	
 	bool result;
@@ -1395,6 +1403,287 @@ BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device)
 		result = CHECK_AL_CALL();
 	}
 	return result;
+}
+
++ (bool) asaGetListenerb:(ALuint) property
+{
+	if(NULL == alcASAGetListener)
+	{
+        OAL_LOG_WARNING(@"No proc ptr for alcASAGetListener. Returning false");
+        return false;
+	}
+	
+    ALuint value = 0;
+    ALuint size = sizeof(value);
+	@synchronized(self)
+	{
+        alcASAGetListener(property, &value, &size);
+        CHECK_AL_CALL();
+    }
+    return value;
+}
+
++ (ALint) asaGetListeneri:(ALuint) property
+{
+	if(NULL == alcASAGetListener)
+	{
+        OAL_LOG_WARNING(@"No proc ptr for alcASAGetListener. Returning -1");
+        return -1;
+	}
+	
+    ALint value = 0;
+    ALuint size = sizeof(value);
+	@synchronized(self)
+	{
+        alcASAGetListener(property, &value, &size);
+        CHECK_AL_CALL();
+    }
+    return value;
+}
+
++ (ALfloat) asaGetListenerf:(ALuint) property
+{
+	if(NULL == alcASAGetListener)
+	{
+        OAL_LOG_WARNING(@"No proc ptr for alcASAGetListener. Returning 0");
+        return 0;
+	}
+	
+    ALfloat value = 0;
+    ALuint size = sizeof(value);
+	@synchronized(self)
+	{
+        alcASAGetListener(property, &value, &size);
+        CHECK_AL_CALL();
+    }
+    return value;
+}
+
++ (bool) asaListenerb:(ALuint) property value:(bool) value
+{
+	if(NULL == alcASASetListener)
+	{
+        OAL_LOG_WARNING(@"No proc ptr for alcASASetListener");
+        return false;
+	}
+	
+    bool result;
+    ALuint v = value;
+	@synchronized(self)
+	{
+        alcASASetListener(property, &v, sizeof(v));
+		result = CHECK_AL_CALL();
+	}
+	return result;
+
+}
+
++ (bool) asaListeneri:(ALuint) property value:(ALint) value
+{
+	if(NULL == alcASASetListener)
+	{
+        OAL_LOG_WARNING(@"No proc ptr for alcASASetListener");
+        return false;
+	}
+	
+    bool result;
+    ALint v = value;
+	@synchronized(self)
+	{
+        alcASASetListener(property, &v, sizeof(v));
+		result = CHECK_AL_CALL();
+	}
+	return result;
+}
+
++ (bool) asaListenerf:(ALuint) property value:(ALfloat) value
+{
+	if(NULL == alcASASetListener)
+	{
+        OAL_LOG_WARNING(@"No proc ptr for alcASASetListener");
+        return false;
+	}
+	
+    bool result;
+    ALfloat v = value;
+	@synchronized(self)
+	{
+        alcASASetListener(property, &v, sizeof(v));
+		result = CHECK_AL_CALL();
+	}
+	return result;
+}
+
++ (bool) asaGetSourceb:(ALuint) sourceId property:(ALuint) property
+{
+	ALint value = 0;
+    ALuint size = sizeof(value);
+	@synchronized(self)
+	{
+        alcASAGetSource(property, sourceId, &value, &size);
+		CHECK_AL_CALL();
+	}
+	return value;
+}
+
++ (ALint) asaGetSourcei:(ALuint) sourceId property:(ALuint) property
+{
+	ALint value = 0;
+    ALuint size = sizeof(value);
+	@synchronized(self)
+	{
+        alcASAGetSource(property, sourceId, &value, &size);
+		CHECK_AL_CALL();
+	}
+	return value;
+}
+
++ (ALfloat) asaGetSourcef:(ALuint) sourceId property:(ALuint) property
+{
+	ALfloat value = 0;
+    ALuint size = sizeof(value);
+	@synchronized(self)
+	{
+        alcASAGetSource(property, sourceId, &value, &size);
+		CHECK_AL_CALL();
+	}
+	return value;
+}
+
++ (bool) asaSourceb:(ALuint) sourceId property:(ALuint) property value:(bool) value
+{
+	if(NULL == alcASASetSource)
+	{
+        OAL_LOG_WARNING(@"No proc ptr for alcASASetSource");
+        return false;
+	}
+	
+    bool result;
+    ALint v = value;
+    {
+        alcASASetSource(property, sourceId, &v, sizeof(v));
+		result = CHECK_AL_CALL();
+	}
+	return result;
+}
+
++ (bool) asaSourcei:(ALuint) sourceId property:(ALuint) property value:(ALint) value
+{
+	if(NULL == alcASASetSource)
+	{
+        OAL_LOG_WARNING(@"No proc ptr for alcASASetSource");
+        return false;
+	}
+	
+    bool result;
+    ALint v = value;
+    {
+        alcASASetSource(property, sourceId, &v, sizeof(v));
+		result = CHECK_AL_CALL();
+	}
+	return result;
+}
+
++ (bool) asaSourcef:(ALuint) sourceId property:(ALuint) property value:(ALfloat) value
+{
+	if(NULL == alcASASetSource)
+	{
+        OAL_LOG_WARNING(@"No proc ptr for alcASASetSource");
+        return false;
+	}
+	
+    bool result;
+    ALfloat v = value;
+    {
+        alcASASetSource(property, sourceId, &v, sizeof(v));
+		result = CHECK_AL_CALL();
+	}
+	return result;
+}
+
+
+
+
+
+
+
+
++ (void) setReverbSendLevel:(float) level onSource:(ALuint) sourceID
+{
+	if(NULL == alcASASetSource)
+	{
+        OAL_LOG_WARNING(@"No proc ptr for alcASASetSource");
+        return;
+	}
+	
+    ALfloat value = level;
+    alcASASetSource(ALC_ASA_REVERB_SEND_LEVEL, sourceID, &value, sizeof(value));
+}
+
++ (float) getSourceReverbSendLevel:(ALuint) sourceID
+{
+	if(NULL == alcASAGetSource)
+	{
+        OAL_LOG_WARNING(@"No proc ptr for alcASAGetSource. Returning 0");
+        return 0;
+	}
+	
+    ALfloat value = 0;
+    ALuint size = sizeof(value);
+    alcASAGetSource(ALC_ASA_REVERB_SEND_LEVEL, sourceID, &value, &size);
+    return value;
+}
+
++ (void) setOcclusion:(float) occlusion onSource:(ALuint) sourceID
+{
+	if(NULL == alcASASetSource)
+	{
+        OAL_LOG_WARNING(@"No proc ptr for alcASASetSource");
+        return;
+	}
+	
+    ALfloat value = occlusion;
+    alcASASetSource(ALC_ASA_OCCLUSION, sourceID, &value, sizeof(value));
+}
+
++ (float) getSourceOcclusion:(ALuint) sourceID
+{
+	if(NULL == alcASAGetSource)
+	{
+        OAL_LOG_WARNING(@"No proc ptr for alcASAGetSource. Returning 0");
+        return 0;
+	}
+	
+    ALfloat value = 0;
+    ALuint size = sizeof(value);
+    alcASAGetSource(ALC_ASA_OCCLUSION, sourceID, &value, &size);
+    return value;
+}
+
++ (void) setObstruction:(float) obstruction onSource:(ALuint) sourceID
+{
+	if(NULL == alcASASetSource)
+	{
+        OAL_LOG_WARNING(@"No proc ptr for alcASASetSource");
+        return;
+	}
+	
+    ALfloat value = obstruction;
+    alcASASetSource(ALC_ASA_OBSTRUCTION, sourceID, &value, sizeof(value));
+}
+
++ (float) getSourceObstruction:(ALuint) sourceID
+{
+	if(NULL == alcASAGetSource)
+	{
+        OAL_LOG_WARNING(@"No proc ptr for alcASAGetSource. Returning 0");
+        return 0;
+	}
+	
+    ALfloat value = 0;
+    ALuint size = sizeof(value);
+    alcASAGetSource(ALC_ASA_OBSTRUCTION, sourceID, &value, &size);
+    return value;
 }
 
 @end

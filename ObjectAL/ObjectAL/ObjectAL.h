@@ -166,9 +166,9 @@
  To add ObjectAL to your project, do the following:
 
  <ol>
-	<li>Copy libs/ObjectAL from this project into your project. You can simply drag it into the
-		"Groups & Files" section in xcode if you like (be sure to select "Copy items into
-		destination group's folder"). <br/>
+	<li>Copy ObjectAL/ObjectAL from this project into your project.
+        You can simply drag it into the "Groups & Files" section in xcode if you
+        like (be sure to select "Copy items into destination group's folder"). <br/>
 		Alternatively, you can build ObjectAL as a static library (as it's configured to do in the
 		ObjectAL demo project).<br/><br/>
 	</li>

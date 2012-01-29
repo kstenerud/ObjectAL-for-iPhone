@@ -60,6 +60,9 @@
 	float coneOuterGain;
 	float coneInnerAngle;
 	float coneOuterAngle;
+    float reverbSendLevel;
+    float reverbOcclusion;
+    float reverbObstruction;
 	
 	ALPoint position;
 	ALVector velocity;
@@ -101,6 +104,12 @@
 	int defaultSourceType;
     /** Default looping */
 	bool defaultLooping;
+    /* Default reverb send level */
+    float defaultReverbSendLevel;
+    /* Default occlusion */
+    float defaultReverbOcclusion;
+    /* Default obstruction */
+    float defaultReverbObstruction;
     
 
 	bool interruptible;

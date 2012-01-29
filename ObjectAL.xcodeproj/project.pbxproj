@@ -164,6 +164,7 @@
 		3914D9EC147D5BDF0010C4A2 /* vu-face.png in Resources */ = {isa = PBXBuildFile; fileRef = 3914D9D6147D5BDF0010C4A2 /* vu-face.png */; };
 		3914D9ED147D5BDF0010C4A2 /* vu-needle.png in Resources */ = {isa = PBXBuildFile; fileRef = 3914D9D7147D5BDF0010C4A2 /* vu-needle.png */; };
 		3914D9EE147D5BDF0010C4A2 /* vu-shell.png in Resources */ = {isa = PBXBuildFile; fileRef = 3914D9D8147D5BDF0010C4A2 /* vu-shell.png */; };
+		39169B5314D381EE00082A89 /* ReverbDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 39169B5114D381ED00082A89 /* ReverbDemo.m */; };
 		398C16C1147D555E000EFEDF /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 398C16C0147D555E000EFEDF /* QuartzCore.framework */; };
 		398C16C3147D555E000EFEDF /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 398C16C2147D555E000EFEDF /* OpenGLES.framework */; };
 		398C16C5147D555E000EFEDF /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 398C16C4147D555E000EFEDF /* OpenAL.framework */; };
@@ -498,6 +499,8 @@
 		3914D9D6147D5BDF0010C4A2 /* vu-face.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "vu-face.png"; path = "Resources/vu-face.png"; sourceTree = "<group>"; };
 		3914D9D7147D5BDF0010C4A2 /* vu-needle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "vu-needle.png"; path = "Resources/vu-needle.png"; sourceTree = "<group>"; };
 		3914D9D8147D5BDF0010C4A2 /* vu-shell.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "vu-shell.png"; path = "Resources/vu-shell.png"; sourceTree = "<group>"; };
+		39169B5014D381ED00082A89 /* ReverbDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.objj.h; path = ReverbDemo.h; sourceTree = "<group>"; };
+		39169B5114D381ED00082A89 /* ReverbDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReverbDemo.m; sourceTree = "<group>"; };
 		398C1694147D5533000EFEDF /* ObjectAL-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ObjectAL-Info.plist"; sourceTree = "<group>"; };
 		398C1696147D5533000EFEDF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		398C1698147D5533000EFEDF /* ObjectAL-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ObjectAL-Prefix.pch"; sourceTree = "<group>"; };
@@ -957,6 +960,8 @@
 				3914D977147D5B570010C4A2 /* TwoSourceDemo.m */,
 				3914D978147D5B570010C4A2 /* VolumePitchPanDemo.h */,
 				3914D979147D5B570010C4A2 /* VolumePitchPanDemo.m */,
+				39169B5014D381ED00082A89 /* ReverbDemo.h */,
+				39169B5114D381ED00082A89 /* ReverbDemo.m */,
 			);
 			path = Demos;
 			sourceTree = "<group>";
@@ -1447,6 +1452,7 @@
 				3914D9BE147D5B570010C4A2 /* TargetedAction.m in Sources */,
 				3914D9C0147D5B570010C4A2 /* TouchableNode.m in Sources */,
 				3914D9C2147D5B570010C4A2 /* VUMeter.m in Sources */,
+				39169B5314D381EE00082A89 /* ReverbDemo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1494,7 +1500,6 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
-				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
 				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
 				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
 				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
@@ -1535,7 +1540,6 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
-				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
 				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
 				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
 				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;

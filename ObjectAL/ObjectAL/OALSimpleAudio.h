@@ -132,6 +132,10 @@
 /** The number of sources OALSimpleAudio is using (max 32 on current iOS devices). */
 @property(readwrite,assign) int reservedSources;
 
+@property(nonatomic,readonly) ALDevice* device;
+
+@property(nonatomic,readonly) ALContext* context;
+
 /** The channel source used by OALSimpleAudio.
  * Only mess with this if you know what you are doing!
  */

@@ -143,9 +143,11 @@
  */
 @property(readonly) float hardwareVolume;
 
-/** Check if the hardware mute switch is on (not supported on the simulator).
+/** Check if the hardware mute switch is on (not supported on the simulator or iOS 5+).
  * Note: If headphones are plugged in, hardwareMuted will always return FALSE
  *       regardless of the switch state.
+ *
+ * Note: Please file a bug report with Apple to get this functionality restored in iOS 5!
  */
 @property(readonly) bool hardwareMuted;
 

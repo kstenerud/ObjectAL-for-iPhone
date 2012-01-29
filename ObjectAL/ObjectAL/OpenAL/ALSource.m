@@ -33,6 +33,7 @@
 #import "OpenALManager.h"
 #import "OALAudioActions.h"
 #import "OALUtilityActions.h"
+#import <OpenAL/oalMacOSX_OALExtensions.h>
 
 
 #pragma mark -
@@ -780,6 +781,72 @@
 		}
 		
 		[ALWrapper source3f:sourceId parameter:AL_VELOCITY v1:value.x v2:value.y v3:value.z];
+	}
+}
+
+- (float) reverbSendLevel
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		return [ALWrapper asaGetSourcef:sourceId property:ALC_ASA_REVERB_SEND_LEVEL];
+	}
+}
+
+- (void) setReverbSendLevel:(float) reverbSendLevel
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		if(self.suspended)
+		{
+			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
+			return;
+		}
+		
+		[ALWrapper asaSourcef:sourceId property:ALC_ASA_REVERB_SEND_LEVEL value:reverbSendLevel];
+	}
+}
+
+- (float) reverbOcclusion
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		return [ALWrapper asaGetSourcef:sourceId property:ALC_ASA_OCCLUSION];
+	}
+}
+
+- (void) setReverbOcclusion:(float) reverbOcclusion
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		if(self.suspended)
+		{
+			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
+			return;
+		}
+		
+		[ALWrapper asaSourcef:sourceId property:ALC_ASA_OCCLUSION value:reverbOcclusion];
+	}
+}
+
+- (float) reverbObstruction
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		return [ALWrapper asaGetSourcef:sourceId property:ALC_ASA_OBSTRUCTION];
+	}
+}
+
+- (void) setReverbObstruction:(float) reverbObstruction
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		if(self.suspended)
+		{
+			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
+			return;
+		}
+		
+		[ALWrapper asaSourcef:sourceId property:ALC_ASA_OBSTRUCTION value:reverbObstruction];
 	}
 }
 

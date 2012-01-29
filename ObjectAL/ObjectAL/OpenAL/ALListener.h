@@ -30,6 +30,7 @@
 #import <Foundation/Foundation.h>
 #import "ALTypes.h"
 #import "OALSuspendHandler.h"
+#import <OpenAL/oalMacOSX_OALExtensions.h>
 
 @class ALContext;
 
@@ -82,6 +83,46 @@
 * Only valid if this listener's context is the current context.
 */
 @property(readwrite,assign) ALVector velocity;
+
+/** Turns on reverb. (iOS 5.0+)
+ */
+@property(readwrite,assign) bool reverbOn;
+
+/** The global reverb level (from -40.0db to 40.0db). (iOS 5.0+)
+ */
+@property(readwrite,assign) float globalReverbLevel;
+
+/** The room type to simulate for reverb. (iOS 5.0+)
+ *
+ * Allowed room types:
+ *
+ * ALC_ASA_REVERB_ROOM_TYPE_SmallRoom
+ * ALC_ASA_REVERB_ROOM_TYPE_MediumRoom
+ * ALC_ASA_REVERB_ROOM_TYPE_LargeRoom
+ * ALC_ASA_REVERB_ROOM_TYPE_MediumHall
+ * ALC_ASA_REVERB_ROOM_TYPE_LargeHall
+ * ALC_ASA_REVERB_ROOM_TYPE_Plate
+ * ALC_ASA_REVERB_ROOM_TYPE_MediumChamber
+ * ALC_ASA_REVERB_ROOM_TYPE_LargeChamber
+ * ALC_ASA_REVERB_ROOM_TYPE_Cathedral
+ * ALC_ASA_REVERB_ROOM_TYPE_LargeRoom2
+ * ALC_ASA_REVERB_ROOM_TYPE_MediumHall2
+ * ALC_ASA_REVERB_ROOM_TYPE_MediumHall3
+ * ALC_ASA_REVERB_ROOM_TYPE_LargeHall2
+ */
+@property(readwrite,assign) int reverbRoomType;
+
+/** The equalizer gain for reverb. (iOS 5.0+)
+ */
+@property(readwrite,assign) float reverbEQGain;
+
+/** The equalizer bandwidth for reverb. (iOS 5.0+)
+ */
+@property(readwrite,assign) float reverbEQBandwidth;
+
+/** The equalizer frequency for reverb. (iOS 5.0+)
+ */
+@property(readwrite,assign) float reverbEQFrequency;
 
 
 #pragma mark Object Management
