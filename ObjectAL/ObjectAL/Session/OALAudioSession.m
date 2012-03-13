@@ -504,6 +504,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 	}
 }
 
+// prevent onAudioError: from becoming reentrant due to self.manuallySuspended setting off a chain of calls that result in another
+// error notification broadcast
+static BOOL gHandlingErrorNotification = FALSE;
+
 - (void) onAudioError:(NSNotification*) notification
 {
     #pragma unused(notification)
@@ -518,14 +522,18 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		NSTimeInterval timeSinceLastReset = [[NSDate date] timeIntervalSinceDate:lastResetTime];
-		if(timeSinceLastReset > kMinTimeIntervalBetweenResets)
+		if(timeSinceLastReset > kMinTimeIntervalBetweenResets && !gHandlingErrorNotification)
 		{
+            gHandlingErrorNotification = TRUE;
+            
 			OAL_LOG_WARNING(@"Received audio error notification. Resetting audio session.");
 			self.manuallySuspended = YES;
 			self.manuallySuspended = NO;
 			arcsafe_release(lastResetTime);
 			lastResetTime = [[NSDate alloc] init];
-		}
+		
+            gHandlingErrorNotification = FALSE;
+        }
 		else
 		{
 			OAL_LOG_WARNING(@"Received audio error notification, but last reset was %f seconds ago. Doing nothing.", timeSinceLastReset);
