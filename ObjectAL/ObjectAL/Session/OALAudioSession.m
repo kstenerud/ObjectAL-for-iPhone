@@ -76,6 +76,13 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALAudioSession);
  */
 - (void) setIntProperty:(AudioSessionPropertyID) property value:(UInt32) value;
 
+/** (INTERNAL USE) Set an AudioSession property.
+ *
+ * @param property The property to set.
+ * @param value The value to set this property to.
+ */
+- (void) setFloatProperty:(AudioSessionPropertyID) property value:(Float32) value;
+
 /** (INTERNAL USE) Set the Audio Session category and properties based on current settings.
  */
 - (void) setAudioMode;
@@ -252,6 +259,17 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 	}
 }
 
+- (float) preferredIOBufferDuration
+{
+    return [self getFloatProperty:kAudioSessionProperty_PreferredHardwareIOBufferDuration];
+}
+
+- (void) setPreferredIOBufferDuration:(float)value
+{
+    [self setFloatProperty:kAudioSessionProperty_PreferredHardwareIOBufferDuration
+                     value:value];
+}
+
 - (bool) ipodPlaying
 {
 	return 0 != [self getIntProperty:kAudioSessionProperty_OtherAudioIsPlaying];
@@ -325,6 +343,16 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 }
 
 - (void) setIntProperty:(AudioSessionPropertyID) property value:(UInt32) value
+{
+	OSStatus result;
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		result = AudioSessionSetProperty(property, sizeof(value), &value);
+	}
+	REPORT_AUDIOSESSION_CALL(result, @"Failed to get int property %08x", property);
+}
+
+- (void) setFloatProperty:(AudioSessionPropertyID) property value:(Float32) value
 {
 	OSStatus result;
 	OPTIONALLY_SYNCHRONIZED(self)

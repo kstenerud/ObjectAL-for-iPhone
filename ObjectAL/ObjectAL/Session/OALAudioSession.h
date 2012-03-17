@@ -137,6 +137,11 @@
  */
 @property(nonatomic,readwrite,assign) id<AVAudioSessionDelegate> audioSessionDelegate;
 
+/** The preferred I/O buffer duration, in seconds. Lower values give less
+ * playback latencey, but use more CPU.
+ */
+@property(nonatomic,readwrite,assign) float preferredIOBufferDuration;
+
 /** If true, another application (usually iPod) is playing music. */
 @property(nonatomic,readonly,assign) bool ipodPlaying;
 
