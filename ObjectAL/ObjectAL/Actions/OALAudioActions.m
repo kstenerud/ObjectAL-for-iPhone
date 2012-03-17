@@ -33,13 +33,15 @@
 
 #pragma mark OAL_GainProtocol
 
+/** \cond */
 /** (INTERNAL USE) Protocol to keep the compiler happy. */
 @protocol OAL_GainProtocol
 
 /** The gain (volume), represented as a float from 0.0 to 1.0. */
-@property(readwrite) float gain;
+@property(nonatomic,readwrite,assign) float gain;
 
 @end
+/** \endcond */
 
 
 #pragma mark -
@@ -75,7 +77,7 @@
 
 - (void) updateCompletion:(float) proportionComplete
 {
-	[(id<OAL_GainProtocol>)target setGain:lowValue
+	[(id<OAL_GainProtocol>)self.target setGain:lowValue
 	 + [realFunction valueForInput:proportionComplete] * delta];
 }
 
@@ -85,13 +87,15 @@
 #pragma mark -
 #pragma mark OAL_PitchProtocol
 
+/** \cond */
 /** (INTERNAL USE) Protocol to keep the compiler happy. */
 @protocol OAL_PitchProtocol
 
 /** The pitch, represented as a float with 1.0 representing normal pitch. */
-@property(readwrite) float pitch;
+@property(nonatomic,readwrite,assign) float pitch;
 
 @end
+/** \endcond */
 
 
 #pragma mark -
@@ -127,7 +131,7 @@
 
 - (void) updateCompletion:(float) proportionComplete
 {
-	[(id<OAL_PitchProtocol>)target setPitch:startValue
+	[(id<OAL_PitchProtocol>)self.target setPitch:startValue
 	 + [realFunction valueForInput:proportionComplete] * delta];
 }
 
@@ -137,13 +141,15 @@
 #pragma mark -
 #pragma mark OAL_PanProtocol
 
+/** \cond */
 /** (INTERNAL USE) Protocol to keep the compiler happy. */
 @protocol OAL_PanProtocol
 
 /** The pan, represented as a float from -1.0 to 1.0. */
-@property(readwrite) float pan;
+@property(nonatomic,readwrite,assign) float pan;
 
 @end
+/** \endcond */
 
 
 #pragma mark -
@@ -179,7 +185,7 @@
 
 - (void) updateCompletion:(float) proportionComplete
 {
-	[(id<OAL_PanProtocol>)target setPan:startValue
+	[(id<OAL_PanProtocol>)self.target setPan:startValue
 	 + [realFunction valueForInput:proportionComplete] * delta];
 }
 
@@ -189,13 +195,15 @@
 #pragma mark -
 #pragma mark OAL_PositionProtocol
 
+/** \cond */
 /** (INTERNAL USE) Protocol to keep the compiler happy. */
 @protocol OAL_PositionProtocol
 
 /** The position in 3D space. */
-@property(readwrite,assign) ALPoint position;
+@property(nonatomic,readwrite,assign) ALPoint position;
 
 @end
+/** \endcond */
 
 
 #pragma mark -
@@ -239,7 +247,7 @@
 - (void) updateCompletion:(float) proportionComplete
 {
 	[super updateCompletion:proportionComplete];
-	[(id<OAL_PositionProtocol>)target setPosition:position];
+	[(id<OAL_PositionProtocol>)self.target setPosition:position];
 }
 
 @end
@@ -311,7 +319,7 @@
 
 - (void) updateCompletion:(float) proportionComplete
 {
-	[(id<OAL_PositionProtocol>)target setPosition:
+	[(id<OAL_PositionProtocol>)self.target setPosition:
 	 ALPointMake(startPoint.x + delta.x*proportionComplete,
 				 startPoint.y + delta.y*proportionComplete,
 				 startPoint.z + delta.z*proportionComplete)];
@@ -390,7 +398,7 @@
 
 - (void) updateCompletion:(float) proportionComplete
 {
-	[(id<OAL_PositionProtocol>)target setPosition:
+	[(id<OAL_PositionProtocol>)self.target setPosition:
 	 ALPointMake(startPoint.x + delta.x*proportionComplete,
 				 startPoint.y + delta.y*proportionComplete,
 				 startPoint.z + delta.z*proportionComplete)];

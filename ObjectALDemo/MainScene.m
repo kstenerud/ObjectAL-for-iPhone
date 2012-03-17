@@ -28,7 +28,7 @@
 {
 	int index;
 }
-@property(readwrite,assign) int index;
+@property(nonatomic,readwrite,assign) int index;
 
 @end
 

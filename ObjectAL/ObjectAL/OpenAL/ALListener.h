@@ -45,7 +45,6 @@
  */
 @interface ALListener : NSObject <OALSuspendManager>
 {
-	__unsafe_unretained ALContext* context; // Weak reference
 	bool muted;
 	float gain;
 	
@@ -56,41 +55,41 @@
 
 #pragma mark Properties
 
-/** The context this listener belongs to. */
-@property(nonatomic,readonly) ALContext* context;
+/** The context this listener belongs to (WEAK reference). */
+@property(nonatomic,readonly,assign) ALContext* context;
 
 /** Causes this listener to stop hearing sound.
  * It's called "muted" rather than "deaf" to give a consistent name with other mute functions.
  */
-@property(readwrite,assign) bool muted;
+@property(nonatomic,readwrite,assign) bool muted;
 
 /** Gain (volume), affecting every sound this listener hears (0.0 = no sound, 1.0 = max volume).
  * Only valid if this listener's context is the current context.
  */
-@property(readwrite,assign) float gain;
+@property(nonatomic,readwrite,assign) float gain;
 
 /** Orientation (up: x, y, z, at: x, y, z).
  * Only valid if this listener's context is the current context.
  */
-@property(readwrite,assign) ALOrientation orientation;
+@property(nonatomic,readwrite,assign) ALOrientation orientation;
 
 /** Position (x, y, z).
  * Only valid if this listener's context is the current context.
  */
-@property(readwrite,assign) ALPoint position;
+@property(nonatomic,readwrite,assign) ALPoint position;
 
 /** Velocity (x, y, z).
 * Only valid if this listener's context is the current context.
 */
-@property(readwrite,assign) ALVector velocity;
+@property(nonatomic,readwrite,assign) ALVector velocity;
 
 /** Turns on reverb. (iOS 5.0+)
  */
-@property(readwrite,assign) bool reverbOn;
+@property(nonatomic,readwrite,assign) bool reverbOn;
 
 /** The global reverb level (from -40.0db to 40.0db). (iOS 5.0+)
  */
-@property(readwrite,assign) float globalReverbLevel;
+@property(nonatomic,readwrite,assign) float globalReverbLevel;
 
 /** The room type to simulate for reverb. (iOS 5.0+)
  *
@@ -110,23 +109,24 @@
  * ALC_ASA_REVERB_ROOM_TYPE_MediumHall3
  * ALC_ASA_REVERB_ROOM_TYPE_LargeHall2
  */
-@property(readwrite,assign) int reverbRoomType;
+@property(nonatomic,readwrite,assign) int reverbRoomType;
 
 /** The equalizer gain for reverb. (iOS 5.0+)
  */
-@property(readwrite,assign) float reverbEQGain;
+@property(nonatomic,readwrite,assign) float reverbEQGain;
 
 /** The equalizer bandwidth for reverb. (iOS 5.0+)
  */
-@property(readwrite,assign) float reverbEQBandwidth;
+@property(nonatomic,readwrite,assign) float reverbEQBandwidth;
 
 /** The equalizer frequency for reverb. (iOS 5.0+)
  */
-@property(readwrite,assign) float reverbEQFrequency;
+@property(nonatomic,readwrite,assign) float reverbEQFrequency;
 
 
 #pragma mark Object Management
 
+/** \cond */
 /** (INTERNAL USE) Create a listener for the specified context.
  *
  * @param context the context to create this listener on.
@@ -140,5 +140,6 @@
  * @return The initialized listener.
  */
 - (id) initWithContext:(ALContext*) context;
+/** \endcond */
 
 @end

@@ -246,7 +246,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALLogarithmicFunction);
 #pragma mark Properties
 
 /** The function which will have its value reversed. */
-@property(readwrite,retain) id<OALFunction, NSObject> function;
+@property(nonatomic,readwrite,retain) id<OALFunction, NSObject> function;
 
 
 #pragma mark Object Management

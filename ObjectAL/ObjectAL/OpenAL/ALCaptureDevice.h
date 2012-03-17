@@ -47,19 +47,19 @@
 #pragma mark Properties
 
 /** The number of capture samples available. */
-@property(nonatomic,readonly) int captureSamples;
+@property(nonatomic,readonly,assign) int captureSamples;
 
 /** The OpenAL device pointer. */
-@property(nonatomic,readonly) ALCdevice* device;
+@property(nonatomic,readonly,assign) ALCdevice* device;
 
 /** List of strings describing all extensions available on this device (NSString*). */
-@property(nonatomic,readonly) NSArray* extensions;
+@property(nonatomic,readonly,retain) NSArray* extensions;
 
 /** The specification revision for this implementation (major version). */
-@property(nonatomic,readonly) int majorVersion;
+@property(nonatomic,readonly,assign) int majorVersion;
 
 /** The specification revision for this implementation (minor version). */
-@property(nonatomic,readonly) int minorVersion;
+@property(nonatomic,readonly,assign) int minorVersion;
 
 
 #pragma mark Object Management

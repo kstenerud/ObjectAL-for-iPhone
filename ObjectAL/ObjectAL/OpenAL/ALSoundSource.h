@@ -48,91 +48,91 @@
 #pragma mark Properties
 
 /** Cone inner angle (OpenAL property). */
-@property(readwrite,assign) float coneInnerAngle;
+@property(nonatomic,readwrite,assign) float coneInnerAngle;
 
 /** Cone outer angle (OpenAL property). */
-@property(readwrite,assign) float coneOuterAngle;
+@property(nonatomic,readwrite,assign) float coneOuterAngle;
 
 /** Cone outer gain (OpenAL property). */
-@property(readwrite,assign) float coneOuterGain;
+@property(nonatomic,readwrite,assign) float coneOuterGain;
 
 /** Direction (OpenAL property). */
-@property(readwrite,assign) ALVector direction;
+@property(nonatomic,readwrite,assign) ALVector direction;
 
 /** Gain (volume) (OpenAL property). */
-@property(readwrite,assign) float gain;
+@property(nonatomic,readwrite,assign) float gain;
 
 /** Volume (alias to gain). */
-@property(readwrite,assign) float volume;
+@property(nonatomic,readwrite,assign) float volume;
 
 /** If true, this source may be interrupted when resources are low. */
-@property(readwrite,assign) bool interruptible;
+@property(nonatomic,readwrite,assign) bool interruptible;
 
 /** Looping (OpenAL property). */
-@property(readwrite,assign) bool looping;
+@property(nonatomic,readwrite,assign) bool looping;
 
 /** Max distance (OpenAL property). */
-@property(readwrite,assign) float maxDistance;
+@property(nonatomic,readwrite,assign) float maxDistance;
 
 /** Max gain (OpenAL property). */
-@property(readwrite,assign) float maxGain;
+@property(nonatomic,readwrite,assign) float maxGain;
 
 /** Min gain (OpenAL property). */
-@property(readwrite,assign) float minGain;
+@property(nonatomic,readwrite,assign) float minGain;
 
 /** If true, this source is muted. */
-@property(readwrite,assign) bool muted;
+@property(nonatomic,readwrite,assign) bool muted;
 
 /** If true, this source is currently paused. */
-@property(readwrite,assign) bool paused;
+@property(nonatomic,readwrite,assign) bool paused;
 
 /** Pitch (OpenAL property). */
-@property(readwrite,assign) float pitch;
+@property(nonatomic,readwrite,assign) float pitch;
 
 /** If true, this source is currently playing audio. */
-@property(nonatomic,readonly) bool playing;
+@property(nonatomic,readonly,assign) bool playing;
 
 /** Position (OpenAL property). */
-@property(readwrite,assign) ALPoint position;
+@property(nonatomic,readwrite,assign) ALPoint position;
 
 /** Reference distance (OpenAL property). */
-@property(readwrite,assign) float referenceDistance;
+@property(nonatomic,readwrite,assign) float referenceDistance;
 
 /** Rolloff factor (OpenAL property). */
-@property(readwrite,assign) float rolloffFactor;
+@property(nonatomic,readwrite,assign) float rolloffFactor;
 
 /** Source relative (OpenAL property). */
-@property(readwrite,assign) int sourceRelative;
+@property(nonatomic,readwrite,assign) int sourceRelative;
 
 /** Source type (OpenAL property). */
-@property(nonatomic,readonly) int sourceType;
+@property(nonatomic,readonly,assign) int sourceType;
 
 /** Velocity (OpenAL property). */
-@property(readwrite,assign) ALVector velocity;
+@property(nonatomic,readwrite,assign) ALVector velocity;
 
 /** Pan value (-1.0 = far left, 1.0 = far right).
  * Note: This effect is simulated by changing the source's X position.
  * Do not use this property if you are modifying the position property as well.
  */
-@property(readwrite,assign) float pan;
+@property(nonatomic,readwrite,assign) float pan;
 
 /** Reverb send level (how much reverb affects this source). (iOS 5.0+)
  * 0.0 = fully dry, 1.0 = fully wet.
  * Default 0.
  */
-@property(readwrite,assign) float reverbSendLevel;
+@property(nonatomic,readwrite,assign) float reverbSendLevel;
 
 /** Reverb occlusion (wall/door between listener and source). (iOS 5.0+)
  * -100.0db (most occlusion) to 0.0 (no occlusion).
  * Default 0.
  */
-@property(readwrite,assign) float reverbOcclusion;
+@property(nonatomic,readwrite,assign) float reverbOcclusion;
 
 /** Reverb obstruction (object between listener and source). (iOS 5.0+)
  * -100.0db (most obstruction) to 0.0 (no obstruction).
  * Default 0.
  */
-@property(readwrite,assign) float reverbObstruction;
+@property(nonatomic,readwrite,assign) float reverbObstruction;
 
 
 #pragma mark Object Management

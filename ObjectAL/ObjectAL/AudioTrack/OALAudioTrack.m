@@ -37,6 +37,7 @@
 
 #pragma mark Asynchronous Operations
 
+/** \cond */
 /**
  * (INTERNAL USE) NSOperation for running an audio operation asynchronously.
  */
@@ -205,6 +206,7 @@
 - (void) setSuspended:(bool) value;
 
 @end
+/** \endcond */
 
 #pragma mark -
 #pragma mark AudioTrack

@@ -42,6 +42,7 @@
 SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALAudioSession);
 
 
+/** \cond */
 /**
  * (INTERNAL USE) Private methods for OALAudioSupport. 
  */
@@ -97,6 +98,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALAudioSession);
 - (void) onAudioError:(NSNotification*) notification;
 
 @end
+/** \endcond */
 
 
 @implementation OALAudioSession
@@ -117,7 +119,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 		
 		// Set up defaults
 		handleInterruptions = YES;
-		audioSessionDelegate = nil;
 		allowIpod = YES;
 		ipodDucking = NO;
 		useHardwareIfAvailable = YES;
@@ -504,10 +505,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 	}
 }
 
-// prevent onAudioError: from becoming reentrant due to self.manuallySuspended setting off a chain of calls that result in another
-// error notification broadcast
-static BOOL gHandlingErrorNotification = FALSE;
-
 - (void) onAudioError:(NSNotification*) notification
 {
     #pragma unused(notification)
@@ -522,9 +519,9 @@ static BOOL gHandlingErrorNotification = FALSE;
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		NSTimeInterval timeSinceLastReset = [[NSDate date] timeIntervalSinceDate:lastResetTime];
-		if(timeSinceLastReset > kMinTimeIntervalBetweenResets && !gHandlingErrorNotification)
+		if(timeSinceLastReset > kMinTimeIntervalBetweenResets && !handlingErrorNotification)
 		{
-            gHandlingErrorNotification = TRUE;
+            handlingErrorNotification = TRUE;
             
 			OAL_LOG_WARNING(@"Received audio error notification. Resetting audio session.");
 			self.manuallySuspended = YES;
@@ -532,11 +529,14 @@ static BOOL gHandlingErrorNotification = FALSE;
 			arcsafe_release(lastResetTime);
 			lastResetTime = [[NSDate alloc] init];
 		
-            gHandlingErrorNotification = FALSE;
+            handlingErrorNotification = FALSE;
         }
 		else
 		{
-			OAL_LOG_WARNING(@"Received audio error notification, but last reset was %f seconds ago. Doing nothing.", timeSinceLastReset);
+            if(!handlingErrorNotification)
+            {
+                OAL_LOG_WARNING(@"Received audio error notification, but last reset was %f seconds ago. Doing nothing.", timeSinceLastReset);
+            }
 		}
 	}
 #endif

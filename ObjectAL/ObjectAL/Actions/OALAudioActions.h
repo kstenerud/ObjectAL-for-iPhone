@@ -90,7 +90,7 @@
 #pragma mark Properties
 
 /** The position where the target will be placed. */
-@property(readwrite,assign,nonatomic) ALPoint position;
+@property(nonatomic,readwrite,assign) ALPoint position;
 
 
 #pragma mark Object Management
@@ -134,12 +134,12 @@
 #pragma mark Properties
 
 /** The position to move the target to. */
-@property(readwrite,assign,nonatomic) ALPoint position;
+@property(nonatomic,readwrite,assign) ALPoint position;
 
 /** The speed at which to move the target.
  * If this is 0, the target will be moved at the speed determined by duration.
  */
-@property(readwrite,assign,nonatomic) float unitsPerSecond;
+@property(nonatomic,readwrite,assign) float unitsPerSecond;
 
 
 #pragma mark Object Management
@@ -198,12 +198,12 @@
 #pragma mark Properties
 
 /** The amount to move the target by. */
-@property(readwrite,assign,nonatomic) ALPoint delta;
+@property(nonatomic,readwrite,assign) ALPoint delta;
 
 /** The speed at which to move the target.
  * If this is 0, the target will be moved at the speed determined by duration.
  */
-@property(readwrite,assign,nonatomic) float unitsPerSecond;
+@property(nonatomic,readwrite,assign) float unitsPerSecond;
 
 /** Create a new action.
  *

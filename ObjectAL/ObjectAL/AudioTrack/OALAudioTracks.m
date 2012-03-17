@@ -35,6 +35,7 @@
 SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALAudioTracks);
 
 
+/** \cond */
 /**
  * (INTERNAL USE) Private methods for OALAudioTracks.
  */
@@ -47,6 +48,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALAudioTracks);
 - (void) pollDeviceTime;
 
 @end
+/** \endcond */
 
 
 #pragma mark OALAudioTracks

@@ -47,7 +47,7 @@
 	bool started;	\
 }	\
 	\
-@property(readonly,nonatomic) bool running;	\
+@property(nonatomic,readonly,assign) bool running;	\
 - (void) runWithTarget:(id) target;	\
 - (void) prepareWithTarget:(id) target;	\
 - (void) stopAction;	\
@@ -119,7 +119,6 @@
 @interface OALAction : NSObject
 {
     /** The target to perform the action on */
-	id target;
 	float duration;
 	float elapsed;
 	bool running;
@@ -132,16 +131,16 @@
 #pragma mark Properties
 
 /** The target to perform the action on.  WEAK REFERENCE. */
-@property(readonly,nonatomic) id target;
+@property(nonatomic,readonly,assign) id target;
 
 /** The duration of the action, in seconds. */
-@property(readonly,nonatomic) float duration;
+@property(nonatomic,readonly,assign) float duration;
 
 /** The amount of time that has elapsed for this action, in seconds. */
-@property(readwrite,nonatomic) float elapsed;
+@property(nonatomic,readwrite,assign) float elapsed;
 
 /** If true, the action is currently running. */
-@property(readonly,nonatomic) bool running;
+@property(nonatomic,readonly,assign) bool running;
 
 
 #pragma mark Object Management
@@ -222,13 +221,13 @@ COCOS2D_SUBCLASS_HEADER(OALAction, CCIntervalAction);
 #pragma mark Properties
 
 /** The function that will be applied. */
-@property(readwrite,retain,nonatomic) id<OALFunction,NSObject> function;
+@property(nonatomic,readwrite,retain) id<OALFunction,NSObject> function;
 
 /** The value that the property in the target will hold at the start of the action. */
-@property(readwrite,assign,nonatomic) float startValue;
+@property(nonatomic,readwrite,assign) float startValue;
 
 /** The value that the property in the target will hold at the end of the action. */
-@property(readwrite,assign,nonatomic) float endValue;
+@property(nonatomic,readwrite,assign) float endValue;
 
 
 #pragma mark Object Management

@@ -40,6 +40,13 @@
 {
     /** The current audio session category */
 	NSString* audioSessionCategory;
+    
+    /** Flag signifying that we are currently handling an error notification.
+     * This prevents onAudioError: from becoming reentrant due to
+     * self.manuallySuspended setting off a chain of calls that result in
+     * another error notification broadcast.
+     */
+    bool handlingErrorNotification;
 	
 	bool handleInterruptions;
 	bool allowIpod;
@@ -48,8 +55,6 @@
 	bool honorSilentSwitch;
 	
 	bool audioSessionActive;
-	
-	__unsafe_unretained id<AVAudioSessionDelegate> audioSessionDelegate;
 	
 	/** If true, the audio session was active when the interrupt occurred. */
 	bool audioSessionWasActive;
@@ -76,7 +81,7 @@
  *
  * Default value: nil
  */
-@property(readwrite,retain) NSString* audioSessionCategory;
+@property(nonatomic,readwrite,retain) NSString* audioSessionCategory;
 
 /** If YES, allow ipod music to continue playing (NOT SUPPORTED ON THE SIMULATOR).
  * Note: If this is enabled, and another app is playing music, background audio
@@ -88,13 +93,13 @@
  *
  * Default value: YES
  */
-@property(readwrite,assign) bool allowIpod;
+@property(nonatomic,readwrite,assign) bool allowIpod;
 
 /** If YES, ipod music will duck (lower in volume) when the audio session activates.
  *
  * Default value: NO
  */
-@property(readwrite,assign) bool ipodDucking;
+@property(nonatomic,readwrite,assign) bool ipodDucking;
 
 /** Determines what to do if no other application is playing audio and allowIpod = YES
  * (NOT SUPPORTED ON THE SIMULATOR). <br>
@@ -113,14 +118,14 @@
  *
  * Default value: YES
  */
-@property(readwrite,assign) bool useHardwareIfAvailable;
+@property(nonatomic,readwrite,assign) bool useHardwareIfAvailable;
 
 /** If true, mute when backgrounded, screen locked, or the ringer switch is
  * turned off (NOT SUPPORTED ON THE SIMULATOR). <br>
  *
  * Default value: YES
  */
-@property(readwrite,assign) bool honorSilentSwitch;
+@property(nonatomic,readwrite,assign) bool honorSilentSwitch;
 
 /** If true, automatically handle interruptions. <br>
  *
@@ -128,20 +133,20 @@
  */
 @property(nonatomic,readwrite,assign) bool handleInterruptions;
 
-/** Delegate that will receive all audio session events.
+/** Delegate that will receive all audio session events (WEAK reference).
  */
 @property(nonatomic,readwrite,assign) id<AVAudioSessionDelegate> audioSessionDelegate;
 
 /** If true, another application (usually iPod) is playing music. */
-@property(readonly) bool ipodPlaying;
+@property(nonatomic,readonly,assign) bool ipodPlaying;
 
 /** If true, the audio session is active */
-@property(readwrite,assign) bool audioSessionActive;
+@property(nonatomic,readwrite,assign) bool audioSessionActive;
 
 /** Get the device's final hardware output volume, as controlled by
  * the volume button on the side of the device.
  */
-@property(readonly) float hardwareVolume;
+@property(nonatomic,readonly,assign) float hardwareVolume;
 
 /** Check if the hardware mute switch is on (not supported on the simulator or iOS 5+).
  * Note: If headphones are plugged in, hardwareMuted will always return FALSE
@@ -149,12 +154,12 @@
  *
  * Note: Please file a bug report with Apple to get this functionality restored in iOS 5!
  */
-@property(readonly) bool hardwareMuted;
+@property(nonatomic,readonly,assign) bool hardwareMuted;
 
 /** Check what hardware route the audio is taking, such as "Speaker" or "Headphone"
  * (not supported on the simulator).
  */
-@property(readonly) NSString* audioRoute;
+@property(nonatomic,readonly,retain) NSString* audioRoute;
 
 
 #pragma mark Object Management

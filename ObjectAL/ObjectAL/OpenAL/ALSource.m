@@ -39,6 +39,7 @@
 #pragma mark -
 #pragma mark Private Methods
 
+/** \cond */
 /**
  * (INTERNAL USE) Private methods for ALSource.
  */
@@ -52,6 +53,7 @@
  * get around OpenAL bug.
  */
 - (void) delayedResumePlayback;
+/** \endcond */
 
 
 @end

@@ -16,7 +16,7 @@
 	CCFiniteTimeAction* action;
 }
 /** This is the target that the action will be forced to run with */
-@property(readwrite,retain) id forcedTarget;
+@property(nonatomic,readwrite,retain) id forcedTarget;
 
 /** Create an action with the specified action and forced target */
 + (id) actionWithTarget:(id) target action:(CCFiniteTimeAction*) action;

@@ -16,11 +16,11 @@
 	double multiplier;
 	double runningAverage;
 }
-@property(readwrite,assign) double db;
-@property(readwrite,assign) double smoothing;
-@property(readwrite,assign) double multiplier;
+@property(nonatomic,readwrite,assign) double db;
+@property(nonatomic,readwrite,assign) double smoothing;
+@property(nonatomic,readwrite,assign) double multiplier;
 
-@property(readonly) double runningAverage;
+@property(nonatomic,readonly,assign) double runningAverage;
 
 + (VUMeter*) meter;
 

@@ -40,6 +40,7 @@
 
 SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALSimpleAudio);
 
+/** \cond */
 /**
  * (INTERNAL USE) Private interface to OALSimpleAudio.
  */
@@ -55,6 +56,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALSimpleAudio);
 - (ALBuffer*) internalPreloadEffect:(NSString*) filePath reduceToMono:(bool) reduceToMono;
 
 @end
+/** \endcond */
 
 #pragma mark -
 #pragma mark OALSimpleAudio

@@ -13,7 +13,7 @@
 	CCLabelTTF* label;
 }
 
-@property(readonly) CCLabelTTF* label;
+@property(nonatomic,readonly,retain) CCLabelTTF* label;
 
 /** Create a new button.
  * @param filename the filename of the image to use as a touchable portion.

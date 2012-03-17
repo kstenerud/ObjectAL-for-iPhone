@@ -43,12 +43,12 @@
 
 /** Set to YES to manually suspend.
  */
-@property(readwrite,assign) bool manuallySuspended;
+@property(nonatomic,readwrite,assign) bool manuallySuspended;
 
 /** If YES, this object is interrupted.
  * Note: This property must NOT be set by the user!
  */
-@property(readwrite,assign) bool interrupted;
+@property(nonatomic,readwrite,assign) bool interrupted;
 
 @end
 
@@ -61,7 +61,7 @@
 
 /** If YES, this object is suspended.
  */
-@property(readonly) bool suspended;
+@property(nonatomic,readonly,assign) bool suspended;
 
 /** Add a listener that will receive manual suspend and interrupt events.
  *
@@ -106,9 +106,6 @@
 	 */
 	NSMutableArray* manualSuspendStates;
 	
-	/** Slave object that is notified when this object suspends or unsuspends. */
-	__unsafe_unretained id suspendStatusChangeTarget;
-	
 	/** Selector to be invoked on suspend or unsuspend.
 	 * Takes the signature: setSelected:(bool) value
 	 */
@@ -145,13 +142,13 @@
 
 
 /** If YES, the manual suspend control is set. */
-@property(readwrite,assign) bool manuallySuspended;
+@property(nonatomic,readwrite,assign) bool manuallySuspended;
 
 /** If YES, the interrupt control is set. */
-@property(readwrite,assign) bool interrupted;
+@property(nonatomic,readwrite,assign) bool interrupted;
 
 /** If YES, the slave object is suspended. */
-@property(readonly) bool suspended;
+@property(nonatomic,readonly,assign) bool suspended;
 
 /** Add a listener that will receive manual suspend and interrupt events.
  *

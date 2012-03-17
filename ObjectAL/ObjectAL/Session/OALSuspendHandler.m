@@ -32,7 +32,19 @@
 #import "ObjectALMacros.h"
 #import <objc/message.h>
 
+/** \cond */
+@interface OALSuspendHandler ()
+/** \endcond */
+
+/** Slave object that is notified when this object suspends or unsuspends. WEAK reference */
+@property(nonatomic,readwrite,assign) id suspendStatusChangeTarget;
+
+@end
+
+
 @implementation OALSuspendHandler
+
+@synthesize suspendStatusChangeTarget;
 
 + (OALSuspendHandler*) handlerWithTarget:(id) target selector:(SEL) selector
 {

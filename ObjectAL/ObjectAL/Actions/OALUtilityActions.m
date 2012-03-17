@@ -375,7 +375,7 @@ COCOS2D_SUBCLASS(OALSequentialActions)
 	duration = 0;
 	for(OALAction* action in actions)
 	{
-		[action prepareWithTarget:target];
+		[action prepareWithTarget:targetIn];
 		if(action.duration > 0)
 		{
 			if(action.duration > duration)

@@ -38,6 +38,7 @@
 
 SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALActionManager);
 
+/** \cond */
 /**
  * (INTERNAL USE) Private methods for OALActionManager.
  */
@@ -46,6 +47,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALActionManager);
 /** Resets the time delta in cases where proper time delta calculations become impossible.
  */
 - (void) doResetTimeDelta:(NSNotification*) notification;
+/** \endcond */
 
 @end
 

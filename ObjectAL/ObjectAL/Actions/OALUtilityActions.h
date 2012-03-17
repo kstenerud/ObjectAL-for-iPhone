@@ -38,14 +38,12 @@
  */
 @interface OALTargetedAction: OALAction
 {
-	__unsafe_unretained id forcedTarget;
-	
 	/** The action that will be run on the target. */
 	OALAction* action;
 }
 
 /** The target which this action will actually be invoked upon. */
-@property(readwrite,assign,nonatomic) id forcedTarget;
+@property(nonatomic,readwrite,assign) id forcedTarget;
 
 /** Create an action.
  *
@@ -101,7 +99,7 @@
 #pragma mark Properties
 
 /** The actions which will be run. */
-@property(readwrite,retain,nonatomic) NSMutableArray* actions;
+@property(nonatomic,readwrite,retain) NSMutableArray* actions;
 
 
 #pragma mark Object Management
@@ -152,7 +150,7 @@
 #pragma mark Properties
 
 /** The actions which will be run. */
-@property(readwrite,retain,nonatomic) NSMutableArray* actions;
+@property(nonatomic,readwrite,retain) NSMutableArray* actions;
 
 
 #pragma mark Object Management

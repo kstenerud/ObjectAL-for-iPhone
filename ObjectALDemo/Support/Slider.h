@@ -25,7 +25,7 @@
 	CCScaleTo* scaleDownAction;
 }
 /** The position (value) of the slider in the track, as a proportion from 0.0 to 1.0 */
-@property(readwrite,assign) float value;
+@property(nonatomic,readwrite,assign) float value;
 
 /** Create a slider.
  * @param track The node to use as a track.

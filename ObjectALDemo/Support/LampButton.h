@@ -14,8 +14,8 @@
 	CCSprite* lampOn;
 	CCSprite* lampOff;
 }
-@property(readwrite,assign) bool isOn;
-@property(readonly) CCLabelTTF* label;
+@property(nonatomic,readwrite,assign) bool isOn;
+@property(nonatomic,readonly,retain) CCLabelTTF* label;
 
 + (id) buttonWithText:(NSString*) text
 				 font:(NSString*) font

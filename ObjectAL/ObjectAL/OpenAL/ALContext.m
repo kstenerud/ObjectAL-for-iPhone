@@ -38,6 +38,7 @@
 #pragma mark -
 #pragma mark Private Methods
 
+/** \cond */
 /**
  * (INTERNAL USE) Private methods for ALContext.
  */
@@ -48,6 +49,7 @@
 - (void) setSuspended:(bool) value;
 
 @end
+/** \endcond */
 
 
 @implementation ALContext

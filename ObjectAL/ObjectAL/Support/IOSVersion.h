@@ -17,7 +17,7 @@
 	float version;
 }
 /** The version of iOS being run on the current device as a float in the format x.yy */
-@property(nonatomic,readonly) float version;
+@property(nonatomic,readonly,assign) float version;
 
 /** Singleton implementation providing "sharedInstance" and "purgeSharedInstance" methods.
  *

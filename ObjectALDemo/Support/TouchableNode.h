@@ -29,7 +29,7 @@
  Only the touches of this node will be affected. This "method" is not propagated to it's children.
  @since v0.8.1
  */
-@property(nonatomic,assign) BOOL isTouchEnabled;
+@property(nonatomic,readwrite,assign) BOOL isTouchEnabled;
 
 - (BOOL) touchHitsSelf:(UITouch*) touch;
 - (BOOL) touch:(UITouch*) touch hitsNode:(CCNode*) node;

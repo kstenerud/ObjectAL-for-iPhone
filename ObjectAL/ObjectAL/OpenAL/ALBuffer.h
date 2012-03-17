@@ -57,31 +57,31 @@
 #pragma mark Properties
 
 /** The size of a sample in bits. */
-@property(nonatomic,readonly) ALint bits;
+@property(nonatomic,readonly,assign) ALint bits;
 
 /** The ID assigned to this buffer by OpenAL. */
-@property(nonatomic,readonly) ALuint bufferId;
+@property(nonatomic,readonly,assign) ALuint bufferId;
 
 /** The number of channels the buffer data plays in. */
-@property(nonatomic,readonly) ALint channels;
+@property(nonatomic,readonly,assign) ALint channels;
 
 /** The device this buffer was created for. */
-@property(nonatomic,readonly) ALDevice* device;
+@property(nonatomic,readonly,retain) ALDevice* device;
 
 /** The format of the audio data (see al.h, AL_FORMAT_XXX). */
-@property(nonatomic,readonly) ALenum format;
+@property(nonatomic,readonly,assign) ALenum format;
 
 /** The frequency this buffer runs at. */
-@property(nonatomic,readonly) ALint frequency;
+@property(nonatomic,readonly,assign) ALint frequency;
 
 /** The name given to this buffer upon creation. You may change it at runtime if you wish. */
 @property(nonatomic,readwrite,retain) NSString* name;
 
 /** The size, in bytes, of the currently loaded buffer data. */
-@property(nonatomic,readonly) ALint size;
+@property(nonatomic,readonly,assign) ALint size;
 
 /** The duration of the sample in this buffer, in seconds. */
-@property(nonatomic,readonly) float duration;
+@property(nonatomic,readonly,assign) float duration;
 
 /** If true, calls free() on the audio data when this object gets destroyed.
  * Default: YES

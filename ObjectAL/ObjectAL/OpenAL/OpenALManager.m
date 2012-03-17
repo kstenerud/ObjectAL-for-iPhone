@@ -39,6 +39,7 @@
 #pragma mark -
 #pragma mark Asynchronous Operations
 
+/** \cond */
 /**
  * (INTERNAL USE) NSOperation for loading audio files asynchronously.
  */
@@ -133,13 +134,18 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OpenALManager);
 /**
  * (INTERNAL USE) Private methods for OpenALManager.
  */
-@interface OpenALManager (Private)
+@interface OpenALManager ()
 
 /** (INTERNAL USE) Called by SuspendHandler.
  */
 - (void) setSuspended:(bool) value;
 
+/** (INTERNAL USE) Real reference to the current context.
+ */
+@property(nonatomic,readwrite,assign) ALContext* realCurrentContext;
+
 @end
+/** \endcond */
 
 
 #pragma mark -
@@ -152,6 +158,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OpenALManager);
 #pragma mark Object Management
 
 SYNTHESIZE_SINGLETON_FOR_CLASS(OpenALManager);
+
+@synthesize realCurrentContext;
 
 - (id) init
 {
@@ -198,7 +206,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OpenALManager);
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		return currentContext;
+		return self.realCurrentContext;
 	}
 }
 
@@ -212,8 +220,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OpenALManager);
 			return;
 		}
 		
-		currentContext = context;
-		[ALWrapper makeContextCurrent:currentContext.context deviceReference:currentContext.device.device];
+		self.realCurrentContext = context;
+		[ALWrapper makeContextCurrent:self.realCurrentContext.context
+                      deviceReference:self.realCurrentContext.device.device];
 	}
 }
 
@@ -297,8 +306,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OpenALManager);
 	}
 	else
 	{
-		[ALWrapper makeContextCurrent:currentContext.context
-					  deviceReference:currentContext.device.device];
+		[ALWrapper makeContextCurrent:self.realCurrentContext.context
+					  deviceReference:self.realCurrentContext.device.device];
 	}
 }
 

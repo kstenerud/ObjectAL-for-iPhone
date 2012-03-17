@@ -52,19 +52,19 @@
 #pragma mark Properties
 
 /** All contexts created on this device (ALContext*). */
-@property(nonatomic,readonly) NSArray* contexts;
+@property(nonatomic,readonly,retain) NSArray* contexts;
 
 /** The OpenAL device pointer. */
-@property(nonatomic,readonly) ALCdevice* device;
+@property(nonatomic,readonly,assign) ALCdevice* device;
 
 /** List of strings describing all extensions available on this device (NSString*). */
-@property(nonatomic,readonly) NSArray* extensions;
+@property(nonatomic,readonly,retain) NSArray* extensions;
 
 /** The specification revision for this implementation (major version). */
-@property(nonatomic,readonly) int majorVersion;
+@property(nonatomic,readonly,assign) int majorVersion;
 
 /** The specification revision for this implementation (minor version). */
-@property(nonatomic,readonly) int minorVersion;
+@property(nonatomic,readonly,assign) int minorVersion;
 
 
 #pragma mark Object Management
@@ -110,6 +110,7 @@
 
 #pragma mark Internal Use
 
+/** \cond */
 /** (INTERNAL USE) Used by ALContext to announce initialization.
  *
  * @param context The context that is initializing.
@@ -121,5 +122,6 @@
  * @param context The context that is deallocating.
  */
 - (void) notifyContextDeallocating:(ALContext*) context;
+/** \endcond */
 
 @end

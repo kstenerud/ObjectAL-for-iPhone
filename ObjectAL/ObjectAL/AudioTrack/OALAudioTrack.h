@@ -86,57 +86,57 @@
 #pragma mark Properties
 
 /** The URL of the currently loaded audio data. */
-@property(nonatomic,readonly) NSURL* currentlyLoadedUrl;
+@property(nonatomic,readonly,retain) NSURL* currentlyLoadedUrl;
 
 /** Optional object that will receive notifications for decoding errors,
  * audio interruptions (such as an incoming phone call), and playback completion. <br>
  * <strong>Note:</strong> OALAudioTrack keeps a WEAK reference to delegate, so make sure you clear it
  * when your object is going to be deallocated.
  */
-@property(readwrite,assign) id<AVAudioPlayerDelegate> delegate;
+@property(nonatomic,readwrite,assign) id<AVAudioPlayerDelegate> delegate;
 
 /** The gain (volume) for playback (0.0 - 1.0, where 1.0 = no attenuation). */
-@property(readwrite,assign) float gain;
+@property(nonatomic,readwrite,assign) float gain;
 
 /** The volume (alias to gain) for playback (0.0 - 1.0, where 1.0 = no attenuation). */
-@property(readwrite,assign) float volume;
+@property(nonatomic,readwrite,assign) float volume;
 
 /** Pan value (-1.0 = far left, 1.0 = far right).
  * <strong>Note:</strong> This will have no effect on iOS versions prior to 4.0.
  */
-@property(readwrite,assign) float pan;
+@property(nonatomic,readwrite,assign) float pan;
 
 /** If true, audio track is muted */
-@property(readwrite,assign) bool muted;
+@property(nonatomic,readwrite,assign) bool muted;
 
 /** If true, automatically preload again when playback stops */
 @property(nonatomic,readwrite,assign) bool autoPreload;
 
 /** If true, audio track is in preloaded state */
-@property(nonatomic,readonly) bool preloaded;
+@property(nonatomic,readonly,assign) bool preloaded;
 
 /** The number of times to loop playback (-1 = forever).
  * <strong>Note:</strong> This value will be ignored, and get changed when you call the various playXX methods.
  * Only "play" will use the current value of "numberOfLoops".
  */
-@property(readwrite,assign) NSInteger numberOfLoops;
+@property(nonatomic,readwrite,assign) NSInteger numberOfLoops;
 
 /** If true, pause playback. */
-@property(readwrite,assign) bool paused;
+@property(nonatomic,readwrite,assign) bool paused;
 
 /** Access to the underlying AVAudioPlayer object.
  * WARNING: Be VERY careful when accessing this, as some methods could cause
  * it to fall out of sync with OALAudioTrack (particularly play/pause/stop methods).
  */
-@property(nonatomic,readonly) AVAudioPlayer* player;
+@property(nonatomic,readonly,retain) AVAudioPlayer* player;
 
 /** If true, background music is currently playing. */
-@property(nonatomic,readonly) bool playing;
+@property(nonatomic,readonly,assign) bool playing;
 
 /** The current playback position in seconds from the start of the sound.
  * You can set this to change the playback position, whether it is currently playing or not.
  */
-@property(readwrite,assign) NSTimeInterval currentTime;
+@property(nonatomic,readwrite,assign) NSTimeInterval currentTime;
 
 /** The value of this property increases monotonically while an audio player is playing or paused. <br><br>
  *
@@ -152,13 +152,13 @@
  *
  * <strong>Note:</strong> This will have no effect on iOS versions prior to 4.0.
  */
-@property(readonly) NSTimeInterval deviceCurrentTime;
+@property(nonatomic,readonly,assign) NSTimeInterval deviceCurrentTime;
 
 /** The duration, in seconds, of the currently loaded sound. */
-@property(readonly) NSTimeInterval duration;
+@property(nonatomic,readonly,assign) NSTimeInterval duration;
 
 /** The number of channels in the currently loaded sound. */
-@property(readonly) NSUInteger numberOfChannels;
+@property(nonatomic,readonly,assign) NSUInteger numberOfChannels;
 
 
 #pragma mark Object Management
@@ -404,7 +404,7 @@
 #pragma mark Metering
 
 /** If true, metering is enabled. */
-@property (readwrite,assign) bool meteringEnabled;
+@property (nonatomic,readwrite,assign) bool meteringEnabled;
 
 /** Updates the metering system to give current values.
  * You must call this method before calling averagePowerForChannel or peakPowerForChannel in

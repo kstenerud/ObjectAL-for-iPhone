@@ -59,6 +59,7 @@
 #pragma mark -
 #pragma mark Private Methods
 
+/** \cond */
 /**
  * (INTERNAL USE) Private methods for ALChannelSource.
  */
@@ -81,6 +82,7 @@
 - (void) setDefaultsFromChannel:(ALChannelSource*) channel;
 
 @end
+/** \endcond */
 
 
 @implementation ALChannelSource

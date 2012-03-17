@@ -45,7 +45,7 @@
 #pragma mark Properties
 
 /** All sources managed by this pool (id<ALSoundSource>). */
-@property(nonatomic,readonly) NSArray* sources;
+@property(nonatomic,readonly,retain) NSArray* sources;
 
 
 #pragma mark Object Management

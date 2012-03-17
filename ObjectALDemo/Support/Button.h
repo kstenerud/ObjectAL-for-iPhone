@@ -26,7 +26,7 @@
 @property(nonatomic,readwrite,retain) CCNode* touchablePortion;
 
 /** If true, the button does a scaling animation when pushed. */
-@property(readwrite,assign) bool scaleOnPush;
+@property(nonatomic,readwrite,assign) bool scaleOnPush;
 
 /** Create a new button.
  * @param node the node to use as a touchable portion.

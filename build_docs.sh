@@ -69,7 +69,7 @@ doxset() {
 #
 if ! [ -f "$DOX_SRC" ]; then
     echo doxygen config file does not exist
-    mkdir -p $(dirname $PWD)
+    mkdir -p $(dirname $DOX_SRC)
     $DOXYGEN_PATH -g "$DOX_SRC"
 fi
 

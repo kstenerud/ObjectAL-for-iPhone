@@ -83,31 +83,31 @@
 /** The sound buffer this source is attached to (set to nil to detach the currently attached
  * buffer).
  */
-@property(readwrite,retain) ALBuffer* buffer;
+@property(nonatomic,readwrite,retain) ALBuffer* buffer;
 
 /** How many buffers this source has queued. */
-@property(nonatomic,readonly) int buffersQueued;
+@property(nonatomic,readonly,assign) int buffersQueued;
 
 /** How many of these buffers have been processed during playback. */
-@property(nonatomic,readonly) int buffersProcessed;
+@property(nonatomic,readonly,assign) int buffersProcessed;
 
 /** The context this source was opened on. */
-@property(nonatomic,readonly) ALContext* context;
+@property(nonatomic,readonly,retain) ALContext* context;
 
 /** The offset into the current buffer (in bytes). */
-@property(readwrite,assign) float offsetInBytes;
+@property(nonatomic,readwrite,assign) float offsetInBytes;
 
 /** The offset into the current buffer (in samples). */
-@property(readwrite,assign) float offsetInSamples;
+@property(nonatomic,readwrite,assign) float offsetInSamples;
 
 /** The offset into the current buffer (in seconds). */
-@property(readwrite,assign) float offsetInSeconds;
+@property(nonatomic,readwrite,assign) float offsetInSeconds;
 
 /** OpenAL's ID for this source. */
-@property(nonatomic,readonly) ALuint sourceId;
+@property(nonatomic,readonly,assign) ALuint sourceId;
 
 /** The state of this source. */
-@property(readwrite,assign) int state;
+@property(nonatomic,readwrite,assign) int state;
 
 
 #pragma mark Object Management

@@ -52,7 +52,6 @@
 @interface ALContext : NSObject <OALSuspendManager>
 {
 	ALCcontext* context;
-	ALDevice* device;
 	/** All sound sources associated with this context. */
 	NSMutableArray* sources;
 	ALListener* listener;
@@ -71,18 +70,18 @@
  * “[spec major number].[spec minor number] [optional vendor version information]”
  * Only valid when this is the current context.
  */
-@property(nonatomic,readonly) NSString* alVersion;
+@property(nonatomic,readonly,retain) NSString* alVersion;
 
 /** The current context's attribute list.
  * Only valid when this is the current context.
  */
-@property(nonatomic,readonly) NSArray* attributes;
+@property(nonatomic,readonly,retain) NSArray* attributes;
 
 /** The OpenAL context pointer. */
-@property(nonatomic,readonly) ALCcontext* context;
+@property(nonatomic,readonly,assign) ALCcontext* context;
 
 /** The device this context was opened on. */
-@property(nonatomic,readonly) ALDevice* device;
+@property(nonatomic,readonly,retain) ALDevice* device;
 
 /** The current distance model.
  * Legal values are AL_NONE, AL_INVERSE_DISTANCE, AL_INVERSE_DISTANCE_CLAMPED,
@@ -90,38 +89,38 @@
  * and AL_EXPONENT_DISTANCE_CLAMPED. See the OpenAL spec for detailed information. <br>
  * Only valid when this is the current context.
  */
-@property(readwrite,assign) ALenum distanceModel;
+@property(nonatomic,readwrite,assign) ALenum distanceModel;
 
 /** Exaggeration factor for Doppler effect.
  * Only valid when this is the current context.
  */
-@property(readwrite,assign) float dopplerFactor;
+@property(nonatomic,readwrite,assign) float dopplerFactor;
 
 /** List of available extensions (NSString*).
  * Only valid when this is the current context.
  */
-@property(nonatomic,readonly) NSArray* extensions;
+@property(nonatomic,readonly,retain) NSArray* extensions;
 
 /** This context's listener. */
-@property(nonatomic,readonly) ALListener* listener;
+@property(nonatomic,readonly,retain) ALListener* listener;
 
 /** Information about the specific renderer.
  * Only valid when this is the current context.
  */
-@property(nonatomic,readonly) NSString* renderer;
+@property(nonatomic,readonly,retain) NSString* renderer;
 
 /** All sources associated with this context (ALSource*). */
-@property(nonatomic,readonly) NSArray* sources;
+@property(nonatomic,readonly,retain) NSArray* sources;
 
 /** Speed of sound in same units as velocities.
  * Only valid when this is the current context.
  */
-@property(readwrite,assign) float speedOfSound;
+@property(nonatomic,readwrite,assign) float speedOfSound;
 
 /** Name of the vendor.
  * Only valid when this is the current context.
  */
-@property(nonatomic,readonly) NSString* vendor;
+@property(nonatomic,readonly,retain) NSString* vendor;
 
 
 #pragma mark Object Management
@@ -229,6 +228,7 @@
 
 #pragma mark Internal Use
 
+/** \cond */
 /** (INTERNAL USE) Used by ALSource to announce initialization.
  *
  * @param source the source that is initializing.
@@ -240,5 +240,6 @@
  * @param source the source that is deallocating.
  */
 - (void) notifySourceDeallocating:(ALSource*) source;
+/** \endcond */
 
 @end

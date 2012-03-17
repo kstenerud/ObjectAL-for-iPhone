@@ -83,6 +83,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALActionManager);
 
 #pragma mark Internal Use
 
+/** \cond */
 /** (INTERNAL USE) Used by OALAction to announce that it is starting.
  *
  * @param action The action that is starting.
@@ -94,6 +95,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALActionManager);
  * @param action The action that is stopping.
  */
 - (void) notifyActionStopped:(OALAction*) action;
+/** \endcond */
 
 @end
 

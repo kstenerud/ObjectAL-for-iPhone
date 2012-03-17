@@ -53,13 +53,13 @@
 }
 
 /** The URL of the audio file */
-@property(nonatomic,readonly) NSURL* url;
+@property(nonatomic,readonly,retain) NSURL* url;
 
 /** A description of the audio data in this file. */
-@property(nonatomic,readonly) AudioStreamBasicDescription* streamDescription;
+@property(nonatomic,readonly,assign) AudioStreamBasicDescription* streamDescription;
 
 /** The total number of audio frames in this file */
-@property(nonatomic,readonly) SInt64 totalFrames;
+@property(nonatomic,readonly,assign) SInt64 totalFrames;
 
 /** If YES, reduce any stereo data to mono (stereo samples don't support panning or positional audio). */
 @property(nonatomic,readwrite,assign) bool reduceToMono;

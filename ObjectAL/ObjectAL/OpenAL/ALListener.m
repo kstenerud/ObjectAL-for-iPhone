@@ -34,6 +34,15 @@
 #import <OpenAL/oalMacOSX_OALExtensions.h>
 
 
+/** \cond */
+@interface ALListener ()
+
+@property(nonatomic,readwrite,assign) ALContext* context;
+
+@end
+/** \endcond */
+
+
 @implementation ALListener
 
 #pragma mark Object Management
@@ -49,7 +58,7 @@
 	{
 		suspendHandler = [[OALSuspendHandler alloc] initWithTarget:nil selector:nil];
 
-		context = contextIn;
+		self.context = contextIn;
 		gain = 1.0f;
 	}
 	return self;

@@ -104,11 +104,11 @@
 	int defaultSourceType;
     /** Default looping */
 	bool defaultLooping;
-    /* Default reverb send level */
+    /** Default reverb send level */
     float defaultReverbSendLevel;
-    /* Default occlusion */
+    /** Default occlusion */
     float defaultReverbOcclusion;
-    /* Default obstruction */
+    /** Default obstruction */
     float defaultReverbObstruction;
     
 
@@ -160,13 +160,13 @@
 #pragma mark Properties
 
 /** This source's owning context. */
-@property(nonatomic,readonly) ALContext* context;
+@property(nonatomic,readonly,retain) ALContext* context;
 
 /** All sources being used by this channel. Do not modify! */
-@property(nonatomic,readonly) ALSoundSourcePool* sourcePool;
+@property(nonatomic,readonly,retain) ALSoundSourcePool* sourcePool;
 
 /** The number of sources reserved by this channel. */
-@property(readwrite,assign) int reservedSources;
+@property(nonatomic,readwrite,assign) int reservedSources;
 
 #pragma mark Object Management
 
