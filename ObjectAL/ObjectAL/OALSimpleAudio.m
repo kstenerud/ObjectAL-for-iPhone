@@ -96,7 +96,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
     
     backgroundTrack = [[OALAudioTrack alloc] init];
     
-#if NS_BLOCKS_AVAILABLE && OBJECTAL_USE_BLOCKS
+#if NS_BLOCKS_AVAILABLE && OBJECTAL_CFG_USE_BLOCKS
     oal_dispatch_queue	= dispatch_queue_create("objectal.simpleaudio.queue", NULL);
 #endif
     pendingLoadCount	= 0;
@@ -141,7 +141,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 - (void) dealloc
 {
 	OAL_LOG_DEBUG(@"%@: Dealloc", self);
-#if NS_BLOCKS_AVAILABLE && OBJECTAL_USE_BLOCKS
+#if NS_BLOCKS_AVAILABLE && OBJECTAL_CFG_USE_BLOCKS
 	dispatch_release(oal_dispatch_queue);
 #endif
 	
@@ -486,7 +486,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
         OAL_LOG_WARNING(@"You are loading an effect synchronously, but have pending async loads that have not completed. Your load will happen after those finish. Your thread is now stuck waiting. Next time just load everything async please.");
     }
     
-#if NS_BLOCKS_AVAILABLE && OBJECTAL_USE_BLOCKS
+#if NS_BLOCKS_AVAILABLE && OBJECTAL_CFG_USE_BLOCKS
 	//Using blocks with the same queue used to asynch load removes the need for locking
 	//BUT be warned that if you had called preloadEffects and then called this method, your app will stall until all of the loading is done.
 	//It is advised you just always use async loading
@@ -503,7 +503,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 #endif
 }
 
-#if NS_BLOCKS_AVAILABLE && OBJECTAL_USE_BLOCKS
+#if NS_BLOCKS_AVAILABLE && OBJECTAL_CFG_USE_BLOCKS
 
 - (BOOL) preloadEffect:(NSString*) filePath
           reduceToMono:(bool) reduceToMono
@@ -554,6 +554,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
                    ^{
                        [filePaths enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
                         {
+                            #pragma unused(stop)
                             OAL_LOG_INFO(@"Preloading effect: %@", obj);
                             ALBuffer *result = [self internalPreloadEffect:(NSString *)obj reduceToMono:reduceToMono];
                             if(!result)

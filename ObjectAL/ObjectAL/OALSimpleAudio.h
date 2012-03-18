@@ -70,7 +70,7 @@
 	ALChannelSource* channel;
 	/** Cache for preloaded sound samples. */
 	NSMutableDictionary* preloadCache;
-#if NS_BLOCKS_AVAILABLE && OBJECTAL_USE_BLOCKS
+#if NS_BLOCKS_AVAILABLE && OBJECTAL_CFG_USE_BLOCKS
 	/** Queue for preloading and async operations that use blocks.
 	 * This ensures all operations are safe because they are guaranteed to run
 	 * in order.
@@ -376,7 +376,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALSimpleAudio);
  */
 - (ALBuffer*) preloadEffect:(NSString*) filePath reduceToMono:(bool) reduceToMono;
 
-#if NS_BLOCKS_AVAILABLE && OBJECTAL_USE_BLOCKS
+#if NS_BLOCKS_AVAILABLE && OBJECTAL_CFG_USE_BLOCKS
 
 /** Asynchronous preload and cache sound effect for later playback.
  *
