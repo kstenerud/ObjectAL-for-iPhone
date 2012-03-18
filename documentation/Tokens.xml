@@ -409,50 +409,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>onFadeComplete:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>ALChannelSource</Scope>
-    </TokenIdentifier>
-    <Path>interface_a_l_channel_source.html</Path>
-    <Anchor>ad682830e0287da5e9008b99852e3575e</Anchor>
-    <Abstract>(INTERNAL USE) Called by the action system when a fade completes.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>onPanComplete:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>ALChannelSource</Scope>
-    </TokenIdentifier>
-    <Path>interface_a_l_channel_source.html</Path>
-    <Anchor>ac83830f18b5067c25cd1447464eef4c2</Anchor>
-    <Abstract>(INTERNAL USE) Called by the action system when a pan completes.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>onPitchComplete:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>ALChannelSource</Scope>
-    </TokenIdentifier>
-    <Path>interface_a_l_channel_source.html</Path>
-    <Anchor>a7b540bbe16e6f599c1d3e5e9bd0d07f1</Anchor>
-    <Abstract>(INTERNAL USE) Called by the action system when a pitch change completes.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>setDefaultsFromChannel:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>ALChannelSource</Scope>
-    </TokenIdentifier>
-    <Path>interface_a_l_channel_source.html</Path>
-    <Anchor>ab65f8c8e4eec52b7ab2409076e4a8b4a</Anchor>
-    <Abstract>(INTERNAL USE) Set defaults from another channel.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>channelWithSources:</Name>
       <APILanguage>occ</APILanguage>
       <Type>clm</Type>
@@ -461,17 +417,6 @@
     <Path>interface_a_l_channel_source.html</Path>
     <Anchor>a192f40533492039fedf24c4a1a57f885</Anchor>
     <Abstract>Create a channel with a number of sources.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>sourcePool</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>ALChannelSource</Scope>
-    </TokenIdentifier>
-    <Path>interface_a_l_channel_source.html</Path>
-    <Anchor>ad931a571dff703ab5c938729a1677b55</Anchor>
-    <Abstract>Pool holding the actual sources.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -593,6 +538,39 @@
     <Path>interface_a_l_channel_source.html</Path>
     <Anchor>ab5d3ba9036c31e6aadeb81271964df54</Anchor>
     <Abstract>Cone outer angle (OpenAL property).</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>reverbSendLevel</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>ALChannelSource</Scope>
+    </TokenIdentifier>
+    <Path>interface_a_l_channel_source.html</Path>
+    <Anchor>a558f60074a2abe05960458ddc0e2cf4a</Anchor>
+    <Abstract>Reverb send level (how much reverb affects this source).</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>reverbOcclusion</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>ALChannelSource</Scope>
+    </TokenIdentifier>
+    <Path>interface_a_l_channel_source.html</Path>
+    <Anchor>a5f4ff4468e57a261654d4913b7a11237</Anchor>
+    <Abstract>Reverb occlusion (wall/door between listener and source).</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>reverbObstruction</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>ALChannelSource</Scope>
+    </TokenIdentifier>
+    <Path>interface_a_l_channel_source.html</Path>
+    <Anchor>a5362de1aad705535a84902e683a96f1a</Anchor>
+    <Abstract>Reverb obstruction (object between listener and source).</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -838,6 +816,39 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>defaultReverbSendLevel</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>ALChannelSource</Scope>
+    </TokenIdentifier>
+    <Path>interface_a_l_channel_source.html</Path>
+    <Anchor>a688301c4a0eeb8ea4f16e3f79c1d94bc</Anchor>
+    <Abstract>Default reverb send level.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>defaultReverbOcclusion</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>ALChannelSource</Scope>
+    </TokenIdentifier>
+    <Path>interface_a_l_channel_source.html</Path>
+    <Anchor>abc81a5ab5f5b9e334fa2cb69c511825e</Anchor>
+    <Abstract>Default occlusion.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>defaultReverbObstruction</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>ALChannelSource</Scope>
+    </TokenIdentifier>
+    <Path>interface_a_l_channel_source.html</Path>
+    <Anchor>ac0ba0896a5df7898e64a666e2244f42c</Anchor>
+    <Abstract>Default obstruction.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>interruptible</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -1020,8 +1031,8 @@
       <Scope>ALChannelSource</Scope>
     </TokenIdentifier>
     <Path>interface_a_l_channel_source.html</Path>
-    <Anchor>a704b841021b8835ee98d6ef9ebc4ffb6</Anchor>
-    <Abstract>All sources being used by this channel.</Abstract>
+    <Anchor>afa0c391c2d0fbc3064efedd4a1da2737</Anchor>
+    <Abstract>Pool holding the actual sources.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -1135,39 +1146,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>notifySourceInitializing:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>ALContext</Scope>
-    </TokenIdentifier>
-    <Path>interface_a_l_context.html</Path>
-    <Anchor>a5d9af8ff25aabba500340f6dd6d8efe1</Anchor>
-    <Abstract>(INTERNAL USE) Used by ALSource to announce initialization.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>notifySourceDeallocating:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>ALContext</Scope>
-    </TokenIdentifier>
-    <Path>interface_a_l_context.html</Path>
-    <Anchor>ad8a8d92bdf75c6a3d964030a5380b4f3</Anchor>
-    <Abstract>(INTERNAL USE) Used by ALSource to announce deallocation.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>setSuspended:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>ALContext</Scope>
-    </TokenIdentifier>
-    <Path>interface_a_l_context.html</Path>
-    <Anchor>affd89223f10029849b604538068530c2</Anchor>
-    <Abstract>(INTERNAL USE) Called by SuspendHandler.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>contextOnDevice:attributes:</Name>
       <APILanguage>occ</APILanguage>
       <Type>clm</Type>
@@ -1273,7 +1251,7 @@
       <Scope>ALContext</Scope>
     </TokenIdentifier>
     <Path>interface_a_l_context.html</Path>
-    <Anchor>adf5d141849bcaad66244c4c28bcf0c16</Anchor>
+    <Anchor>aec42c77448cfd560bf1d91f6f77589c8</Anchor>
     <Abstract>The device this context was opened on.</Abstract>
   </Token>
   <Token>
@@ -1421,28 +1399,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>notifyContextInitializing:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>ALDevice</Scope>
-    </TokenIdentifier>
-    <Path>interface_a_l_device.html</Path>
-    <Anchor>a87dde6154078b310a9ec7b7c8553c493</Anchor>
-    <Abstract>(INTERNAL USE) Used by ALContext to announce initialization.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>notifyContextDeallocating:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>ALDevice</Scope>
-    </TokenIdentifier>
-    <Path>interface_a_l_device.html</Path>
-    <Anchor>a024a5262c5fd7b6f94693ead0d1f3795</Anchor>
-    <Abstract>(INTERNAL USE) Used by ALContext to announce deallocation.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>deviceWithDeviceSpecifier:</Name>
       <APILanguage>occ</APILanguage>
       <Type>clm</Type>
@@ -1542,28 +1498,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>initWithContext:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>ALListener</Scope>
-    </TokenIdentifier>
-    <Path>interface_a_l_listener.html</Path>
-    <Anchor>a1c0e6af38782e50e051d1199956fc4b9</Anchor>
-    <Abstract>(INTERNAL USE) Initialize a listener for the specified context.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>listenerForContext:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>clm</Type>
-      <Scope>ALListener</Scope>
-    </TokenIdentifier>
-    <Path>interface_a_l_listener.html</Path>
-    <Anchor>a4831e67aa77c6e3055a50ce28415c62d</Anchor>
-    <Abstract>(INTERNAL USE) Create a listener for the specified context.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>suspendHandler</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -1582,7 +1516,7 @@
     </TokenIdentifier>
     <Path>interface_a_l_listener.html</Path>
     <Anchor>a62ecf2fac49386549ea9e8e319985c80</Anchor>
-    <Abstract>The context this listener belongs to.</Abstract>
+    <Abstract>The context this listener belongs to (WEAK reference).</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -1641,13 +1575,79 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>reverbOn</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instp</Type>
+      <Scope>ALListener</Scope>
+    </TokenIdentifier>
+    <Path>interface_a_l_listener.html</Path>
+    <Anchor>a29345c98cdda944c4c2ec89b01b618a8</Anchor>
+    <Abstract>Turns on reverb.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>globalReverbLevel</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instp</Type>
+      <Scope>ALListener</Scope>
+    </TokenIdentifier>
+    <Path>interface_a_l_listener.html</Path>
+    <Anchor>acf9df0f1045844e5a9c4d292b7cbcc98</Anchor>
+    <Abstract>The global reverb level (from -40.0db to 40.0db).</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>reverbRoomType</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instp</Type>
+      <Scope>ALListener</Scope>
+    </TokenIdentifier>
+    <Path>interface_a_l_listener.html</Path>
+    <Anchor>a4378b2c7f04f7341d0d690c8f55223fc</Anchor>
+    <Abstract>The room type to simulate for reverb.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>reverbEQGain</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instp</Type>
+      <Scope>ALListener</Scope>
+    </TokenIdentifier>
+    <Path>interface_a_l_listener.html</Path>
+    <Anchor>a7b119bcc935f03321ea5eac840cfc808</Anchor>
+    <Abstract>The equalizer gain for reverb.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>reverbEQBandwidth</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instp</Type>
+      <Scope>ALListener</Scope>
+    </TokenIdentifier>
+    <Path>interface_a_l_listener.html</Path>
+    <Anchor>af339b336a06aff3881dcee57430eeb75</Anchor>
+    <Abstract>The equalizer bandwidth for reverb.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>reverbEQFrequency</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instp</Type>
+      <Scope>ALListener</Scope>
+    </TokenIdentifier>
+    <Path>interface_a_l_listener.html</Path>
+    <Anchor>a28c17f7a1795610fc05403640804c25d</Anchor>
+    <Abstract>The equalizer frequency for reverb.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>ALOrientation</Name>
       <APILanguage>c</APILanguage>
       <Type>cl</Type>
       <Scope>ALOrientation</Scope>
     </TokenIdentifier>
     <Path>struct_a_l_orientation.html</Path>
-    <Abstract>Represents an orientation, consisting of an &amp;quot;at&amp;quot; vector (representing the &amp;quot;forward&amp;quo...</Abstract>
+    <Abstract>Represents an orientation, consisting of an &amp;quot;at&amp;quot; vector (representing the &amp;quot;forward&amp;quot; direction)...</Abstract>
     <DeclaredIn>ALTypes.h</DeclaredIn>
   </Token>
   <Token>
@@ -2114,6 +2114,39 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>reverbSendLevel</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>intfp</Type>
+      <Scope>ALSoundSource-p</Scope>
+    </TokenIdentifier>
+    <Path>protocol_a_l_sound_source-p.html</Path>
+    <Anchor>a77afbe8f0856ddd57918896347725765</Anchor>
+    <Abstract>Reverb send level (how much reverb affects this source).</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>reverbOcclusion</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>intfp</Type>
+      <Scope>ALSoundSource-p</Scope>
+    </TokenIdentifier>
+    <Path>protocol_a_l_sound_source-p.html</Path>
+    <Anchor>acc53cb56d1561076dd557548de9fa9a0</Anchor>
+    <Abstract>Reverb occlusion (wall/door between listener and source).</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>reverbObstruction</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>intfp</Type>
+      <Scope>ALSoundSource-p</Scope>
+    </TokenIdentifier>
+    <Path>protocol_a_l_sound_source-p.html</Path>
+    <Anchor>aca3613bff941681e5ccb101995331fa9</Anchor>
+    <Abstract>Reverb obstruction (object between listener and source).</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>ALSoundSourcePool</Name>
       <APILanguage>c</APILanguage>
       <Type>cl</Type>
@@ -2158,17 +2191,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>moveToHead:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>ALSoundSourcePool</Scope>
-    </TokenIdentifier>
-    <Path>interface_a_l_sound_source_pool.html</Path>
-    <Anchor>a4b40c423672925c8530406d4a1e7b2a2</Anchor>
-    <Abstract>Move a source to the head of the list.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>pool</Name>
       <APILanguage>occ</APILanguage>
       <Type>clm</Type>
@@ -2199,6 +2221,27 @@
     <Path>interface_a_l_sound_source_pool.html</Path>
     <Anchor>a533cf92c6b69a01f313ef9895e3e42d0</Anchor>
     <Abstract>All sources managed by this pool (id&amp;lt;ALSoundSource&amp;gt;).</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>ALSoundSourcePool(Private)</Name>
+      <APILanguage>c</APILanguage>
+      <Type>cl</Type>
+      <Scope>ALSoundSourcePool(Private)</Scope>
+    </TokenIdentifier>
+    <Path>interface_a_l_sound_source_pool_07_private_08.html</Path>
+    <Abstract>Private interface to SoundSourcePool.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>moveToHead:</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instm</Type>
+      <Scope>ALSoundSourcePool(Private)</Scope>
+    </TokenIdentifier>
+    <Path>interface_a_l_sound_source_pool_07_private_08.html</Path>
+    <Anchor>a4b40c423672925c8530406d4a1e7b2a2</Anchor>
+    <Abstract>Move a source to the head of the list.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -2298,28 +2341,6 @@
     <Path>interface_a_l_source.html</Path>
     <Anchor>a16535ff4472df085297aada581743d63</Anchor>
     <Abstract>Remove buffers from the buffer queue.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>setSuspended:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>ALSource</Scope>
-    </TokenIdentifier>
-    <Path>interface_a_l_source.html</Path>
-    <Anchor>a0b749961bfaa5007547b9839b7951a31</Anchor>
-    <Abstract>(INTERNAL USE) Called by SuspendHandler.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>delayedResumePlayback</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>ALSource</Scope>
-    </TokenIdentifier>
-    <Path>interface_a_l_source.html</Path>
-    <Anchor>ae0d9e9adf6e3d2b11abe590aa8113c15</Anchor>
-    <Abstract>(INTERNAL USE) Callback for resuming playback after delay to get around OpenAL bug.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -2595,28 +2616,6 @@
     <Path>interface_a_l_wrapper.html</Path>
     <Abstract>A thin wrapper around the C OpenAL API, with a few convenience methods thrown in.</Abstract>
     <DeclaredIn>ALWrapper.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>checkIfSuccessful</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>ALWrapper</Scope>
-    </TokenIdentifier>
-    <Path>interface_a_l_wrapper.html</Path>
-    <Anchor>ae93cc8b009f40ce097954b6761a18f9f</Anchor>
-    <Abstract>Check the OpenAL error status and log an error message if necessary.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>checkIfSuccessfulWithDevice</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>ALWrapper</Scope>
-    </TokenIdentifier>
-    <Path>interface_a_l_wrapper.html</Path>
-    <Anchor>a6262a34daaf2de9e99663f5d9b710c41</Anchor>
-    <Abstract>Check the OpenAL error status and log an error message if necessary.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -3764,12 +3763,176 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>decodeNullSeparatedStringList:</Name>
+      <Name>asaGetListenerb:</Name>
       <APILanguage>occ</APILanguage>
       <Type>clm</Type>
       <Scope>ALWrapper</Scope>
     </TokenIdentifier>
     <Path>interface_a_l_wrapper.html</Path>
+    <Anchor>afb4340b40d3f15c9ccce7f0f7b63866b</Anchor>
+    <Abstract>Read a boolean ASA property from a listener.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>asaGetListeneri:</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>clm</Type>
+      <Scope>ALWrapper</Scope>
+    </TokenIdentifier>
+    <Path>interface_a_l_wrapper.html</Path>
+    <Anchor>afd9f8ff6434e19cdb8a4c97a10abe333</Anchor>
+    <Abstract>Read an integer ASA property from a listener.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>asaGetListenerf:</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>clm</Type>
+      <Scope>ALWrapper</Scope>
+    </TokenIdentifier>
+    <Path>interface_a_l_wrapper.html</Path>
+    <Anchor>ac978384377ca245a6d2a91a141ff2532</Anchor>
+    <Abstract>Read a floating point ASA property from a listener.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>asaListenerb:value:</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>clm</Type>
+      <Scope>ALWrapper</Scope>
+    </TokenIdentifier>
+    <Path>interface_a_l_wrapper.html</Path>
+    <Anchor>af2bd6e872a4ce685299d963dc6002946</Anchor>
+    <Abstract>Write a boolean ASA value to a listener.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>asaListeneri:value:</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>clm</Type>
+      <Scope>ALWrapper</Scope>
+    </TokenIdentifier>
+    <Path>interface_a_l_wrapper.html</Path>
+    <Anchor>aa7f2004d5bb68cf82f841e4c5c4954a2</Anchor>
+    <Abstract>Write an integer ASA value to a listener.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>asaListenerf:value:</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>clm</Type>
+      <Scope>ALWrapper</Scope>
+    </TokenIdentifier>
+    <Path>interface_a_l_wrapper.html</Path>
+    <Anchor>a7696a5b160236619ce567a06fdfc5d16</Anchor>
+    <Abstract>Write a floating point ASA value to a listener.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>asaGetSourceb:property:</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>clm</Type>
+      <Scope>ALWrapper</Scope>
+    </TokenIdentifier>
+    <Path>interface_a_l_wrapper.html</Path>
+    <Anchor>ad054e88ea18a9e5e8a136eb572f93cdd</Anchor>
+    <Abstract>Read a boolean ASA property from a source.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>asaGetSourcei:property:</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>clm</Type>
+      <Scope>ALWrapper</Scope>
+    </TokenIdentifier>
+    <Path>interface_a_l_wrapper.html</Path>
+    <Anchor>ad934a18bfb2d54bdd39db1ee07be34ed</Anchor>
+    <Abstract>Read an integer ASA property from a source.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>asaGetSourcef:property:</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>clm</Type>
+      <Scope>ALWrapper</Scope>
+    </TokenIdentifier>
+    <Path>interface_a_l_wrapper.html</Path>
+    <Anchor>a605a3559ebc85b1524049b2f56dd2ad5</Anchor>
+    <Abstract>Read a floating point ASA property from a source.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>asaSourceb:property:value:</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>clm</Type>
+      <Scope>ALWrapper</Scope>
+    </TokenIdentifier>
+    <Path>interface_a_l_wrapper.html</Path>
+    <Anchor>a8da92882edea9a406a0b5bc2c2c745d9</Anchor>
+    <Abstract>Write a boolean ASA value to a source.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>asaSourcei:property:value:</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>clm</Type>
+      <Scope>ALWrapper</Scope>
+    </TokenIdentifier>
+    <Path>interface_a_l_wrapper.html</Path>
+    <Anchor>a002c5f0ba0232fab4d6c026a427f29ca</Anchor>
+    <Abstract>Write an integer ASA value to a source.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>asaSourcef:property:value:</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>clm</Type>
+      <Scope>ALWrapper</Scope>
+    </TokenIdentifier>
+    <Path>interface_a_l_wrapper.html</Path>
+    <Anchor>a236fa47a0fec36eabaef971638959721</Anchor>
+    <Abstract>Write a floating point ASA value to a source.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>ALWrapper(Private)</Name>
+      <APILanguage>c</APILanguage>
+      <Type>cl</Type>
+      <Scope>ALWrapper(Private)</Scope>
+    </TokenIdentifier>
+    <Path>interface_a_l_wrapper_07_private_08.html</Path>
+    <Abstract>Private interface to ALWrapper.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>checkIfSuccessful</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instm</Type>
+      <Scope>ALWrapper(Private)</Scope>
+    </TokenIdentifier>
+    <Path>interface_a_l_wrapper_07_private_08.html</Path>
+    <Anchor>ae93cc8b009f40ce097954b6761a18f9f</Anchor>
+    <Abstract>Check the OpenAL error status and log an error message if necessary.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>checkIfSuccessfulWithDevice</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instm</Type>
+      <Scope>ALWrapper(Private)</Scope>
+    </TokenIdentifier>
+    <Path>interface_a_l_wrapper_07_private_08.html</Path>
+    <Anchor>a6262a34daaf2de9e99663f5d9b710c41</Anchor>
+    <Abstract>Check the OpenAL error status and log an error message if necessary.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>decodeNullSeparatedStringList:</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>clm</Type>
+      <Scope>ALWrapper(Private)</Scope>
+    </TokenIdentifier>
+    <Path>interface_a_l_wrapper_07_private_08.html</Path>
     <Anchor>a12eef83576a0d55c19aeb7541f72afb1</Anchor>
     <Abstract>Decode an OpenAL supplied NULL-separated string list into an NSArray.</Abstract>
   </Token>
@@ -3778,9 +3941,9 @@
       <Name>decodeSpaceSeparatedStringList:</Name>
       <APILanguage>occ</APILanguage>
       <Type>clm</Type>
-      <Scope>ALWrapper</Scope>
+      <Scope>ALWrapper(Private)</Scope>
     </TokenIdentifier>
-    <Path>interface_a_l_wrapper.html</Path>
+    <Path>interface_a_l_wrapper_07_private_08.html</Path>
     <Anchor>af3fca385f8c9b75fc65ea2560b8f8a9f</Anchor>
     <Abstract>Decode an OpenAL supplied space-separated string list into an NSArray.</Abstract>
   </Token>
@@ -3804,18 +3967,7 @@
     </TokenIdentifier>
     <Path>interface_i_o_s_version.html</Path>
     <Anchor>aa112a04c567a06ebd7aee378240cfbbb</Anchor>
-    <Abstract>Singleton implementation providing &amp;quot;sharedInstance&amp;quot; and &amp;quot;purgeSharedInstance&amp;quot; met...</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>version</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>IOSVersion</Scope>
-    </TokenIdentifier>
-    <Path>interface_i_o_s_version.html</Path>
-    <Anchor>a94d6b926d2ec8bb38c1f5c6df264703c</Anchor>
-    <Abstract>Holds the current iOS version.</Abstract>
+    <Abstract>Singleton implementation providing &amp;quot;sharedInstance&amp;quot; and &amp;quot;purgeSharedInstance&amp;quot; methods.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -3826,7 +3978,7 @@
     </TokenIdentifier>
     <Path>interface_i_o_s_version.html</Path>
     <Anchor>abab8f903a6853604e3df2f804210f19f</Anchor>
-    <Abstract>The version of iOS being run on the current device as a float in the format x.yy.</Abstract>
+    <Abstract>Holds the current iOS version.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -3836,306 +3988,6 @@
       <Scope>NSMutableArray</Scope>
     </TokenIdentifier>
     <Path>class_n_s_mutable_array.html</Path>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>OAL_AsyncALBufferLoadOperation</Name>
-      <APILanguage>c</APILanguage>
-      <Type>cl</Type>
-      <Scope>OAL_AsyncALBufferLoadOperation</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l___async_a_l_buffer_load_operation.html</Path>
-    <Abstract>(INTERNAL USE) NSOperation for loading audio files asynchronously.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>initWithUrl:reduceToMono:target:selector:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>OAL_AsyncALBufferLoadOperation</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l___async_a_l_buffer_load_operation.html</Path>
-    <Anchor>aa1be4f6578c03572058f0b9046a39d5d</Anchor>
-    <Abstract>(INTERNAL USE) Initialize an Asynchronous Operation.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>operationWithUrl:reduceToMono:target:selector:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>clm</Type>
-      <Scope>OAL_AsyncALBufferLoadOperation</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l___async_a_l_buffer_load_operation.html</Path>
-    <Anchor>ae0bd6f6aa6330112df7e4e0473f3aec7</Anchor>
-    <Abstract>(INTERNAL USE) Create a new Asynchronous Operation.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>url</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>OAL_AsyncALBufferLoadOperation</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l___async_a_l_buffer_load_operation.html</Path>
-    <Anchor>acdc197fc2941e931a9008bdb57a9dfc8</Anchor>
-    <Abstract>The URL of the sound file to play.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>reduceToMono</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>OAL_AsyncALBufferLoadOperation</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l___async_a_l_buffer_load_operation.html</Path>
-    <Anchor>a6839e5c747c5b076ffe66d9a48ecebbe</Anchor>
-    <Abstract>If true, reduce the sample to mono.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>target</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>OAL_AsyncALBufferLoadOperation</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l___async_a_l_buffer_load_operation.html</Path>
-    <Anchor>a1de99c462198d8b30dec92c4d2f2e68f</Anchor>
-    <Abstract>The target to inform when the operation completes.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>selector</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>OAL_AsyncALBufferLoadOperation</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l___async_a_l_buffer_load_operation.html</Path>
-    <Anchor>ac8ffe0f40f0a7d064bcc6450c736aec5</Anchor>
-    <Abstract>The selector to call when the operation completes.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>OAL_AsyncAudioTrackOperation</Name>
-      <APILanguage>c</APILanguage>
-      <Type>cl</Type>
-      <Scope>OAL_AsyncAudioTrackOperation</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l___async_audio_track_operation.html</Path>
-    <Abstract>(INTERNAL USE) NSOperation for running an audio operation asynchronously.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>initWithTrack:url:seekTime:target:selector:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>OAL_AsyncAudioTrackOperation</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l___async_audio_track_operation.html</Path>
-    <Anchor>a51c82c255b96bac1cd045e2928505d24</Anchor>
-    <Abstract>(INTERNAL USE) Initialize an Asynchronous Operation.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>operationWithTrack:url:seekTime:target:selector:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>clm</Type>
-      <Scope>OAL_AsyncAudioTrackOperation</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l___async_audio_track_operation.html</Path>
-    <Anchor>ad073c1aeb244d753d2821242a289acbf</Anchor>
-    <Abstract>(INTERNAL USE) Create a new Asynchronous Operation.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>audioTrack</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>OAL_AsyncAudioTrackOperation</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l___async_audio_track_operation.html</Path>
-    <Anchor>aff72da9bc752c7d4869b430de6dbcd7e</Anchor>
-    <Abstract>The audio track object to perform the operation on.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>url</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>OAL_AsyncAudioTrackOperation</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l___async_audio_track_operation.html</Path>
-    <Anchor>ac987eb64284fc8a83a83a0132039e56c</Anchor>
-    <Abstract>The URL of the sound file to play.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>seekTime</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>OAL_AsyncAudioTrackOperation</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l___async_audio_track_operation.html</Path>
-    <Anchor>a34684c7da32d7707914539dcfe6fe856</Anchor>
-    <Abstract>The seekTime of the sound file.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>target</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>OAL_AsyncAudioTrackOperation</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l___async_audio_track_operation.html</Path>
-    <Anchor>a08969f62c0dd890089d1ce4b0a6b32af</Anchor>
-    <Abstract>The target to inform when the operation completes.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>selector</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>OAL_AsyncAudioTrackOperation</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l___async_audio_track_operation.html</Path>
-    <Anchor>a3e775451836ccbc6dce529a799f70229</Anchor>
-    <Abstract>The selector to call when the operation completes.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>OAL_AsyncAudioTrackPlayOperation</Name>
-      <APILanguage>c</APILanguage>
-      <Type>cl</Type>
-      <Scope>OAL_AsyncAudioTrackPlayOperation</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l___async_audio_track_play_operation.html</Path>
-    <Abstract>(INTERNAL USE) NSOperation for playing an audio file asynchronously.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>initWithTrack:url:loops:target:selector:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>OAL_AsyncAudioTrackPlayOperation</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l___async_audio_track_play_operation.html</Path>
-    <Anchor>afff0c021f8bc56f81f8dc6bcf62600c6</Anchor>
-    <Abstract>(INTERNAL USE) Initialize an asynchronous play operation.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>operationWithTrack:url:loops:target:selector:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>clm</Type>
-      <Scope>OAL_AsyncAudioTrackPlayOperation</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l___async_audio_track_play_operation.html</Path>
-    <Anchor>a2257a99d0b604fd654f4b4af3c121405</Anchor>
-    <Abstract>(INTERNAL USE) Create an asynchronous play operation.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>loops</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>OAL_AsyncAudioTrackPlayOperation</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l___async_audio_track_play_operation.html</Path>
-    <Anchor>a9357df220de5394854a0fffc6f0eebfc</Anchor>
-    <Abstract>The number of times to loop during playback.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>OAL_AsyncAudioTrackPreloadOperation</Name>
-      <APILanguage>c</APILanguage>
-      <Type>cl</Type>
-      <Scope>OAL_AsyncAudioTrackPreloadOperation</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l___async_audio_track_preload_operation.html</Path>
-    <Abstract>(INTERNAL USE) NSOperation for preloading an audio file asynchronously.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>OAL_GainProtocol</Name>
-      <APILanguage>c</APILanguage>
-      <Type>intf</Type>
-      <Scope>OAL_GainProtocol</Scope>
-    </TokenIdentifier>
-    <Path>protocol_o_a_l___gain_protocol-p.html</Path>
-    <Abstract>(INTERNAL USE) Protocol to keep the compiler happy.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>gain</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>intfp</Type>
-      <Scope>OAL_GainProtocol-p</Scope>
-    </TokenIdentifier>
-    <Path>protocol_o_a_l___gain_protocol-p.html</Path>
-    <Anchor>ac0242a4cb6ea6b27dfa1fe2b6d94c061</Anchor>
-    <Abstract>The gain (volume), represented as a float from 0.0 to 1.0.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>OAL_PanProtocol</Name>
-      <APILanguage>c</APILanguage>
-      <Type>intf</Type>
-      <Scope>OAL_PanProtocol</Scope>
-    </TokenIdentifier>
-    <Path>protocol_o_a_l___pan_protocol-p.html</Path>
-    <Abstract>(INTERNAL USE) Protocol to keep the compiler happy.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>pan</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>intfp</Type>
-      <Scope>OAL_PanProtocol-p</Scope>
-    </TokenIdentifier>
-    <Path>protocol_o_a_l___pan_protocol-p.html</Path>
-    <Anchor>a6b3ca8ed4212c8e569b76858159ddecb</Anchor>
-    <Abstract>The pan, represented as a float from -1.0 to 1.0.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>OAL_PitchProtocol</Name>
-      <APILanguage>c</APILanguage>
-      <Type>intf</Type>
-      <Scope>OAL_PitchProtocol</Scope>
-    </TokenIdentifier>
-    <Path>protocol_o_a_l___pitch_protocol-p.html</Path>
-    <Abstract>(INTERNAL USE) Protocol to keep the compiler happy.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>pitch</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>intfp</Type>
-      <Scope>OAL_PitchProtocol-p</Scope>
-    </TokenIdentifier>
-    <Path>protocol_o_a_l___pitch_protocol-p.html</Path>
-    <Anchor>a618a7c58e71498fa282d5d3f30694cbf</Anchor>
-    <Abstract>The pitch, represented as a float with 1.0 representing normal pitch.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>OAL_PositionProtocol</Name>
-      <APILanguage>c</APILanguage>
-      <Type>intf</Type>
-      <Scope>OAL_PositionProtocol</Scope>
-    </TokenIdentifier>
-    <Path>protocol_o_a_l___position_protocol-p.html</Path>
-    <Abstract>(INTERNAL USE) Protocol to keep the compiler happy.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>position</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>intfp</Type>
-      <Scope>OAL_PositionProtocol-p</Scope>
-    </TokenIdentifier>
-    <Path>protocol_o_a_l___position_protocol-p.html</Path>
-    <Anchor>aa69a6fe839c826c66450f5e193eb41d0</Anchor>
-    <Abstract>The position in 3D space.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -4216,24 +4068,13 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>target</Name>
+      <Name>runningInManager_</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
       <Scope>OALAction</Scope>
     </TokenIdentifier>
     <Path>interface_o_a_l_action.html</Path>
-    <Anchor>a4675064e8652e65128948d9dfc8d3e59</Anchor>
-    <Abstract>The target to perform the action on.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>runningInManager</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>OALAction</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l_action.html</Path>
-    <Anchor>ad18ec64058e779b9389e66ca2d6081b8</Anchor>
+    <Anchor>a3a5ab3d12a6776cf38e6f1a923f2fc0b</Anchor>
     <Abstract>If TRUE, this action is running via OALActionManager.</Abstract>
   </Token>
   <Token>
@@ -4304,39 +4145,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>notifyActionStarted:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>OALActionManager</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l_action_manager.html</Path>
-    <Anchor>ac16c7cb4d239692fc088251e9c801e96</Anchor>
-    <Abstract>(INTERNAL USE) Used by OALAction to announce that it is starting.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>notifyActionStopped:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>OALActionManager</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l_action_manager.html</Path>
-    <Anchor>ad8a3ad402037511fadd5cfeb0bc75ee1</Anchor>
-    <Abstract>(INTERNAL USE) Used by OALAction to announce that it is stopping.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>doResetTimeDelta:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>OALActionManager</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l_action_manager.html</Path>
-    <Anchor>a0e495dd66a5d9c13948a457cd58f93fb</Anchor>
-    <Abstract>Resets the time delta in cases where proper time delta calculations become impossible.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER</Name>
       <APILanguage>occ</APILanguage>
       <Type>instm</Type>
@@ -4344,7 +4152,7 @@
     </TokenIdentifier>
     <Path>interface_o_a_l_action_manager.html</Path>
     <Anchor>af6a1f98ecd36bf7bda92d2abdeab5b39</Anchor>
-    <Abstract>Singleton implementation providing &amp;quot;sharedInstance&amp;quot; and &amp;quot;purgeSharedInstance&amp;quot; met...</Abstract>
+    <Abstract>Singleton implementation providing &amp;quot;sharedInstance&amp;quot; and &amp;quot;purgeSharedInstance&amp;quot; methods.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -4366,7 +4174,7 @@
     </TokenIdentifier>
     <Path>interface_o_a_l_action_manager.html</Path>
     <Anchor>a19019a856d41dfdd0cbc2895b53a3666</Anchor>
-    <Abstract>Parallel array to &amp;quot;targets&amp;quot;, maintaining a list of all actions per target (NSMutableArray*)...</Abstract>
+    <Abstract>Parallel array to &amp;quot;targets&amp;quot;, maintaining a list of all actions per target (NSMutableArray*)</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -4579,105 +4387,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>getIntProperty:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>OALAudioSession</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l_audio_session.html</Path>
-    <Anchor>adcc9536401a084b622162b1cbf2de594</Anchor>
-    <Abstract>(INTERNAL USE) Get an AudioSession property.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>getFloatProperty:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>OALAudioSession</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l_audio_session.html</Path>
-    <Anchor>a8b398e29368c76b89287b2542fbc8a4f</Anchor>
-    <Abstract>(INTERNAL USE) Get an AudioSession property.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>getStringProperty:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>OALAudioSession</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l_audio_session.html</Path>
-    <Anchor>a610e224f35662d9045ba5fa69e350321</Anchor>
-    <Abstract>(INTERNAL USE) Get an AudioSession property.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>setIntProperty:value:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>OALAudioSession</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l_audio_session.html</Path>
-    <Anchor>a0646c6999b2bc8987a35476557eb5f6d</Anchor>
-    <Abstract>(INTERNAL USE) Set an AudioSession property.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>setAudioMode</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>OALAudioSession</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l_audio_session.html</Path>
-    <Anchor>a14813527c7f4bffbfb931c794045d3d0</Anchor>
-    <Abstract>(INTERNAL USE) Set the Audio Session category and properties based on current settings.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>updateFromAudioSessionCategory</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>OALAudioSession</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l_audio_session.html</Path>
-    <Anchor>abe01fe20659b1bd4891ca80b80574d76</Anchor>
-    <Abstract>(INTERNAL USE) Update settings to be compatible with the current audio session category.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>updateFromFlags</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>OALAudioSession</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l_audio_session.html</Path>
-    <Anchor>a211311159c7fec36e01b34e83f336b2e</Anchor>
-    <Abstract>(INTERNAL USE) Update the audio session category to be compatible with the current settings...</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>setSuspended:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>OALAudioSession</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l_audio_session.html</Path>
-    <Anchor>a1630a2be7e3a29f3821cb3372c516cfa</Anchor>
-    <Abstract>(INTERNAL USE) Called by SuspendHandler.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>onAudioError:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>OALAudioSession</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l_audio_session.html</Path>
-    <Anchor>a9b4c543ae8607f622afe08564cd329fc</Anchor>
-    <Abstract>(INTERNAL USE) Called when an audio error is signalled via notification.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER</Name>
       <APILanguage>occ</APILanguage>
       <Type>instm</Type>
@@ -4685,18 +4394,18 @@
     </TokenIdentifier>
     <Path>interface_o_a_l_audio_session.html</Path>
     <Anchor>a2d266a6974e56fa44bbe9e4008e526ac</Anchor>
-    <Abstract>Singleton implementation providing &amp;quot;sharedInstance&amp;quot; and &amp;quot;purgeSharedInstance&amp;quot; met...</Abstract>
+    <Abstract>Singleton implementation providing &amp;quot;sharedInstance&amp;quot; and &amp;quot;purgeSharedInstance&amp;quot; methods.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>audioSessionCategory</Name>
+      <Name>handlingErrorNotification</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
       <Scope>OALAudioSession</Scope>
     </TokenIdentifier>
     <Path>interface_o_a_l_audio_session.html</Path>
-    <Anchor>aff3733f4f83ed7a654ebf7510aae5c1f</Anchor>
-    <Abstract>The current audio session category.</Abstract>
+    <Anchor>aaf29379c22df30458984be5a9406ffd6</Anchor>
+    <Abstract>Flag signifying that we are currently handling an error notification.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -4739,7 +4448,7 @@
       <Scope>OALAudioSession</Scope>
     </TokenIdentifier>
     <Path>interface_o_a_l_audio_session.html</Path>
-    <Anchor>a20b463f1788447912a81101a8afa5a53</Anchor>
+    <Anchor>aff3733f4f83ed7a654ebf7510aae5c1f</Anchor>
     <Abstract>The current audio session category.</Abstract>
   </Token>
   <Token>
@@ -4806,7 +4515,18 @@
     </TokenIdentifier>
     <Path>interface_o_a_l_audio_session.html</Path>
     <Anchor>ac81249e0e80b92e6020e68e263181d0b</Anchor>
-    <Abstract>Delegate that will receive all audio session events.</Abstract>
+    <Abstract>Delegate that will receive all audio session events (WEAK reference).</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>preferredIOBufferDuration</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instp</Type>
+      <Scope>OALAudioSession</Scope>
+    </TokenIdentifier>
+    <Path>interface_o_a_l_audio_session.html</Path>
+    <Anchor>a2a577f5f518849fa8e5d7c4b561dfcaa</Anchor>
+    <Abstract>The preferred I/O buffer duration, in seconds.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -4839,7 +4559,7 @@
     </TokenIdentifier>
     <Path>interface_o_a_l_audio_session.html</Path>
     <Anchor>ae21d683cf1774fe8174ab0c2af7f95d1</Anchor>
-    <Abstract>Get the device&amp;#39;s final hardware output volume, as controlled by the volume button on the side of ...</Abstract>
+    <Abstract>Get the device&amp;#39;s final hardware output volume, as controlled by the volume button on the side of the ...</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -4850,7 +4570,7 @@
     </TokenIdentifier>
     <Path>interface_o_a_l_audio_session.html</Path>
     <Anchor>abf5f4b8309d92378c1189a226554da7e</Anchor>
-    <Abstract>Check if the hardware mute switch is on (not supported on the simulator).</Abstract>
+    <Abstract>Check if the hardware mute switch is on (not supported on the simulator or iOS 5+).</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -4861,7 +4581,7 @@
     </TokenIdentifier>
     <Path>interface_o_a_l_audio_session.html</Path>
     <Anchor>a925c247a60d5f1f573935c72ed365fed</Anchor>
-    <Abstract>Check what hardware route the audio is taking, such as &amp;quot;Speaker&amp;quot; or &amp;quot;Headphone&amp;quot; (...</Abstract>
+    <Abstract>Check what hardware route the audio is taking, such as &amp;quot;Speaker&amp;quot; or &amp;quot;Headphone&amp;quot; (not supported on the...</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -5206,17 +4926,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>setSuspended:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>OALAudioTrack</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l_audio_track.html</Path>
-    <Anchor>a810a4d52acdba306bdf25391b96218d4</Anchor>
-    <Abstract>(INTERNAL USE) Called by SuspendHandler.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>track</Name>
       <APILanguage>occ</APILanguage>
       <Type>clm</Type>
@@ -5225,17 +4934,6 @@
     <Path>interface_o_a_l_audio_track.html</Path>
     <Anchor>a87c4ba40b57bc875d31917ae34af1d5f</Anchor>
     <Abstract>Create a new audio track.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meteringEnabled</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>OALAudioTrack</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l_audio_track.html</Path>
-    <Anchor>a8b5c3054fee78765713823634b71091e</Anchor>
-    <Abstract>If true, this track is recording metering data.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -5488,7 +5186,7 @@
     </TokenIdentifier>
     <Path>interface_o_a_l_audio_track.html</Path>
     <Anchor>a8b5c3054fee78765713823634b71091e</Anchor>
-    <Abstract>If true, metering is enabled.</Abstract>
+    <Abstract>If true, this track is recording metering data.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -5503,39 +5201,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>notifyTrackInitializing:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>OALAudioTracks</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l_audio_tracks.html</Path>
-    <Anchor>a5309e3e55af1cae31413d52012f61c40</Anchor>
-    <Abstract>(INTERNAL USE) Notify that a track is initializing.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>notifyTrackDeallocating:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>OALAudioTracks</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l_audio_tracks.html</Path>
-    <Anchor>ad90119144dc5e619c05cbc86cc786901</Anchor>
-    <Abstract>(INTERNAL USE) Notify that a track is deallocating.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>pollDeviceTime</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>OALAudioTracks</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l_audio_tracks.html</Path>
-    <Anchor>a0de6631e7e8e3b4a3dd6170e7b14babd</Anchor>
-    <Abstract>(INTERNAL USE) Read deviceCurrentTime from an audio player as a workaround for a bug in iOS devices t...</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER</Name>
       <APILanguage>occ</APILanguage>
       <Type>instm</Type>
@@ -5543,7 +5208,7 @@
     </TokenIdentifier>
     <Path>interface_o_a_l_audio_tracks.html</Path>
     <Anchor>afd811559b0c12502d33887079e978d7b</Anchor>
-    <Abstract>Singleton implementation providing &amp;quot;sharedInstance&amp;quot; and &amp;quot;purgeSharedInstance&amp;quot; met...</Abstract>
+    <Abstract>Singleton implementation providing &amp;quot;sharedInstance&amp;quot; and &amp;quot;purgeSharedInstance&amp;quot; methods.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -5690,57 +5355,57 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>callTarget</Name>
+      <Name>callTarget_</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
       <Scope>OALCallAction</Scope>
     </TokenIdentifier>
     <Path>interface_o_a_l_call_action.html</Path>
-    <Anchor>a62aad2859fd67c199ed299566709e9f3</Anchor>
+    <Anchor>aba43c5cdd34f4bd74eb412b3d8fa50bf</Anchor>
     <Abstract>The target to call the selector on.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>selector</Name>
+      <Name>selector_</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
       <Scope>OALCallAction</Scope>
     </TokenIdentifier>
     <Path>interface_o_a_l_call_action.html</Path>
-    <Anchor>a09bdb9164ecc87fce1d8773921b34154</Anchor>
+    <Anchor>a31509bebd4bd76b5c38ffd5811ba3651</Anchor>
     <Abstract>The selector to invoke.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>numObjects</Name>
+      <Name>numObjects_</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
       <Scope>OALCallAction</Scope>
     </TokenIdentifier>
     <Path>interface_o_a_l_call_action.html</Path>
-    <Anchor>aa4a75ae77c607558e980a8d7bd71e127</Anchor>
+    <Anchor>a01b3f7d2930b90369cb0b7dd865573ef</Anchor>
     <Abstract>The number of parameters which will be passed to the selector.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>object1</Name>
+      <Name>object1_</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
       <Scope>OALCallAction</Scope>
     </TokenIdentifier>
     <Path>interface_o_a_l_call_action.html</Path>
-    <Anchor>a60f84f40ac00c3475c7c1891918fcac7</Anchor>
+    <Anchor>a966db350bb565a163b17f63e66ef758a</Anchor>
     <Abstract>The first object to pass to the selector, if any.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>object2</Name>
+      <Name>object2_</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
       <Scope>OALCallAction</Scope>
     </TokenIdentifier>
     <Path>interface_o_a_l_call_action.html</Path>
-    <Anchor>a1f1f4d79b0ca58a1fd494911fc5755e2</Anchor>
+    <Anchor>a84364a72a133d8f21c27f0518cfcb372</Anchor>
     <Abstract>The second object to pass to the selector, if any.</Abstract>
   </Token>
   <Token>
@@ -5789,35 +5454,13 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>pDurations</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>OALConcurrentActions</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l_concurrent_actions.html</Path>
-    <Anchor>af54cca3418fbec11ecc21549f421b9b2</Anchor>
-    <Abstract>The durations of the actions.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>actionsWithDuration</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>OALConcurrentActions</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l_concurrent_actions.html</Path>
-    <Anchor>a391f0ea90bf04a2ea72401beec724d11</Anchor>
-    <Abstract>A list of actions that have duration &amp;gt; 0.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>actions</Name>
       <APILanguage>occ</APILanguage>
       <Type>instp</Type>
       <Scope>OALConcurrentActions</Scope>
     </TokenIdentifier>
     <Path>interface_o_a_l_concurrent_actions.html</Path>
-    <Anchor>a1b98df1f562488cd4b80377fe8528c36</Anchor>
+    <Anchor>a7181cbae550f018703ce3ce70deabe2e</Anchor>
     <Abstract>The actions which will be run.</Abstract>
   </Token>
   <Token>
@@ -5851,7 +5494,7 @@
     </TokenIdentifier>
     <Path>interface_o_a_l_exponential_function.html</Path>
     <Anchor>af21e03daffa4630968150a86ca44bbe2</Anchor>
-    <Abstract>Singleton implementation providing &amp;quot;sharedInstance&amp;quot; and &amp;quot;purgeSharedInstance&amp;quot; met...</Abstract>
+    <Abstract>Singleton implementation providing &amp;quot;sharedInstance&amp;quot; and &amp;quot;purgeSharedInstance&amp;quot; methods.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -6082,7 +5725,7 @@
     </TokenIdentifier>
     <Path>interface_o_a_l_linear_function.html</Path>
     <Anchor>a3db26b1e298ae277cd1d30aa030692d4</Anchor>
-    <Abstract>Singleton implementation providing &amp;quot;sharedInstance&amp;quot; and &amp;quot;purgeSharedInstance&amp;quot; met...</Abstract>
+    <Abstract>Singleton implementation providing &amp;quot;sharedInstance&amp;quot; and &amp;quot;purgeSharedInstance&amp;quot; methods.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -6115,7 +5758,7 @@
     </TokenIdentifier>
     <Path>interface_o_a_l_logarithmic_function.html</Path>
     <Anchor>a1126b329a5b97cc292f8df640a09c4ef</Anchor>
-    <Abstract>Singleton implementation providing &amp;quot;sharedInstance&amp;quot; and &amp;quot;purgeSharedInstance&amp;quot; met...</Abstract>
+    <Abstract>Singleton implementation providing &amp;quot;sharedInstance&amp;quot; and &amp;quot;purgeSharedInstance&amp;quot; methods.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -6445,7 +6088,7 @@
     </TokenIdentifier>
     <Path>interface_o_a_l_s_curve_function.html</Path>
     <Anchor>ad7bcbae3208163d9c879828801cd662a</Anchor>
-    <Abstract>Singleton implementation providing &amp;quot;sharedInstance&amp;quot; and &amp;quot;purgeSharedInstance&amp;quot; met...</Abstract>
+    <Abstract>Singleton implementation providing &amp;quot;sharedInstance&amp;quot; and &amp;quot;purgeSharedInstance&amp;quot; methods.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -6493,68 +6136,46 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>pDurations</Name>
+      <Name>actionIndex_</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
       <Scope>OALSequentialActions</Scope>
     </TokenIdentifier>
     <Path>interface_o_a_l_sequential_actions.html</Path>
-    <Anchor>aa9516019c087ec06cca57541945c4514</Anchor>
-    <Abstract>The durations of the actions.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>actionIndex</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>OALSequentialActions</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l_sequential_actions.html</Path>
-    <Anchor>a629e1636b2bef571545df0f30c3f1a05</Anchor>
+    <Anchor>ab8dbca03c592b7b797f9e133fd46aebf</Anchor>
     <Abstract>The index of the action currently being processed.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>pLastComplete</Name>
+      <Name>pLastComplete_</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
       <Scope>OALSequentialActions</Scope>
     </TokenIdentifier>
     <Path>interface_o_a_l_sequential_actions.html</Path>
-    <Anchor>a8bdc6900de9be7483e866edc7b0af851</Anchor>
+    <Anchor>ae573896e281555acffb4b24b4f9bdf7a</Anchor>
     <Abstract>The last completeness proportion value acted upon.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>currentAction</Name>
+      <Name>pCurrentActionDuration_</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
       <Scope>OALSequentialActions</Scope>
     </TokenIdentifier>
     <Path>interface_o_a_l_sequential_actions.html</Path>
-    <Anchor>a1a6fdc68c12b4d3d74d9da75174aa210</Anchor>
-    <Abstract>The current action being processed.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>pCurrentActionDuration</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>OALSequentialActions</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l_sequential_actions.html</Path>
-    <Anchor>ab313a631f2274d2912d24be0536e0633</Anchor>
+    <Anchor>a1e1da12eaaa8b5e40c385e6c8b0aa75e</Anchor>
     <Abstract>The proportional duration of the current action.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>pCurrentActionComplete</Name>
+      <Name>pCurrentActionComplete_</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
       <Scope>OALSequentialActions</Scope>
     </TokenIdentifier>
     <Path>interface_o_a_l_sequential_actions.html</Path>
-    <Anchor>a837a2b548aaafd1e2639e0a351bbe974</Anchor>
+    <Anchor>a6513a335f17a93e21f6fb15988eda2f9</Anchor>
     <Abstract>The proportional completeness of the current action.</Abstract>
   </Token>
   <Token>
@@ -6565,7 +6186,7 @@
       <Scope>OALSequentialActions</Scope>
     </TokenIdentifier>
     <Path>interface_o_a_l_sequential_actions.html</Path>
-    <Anchor>a6fd2e536640e773e52883c173c469007</Anchor>
+    <Anchor>aca3148982dd9e06f6abd88d8e0ec47be</Anchor>
     <Abstract>The actions which will be run.</Abstract>
   </Token>
   <Token>
@@ -6578,28 +6199,6 @@
     <Path>interface_o_a_l_simple_audio.html</Path>
     <Abstract>A simpler interface to the ObjectAL sound library.</Abstract>
     <DeclaredIn>OALSimpleAudio.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>initWithSources:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>OALSimpleAudio</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l_simple_audio.html</Path>
-    <Anchor>a67e802258de86cf0dad9f8bb56d04ff9</Anchor>
-    <Abstract>(INTERNAL USE) Initialize with the specified number of reserved sources.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>initWithReservedSources:monoSources:stereoSources:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>OALSimpleAudio</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l_simple_audio.html</Path>
-    <Anchor>ac23e043ef15961794d8b3fe383995f5f</Anchor>
-    <Abstract>(INTERNAL USE) Initialize with the specified parameters.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -6719,7 +6318,7 @@
       <Scope>OALSimpleAudio</Scope>
     </TokenIdentifier>
     <Path>interface_o_a_l_simple_audio.html</Path>
-    <Anchor>a90513ed94104142645911e484207d21d</Anchor>
+    <Anchor>a93cf98d2bdf4014815cd097400cf0923</Anchor>
     <Abstract>Unload a preloaded effect.</Abstract>
   </Token>
   <Token>
@@ -6731,7 +6330,7 @@
     </TokenIdentifier>
     <Path>interface_o_a_l_simple_audio.html</Path>
     <Anchor>a8a531c6a54eca0fe093b190b93ee2de7</Anchor>
-    <Abstract>Unload all preloaded effects.</Abstract>
+    <Abstract>Unload all preloaded effects that are not currently being played (paused or not).</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -6812,17 +6411,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>internalPreloadEffect:reduceToMono:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>OALSimpleAudio</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l_simple_audio.html</Path>
-    <Anchor>a72bb46da1fad5ad122f9c43b5490ff0a</Anchor>
-    <Abstract>(INTERNAL USE) Preload a sound effect and return the preloaded buffer.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>sharedInstanceWithSources:</Name>
       <APILanguage>occ</APILanguage>
       <Type>clm</Type>
@@ -6852,29 +6440,7 @@
     </TokenIdentifier>
     <Path>interface_o_a_l_simple_audio.html</Path>
     <Anchor>aaff6873854030e525211dc418b7e621d</Anchor>
-    <Abstract>Singleton implementation providing &amp;quot;sharedInstance&amp;quot; and &amp;quot;purgeSharedInstance&amp;quot; met...</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>device</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>OALSimpleAudio</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l_simple_audio.html</Path>
-    <Anchor>afe09603efa886720f575a52138de8b68</Anchor>
-    <Abstract>The device we are using.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>context</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>OALSimpleAudio</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l_simple_audio.html</Path>
-    <Anchor>ae54dfa1813f416c383bda18427d519b4</Anchor>
-    <Abstract>The context we are using.</Abstract>
+    <Abstract>Singleton implementation providing &amp;quot;sharedInstance&amp;quot; and &amp;quot;purgeSharedInstance&amp;quot; methods.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -6941,6 +6507,28 @@
     <Path>interface_o_a_l_simple_audio.html</Path>
     <Anchor>aa2ed126b5934841311230117b0876c04</Anchor>
     <Abstract>The number of sources OALSimpleAudio is using (max 32 on current iOS devices).</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>device</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instp</Type>
+      <Scope>OALSimpleAudio</Scope>
+    </TokenIdentifier>
+    <Path>interface_o_a_l_simple_audio.html</Path>
+    <Anchor>a164312b7180231c8646b1e0c55502e22</Anchor>
+    <Abstract>The device we are using.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>context</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>instp</Type>
+      <Scope>OALSimpleAudio</Scope>
+    </TokenIdentifier>
+    <Path>interface_o_a_l_simple_audio.html</Path>
+    <Anchor>a28bd8722be2637fc15f449208d31c4f9</Anchor>
+    <Abstract>The context we are using.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -7208,17 +6796,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>suspendStatusChangeTarget</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>OALSuspendHandler</Scope>
-    </TokenIdentifier>
-    <Path>interface_o_a_l_suspend_handler.html</Path>
-    <Anchor>a604967934e3b05b1eda3411c9db324b7</Anchor>
-    <Abstract>Slave object that is notified when this object suspends or unsuspends.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>suspendStatusChangeSelector</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -7395,13 +6972,13 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>action</Name>
+      <Name>action_</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
       <Scope>OALTargetedAction</Scope>
     </TokenIdentifier>
     <Path>interface_o_a_l_targeted_action.html</Path>
-    <Anchor>a6c451ecf3ac0ba5f419cc9a44e8443ae</Anchor>
+    <Anchor>aeef018b133de3c67d7160caab8f7eb3b</Anchor>
     <Abstract>The action that will be run on the target.</Abstract>
   </Token>
   <Token>
@@ -7571,39 +7148,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>notifyDeviceInitializing:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>OpenALManager</Scope>
-    </TokenIdentifier>
-    <Path>interface_open_a_l_manager.html</Path>
-    <Anchor>a773c441d3b610d3ca6a0c179e64d6642</Anchor>
-    <Abstract>(INTERNAL USE) Notify that a device is initializing.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>notifyDeviceDeallocating:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>OpenALManager</Scope>
-    </TokenIdentifier>
-    <Path>interface_open_a_l_manager.html</Path>
-    <Anchor>aed5070f014c7e61f407ead47578a5488</Anchor>
-    <Abstract>(INTERNAL USE) Notify that a device is deallocating.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>setSuspended:</Name>
-      <APILanguage>occ</APILanguage>
-      <Type>instm</Type>
-      <Scope>OpenALManager</Scope>
-    </TokenIdentifier>
-    <Path>interface_open_a_l_manager.html</Path>
-    <Anchor>a5f94f988054478501066fa27078867d7</Anchor>
-    <Abstract>(INTERNAL USE) Called by SuspendHandler.</Abstract>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER</Name>
       <APILanguage>occ</APILanguage>
       <Type>instm</Type>
@@ -7611,7 +7155,7 @@
     </TokenIdentifier>
     <Path>interface_open_a_l_manager.html</Path>
     <Anchor>a18884dfa07ef282316f3593d8ba8d0ab</Anchor>
-    <Abstract>Singleton implementation providing &amp;quot;sharedInstance&amp;quot; and &amp;quot;purgeSharedInstance&amp;quot; met...</Abstract>
+    <Abstract>Singleton implementation providing &amp;quot;sharedInstance&amp;quot; and &amp;quot;purgeSharedInstance&amp;quot; methods.</Abstract>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -7676,7 +7220,7 @@
       <Scope>OpenALManager</Scope>
     </TokenIdentifier>
     <Path>interface_open_a_l_manager.html</Path>
-    <Anchor>adce59a553d6981434b8beea6eded85f5</Anchor>
+    <Anchor>a45eba91d0055e1e47cde0bfd55413708</Anchor>
     <Abstract>The current context (some context operations require the context to be the &amp;quot;current&amp;quot; one)...</Abstract>
   </Token>
   <Token>

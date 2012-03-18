@@ -54,6 +54,10 @@
           <Path>interface_a_l_sound_source_pool.html</Path>
          </Node>
          <Node>
+          <Name>ALSoundSourcePool(Private)</Name>
+          <Path>interface_a_l_sound_source_pool_07_private_08.html</Path>
+         </Node>
+         <Node>
           <Name>ALSource</Name>
           <Path>interface_a_l_source.html</Path>
          </Node>
@@ -66,44 +70,16 @@
           <Path>interface_a_l_wrapper.html</Path>
          </Node>
          <Node>
+          <Name>ALWrapper(Private)</Name>
+          <Path>interface_a_l_wrapper_07_private_08.html</Path>
+         </Node>
+         <Node>
           <Name>IOSVersion</Name>
           <Path>interface_i_o_s_version.html</Path>
          </Node>
          <Node>
           <Name>NSMutableArray</Name>
           <Path>class_n_s_mutable_array.html</Path>
-         </Node>
-         <Node>
-          <Name>OAL_AsyncALBufferLoadOperation</Name>
-          <Path>interface_o_a_l___async_a_l_buffer_load_operation.html</Path>
-         </Node>
-         <Node>
-          <Name>OAL_AsyncAudioTrackOperation</Name>
-          <Path>interface_o_a_l___async_audio_track_operation.html</Path>
-         </Node>
-         <Node>
-          <Name>OAL_AsyncAudioTrackPlayOperation</Name>
-          <Path>interface_o_a_l___async_audio_track_play_operation.html</Path>
-         </Node>
-         <Node>
-          <Name>OAL_AsyncAudioTrackPreloadOperation</Name>
-          <Path>interface_o_a_l___async_audio_track_preload_operation.html</Path>
-         </Node>
-         <Node>
-          <Name>&lt;OAL_GainProtocol&gt;</Name>
-          <Path>protocol_o_a_l___gain_protocol-p.html</Path>
-         </Node>
-         <Node>
-          <Name>&lt;OAL_PanProtocol&gt;</Name>
-          <Path>protocol_o_a_l___pan_protocol-p.html</Path>
-         </Node>
-         <Node>
-          <Name>&lt;OAL_PitchProtocol&gt;</Name>
-          <Path>protocol_o_a_l___pitch_protocol-p.html</Path>
-         </Node>
-         <Node>
-          <Name>&lt;OAL_PositionProtocol&gt;</Name>
-          <Path>protocol_o_a_l___position_protocol-p.html</Path>
          </Node>
          <Node>
           <Name>OALAction</Name>
@@ -266,6 +242,10 @@
           <Path>interface_a_l_sound_source_pool.html</Path>
          </Node>
          <Node>
+          <Name>ALSoundSourcePool(Private)</Name>
+          <Path>interface_a_l_sound_source_pool_07_private_08.html</Path>
+         </Node>
+         <Node>
           <Name>ALVector</Name>
           <Path>struct_a_l_vector.html</Path>
          </Node>
@@ -274,46 +254,16 @@
           <Path>interface_a_l_wrapper.html</Path>
          </Node>
          <Node>
+          <Name>ALWrapper(Private)</Name>
+          <Path>interface_a_l_wrapper_07_private_08.html</Path>
+         </Node>
+         <Node>
           <Name>IOSVersion</Name>
           <Path>interface_i_o_s_version.html</Path>
          </Node>
          <Node>
           <Name>NSMutableArray</Name>
           <Path>class_n_s_mutable_array.html</Path>
-         </Node>
-         <Node>
-          <Name>OAL_AsyncALBufferLoadOperation</Name>
-          <Path>interface_o_a_l___async_a_l_buffer_load_operation.html</Path>
-         </Node>
-         <Node>
-          <Name>OAL_AsyncAudioTrackOperation</Name>
-          <Path>interface_o_a_l___async_audio_track_operation.html</Path>
-          <Subnodes>
-           <Node>
-            <Name>OAL_AsyncAudioTrackPlayOperation</Name>
-            <Path>interface_o_a_l___async_audio_track_play_operation.html</Path>
-           </Node>
-           <Node>
-            <Name>OAL_AsyncAudioTrackPreloadOperation</Name>
-            <Path>interface_o_a_l___async_audio_track_preload_operation.html</Path>
-           </Node>
-          </Subnodes>
-         </Node>
-         <Node>
-          <Name>&lt;OAL_GainProtocol&gt;</Name>
-          <Path>protocol_o_a_l___gain_protocol-p.html</Path>
-         </Node>
-         <Node>
-          <Name>&lt;OAL_PanProtocol&gt;</Name>
-          <Path>protocol_o_a_l___pan_protocol-p.html</Path>
-         </Node>
-         <Node>
-          <Name>&lt;OAL_PitchProtocol&gt;</Name>
-          <Path>protocol_o_a_l___pitch_protocol-p.html</Path>
-         </Node>
-         <Node>
-          <Name>&lt;OAL_PositionProtocol&gt;</Name>
-          <Path>protocol_o_a_l___position_protocol-p.html</Path>
          </Node>
          <Node>
           <Name>OALAction</Name>
