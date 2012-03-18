@@ -28,6 +28,7 @@
 //
 
 #import "OALAudioActions.h"
+#import "OALAction+Private.h"
 #import "ObjectALMacros.h"
 
 
@@ -313,7 +314,7 @@
 	// value in duration.
 	if(unitsPerSecond > 0)
 	{
-		duration = sqrtf(delta.x * delta.x + delta.y * delta.y + delta.z * delta.z) / unitsPerSecond;
+		duration_ = sqrtf(delta.x * delta.x + delta.y * delta.y + delta.z * delta.z) / unitsPerSecond;
 	}
 }
 
@@ -365,7 +366,7 @@
 		{
 			// If unitsPerSecond was set, we use that to calculate duration.  Otherwise just use the current
 			// value in duration.
-			duration = sqrtf(delta.x * delta.x + delta.y * delta.y + delta.z * delta.z) / unitsPerSecond;
+			duration_ = sqrtf(delta.x * delta.x + delta.y * delta.y + delta.z * delta.z) / unitsPerSecond;
 		}
 	}
 	return self;
@@ -392,7 +393,7 @@
 	{
 		// If unitsPerSecond was set, we use that to calculate duration.  Otherwise just use the current
 		// value in duration.
-		duration = sqrtf(delta.x * delta.x + delta.y * delta.y + delta.z * delta.z) / unitsPerSecond;
+		duration_ = sqrtf(delta.x * delta.x + delta.y * delta.y + delta.z * delta.z) / unitsPerSecond;
 	}
 }
 

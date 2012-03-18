@@ -180,6 +180,7 @@
 		398C1822147D5560000EFEDF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 398C1821147D5560000EFEDF /* AppDelegate.m */; };
 		398C1825147D5560000EFEDF /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 398C1824147D5560000EFEDF /* RootViewController.m */; };
 		398C1828147D5560000EFEDF /* MainScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 398C1827147D5560000EFEDF /* MainScene.m */; };
+		39C48DF8151657D700BC57ED /* OALAction+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C48DF6151657D600BC57ED /* OALAction+Private.h */; };
 		39F89E9F14831C3500E40CFE /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 39F89E9E14831C3500E40CFE /* libz.dylib */; };
 /* End PBXBuildFile section */
 
@@ -531,6 +532,7 @@
 		398C1826147D5560000EFEDF /* MainScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.objj.h; path = MainScene.h; sourceTree = "<group>"; };
 		398C1827147D5560000EFEDF /* MainScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainScene.m; sourceTree = "<group>"; };
 		398C1829147D5560000EFEDF /* GameConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.objj.h; path = GameConfig.h; sourceTree = "<group>"; };
+		39C48DF6151657D600BC57ED /* OALAction+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OALAction+Private.h"; sourceTree = "<group>"; };
 		39F89E9E14831C3500E40CFE /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -836,6 +838,7 @@
 			children = (
 				3914D8C1147D58F00010C4A2 /* OALAction.h */,
 				3914D8C2147D58F00010C4A2 /* OALAction.m */,
+				39C48DF6151657D600BC57ED /* OALAction+Private.h */,
 				3914D8C3147D58F00010C4A2 /* OALActionManager.h */,
 				3914D8C4147D58F00010C4A2 /* OALActionManager.m */,
 				3914D8C5147D58F00010C4A2 /* OALAudioActions.h */,
@@ -1154,6 +1157,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				39C48DF8151657D700BC57ED /* OALAction+Private.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

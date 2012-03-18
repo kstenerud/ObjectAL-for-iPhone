@@ -28,10 +28,19 @@
 //
 
 #import "OALUtilityActions.h"
+#import "OALAction+Private.h"
 #import "ObjectALMacros.h"
 
 
 #pragma mark OALTargetedAction
+
+/** \cond */
+@interface OALTargetedAction ()
+
+@property(nonatomic,readwrite,retain) OALAction* action;
+
+@end
+/** \endcond */
 
 @implementation OALTargetedAction
 
@@ -43,74 +52,91 @@
 	return arcsafe_autorelease([(OALTargetedAction*)[self alloc] initWithTarget:target action:action]);
 }
 
-- (id) initWithTarget:(id) targetIn action:(OALAction*) actionIn
+- (id) initWithTarget:(id) target action:(OALAction*) action
 {
-	if(nil != (self = [super initWithDuration:actionIn.duration]))
+	if(nil != (self = [super initWithDuration:action.duration]))
 	{
-		forcedTarget = targetIn; // Weak reference
-		action = arcsafe_retain(actionIn);
-		duration = action.duration;
+		self.forcedTarget = target; // Weak reference
+		self.action = action;
+		self.duration = action.duration;
 	}
 	return self;
 }
 
 - (void) dealloc
 {
-	arcsafe_release(action);
+	arcsafe_release(action_);
     arcsafe_super_dealloc();
 }
 
 
 #pragma mark Properties
 
-@synthesize forcedTarget;
+@synthesize action = action_;
+@synthesize forcedTarget = forcedTarget_;
 
 
 #pragma mark Functions
 
-- (void) prepareWithTarget:(id) targetIn
+- (void) prepareWithTarget:(id) target
 {
 	// Have the action use the forced target.
-	[action prepareWithTarget:forcedTarget];
-	duration = action.duration;
+	[action_ prepareWithTarget:forcedTarget_];
+	duration_ = action_.duration;
 
 	// Since we may be running in the manager (if duration > 0), we
 	// must call [super prepareWithTarget:] using the passed in target.
-	[super prepareWithTarget:targetIn];
+	[super prepareWithTarget:target];
 }
 
-#if !OBJECTAL_USE_COCOS2D_ACTIONS
+#if !OBJECTAL_CFG_USE_COCOS2D_ACTIONS
 
 - (void) startAction
 {
 	[super startAction];
-	[action startAction];
+	[action_ startAction];
 }
 
-#endif /* !OBJECTAL_USE_COCOS2D_ACTIONS */
+#endif /* !OBJECTAL_CFG_USE_COCOS2D_ACTIONS */
 
 - (void) stopAction
 {
 	[super stopAction];
-	[action stopAction];
+	[action_ stopAction];
 }
 
 - (void) updateCompletion:(float) proportionComplete
 {
 	[super updateCompletion:proportionComplete];
-	[action updateCompletion:proportionComplete];
+	[action_ updateCompletion:proportionComplete];
 }
 
 @end
 
 
-#if !OBJECTAL_USE_COCOS2D_ACTIONS
+#if !OBJECTAL_CFG_USE_COCOS2D_ACTIONS
 
 #pragma mark -
 #pragma mark OALSequentialActions
 
+/** \cond */
+@interface OALSequentialActions ()
+
+/** The durations of the actions. */
+@property(nonatomic,readwrite,retain) NSMutableArray* pDurations;
+
+/** The current action being processed. */
+@property(nonatomic,readwrite,assign) OALAction* currentAction;
+
+@end
+/** \endcond */
+
+
 @implementation OALSequentialActions
 
+@synthesize actions = actions_;
+@synthesize pDurations = pDurations_;
+@synthesize currentAction = currentAction_;
 
 #pragma mark Object Management
 
@@ -134,178 +160,192 @@
 	return arcsafe_autorelease([[self alloc] initWithActions:actions]);
 }
 
-- (id) initWithActions:(NSArray*) actionsIn
+- (id) initWithActions:(NSArray*) actions
 {
 	if(nil != (self = [super initWithDuration:0]))
 	{
-		if([actionsIn isKindOfClass:[NSMutableArray class]])
+		if([actions isKindOfClass:[NSMutableArray class]])
 		{
 			// Take ownership if it's a mutable array.
-			actions = (NSMutableArray*)arcsafe_retain(actionsIn);
+			self.actions = (NSMutableArray*)actions;
 		}
 		else
 		{
 			// Otherwise copy it into a mutable array.
-			actions = [[NSMutableArray alloc] initWithArray:actionsIn];
+			self.actions = [NSMutableArray arrayWithArray:actions];
 		}
 		
-		pDurations = [[NSMutableArray alloc] initWithCapacity:[actions count]];
+		self.pDurations = [NSMutableArray arrayWithCapacity:[actions count]];
 	}
 	return self;
 }
 
 - (void) dealloc
 {
-	arcsafe_release(actions);
-	arcsafe_release(pDurations);
+	arcsafe_release(actions_);
+	arcsafe_release(pDurations_);
     arcsafe_super_dealloc();
 }
 
 
-#pragma mark Properties
-
-@synthesize actions;
-
-
 #pragma mark Functions
 
-- (void) prepareWithTarget:(id) targetIn
+- (void) prepareWithTarget:(id) target
 {
 	// Calculate the total duration in seconds of all children.
-	duration = 0;
-	for(OALAction* action in actions)
+	duration_ = 0;
+	for(OALAction* action in actions_)
 	{
-		[action prepareWithTarget:targetIn];
-		duration += action.duration;
+		[action prepareWithTarget:target];
+		duration_ += action.duration;
 	}
 	
 	// Calculate the childrens' duration as proportions of the total.
-	[pDurations removeAllObjects];
-	if(0 == duration)
+	[pDurations_ removeAllObjects];
+	if(0 == duration_)
 	{
 		// Easy case: 0 duration.
-		for(OALAction* action in actions)
+		for(OALAction* action in actions_)
 		{
-			[pDurations addObject:[NSNumber numberWithFloat:0]];
+			[pDurations_ addObject:[NSNumber numberWithFloat:0]];
 		}
 	}
 	else
 	{
 		// Complex case: > 0 duration.
-		for(OALAction* action in actions)
+		for(OALAction* action in actions_)
 		{
-			[pDurations addObject:[NSNumber numberWithFloat:action.duration/duration]];
+			[pDurations_ addObject:[NSNumber numberWithFloat:action.duration/duration_]];
 		}
 	}
 	
 	// Start at the first action.
-	if([actions count] > 0)
+	if([actions_ count] > 0)
 	{
-		currentAction = [actions objectAtIndex:0];
-		pCurrentActionDuration = [[pDurations objectAtIndex:0] floatValue];
+		self.currentAction = [actions_ objectAtIndex:0];
+		pCurrentActionDuration_ = [[pDurations_ objectAtIndex:0] floatValue];
 	}
 	else
 	{
 		// Just in case this is an empty set.
-		currentAction = nil;
-		pCurrentActionDuration = 0;
+		self.currentAction = nil;
+		pCurrentActionDuration_ = 0;
 	}
 	
-	actionIndex = 0;
-	pLastComplete = 0;
-	pCurrentActionComplete = 0;
+	actionIndex_ = 0;
+	pLastComplete_ = 0;
+	pCurrentActionComplete_ = 0;
 	
-	[super prepareWithTarget:targetIn];
+	[super prepareWithTarget:target];
 }
 
 - (void) startAction
 {
-	[currentAction startAction];
+	[currentAction_ startAction];
 	[super startAction];
 }
 
 - (void) stopAction
 {
-	[currentAction stopAction];
+	[currentAction_ stopAction];
 	[super stopAction];
 }
 
 - (void) updateCompletion:(float) pComplete
 {
-	float pDelta = pComplete - pLastComplete;
+	float pDelta = pComplete - pLastComplete_;
 	
 	// First, run past all actions that have been completed since the last update.
-	while(pCurrentActionComplete + pDelta >= pCurrentActionDuration)
+	while(pCurrentActionComplete_ + pDelta >= pCurrentActionDuration_)
 	{
 		// Only send a 1.0 update if the action has a duration.
-		if(currentAction.duration > 0)
+		if(currentAction_.duration > 0)
 		{
-			[currentAction updateCompletion:1.0f];
+			[currentAction_ updateCompletion:1.0f];
 		}
 
-		[currentAction stopAction];
+		[currentAction_ stopAction];
 
 		// Subtract its contribution to the current delta.
-		pDelta -= (pCurrentActionDuration - pCurrentActionComplete);
+		pDelta -= (pCurrentActionDuration_ - pCurrentActionComplete_);
 		
 		// Move on to the next action.
-		actionIndex++;
-		if(actionIndex >= [actions count])
+		actionIndex_++;
+		if(actionIndex_ >= [actions_ count])
 		{
 			// If there are no more actions, we are done.
 			return;
 		}
 		
 		// Store some info about the new current action and start it running.
-		currentAction = [actions objectAtIndex:actionIndex];
-		pCurrentActionDuration = [[pDurations objectAtIndex:actionIndex] floatValue];
-		pCurrentActionComplete = 0;
-		[currentAction startAction];
+		self.currentAction = [actions_ objectAtIndex:actionIndex_];
+		pCurrentActionDuration_ = [[pDurations_ objectAtIndex:actionIndex_] floatValue];
+		pCurrentActionComplete_ = 0;
+		[currentAction_ startAction];
 	}
 	
 	if(pComplete >= 1.0)
 	{
 		// Make sure a cumulative rounding error doesn't cause an uncompletable action.
-		[currentAction updateCompletion:1.0f];
-		[currentAction stopAction];
+		[currentAction_ updateCompletion:1.0f];
+		[currentAction_ stopAction];
 	}
 	else
 	{
 		// The action is not yet complete.  Send an update with the current proportion
 		// for this action.
-		pCurrentActionComplete += pDelta;
-		[currentAction updateCompletion:pCurrentActionComplete / pCurrentActionDuration];
+		pCurrentActionComplete_ += pDelta;
+		[currentAction_ updateCompletion:pCurrentActionComplete_ / pCurrentActionDuration_];
 	}
 	
-	pLastComplete = pComplete;
+	pLastComplete_ = pComplete;
 }
 
 @end
 
-#else /* !OBJECTAL_USE_COCOS2D_ACTIONS */
+#else /* !OBJECTAL_CFG_USE_COCOS2D_ACTIONS */
 
 COCOS2D_SUBCLASS(OALSequentialActions)
 
-- (void) prepareWithTarget:(id) targetIn
+- (void) prepareWithTarget:(id) target
 {
+    #pragma unused(target)
 }
 
 - (void) updateCompletion:(float) proportionComplete
 {
+    #pragma unused(proportionComplete)
 }
 
 @end
 
-#endif /* !OBJECTAL_USE_COCOS2D_ACTIONS */
+#endif /* !OBJECTAL_CFG_USE_COCOS2D_ACTIONS */
 
 
 
-#if !OBJECTAL_USE_COCOS2D_ACTIONS
+#if !OBJECTAL_CFG_USE_COCOS2D_ACTIONS
 
 #pragma mark -
 #pragma mark OALConcurrentActions
 
+/** \cond */
+@interface OALConcurrentActions ()
+
+/** The durations of the actions. */
+@property(nonatomic,readwrite,retain) NSMutableArray* pDurations;
+
+/** A list of actions that have duration > 0. */
+@property(nonatomic,readwrite,assign) NSMutableArray* actionsWithDuration;
+
+@end
+/** \endcond */
+
+
 @implementation OALConcurrentActions
+
+@synthesize actions = actions_;
+@synthesize pDurations = pDurations_;
+@synthesize actionsWithDuration = actionsWithDuration_;
 
 
 #pragma mark Object Management
@@ -330,83 +370,78 @@ COCOS2D_SUBCLASS(OALSequentialActions)
 	return arcsafe_autorelease([[self alloc] initWithActions:actions]);
 }
 
-- (id) initWithActions:(NSArray*) actionsIn
+- (id) initWithActions:(NSArray*) actions
 {
 	if(nil != (self = [super initWithDuration:0]))
 	{
-		if([actionsIn isKindOfClass:[NSMutableArray class]])
+		if([actions isKindOfClass:[NSMutableArray class]])
 		{
 			// Take ownership if it's a mutable array.
-			actions = (NSMutableArray*)arcsafe_retain(actionsIn);
+			self.actions = (NSMutableArray*)actions;
 		}
 		else
 		{
 			// Otherwise copy it into a mutable array.
-			actions = [[NSMutableArray alloc] initWithArray:actionsIn];
+			self.actions = [NSMutableArray arrayWithArray:actions];
 		}
 		
-		pDurations = [[NSMutableArray alloc] initWithCapacity:[actions count]];
-		actionsWithDuration = [[NSMutableArray alloc] initWithCapacity:[actions count]];
+		self.pDurations = [NSMutableArray arrayWithCapacity:[actions count]];
+		self.actionsWithDuration = [NSMutableArray arrayWithCapacity:[actions count]];
 	}
 	return self;
 }
 
 - (void) dealloc
 {
-	arcsafe_release(actions);
-	arcsafe_release(pDurations);
-	arcsafe_release(actionsWithDuration);
+	arcsafe_release(actions_);
+	arcsafe_release(pDurations_);
+	arcsafe_release(actionsWithDuration_);
 	arcsafe_super_dealloc();
 }
 
 
-#pragma mark Properties
-
-@synthesize actions;
-
-
 #pragma mark Functions
 
-- (void) prepareWithTarget:(id) targetIn
+- (void) prepareWithTarget:(id) target
 {
-	[actionsWithDuration removeAllObjects];
+	[actionsWithDuration_ removeAllObjects];
 	
 	// Calculate the longest duration in seconds of all children.
-	duration = 0;
-	for(OALAction* action in actions)
+	duration_ = 0;
+	for(OALAction* action in actions_)
 	{
-		[action prepareWithTarget:targetIn];
+		[action prepareWithTarget:target];
 		if(action.duration > 0)
 		{
-			if(action.duration > duration)
+			if(action.duration > duration_)
 			{
-				duration = action.duration;
+				duration_ = action.duration;
 			}
 			
 			// Also keep track of actions with durations.
-			[actionsWithDuration addObject:action];
+			[actionsWithDuration_ addObject:action];
 		}
 	}
 	
 	// Calculate the childrens' durations as proportions of the total.
-	[pDurations removeAllObjects];
-	for(OALAction* action in actionsWithDuration)
+	[pDurations_ removeAllObjects];
+	for(OALAction* action in actionsWithDuration_)
 	{
-		[pDurations addObject:[NSNumber numberWithFloat:action.duration/duration]];
+		[pDurations_ addObject:[NSNumber numberWithFloat:action.duration/duration_]];
 	}
 	
-	[super prepareWithTarget:targetIn];
+	[super prepareWithTarget:target];
 }
 
 - (void) startAction
 {
-	[actions makeObjectsPerformSelector:@selector(startAction)];
+	[actions_ makeObjectsPerformSelector:@selector(startAction)];
 	[super startAction];
 }
 
 - (void) stopAction
 {
-	[actions makeObjectsPerformSelector:@selector(stopAction)];
+	[actions_ makeObjectsPerformSelector:@selector(stopAction)];
 	[super stopAction];
 }
 
@@ -415,7 +450,7 @@ COCOS2D_SUBCLASS(OALSequentialActions)
 	if(0 == proportionComplete)
 	{
 		// All actions get an update at 0.
-		for(OALAction* action in actions)
+		for(OALAction* action in actions_)
 		{
 			[action updateCompletion:0];
 		}
@@ -423,10 +458,10 @@ COCOS2D_SUBCLASS(OALSequentialActions)
 	else
 	{
 		// Only actions with a duration get an update after 0.
-		for(uint i = 0; i < [actionsWithDuration count]; i++)
+		for(uint i = 0; i < [actionsWithDuration_ count]; i++)
 		{
-			OALAction* action = [actionsWithDuration objectAtIndex:i];
-			float proportion = proportionComplete / [[pDurations objectAtIndex:i] floatValue];
+			OALAction* action = [actionsWithDuration_ objectAtIndex:i];
+			float proportion = proportionComplete / [[pDurations_ objectAtIndex:i] floatValue];
 			if(proportion > 1.0f)
 			{
 				proportion = 1.0f;
@@ -438,21 +473,23 @@ COCOS2D_SUBCLASS(OALSequentialActions)
 
 @end
 
-#else /* !OBJECTAL_USE_COCOS2D_ACTIONS */
+#else /* !OBJECTAL_CFG_USE_COCOS2D_ACTIONS */
 
 COCOS2D_SUBCLASS(OALConcurrentActions)
 
-- (void) prepareWithTarget:(id) targetIn
+- (void) prepareWithTarget:(id) target
 {
+    #pragma unused(target)
 }
 
 - (void) updateCompletion:(float) proportionComplete
 {
+    #pragma unused(proportionComplete)
 }
 
 @end
 
-#endif /* !OBJECTAL_USE_COCOS2D_ACTIONS */
+#endif /* !OBJECTAL_CFG_USE_COCOS2D_ACTIONS */
 
 
 #pragma mark -
@@ -493,8 +530,8 @@ COCOS2D_SUBCLASS(OALConcurrentActions)
 {
 	if(nil != (self = [super init]))
 	{
-		callTarget = callTargetIn;
-		selector = selectorIn;
+		callTarget_ = callTargetIn;
+		selector_ = selectorIn;
 	}
 	return self;
 }
@@ -505,10 +542,10 @@ COCOS2D_SUBCLASS(OALConcurrentActions)
 {
 	if(nil != (self = [super init]))
 	{
-		callTarget = callTargetIn;
-		selector = selectorIn;
-		object1 = object;
-		numObjects = 1;
+		callTarget_ = callTargetIn;
+		selector_ = selectorIn;
+		object1_ = object;
+		numObjects_ = 1;
 	}
 	return self;
 }
@@ -520,11 +557,11 @@ COCOS2D_SUBCLASS(OALConcurrentActions)
 {
 	if(nil != (self = [super init]))
 	{
-		callTarget = callTargetIn;
-		selector = selectorIn;
-		object1 = firstObject;
-		object2 = secondObject;
-		numObjects = 2;
+		callTarget_ = callTargetIn;
+		selector_ = selectorIn;
+		object1_ = firstObject;
+		object2_ = secondObject;
+		numObjects_ = 2;
 	}
 	return self;
 }
@@ -534,27 +571,27 @@ COCOS2D_SUBCLASS(OALConcurrentActions)
 
 - (void) startAction
 {
-#if !OBJECTAL_USE_COCOS2D_ACTIONS
+#if !OBJECTAL_CFG_USE_COCOS2D_ACTIONS
 	[super startAction];
-#endif /* !OBJECTAL_USE_COCOS2D_ACTIONS */
+#endif /* !OBJECTAL_CFG_USE_COCOS2D_ACTIONS */
 	
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-	switch(numObjects)
+	switch(numObjects_)
 	{
 		case 2:
-			[callTarget performSelector:selector withObject:object1 withObject:object2];
+			[callTarget_ performSelector:selector_ withObject:object1_ withObject:object2_];
 			break;
 		case 1:
-			[callTarget performSelector:selector withObject:object1];
+			[callTarget_ performSelector:selector_ withObject:object1_];
 			break;
 		default:
-			[callTarget performSelector:selector];
+			[callTarget_ performSelector:selector_];
 	}
 #pragma clang diagnostic pop
 }
 
-#if OBJECTAL_USE_COCOS2D_ACTIONS
+#if OBJECTAL_CFG_USE_COCOS2D_ACTIONS
 
 -(void) startWithTarget:(id) targetIn
 {
@@ -562,7 +599,7 @@ COCOS2D_SUBCLASS(OALConcurrentActions)
 	[self startAction];
 }
 
-#endif /* OBJECTAL_USE_COCOS2D_ACTIONS */
+#endif /* OBJECTAL_CFG_USE_COCOS2D_ACTIONS */
 
 
 @end

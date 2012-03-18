@@ -39,7 +39,7 @@
 @interface OALTargetedAction: OALAction
 {
 	/** The action that will be run on the target. */
-	OALAction* action;
+	OALAction* action_;
 }
 
 /** The target which this action will actually be invoked upon. */
@@ -64,7 +64,7 @@
 @end
 
 
-#if !OBJECTAL_USE_COCOS2D_ACTIONS
+#if !OBJECTAL_CFG_USE_COCOS2D_ACTIONS
 
 #pragma mark -
 #pragma mark OALSequentialActions
@@ -74,25 +74,17 @@
  */
 @interface OALSequentialActions: OALAction
 {
-	NSMutableArray* actions;
-	
-	/** The durations of the actions. */
-	NSMutableArray* pDurations;
-
 	/** The index of the action currently being processed. */
-	uint actionIndex;
+	uint actionIndex_;
 	
 	/** The last completeness proportion value acted upon. */
-	float pLastComplete;
+	float pLastComplete_;
 
-	/** The current action being processed. */
-	OALAction* currentAction;
-	
 	/** The proportional duration of the current action. */
-	float pCurrentActionDuration;
+	float pCurrentActionDuration_;
 	
 	/** The proportional completeness of the current action. */
-	float pCurrentActionComplete;
+	float pCurrentActionComplete_;
 }
 
 
@@ -136,15 +128,6 @@
  * A set of actions that get run concurrently.
  */
 @interface OALConcurrentActions: OALAction
-{
-	NSMutableArray* actions;
-	
-	/** The durations of the actions. */
-	NSMutableArray* pDurations;
-
-	/** A list of actions that have duration > 0. */
-	NSMutableArray* actionsWithDuration;
-}
 
 
 #pragma mark Properties
@@ -179,14 +162,14 @@
 
 @end
 
-#else /* !OBJECTAL_USE_COCOS2D_ACTIONS */
+#else /* !OBJECTAL_CFG_USE_COCOS2D_ACTIONS */
 
 COCOS2D_SUBCLASS_HEADER(OALSequentialActions,CCSequence);
 
 
 COCOS2D_SUBCLASS_HEADER(OALConcurrentActions,CCSpawn);
 
-#endif /* !OBJECTAL_USE_COCOS2D_ACTIONS */
+#endif /* !OBJECTAL_CFG_USE_COCOS2D_ACTIONS */
 
 
 #pragma mark -
@@ -201,19 +184,19 @@ COCOS2D_SUBCLASS_HEADER(OALConcurrentActions,CCSpawn);
 @interface OALCallAction: OALAction
 {
 	/** The target to call the selector on. */
-	id callTarget;
+	id callTarget_;
 	
 	/** The selector to invoke */
-	SEL selector;
+	SEL selector_;
 	
 	/** The number of parameters which will be passed to the selector. */
-	int numObjects;
+	int numObjects_;
 	
 	/** The first object to pass to the selector, if any. */
-	id object1;
+	id object1_;
 	
 	/** The second object to pass to the selector, if any. */
-	id object2;
+	id object2_;
 }
 
 /** Create an action.

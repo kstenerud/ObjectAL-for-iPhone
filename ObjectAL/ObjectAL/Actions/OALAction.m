@@ -28,14 +28,16 @@
 //
 
 #import "OALAction.h"
+#import "OALAction+Private.h"
 #import "OALActionManager.h"
 #import "ObjectALMacros.h"
 
 
-#if !OBJECTAL_USE_COCOS2D_ACTIONS
+#if !OBJECTAL_CFG_USE_COCOS2D_ACTIONS
 
 
 #pragma mark OALAction (ObjectAL version)
+
 
 @implementation OALAction
 
@@ -47,11 +49,11 @@
 	return [self initWithDuration:0];
 }
 
-- (id) initWithDuration:(float) durationIn
+- (id) initWithDuration:(float) duration
 {
 	if(nil != (self = [super init]))
 	{
-		duration = durationIn;
+		duration_ = duration;
 	}
 	return self;
 }
@@ -59,25 +61,25 @@
 
 #pragma mark Properties
 
-@synthesize target;
-@synthesize duration;
-@synthesize elapsed;
-@synthesize running;
+@synthesize target = target_;
+@synthesize duration = duration_;
+@synthesize elapsed = elapsed_;
+@synthesize running = running_;
 
 
 #pragma mark Functions
 
-- (void) runWithTarget:(id) targetIn
+- (void) runWithTarget:(id) target
 {
-	[self prepareWithTarget:targetIn];
+	[self prepareWithTarget:target];
 	[self startAction];
 	[self updateCompletion:0];
 
 	// Only add this action to the manager if it has a duration.
-	if(duration > 0)
+	if(duration_ > 0)
 	{
 		[[OALActionManager sharedInstance] notifyActionStarted:self];
-		runningInManager = YES;
+		runningInManager_ = YES;
 	}
 	else
 	{
@@ -86,17 +88,17 @@
 	}
 }
 
-- (void) prepareWithTarget:(id) targetIn
+- (void) prepareWithTarget:(id) target
 {
-	NSAssert(!running, @"Error: Action is already running");
+	NSAssert(!running_, @"Error: Action is already running");
 
-	target = targetIn;
+	self.target = target;
 }
 
 - (void) startAction
 {
-	running = YES;
-	elapsed = 0;
+	running_ = YES;
+	elapsed_ = 0;
 }
 
 - (void) updateCompletion:(float) proportionComplete
@@ -107,18 +109,18 @@
 
 - (void) stopAction
 {
-	running = NO;
-	if(runningInManager)
+	running_ = NO;
+	if(runningInManager_)
 	{
 		[[OALActionManager sharedInstance] notifyActionStopped:self];
-		runningInManager = NO;
+		runningInManager_ = NO;
 	}
 }
 
 @end
 
 
-#else /* !OBJECTAL_USE_COCOS2D_ACTIONS */
+#else /* !OBJECTAL_CFG_USE_COCOS2D_ACTIONS */
 
 @implementation OALAction
 
@@ -127,12 +129,12 @@
 	return [self initWithDuration:0];
 }
 
--(void) startWithTarget:(id) targetIn
+-(void) startWithTarget:(id) target
 {
-	[super startWithTarget:targetIn];
-	[self prepareWithTarget:targetIn];
-	started = YES;
-	[self runWithTarget:targetIn];
+	[super startWithTarget:target];
+	[self prepareWithTarget:target];
+	started_ = YES;
+	[self runWithTarget:target];
 }
 
 - (void) update:(float) proportionComplete	
@@ -147,11 +149,11 @@
 	return !self.isDone;
 }
 
-- (void) runWithTarget:(id) targetIn
+- (void) runWithTarget:(id) target
 {
-	if(!started)
+	if(!started_)
 	{
-		[[CCActionManager sharedManager] addAction:self target:targetIn paused:NO];
+		[[CCActionManager sharedManager] addAction:self target:target paused:NO];
 	}
 }
 
@@ -160,17 +162,41 @@
 	[[CCActionManager sharedManager] removeAction:self];
 }
 
-- (void) prepareWithTarget:(id) targetIn
+- (void) prepareWithTarget:(id) target
 {
+    #pragma unused(target)
 }
 
 - (void) updateCompletion:(float) proportionComplete
 {
+    #pragma unused(proportionComplete)
 }
+
+- (void) setTarget:(id)target
+{
+    target_ = target;
+}
+
+- (id) target
+{
+    return target_;
+}
+
+- (void) setDuration:(float)duration
+{
+    duration_ = duration;
+}
+
+- (float) duration
+{
+    return duration_;
+}
+
+@synthesize running = running_;
 
 @end
 
-#endif /* !OBJECTAL_USE_COCOS2D_ACTIONS */
+#endif /* !OBJECTAL_CFG_USE_COCOS2D_ACTIONS */
 
 
 #pragma mark -

@@ -32,7 +32,7 @@
 #import "ObjectALConfig.h"
 
 
-#if OBJECTAL_USE_COCOS2D_ACTIONS
+#if OBJECTAL_CFG_USE_COCOS2D_ACTIONS
 
 #pragma mark Cocos2d Subclassing
 
@@ -44,7 +44,7 @@
 #define COCOS2D_SUBCLASS_HEADER(CLASS_A,CLASS_B)	\
 @interface CLASS_A: CLASS_B	\
 {	\
-	bool started;	\
+	bool started_;	\
 }	\
 	\
 @property(nonatomic,readonly,assign) bool running;	\
@@ -72,7 +72,7 @@
 {	\
 	[super startWithTarget:targetIn];	\
 	[self prepareWithTarget:targetIn];	\
-	started = YES;	\
+	started_ = YES;	\
 	[self runWithTarget:targetIn];	\
 }	\
 	\
@@ -89,7 +89,7 @@
 	\
 - (void) runWithTarget:(id) targetIn	\
 {	\
-	if(!started)	\
+	if(!started_)	\
 	{	\
 		[[CCActionManager sharedManager] addAction:self target:targetIn paused:NO];	\
 	}	\
@@ -100,7 +100,7 @@
 	[[CCActionManager sharedManager] removeAction:self];	\
 }	\
 
-#endif /* OBJECTAL_USE_COCOS2D_ACTIONS */
+#endif /* OBJECTAL_CFG_USE_COCOS2D_ACTIONS */
 
 
 
@@ -108,7 +108,7 @@
  * It's usually more convenient when using Cocos2d to have all actions as part of
  * the Cocos2d action system.  You can set this in ObjectALConfig.h
  */
-#if !OBJECTAL_USE_COCOS2D_ACTIONS
+#if !OBJECTAL_CFG_USE_COCOS2D_ACTIONS
 
 #pragma mark -
 #pragma mark OALAction (ObjectAL version)
@@ -118,13 +118,14 @@
  */
 @interface OALAction : NSObject
 {
-    /** The target to perform the action on */
-	float duration;
-	float elapsed;
-	bool running;
+    /** \cond */
+	float duration_;
+	float elapsed_;
+	bool running_;
+    /** \endcond */
 	
 	/** If TRUE, this action is running via OALActionManager. */
-	bool runningInManager;
+	bool runningInManager_;
 }
 
 
@@ -186,11 +187,11 @@
 @end
 
 
-#else /* !OBJECTAL_USE_COCOS2D_ACTIONS */
+#else /* !OBJECTAL_CFG_USE_COCOS2D_ACTIONS */
 
-COCOS2D_SUBCLASS_HEADER(OALAction, CCIntervalAction);
+COCOS2D_SUBCLASS_HEADER(OALAction, CCActionInterval);
 
-#endif /* !OBJECTAL_USE_COCOS2D_ACTIONS */
+#endif /* !OBJECTAL_CFG_USE_COCOS2D_ACTIONS */
 
 
 #pragma mark -

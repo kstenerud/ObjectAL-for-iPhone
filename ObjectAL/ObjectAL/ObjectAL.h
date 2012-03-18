@@ -64,7 +64,7 @@
  
  <strong>iOS Audio development, minus the headache.</strong> <br><br>
  
- Version 2.0 <br> <br>
+ Version 2.1 <br> <br>
  
  Copyright 2009-2011 Karl Stenerud <br><br>
  
@@ -212,7 +212,7 @@
  how ObjectAL behaves. Look inside <strong>ObjectALConfig.h</strong> to see what can be
  configured, and what each configuration value does. <br>
  The recommended values are fine for most users, but Cocos2D users may want to set
- OBJECTAL_USE_COCOS2D_ACTIONS so that the audio actions (such as fade) use the Cocos2D action manager.
+ OBJECTAL_CFG_USE_COCOS2D_ACTIONS so that the audio actions (such as fade) use the Cocos2D action manager.
  
  
  <br> <br>
