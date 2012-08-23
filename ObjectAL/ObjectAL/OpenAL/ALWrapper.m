@@ -1686,4 +1686,31 @@ BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device)
     return value;
 }
 
++ (void) setAlcMacOSXRenderingQuality:(NSString *) quality {
+  void (*proc)(const ALint) = [ALWrapper getProcAddress:@"alcMacOSXRenderingQuality"];
+  if ([quality isEqualToString:@"high"]) {
+    proc(ALC_MAC_OSX_SPATIAL_RENDERING_QUALITY_HIGH);
+  } else if ([quality isEqualToString:@"low"]) {
+    proc(ALC_MAC_OSX_SPATIAL_RENDERING_QUALITY_LOW);
+  } else if ([quality isEqualToString:@"headphones"]) {
+    proc(ALC_IPHONE_SPATIAL_RENDERING_QUALITY_HEADPHONES);
+  } else {
+    [NSException raise:@"InvalidArgument" format:@"Unknown Argument - needs to be :high or :low"];
+  }
+}
+
++ (NSString *) alcMacOSXRenderingQuality {
+  ALint (*proc)(void) = [ALWrapper getProcAddress:@"alcMacOSXGetRenderingQuality"];
+  ALint quality = proc();
+  if (quality == ALC_MAC_OSX_SPATIAL_RENDERING_QUALITY_HIGH) {
+    return @"high";
+  } else if (quality == ALC_IPHONE_SPATIAL_RENDERING_QUALITY_HEADPHONES) {
+    return @"headphones";
+  } else if (quality == ALC_MAC_OSX_SPATIAL_RENDERING_QUALITY_LOW) {
+    return @"low";
+  } else {
+    return [NSString stringWithFormat:@"%i", quality];
+  }
+}
+
 @end
