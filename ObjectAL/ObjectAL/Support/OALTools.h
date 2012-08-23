@@ -37,14 +37,36 @@
 {
 }
 
+/** Set the default bundle to use when looking up paths.
+ *
+ * @param bundle The new default bundle.
+ */
++ (void) setDefaultBundle:(NSBundle*) bundle;
+
+/** The default bundle used when looking up paths.
+ *
+ * return The default bundle.
+ */
++ (NSBundle*) defaultBundle;
+
 /** Returns the URL corresponding to the specified path.
  * If the path is not absolute (starts with a "/"), this method will look for
- * the file in the application's main bundle.
+ * the file in the default bundle.
  *
  * @param path The path to convert to a URL.
  * @return The corresponding URL or nil if a URL could not be formed.
  */
 + (NSURL*) urlForPath:(NSString*) path;
+
+/** Returns the URL corresponding to the specified path.
+ * If the path is not absolute (starts with a "/"), this method will look for
+ * the file in the specified bundle.
+ *
+ * @param path The path to convert to a URL.
+ * @param bundle The bundle to look inside for relative paths.
+ * @return The corresponding URL or nil if a URL could not be formed.
+ */
++ (NSURL*) urlForPath:(NSString*) path bundle:(NSBundle*) bundle;
 
 /** Notify an error if the specified ExtAudio error code indicates an error.
  * This will log the error and also potentially post an audio error notification

@@ -12,7 +12,6 @@
 		390E99411482C4CB002E14E7 /* OALAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 3914D8C2147D58F00010C4A2 /* OALAction.m */; };
 		390E99421482C508002E14E7 /* OALActionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3914D8C4147D58F00010C4A2 /* OALActionManager.m */; };
 		390E99431482C508002E14E7 /* OALAudioActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3914D8C6147D58F00010C4A2 /* OALAudioActions.m */; };
-		390E99441482C508002E14E7 /* OALFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 3914D8C8147D58F00010C4A2 /* OALFunction.m */; };
 		390E99451482C508002E14E7 /* OALUtilityActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3914D8CA147D58F00010C4A2 /* OALUtilityActions.m */; };
 		390E99461482C508002E14E7 /* OALAudioTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = 3914D8CD147D58F00010C4A2 /* OALAudioTrack.m */; };
 		390E99471482C508002E14E7 /* OALAudioTrackNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 3914D8CF147D58F00010C4A2 /* OALAudioTrackNotifications.m */; };
@@ -374,8 +373,6 @@
 		3914D8C4147D58F00010C4A2 /* OALActionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALActionManager.m; sourceTree = "<group>"; };
 		3914D8C5147D58F00010C4A2 /* OALAudioActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.objj.h; path = OALAudioActions.h; sourceTree = "<group>"; };
 		3914D8C6147D58F00010C4A2 /* OALAudioActions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALAudioActions.m; sourceTree = "<group>"; };
-		3914D8C7147D58F00010C4A2 /* OALFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.objj.h; path = OALFunction.h; sourceTree = "<group>"; };
-		3914D8C8147D58F00010C4A2 /* OALFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALFunction.m; sourceTree = "<group>"; };
 		3914D8C9147D58F00010C4A2 /* OALUtilityActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.objj.h; path = OALUtilityActions.h; sourceTree = "<group>"; };
 		3914D8CA147D58F00010C4A2 /* OALUtilityActions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALUtilityActions.m; sourceTree = "<group>"; };
 		3914D8CC147D58F00010C4A2 /* OALAudioTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.objj.h; path = OALAudioTrack.h; sourceTree = "<group>"; };
@@ -843,8 +840,6 @@
 				3914D8C4147D58F00010C4A2 /* OALActionManager.m */,
 				3914D8C5147D58F00010C4A2 /* OALAudioActions.h */,
 				3914D8C6147D58F00010C4A2 /* OALAudioActions.m */,
-				3914D8C7147D58F00010C4A2 /* OALFunction.h */,
-				3914D8C8147D58F00010C4A2 /* OALFunction.m */,
 				3914D8C9147D58F00010C4A2 /* OALUtilityActions.h */,
 				3914D8CA147D58F00010C4A2 /* OALUtilityActions.m */,
 			);
@@ -1311,7 +1306,6 @@
 				390E99411482C4CB002E14E7 /* OALAction.m in Sources */,
 				390E99421482C508002E14E7 /* OALActionManager.m in Sources */,
 				390E99431482C508002E14E7 /* OALAudioActions.m in Sources */,
-				390E99441482C508002E14E7 /* OALFunction.m in Sources */,
 				390E99451482C508002E14E7 /* OALUtilityActions.m in Sources */,
 				390E99461482C508002E14E7 /* OALAudioTrack.m in Sources */,
 				390E99471482C508002E14E7 /* OALAudioTrackNotifications.m in Sources */,

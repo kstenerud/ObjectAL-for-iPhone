@@ -690,6 +690,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 {
 	OAL_LOG_DEBUG(@"Stop all effects");
 	[channel stop];
+    [channel clearUnusedBuffers];
 }
 
 

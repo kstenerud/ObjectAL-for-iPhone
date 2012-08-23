@@ -6,12 +6,19 @@
 
 #import "NSMutableArray+WeakReferences.h"
 
+
+#if __has_feature(objc_arc)
+    #define arcsafe_bridge_transfer __bridge_transfer
+#else
+    #define arcsafe_bridge_transfer
+#endif
+
 @implementation NSMutableArray (WeakReferences)
 
 + (id) newMutableArrayUsingWeakReferencesWithCapacity:(NSUInteger) capacity
 {
 	CFArrayCallBacks callbacks = {0, NULL, NULL, CFCopyDescription, CFEqual};
-	return (__bridge_transfer id)(CFArrayCreateMutable(0, (CFIndex)capacity, &callbacks));
+	return (arcsafe_bridge_transfer id)(CFArrayCreateMutable(0, (CFIndex)capacity, &callbacks));
 }
 
 + (id) newMutableArrayUsingWeakReferences

@@ -31,6 +31,7 @@
 #import "OALAction+Private.h"
 #import "OALActionManager.h"
 #import "ObjectALMacros.h"
+#import <objc/message.h>
 
 
 #if !OBJECTAL_CFG_USE_COCOS2D_ACTIONS
@@ -53,7 +54,7 @@
 {
 	if(nil != (self = [super init]))
 	{
-		duration_ = duration;
+		self.duration = duration;
 	}
 	return self;
 }
@@ -61,10 +62,11 @@
 
 #pragma mark Properties
 
-@synthesize target = target_;
+@synthesize target = _target;
 @synthesize duration = duration_;
 @synthesize elapsed = elapsed_;
 @synthesize running = running_;
+@synthesize runningInManager = runningInManager_;
 
 
 #pragma mark Functions
@@ -76,10 +78,10 @@
 	[self updateCompletion:0];
 
 	// Only add this action to the manager if it has a duration.
-	if(duration_ > 0)
+	if(self.duration > 0)
 	{
 		[[OALActionManager sharedInstance] notifyActionStarted:self];
-		runningInManager_ = YES;
+		self.runningInManager = YES;
 	}
 	else
 	{
@@ -90,15 +92,15 @@
 
 - (void) prepareWithTarget:(id) target
 {
-	NSAssert(!running_, @"Error: Action is already running");
+	NSAssert(!self.running, @"Error: Action is already running");
 
 	self.target = target;
 }
 
 - (void) startAction
 {
-	running_ = YES;
-	elapsed_ = 0;
+	self.running = YES;
+	self.elapsed = 0;
 }
 
 - (void) updateCompletion:(float) proportionComplete
@@ -109,11 +111,11 @@
 
 - (void) stopAction
 {
-	running_ = NO;
-	if(runningInManager_)
+	self.running = NO;
+	if(self.runningInManager)
 	{
 		[[OALActionManager sharedInstance] notifyActionStopped:self];
-		runningInManager_ = NO;
+		self.runningInManager = NO;
 	}
 }
 
@@ -200,131 +202,241 @@
 
 
 #pragma mark -
-#pragma mark OALFunctionAction
+#pragma mark OALPropertyAction
 
-@implementation OALFunctionAction
+@interface OALPropertyAction ()
+
+@property(nonatomic,readwrite,assign) float delta;
+
+@property(nonatomic,readwrite,retain) NSString* propertyKey;
+
+@end
+
+@implementation OALPropertyAction
+
+#pragma mark Properties
+
+@synthesize startValue = _startValue;
+
+@synthesize endValue = _endValue;
+
+@synthesize delta = _delta;
+
+@synthesize propertyKey = _propertyKey;
 
 
 #pragma mark Object Management
 
 + (id) actionWithDuration:(float) duration
+              propertyKey:(NSString*) propertyKey
 				 endValue:(float) endValue
 {
 	return arcsafe_autorelease([[self alloc] initWithDuration:duration
+                                                  propertyKey:propertyKey
                                                      endValue:endValue]);
 }
 
 + (id) actionWithDuration:(float) duration
-				 endValue:(float) endValue
-				 function:(id<OALFunction,NSObject>) function
-{
-	return arcsafe_autorelease([[self alloc] initWithDuration:duration
-                                                     endValue:endValue
-                                                     function:function]);
-}
-
-+ (id) actionWithDuration:(float) duration
+              propertyKey:(NSString*) propertyKey
 			   startValue:(float) startValue
 				 endValue:(float) endValue
-				 function:(id<OALFunction,NSObject>) function
 {
 	return arcsafe_autorelease([[self alloc] initWithDuration:duration
+                                                  propertyKey:propertyKey
                                                    startValue:startValue
-                                                     endValue:endValue
-                                                     function:function]);
+                                                     endValue:endValue]);
 }
 
-- (id) initWithDuration:(float) durationIn endValue:(float) endValueIn
+- (id) initWithDuration:(float) duration
+            propertyKey:(NSString*) propertyKey
+               endValue:(float) endValue
 {
-	return [self initWithDuration:durationIn
+	return [self initWithDuration:duration
+                      propertyKey:propertyKey
 					   startValue:NAN
-						 endValue:endValueIn
-						 function:[[self class] defaultFunction]];
+						 endValue:endValue];
 }
 
-- (id) initWithDuration:(float) durationIn
-			   endValue:(float) endValueIn
-			   function:(id<OALFunction,NSObject>) functionIn
+- (id) initWithDuration:(float) duration
+            propertyKey:(NSString*) propertyKey
+			 startValue:(float) startValue
+			   endValue:(float) endValue
 {
-	return [self initWithDuration:durationIn
-					   startValue:NAN
-						 endValue:endValueIn
-						 function:functionIn];
-}
-
-- (id) initWithDuration:(float) durationIn
-			 startValue:(float) startValueIn
-			   endValue:(float) endValueIn
-			   function:(id<OALFunction,NSObject>) functionIn
-{
-	if(nil != (self = [super initWithDuration:durationIn]))
+	if(nil != (self = [super initWithDuration:duration]))
 	{
-		startValue = startValueIn;
-		endValue = endValueIn;
-		function = arcsafe_retain(functionIn);
-		reverseFunction = [[OALReverseFunction alloc] initWithFunction:function];
-		realFunction = function;
+        self.propertyKey = propertyKey;
+		self.startValue = startValue;
+		self.endValue = endValue;
 	}
 	return self;
-}
-
-- (void) dealloc
-{
-	arcsafe_release(function);
-	arcsafe_release(reverseFunction);
-    arcsafe_super_dealloc();
-}
-
-
-#pragma mark Properties
-
-- (id<OALFunction,NSObject>) function
-{
-	return function;
-}
-
-- (void) setFunction:(id <OALFunction,NSObject>) value
-{
-    arcsafe_autorelease_unused(function);
-	function = arcsafe_retain(value);
-	reverseFunction.function = function;
-}
-
-@synthesize startValue;
-
-@synthesize endValue;
-
-
-#pragma mark Utility
-
-+ (id<OALFunction,NSObject>) defaultFunction
-{
-	return [OALLinearFunction function];
 }
 
 
 #pragma mark Functions
 
-- (void) prepareWithTarget:(id) targetIn
+- (void) prepareWithTarget:(id) target
 {
-	[super prepareWithTarget:targetIn];
+	[super prepareWithTarget:target];
 
-	delta = endValue - startValue;
-	
-	if(delta < 0)
-	{
-		// If delta is negative, we need the reversed function.
-		realFunction = reverseFunction;
-		lowValue = endValue;
-		delta = -delta;
-	}
-	else
-	{
-		realFunction = function;
-		lowValue = startValue;
-	}
+    if(isnan(self.startValue))
+    {
+        self.startValue = [[target valueForKey:self.propertyKey] floatValue];
+    }
+    
+	self.delta = self.endValue - self.startValue;
+}
+
+- (void) updateCompletion:(float) proportionComplete
+{
+    float value = self.startValue + self.delta * proportionComplete;
+    [self.target setValue:[NSNumber numberWithFloat:value] forKey:self.propertyKey];
 }
 
 @end
 
 
+#pragma mark -
+#pragma mark OALEaseAction
+
+static float easeFunction_sineIn(float x)
+{
+    return 1.0f - cosf(x * (float)M_PI_2);
+}
+
+static float easeFunction_sineOut(float x)
+{
+    return sinf(x * (float)M_PI_2);
+}
+
+static float easeFunction_sineInOut(float x)
+{
+    return -0.5f * (cosf(x * (float)M_PI) - 1);
+}
+
+static float easeFunction_exponentIn(float x)
+{
+    if(x == 0)
+    {
+        return 0;
+    }
+    return powf(2, 10 * (x - 1));
+}
+
+static float easeFunction_exponentOut(float x)
+{
+    if(x == 1)
+    {
+        return 1;
+    }
+    return powf(-2, -10 * x) + 1;
+}
+
+static float easeFunction_exponentInOut(float x)
+{
+    if(x < 0.5)
+    {
+        if(x == 0)
+        {
+            return 0;
+        }
+        return powf(2, (12 * (x - 0.86f))) * 10;
+    }
+    if(x == 1)
+    {
+        return 1;
+    }
+    return powf(-2, (-12 * (x - 0.4165f))) + 1;
+}
+
+
+static EaseFunctionPtr g_easeFunctions[2][3] =
+{
+    {
+        easeFunction_sineIn,
+        easeFunction_sineOut,
+        easeFunction_sineInOut,
+    },
+    {
+        easeFunction_exponentIn,
+        easeFunction_exponentOut,
+        easeFunction_exponentInOut,
+    },
+};
+
+@interface OALEaseAction ()
+
+@property(nonatomic, readwrite, retain) OALAction* action;
+@property(nonatomic, readwrite, assign) EaseFunctionPtr easeFunction;
+
+@end
+
+@implementation OALEaseAction
+
+@synthesize action = action_;
+@synthesize easeFunction = easeFunction_;
+
++ (EaseFunctionPtr) easeFunctionForShape:(OALEaseShape) shape
+                                   phase:(OALEasePhase) phase
+{
+    return g_easeFunctions[shape][phase];
+}
+
++ (OALEaseAction*) actionWithShape:(OALEaseShape) shape
+                             phase:(OALEasePhase) phase
+                            action:(OALAction*) action
+{
+    return arcsafe_autorelease([[self alloc] initWithShape:shape
+                                                     phase:phase
+                                                    action:action]);
+}
+
+- (id) initWithShape:(OALEaseShape) shape
+               phase:(OALEasePhase) phase
+              action:(OALAction*) action
+{
+    if((self = [super initWithDuration:action.duration]))
+    {
+        self.easeFunction = [[self class] easeFunctionForShape:shape phase:phase];
+        self.action = action;
+    }
+    return self;
+}
+
+- (void) dealloc
+{
+    arcsafe_release(action_);
+    arcsafe_super_dealloc();
+}
+
+- (void) prepareWithTarget:(id) target
+{
+    [self.action prepareWithTarget:target];
+    self.duration = self.action.duration;
+}
+
+#if !OBJECTAL_CFG_USE_COCOS2D_ACTIONS
+- (void) startAction
+{
+    [self.action startAction];
+    [super startAction];
+}
+#else
+- (void) startWithTarget:(id)target
+{
+    [self.action startWithTarget:target];
+    [super startWithTarget:target];
+}
+#endif
+
+- (void) stopAction
+{
+    [self.action stopAction];
+    [super stopAction];
+}
+
+- (void) updateCompletion:(float) proportionComplete
+{
+    [self.action updateCompletion:self.easeFunction(proportionComplete)];
+}
+
+@end

@@ -222,5 +222,8 @@
  */
 - (void) addChannel:(ALChannelSource*) channel;
 
+/** Set all buffers in all non-playing sources to nil.
+ */
+- (void) clearUnusedBuffers;
 
 @end

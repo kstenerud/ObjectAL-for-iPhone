@@ -73,6 +73,8 @@
     #define arcsafe_super_dealloc()
     #define arcsafe_autorelease(X) (X)
     #define arcsafe_autorelease_unused(X)
+    #define arcsafe_bridge_transfer __bridge_transfer
+    #define arcsafe_bridge __bridge
 #else
     #define arcsafe_retain(X) [(X) retain]
     #define arcsafe_retain_unused(X) [(X) retain]
@@ -80,6 +82,8 @@
     #define arcsafe_super_dealloc() [super dealloc]
     #define arcsafe_autorelease(X) [(X) autorelease]
     #define arcsafe_autorelease_unused(X) [(X) autorelease]
+    #define arcsafe_bridge_transfer
+    #define arcsafe_bridge
 #endif
 
 

@@ -336,7 +336,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 	REPORT_AUDIOSESSION_CALL(result, @"Failed to get string property %08x", property);
 	if(noErr == result)
 	{
-        NSString* stringResult = (__bridge_transfer NSString*) value;
+        NSString* stringResult = (arcsafe_bridge_transfer NSString*) value;
 		return arcsafe_autorelease(stringResult);
 	}
 	return nil;

@@ -43,14 +43,14 @@
 		[self buildUI];
 
 		// We'll do an S-Curve fade.
-		fadeFunction = [[OALSCurveFunction function] retain];
+		fadeFunction = [OALEaseAction easeFunctionForShape:kOALEaseShapeSine
+                                                     phase:kOALEaseInOut];
 	}
 	return self;
 }
 
 - (void) dealloc
 {
-	[fadeFunction release];
 	[firstBuffer release];
 	[firstSource release];
 	[secondBuffer release];
@@ -125,8 +125,8 @@
 
 - (void) onCrossfadeChanged:(Slider*) slider
 {
-	firstSource.gain = [fadeFunction valueForInput:1 - slider.value];
-	secondSource.gain = [fadeFunction valueForInput:slider.value];
+	firstSource.gain = fadeFunction(1 - slider.value);
+	secondSource.gain = (slider.value);
 }
 
 

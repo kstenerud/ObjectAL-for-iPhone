@@ -35,7 +35,30 @@
 
 @implementation OALTools
 
+static NSBundle* g_defaultBundle;
+
++ (void) initialize
+{
+    g_defaultBundle = [[NSBundle mainBundle] retain];
+}
+
++ (void) setDefaultBundle:(NSBundle*) bundle
+{
+    [g_defaultBundle autorelease];
+    g_defaultBundle = [bundle retain];
+}
+
++ (NSBundle*) defaultBundle
+{
+    return g_defaultBundle;
+}
+
 + (NSURL*) urlForPath:(NSString*) path
+{
+    return [self urlForPath:path bundle:g_defaultBundle];
+}
+
++ (NSURL*) urlForPath:(NSString*) path bundle:(NSBundle*) bundle
 {
 	if(nil == path)
 	{
@@ -44,7 +67,7 @@
 	NSString* fullPath = path;
 	if([fullPath characterAtIndex:0] != '/')
 	{
-		fullPath = [[NSBundle mainBundle] pathForResource:path ofType:nil];
+		fullPath = [bundle pathForResource:path ofType:nil];
 		if(nil == fullPath)
 		{
 			OAL_LOG_ERROR(@"Could not find full path of file %@", path);
@@ -113,7 +136,7 @@
 		va_start(args, description);
 		description = [[NSString alloc] initWithFormat:description arguments:args];
 		va_end(args);
-		OAL_LOG_ERROR_CONTEXT(function, @"%@ (error code 0x%08x: %@)", description, errorCode, errorString);
+		OAL_LOG_ERROR_CONTEXT(function, @"%@ (error code 0x%08lx: %@)", description, errorCode, errorString);
 		arcsafe_release(description);
 	}
 }

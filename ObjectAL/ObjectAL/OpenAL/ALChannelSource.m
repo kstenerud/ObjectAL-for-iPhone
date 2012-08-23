@@ -603,4 +603,15 @@ SYNTHESIZE_DELEGATE_PROPERTY(reverbObstruction, ReverbObstruction, float);
     }
 }
 
+- (void) clearUnusedBuffers
+{
+    for(ALSource* source in sourcePool.sources)
+    {
+        if([source isKindOfClass:[ALSource class]] && !source.playing)
+        {
+            source.buffer = nil;
+        }
+    }
+}
+
 @end

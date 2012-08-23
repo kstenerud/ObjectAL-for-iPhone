@@ -1116,9 +1116,9 @@
 		
 		[self stopFade];
 		gainAction = [OALSequentialActions actions:
-					   [OALGainAction actionWithDuration:duration endValue:value],
-					   [OALCallAction actionWithCallTarget:target selector:selector withObject:self],
-					   nil];
+                      [OALPropertyAction gainActionWithDuration:duration endValue:value],
+                      [OALCallAction actionWithCallTarget:target selector:selector withObject:self],
+                      nil];
         arcsafe_retain_unused(gainAction);
 		[gainAction runWithTarget:self];
 	}
@@ -1157,9 +1157,9 @@
 		
 		[self stopPan];
 		panAction = [OALSequentialActions actions:
-					   [OALPanAction actionWithDuration:duration endValue:value],
-					   [OALCallAction actionWithCallTarget:target selector:selector withObject:self],
-					   nil];
+                     [OALPropertyAction panActionWithDuration:duration endValue:value],
+                     [OALCallAction actionWithCallTarget:target selector:selector withObject:self],
+                     nil];
         arcsafe_retain_unused(panAction);
 		[panAction runWithTarget:self];
 	}
@@ -1198,7 +1198,7 @@
 		
 		[self stopPitch];
 		pitchAction = [OALSequentialActions actions:
-					   [OALPitchAction actionWithDuration:duration endValue:value],
+                       [OALPropertyAction pitchActionWithDuration:duration endValue:value],
 					   [OALCallAction actionWithCallTarget:target selector:selector withObject:self],
 					   nil];
         arcsafe_retain_unused(pitchAction);

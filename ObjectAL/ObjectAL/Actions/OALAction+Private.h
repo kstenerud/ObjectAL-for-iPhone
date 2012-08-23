@@ -17,5 +17,7 @@
 
 @property(nonatomic,readwrite,assign) bool running;
 
+@property(nonatomic,readwrite,assign) bool runningInManager;
+
 @end
 /** \endcond */

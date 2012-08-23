@@ -18,7 +18,7 @@
 	ALSource* secondSource;
 	ALBuffer* firstBuffer;
 	ALBuffer* secondBuffer;
-	id<OALFunction,NSObject> fadeFunction;
+	EaseFunctionPtr fadeFunction;
 }
 
 @end
