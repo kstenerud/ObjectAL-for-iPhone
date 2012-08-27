@@ -39,13 +39,13 @@ static NSBundle* g_defaultBundle;
 
 + (void) initialize
 {
-    g_defaultBundle = [[NSBundle mainBundle] retain];
+    g_defaultBundle = arcsafe_retain([NSBundle mainBundle]);
 }
 
 + (void) setDefaultBundle:(NSBundle*) bundle
 {
-    [g_defaultBundle autorelease];
-    g_defaultBundle = [bundle retain];
+    arcsafe_autorelease_unused(g_defaultBundle);
+    g_defaultBundle = arcsafe_retain(bundle);
 }
 
 + (NSBundle*) defaultBundle
