@@ -36,7 +36,11 @@
 /**
  * Handles the audio session and interrupts.
  */
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 @interface OALAudioSession : NSObject <AVAudioSessionDelegate, OALSuspendManager>
+#else
+@interface OALAudioSession : NSObject <OALSuspendManager>
+#endif
 {
     /** The current audio session category */
 	NSString* audioSessionCategory;
@@ -133,9 +137,11 @@
  */
 @property(nonatomic,readwrite,assign) bool handleInterruptions;
 
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 /** Delegate that will receive all audio session events (WEAK reference).
  */
 @property(nonatomic,readwrite,assign) id<AVAudioSessionDelegate> audioSessionDelegate;
+#endif
 
 /** The preferred I/O buffer duration, in seconds. Lower values give less
  * playback latencey, but use more CPU.

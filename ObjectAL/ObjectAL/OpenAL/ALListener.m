@@ -31,7 +31,6 @@
 #import "ObjectALMacros.h"
 #import "ALWrapper.h"
 #import "ALContext.h"
-#import <OpenAL/oalMacOSX_OALExtensions.h>
 
 
 /** \cond */

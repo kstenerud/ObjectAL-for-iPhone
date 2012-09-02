@@ -255,8 +255,30 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OpenALManager);
 			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
 			return;
 		}
-		
+
 		[ALWrapper setMixerOutputDataRate:frequency];
+	}
+}
+
+- (ALint) renderingQuality
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		return [ALWrapper getRenderingQuality];
+	}
+}
+
+- (void) setRenderingQuality:(ALint) renderingQuality
+{
+	OPTIONALLY_SYNCHRONIZED(self)
+	{
+		if(self.suspended)
+		{
+			OAL_LOG_DEBUG(@"%@: Called mutator on suspended object", self);
+			return;
+		}
+
+		[ALWrapper setRenderingQuality:renderingQuality];
 	}
 }
 

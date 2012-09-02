@@ -30,6 +30,11 @@
 #import <Foundation/Foundation.h>
 #import <OpenAL/al.h>
 #import <OpenAL/alc.h>
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#import <OpenAL/oalMacOSX_OALExtensions.h>
+#else
+#import <OpenAL/MacOSX_OALExtensions.h>
+#endif
 
 
 /**
@@ -1094,18 +1099,20 @@
  */
 + (bool) asaSourcef:(ALuint) sourceId property:(ALuint) property value:(ALfloat) value;
 
-/** Set the rendering quality of OpenAL to @"high", @"low", or @"headphones" for 3D sound
- * 
- * @param quality The quality, one of @"high", @"low", or @"headphones"
+/** Set the rendering quality. The value may be one of:
+ *
+ * ALC_MAC_OSX_SPATIAL_RENDERING_QUALITY_HIGH
+ * ALC_MAC_OSX_SPATIAL_RENDERING_QUALITY_LOW
+ * ALC_IPHONE_SPATIAL_RENDERING_QUALITY_HEADPHONES (iOS only)
+ *
+ * @param quality The quality.
  */
-+ (void) setAlcMacOSXRenderingQuality:(NSString *) quality;
++ (void) setRenderingQuality:(ALint) quality;
 
-/** Get the rendering quality of OpenAL.
- * 
- * @return @"high" if rendering quality is ALC_MAC_OSX_SPATIAL_RENDERING_QUALITY_HIGH
- * @return @"low" if rendering quality is ALC_MAC_OSX_SPATIAL_RENDERING_QUALITY_LOW
- * @return @"headphones" if rendering quality is ALC_IPHONE_SPATIAL_RENDERING_QUALITY_HEADPHONES
+/** Get the rendering quality.
+ *
+ * @return The current rendering quality.
  */
-+ (NSString *) alcMacOSXRenderingQuality;
++ (ALint) getRenderingQuality;
 
 @end

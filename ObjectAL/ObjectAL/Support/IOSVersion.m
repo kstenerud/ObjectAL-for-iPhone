@@ -6,8 +6,9 @@
 //
 
 #import "IOSVersion.h"
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 #import <UIKit/UIKit.h>
-
+#endif
 
 SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(IOSVersion);
 
@@ -20,6 +21,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(IOSVersion);
 {
 	if(nil != (self = [super init]))
 	{
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 		NSString* versionStr = [[UIDevice currentDevice] systemVersion];
 		unichar ch = [versionStr characterAtIndex:0];
 		if(ch < '0' || ch > '9' || [versionStr characterAtIndex:1] != '.')
@@ -44,6 +46,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(IOSVersion);
 				break;
 			}
 		}
+#else
+        version = 5;
+#endif
 	}
 	return self;
 }

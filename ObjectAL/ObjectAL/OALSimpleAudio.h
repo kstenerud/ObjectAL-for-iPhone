@@ -97,6 +97,8 @@
  *
  * If allowIpod = NO, the application will ALWAYS use hardware decoding. <br>
  *
+ * iOS Only. <br>
+ *
  * @see useHardwareIfAvailable
  *
  * Default value: YES
@@ -116,6 +118,8 @@
  *
  * Note: This switch has no effect if allowIpod = NO. <br>
  *
+ * iOS Only. <br>
+ *
  * @see allowIpod
  *
  * Default value: YES
@@ -124,6 +128,8 @@
 
 /** If true, mute when backgrounded, screen locked, or the ringer switch is
  * turned off (NOT SUPPORTED ON THE SIMULATOR). <br>
+ *
+ * iOS Only. <br>
  *
  * Default value: YES
  */
@@ -186,7 +192,7 @@
 /** Set to YES to manually suspend the sound system. */
 @property(nonatomic,readwrite,assign) bool manuallySuspended;
 
-/** If YES, the sound system is interrupted. */
+/** If YES, the sound system is interrupted. iOS Only. */
 @property(nonatomic,readonly,assign) bool interrupted;
 
 /** If YES, the sound system is suspended. */

@@ -30,6 +30,11 @@
 #import <Foundation/Foundation.h>
 #import "SynthesizeSingleton.h"
 #import "ALContext.h"
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#import <OpenAL/oalMacOSX_OALExtensions.h>
+#else
+#import <OpenAL/MacOSX_OALExtensions.h>
+#endif
 
 
 #pragma mark OpenALManager
@@ -82,6 +87,15 @@
 
 /** The frequency of the output mixer. */
 @property(nonatomic,readwrite,assign) ALdouble mixerOutputFrequency;
+
+/** The rendering quality.
+ *
+ * Can be one of:
+ * - ALC_MAC_OSX_SPATIAL_RENDERING_QUALITY_HIGH
+ * - ALC_MAC_OSX_SPATIAL_RENDERING_QUALITY_LOW
+ * - ALC_IPHONE_SPATIAL_RENDERING_QUALITY_HEADPHONES (iOS only)
+ */
+@property(nonatomic,readwrite,assign) ALint renderingQuality;
 
 
 #pragma mark Object Management

@@ -30,7 +30,6 @@
 #import <Foundation/Foundation.h>
 #import "ALTypes.h"
 #import "OALSuspendHandler.h"
-#import <OpenAL/oalMacOSX_OALExtensions.h>
 
 @class ALContext;
 

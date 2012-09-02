@@ -32,7 +32,9 @@
 #import "ObjectALMacros.h"
 #import "NSMutableArray+WeakReferences.h"
 #import "IOSVersion.h"
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 #import <UIKit/UIKit.h>
+#endif
 
 #if !OBJECTAL_CFG_USE_COCOS2D_ACTIONS
 
@@ -68,7 +70,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALActionManager);
 		targetActions = [[NSMutableArray alloc] initWithCapacity:50];
 		actionsToAdd = [[NSMutableArray alloc] initWithCapacity:100];
 		actionsToRemove = [[NSMutableArray alloc] initWithCapacity:100];
-		
+
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(doResetTimeDelta:)
 													 name:UIApplicationSignificantTimeChangeNotification
@@ -84,6 +87,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALActionManager);
 														 name:@"UIApplicationWillEnterForegroundNotification"
 													   object:nil];
 		}
+#endif
 	}
 	return self;
 }

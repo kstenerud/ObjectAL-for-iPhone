@@ -42,6 +42,8 @@
 SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALAudioSession);
 
 
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+
 /** \cond */
 /**
  * (INTERNAL USE) Private methods for OALAudioSupport. 
@@ -727,3 +729,112 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 
 
 @end
+
+#else
+
+@implementation OALAudioSession
+
+#pragma mark Object Management
+
+SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
+
+- (id) init
+{
+	if(nil != (self = [super init]))
+	{
+		suspendHandler = [[OALSuspendHandler alloc] initWithTarget:self selector:@selector(setSuspended:)];
+
+		// Set up defaults
+		handleInterruptions = NO;
+		allowIpod = NO;
+		ipodDucking = NO;
+		useHardwareIfAvailable = YES;
+		honorSilentSwitch = NO;
+
+		self.audioSessionActive = YES;
+	}
+	return self;
+}
+
+- (void) dealloc
+{
+	arcsafe_release(lastResetTime);
+	arcsafe_release(audioSessionCategory);
+	arcsafe_release(suspendHandler);
+	arcsafe_super_dealloc();
+}
+
+#pragma mark Properties
+
+@synthesize audioSessionCategory;
+@synthesize allowIpod;
+@synthesize ipodDucking;
+@synthesize useHardwareIfAvailable;
+@synthesize handleInterruptions;
+@synthesize honorSilentSwitch;
+@synthesize preferredIOBufferDuration;
+@synthesize ipodPlaying;
+@synthesize audioRoute;
+@synthesize hardwareVolume;
+@synthesize hardwareMuted;
+
+#pragma mark Suspend Handler
+
+- (void) addSuspendListener:(id<OALSuspendListener>) listener
+{
+	[suspendHandler addSuspendListener:listener];
+}
+
+- (void) removeSuspendListener:(id<OALSuspendListener>) listener
+{
+	[suspendHandler removeSuspendListener:listener];
+}
+
+- (bool) manuallySuspended
+{
+	return suspendHandler.manuallySuspended;
+}
+
+- (void) setManuallySuspended:(bool) value
+{
+	suspendHandler.manuallySuspended = value;
+}
+
+- (bool) interrupted
+{
+    return false;
+}
+
+- (void) setInterrupted:(bool) value
+{
+}
+
+- (bool) suspended
+{
+	return suspendHandler.suspended;
+}
+
+- (void) setSuspended:(bool) value
+{
+	OAL_LOG_DEBUG(@"setSuspended %d", value);
+	if(value)
+	{
+		audioSessionWasActive = self.audioSessionActive;
+		self.audioSessionActive = NO;
+	}
+	else
+	{
+		if(audioSessionWasActive)
+		{
+			self.audioSessionActive = YES;
+		}
+	}
+}
+
+- (void) forceEndInterruption
+{
+}
+
+@end
+
+#endif

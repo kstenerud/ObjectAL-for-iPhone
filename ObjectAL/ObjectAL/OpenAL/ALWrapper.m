@@ -30,7 +30,6 @@
 #import "ALWrapper.h"
 #import "ObjectALMacros.h"
 #import "OALNotifications.h"
-#import <OpenAL/oalMacOSX_OALExtensions.h>
 
 /** Check the result of an AL call, logging an error if necessary.
  *
@@ -94,8 +93,9 @@ typedef ALvoid AL_APIENTRY (*alBufferDataStaticProcPtr) (const ALint bid,
 
 static alcMacOSXGetMixerOutputRateProcPtr alcGetMacOSXMixerOutputRate = NULL;
 static alcMacOSXMixerOutputRateProcPtr alcMacOSXMixerOutputRate = NULL;
+static alcMacOSXRenderingQualityProcPtr alcMacOSXRenderingQuality = NULL;
+static alcMacOSXGetRenderingQualityProcPtr alcMacOSXGetRenderingQuality = NULL;
 static alBufferDataStaticProcPtr alBufferDataStatic = NULL;
-
 
 static alcASAGetSourceProcPtr alcASAGetSource = NULL;
 static alcASASetSourceProcPtr alcASASetSource = NULL;
@@ -1601,13 +1601,6 @@ BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device)
 	return result;
 }
 
-
-
-
-
-
-
-
 + (void) setReverbSendLevel:(float) level onSource:(ALuint) sourceID
 {
 	if(NULL == alcASASetSource)
@@ -1686,31 +1679,26 @@ BOOL checkIfSuccessfulWithDevice(const char* contextInfo, ALCdevice* device)
     return value;
 }
 
-+ (void) setAlcMacOSXRenderingQuality:(NSString *) quality {
-  void (*proc)(const ALint) = [ALWrapper getProcAddress:@"alcMacOSXRenderingQuality"];
-  if ([quality isEqualToString:@"high"]) {
-    proc(ALC_MAC_OSX_SPATIAL_RENDERING_QUALITY_HIGH);
-  } else if ([quality isEqualToString:@"low"]) {
-    proc(ALC_MAC_OSX_SPATIAL_RENDERING_QUALITY_LOW);
-  } else if ([quality isEqualToString:@"headphones"]) {
-    proc(ALC_IPHONE_SPATIAL_RENDERING_QUALITY_HEADPHONES);
-  } else {
-    [NSException raise:@"InvalidArgument" format:@"Unknown Argument - needs to be :high or :low"];
-  }
++ (void) setRenderingQuality:(ALint) quality
+{
+	if(NULL == alcMacOSXRenderingQuality)
+	{
+        OAL_LOG_WARNING(@"No proc ptr for alcMacOSXRenderingQuality");
+        return;
+	}
+
+    alcMacOSXRenderingQuality(quality);
 }
 
-+ (NSString *) alcMacOSXRenderingQuality {
-  ALint (*proc)(void) = [ALWrapper getProcAddress:@"alcMacOSXGetRenderingQuality"];
-  ALint quality = proc();
-  if (quality == ALC_MAC_OSX_SPATIAL_RENDERING_QUALITY_HIGH) {
-    return @"high";
-  } else if (quality == ALC_IPHONE_SPATIAL_RENDERING_QUALITY_HEADPHONES) {
-    return @"headphones";
-  } else if (quality == ALC_MAC_OSX_SPATIAL_RENDERING_QUALITY_LOW) {
-    return @"low";
-  } else {
-    return [NSString stringWithFormat:@"%i", quality];
-  }
++ (ALint) getRenderingQuality
+{
+	if(NULL == alcMacOSXGetRenderingQuality)
+	{
+        OAL_LOG_WARNING(@"No proc ptr for alcMacOSXGetRenderingQuality. Returning 0");
+        return 0;
+	}
+
+    return alcMacOSXGetRenderingQuality();
 }
 
 @end

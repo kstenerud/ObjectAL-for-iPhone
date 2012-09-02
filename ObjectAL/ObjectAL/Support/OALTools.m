@@ -136,7 +136,7 @@ static NSBundle* g_defaultBundle;
 		va_start(args, description);
 		description = [[NSString alloc] initWithFormat:description arguments:args];
 		va_end(args);
-		OAL_LOG_ERROR_CONTEXT(function, @"%@ (error code 0x%08lx: %@)", description, errorCode, errorString);
+		OAL_LOG_ERROR_CONTEXT(function, @"%@ (error code 0x%08lx: %@)", description, (unsigned long)errorCode, errorString);
 		arcsafe_release(description);
 	}
 }
@@ -145,6 +145,7 @@ static NSBundle* g_defaultBundle;
 					 function:(const char*) function
 				  description:(NSString*) description, ...
 {
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 	if(noErr != errorCode)
 	{
 		NSString* errorString;
@@ -215,6 +216,7 @@ static NSBundle* g_defaultBundle;
 			[[NSNotificationCenter defaultCenter] postNotificationName:OALAudioErrorNotification object:self];
 		}
 	}
+#endif
 }
 
 @end

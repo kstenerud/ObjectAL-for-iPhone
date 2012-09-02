@@ -105,7 +105,7 @@
 			// Don't allow more than 2 channels (stereo)
 			OAL_LOG_WARNING(@"Audio stream in %@ contains %ld channels. Capping at 2",
 							url,
-							streamDescription.mChannelsPerFrame);
+							(long)streamDescription.mChannelsPerFrame);
 			streamDescription.mChannelsPerFrame = 2;
 		}
 
@@ -215,7 +215,7 @@
 		if(nil == streamData)
 		{
 			OAL_LOG_ERROR(@"Could not allocate %ld bytes for audio buffer from file (url = %@)",
-						  streamSizeInBytes,
+						  (long)streamSizeInBytes,
 						  url);
 			goto onFail;
 		}
