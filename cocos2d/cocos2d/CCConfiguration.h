@@ -3,17 +3,17 @@
  *
  * Copyright (c) 2010 Ricardo Quesada
  * Copyright (c) 2011 Zynga Inc.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -30,25 +30,25 @@
 /** OS version definitions. Includes both iOS and Mac OS versions
  */
 enum {
-	kCCiOSVersion_3_0   = 0x03000000,
-	kCCiOSVersion_3_1   = 0x03010000,
-	kCCiOSVersion_3_1_1 = 0x03010100,
-	kCCiOSVersion_3_1_2 = 0x03010200,
-	kCCiOSVersion_3_1_3 = 0x03010300,
-	kCCiOSVersion_3_2   = 0x03020000,
-	kCCiOSVersion_3_2_1 = 0x03020100,
 	kCCiOSVersion_4_0   = 0x04000000,
 	kCCiOSVersion_4_0_1 = 0x04000100,
 	kCCiOSVersion_4_1   = 0x04010000,
 	kCCiOSVersion_4_2   = 0x04020000,
+	kCCiOSVersion_4_2_1 = 0x04020100,
 	kCCiOSVersion_4_3   = 0x04030000,
 	kCCiOSVersion_4_3_1 = 0x04030100,
 	kCCiOSVersion_4_3_2 = 0x04030200,
 	kCCiOSVersion_4_3_3 = 0x04030300,
-
-	kCCMacVersion_10_5  = 0x0a050000,
+	kCCiOSVersion_4_3_4 = 0x04030400,
+	kCCiOSVersion_4_3_5 = 0x04030500,
+	kCCiOSVersion_5_0   = 0x05000000,
+	kCCiOSVersion_5_0_1 = 0x05000100,
+	kCCiOSVersion_5_1_0 = 0x05010000,
+	kCCiOSVersion_6_0_0 = 0x06000000,
+	
 	kCCMacVersion_10_6  = 0x0a060000,
 	kCCMacVersion_10_7  = 0x0a070000,
+	kCCMacVersion_10_8  = 0x0a080000,
 };
 
 /**
@@ -63,8 +63,10 @@ enum {
 	BOOL			supportsNPOT_;
 	BOOL			supportsBGRA8888_;
 	BOOL			supportsDiscardFramebuffer_;
+	BOOL			supportsShareableVAO_;
 	unsigned int	OSVersion_;
 	GLint			maxSamplesAllowed_;
+	GLint			maxTextureUnits_;
 }
 
 /** OpenGL Max texture size. */
@@ -73,11 +75,14 @@ enum {
 /** OpenGL Max Modelview Stack Depth. */
 @property (nonatomic, readonly) GLint maxModelviewStackDepth;
 
+/** returns the maximum texture units
+ @since v2.0.0
+ */
+@property (nonatomic, readonly) GLint maxTextureUnits;
+
 /** Whether or not the GPU supports NPOT (Non Power Of Two) textures.
- NPOT textures have the following limitations:
- - They can't have mipmaps
- - They only accept GL_CLAMP_TO_EDGE in GL_TEXTURE_WRAP_{S,T}
- 
+ OpenGL ES 2.0 already supports NPOT (iOS).
+
  @since v0.99.2
  */
 @property (nonatomic, readonly) BOOL supportsNPOT;
@@ -86,21 +91,26 @@ enum {
 @property (nonatomic, readonly) BOOL supportsPVRTC;
 
 /** Whether or not BGRA8888 textures are supported.
- 
+
  @since v0.99.2
  */
 @property (nonatomic, readonly) BOOL supportsBGRA8888;
 
 /** Whether or not glDiscardFramebufferEXT is supported
- 
+
  @since v0.99.2
  */
 @property (nonatomic, readonly) BOOL supportsDiscardFramebuffer;
 
+/** Whether or not shareable VAOs are supported.
+ @since v2.0.0
+ */
+@property (nonatomic, readonly) BOOL supportsShareableVAO;
+
 /** returns the OS version.
 	- On iOS devices it returns the firmware version.
 	- On Mac returns the OS version
- 
+
  @since v0.99.5
  */
 @property (nonatomic, readonly) unsigned int OSVersion;

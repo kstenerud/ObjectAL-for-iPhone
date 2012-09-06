@@ -3,17 +3,17 @@
  *
  * Copyright (c) 2008-2010 Ricardo Quesada
  * Copyright (c) 2011 Zynga Inc.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -25,7 +25,7 @@
  * Portions of this code are based and inspired on:
  *   http://www.71squared.co.uk/2009/04/iphone-game-programming-tutorial-4-bitmap-font-class
  *   by Michael Daley
- * 
+ *
  * Use any of these editors to generate BMFonts:
  *   http://glyphdesigner.71squared.com/ (Commercial, Mac OS X)
  *   http://www.n4te.com/hiero/hiero.jnlp (Free, Java)
@@ -36,6 +36,10 @@
 #import "CCSpriteBatchNode.h"
 #import "Support/uthash.h"
 
+enum {
+	kCCLabelAutomaticWidth = -1,
+};
+
 struct _KerningHashElement;
 
 /** @struct ccBMFontDef
@@ -43,15 +47,15 @@ struct _KerningHashElement;
  */
 typedef struct _BMFontDef {
 	//! ID of the character
-	unsigned int charID;
+	unichar charID;
 	//! origin and size of the font
 	CGRect rect;
 	//! The X amount the image should be offset when drawing the image (in pixels)
-	int xOffset;
+	short xOffset;
 	//! The Y amount the image should be offset when drawing the image (in pixels)
-	int yOffset;
+	short yOffset;
 	//! The amount to move the current position after drawing the character (in pixels)
-	int xAdvance;
+	short xAdvance;
 } ccBMFontDef;
 
 /** @struct ccBMFontPadding
@@ -69,33 +73,33 @@ typedef struct _BMFontPadding {
 	int bottom;
 } ccBMFontPadding;
 
-enum {
-	// how many characters are supported
-	kCCBMFontMaxChars = 2048, //256,
-};
 
 /** CCBMFontConfiguration has parsed configuration of the the .fnt file
  @since v0.8
  */
 @interface CCBMFontConfiguration : NSObject
 {
-// XXX: Creating a public interface so that the bitmapFontArray[] is accesible
-@public
-	// The characters building up the font
-	ccBMFontDef	BMFontArray_[kCCBMFontMaxChars];
-	
-	// FNTConfig: Common Height
-	NSUInteger		commonHeight_;
-	
-	// Padding
-	ccBMFontPadding	padding_;
-	
 	// atlas name
 	NSString		*atlasName_;
+
+    // XXX: Creating a public interface so that the bitmapFontArray[] is accesible
+@public
+
+	// BMFont definitions
+	struct _FontDefHashElement	*fontDefDictionary_;
+
+	// FNTConfig: Common Height. Should be signed (issue #1343)
+	NSInteger		commonHeight_;
+
+	// Padding
+	ccBMFontPadding	padding_;
 
 	// values for kerning
 	struct _KerningHashElement	*kerningDictionary_;
 }
+
+// atlasName
+@property (nonatomic, readwrite, retain) NSString *atlasName;
 
 /** allocates a CCBMFontConfiguration with a FNT file */
 +(id) configurationWithFNTFile:(NSString*)FNTfile;
@@ -105,31 +109,33 @@ enum {
 
 
 /** CCLabelBMFont is a subclass of CCSpriteBatchNode
-  
+
  Features:
  - Treats each character like a CCSprite. This means that each individual character can be:
-   - rotated
-   - scaled
-   - translated
-   - tinted
-   - chage the opacity
+ - rotated
+ - scaled
+ - translated
+ - tinted
+ - chage the opacity
  - It can be used as part of a menu item.
  - anchorPoint can be used to align the "label"
  - Supports AngelCode text format
- 
+
  Limitations:
-  - All inner characters are using an anchorPoint of (0.5f, 0.5f) and it is not recommend to change it
-    because it might affect the rendering
- 
+ - All inner characters are using an anchorPoint of (0.5f, 0.5f) and it is not recommend to change it
+ because it might affect the rendering
+
  CCLabelBMFont implements the protocol CCLabelProtocol, like CCLabel and CCLabelAtlas.
  CCLabelBMFont has the flexibility of CCLabel, the speed of CCLabelAtlas and all the features of CCSprite.
  If in doubt, use CCLabelBMFont instead of CCLabelAtlas / CCLabel.
- 
+
  Supported editors:
-  - http://www.n4te.com/hiero/hiero.jnlp
-  - http://slick.cokeandcode.com/demos/hiero.jnlp
-  - http://www.angelcode.com/products/bmfont/
- 
+ - http://glyphdesigner.71squared.com/
+ - http://www.bmglyph.com/
+ - http://www.n4te.com/hiero/hiero.jnlp
+ - http://slick.cokeandcode.com/demos/hiero.jnlp
+ - http://www.angelcode.com/products/bmfont/
+
  @since v0.8
  */
 
@@ -137,13 +143,26 @@ enum {
 {
 	// string to render
 	NSString		*string_;
-	
+    
+    // name of fntFile
+    NSString        *fntFile_;
+
+    // initial string without line breaks
+    NSString *initialString_;
+    // max width until a line break is added
+    float width_;
+    // alignment of all lines
+    CCTextAlignment alignment_;
+
 	CCBMFontConfiguration	*configuration_;
 
 	// texture RGBA
 	GLubyte		opacity_;
 	ccColor3B	color_;
 	BOOL opacityModifyRGB_;
+	
+	// offset of the texture atlas
+	CGPoint			imageOffset_;
 }
 
 /** Purges the cached data.
@@ -152,24 +171,43 @@ enum {
  */
 +(void) purgeCachedData;
 
+/** alignment used for the label */
+@property (nonatomic,assign,readonly) CCTextAlignment alignment;
+/** fntFile used for the font */
+@property (nonatomic,retain) NSString* fntFile;
 /** conforms to CCRGBAProtocol protocol */
 @property (nonatomic,readwrite) GLubyte opacity;
 /** conforms to CCRGBAProtocol protocol */
 @property (nonatomic,readwrite) ccColor3B color;
 
 
-/** creates a BMFont label with an initial string and the FNT file */
+/** creates a BMFont label with an initial string and the FNT file. */
 +(id) labelWithString:(NSString*)string fntFile:(NSString*)fntFile;
+/** creates a BMFont label with an initial string, the FNT file, width, and alignment option */
++(id) labelWithString:(NSString*)string fntFile:(NSString*)fntFile width:(float)width alignment:(CCTextAlignment)alignment;
+/** creates a BMFont label with an initial string, the FNT file, width, alignment option and the offset of where the glpyhs start on the .PNG image */
++(id) labelWithString:(NSString*)string fntFile:(NSString*)fntFile width:(float)width alignment:(CCTextAlignment)alignment imageOffset:(CGPoint)offset;
 
 /** init a BMFont label with an initial string and the FNT file */
 -(id) initWithString:(NSString*)string fntFile:(NSString*)fntFile;
+/** init a BMFont label with an initial string and the FNT file, width, and alignment option*/
+-(id) initWithString:(NSString*)string fntFile:(NSString*)fntFile width:(float)width alignment:(CCTextAlignment)alignment;
+/** init a BMFont label with an initial string and the FNT file, width, alignment option and the offset of where the glyphs start on the .PNG image */
+-(id) initWithString:(NSString*)string fntFile:(NSString*)fntFile width:(float)width alignment:(CCTextAlignment)alignment imageOffset:(CGPoint)offset;
 
 /** updates the font chars based on the string to render */
 -(void) createFontChars;
+
+/** set label width */
+- (void)setWidth:(float)width;
+
+/** set label alignment */
+- (void)setAlignment:(CCTextAlignment)alignment;
+
 @end
 
 /** Free function that parses a FNT file a place it on the cache
-*/
+ */
 CCBMFontConfiguration * FNTConfigLoadFile( NSString *file );
 /** Purges the FNT config cache
  */
