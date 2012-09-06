@@ -1,12 +1,11 @@
 //
 //  MainLayer.m
-//  ObjectAL
+//  ObjectALDemo
 //
-//  Created by Karl Stenerud on 10-05-29.
+//  Created by Monkey on 7/09/12.
 //
 
 #import "MainScene.h"
-#import "CCLayer+Scene.h"
 
 #import "SingleSourceDemo.h"
 #import "TwoSourceDemo.h"
@@ -206,7 +205,7 @@ static uint startIndex = 0;
 							 nil],
 							[CCCallFunc actionWithTarget:self selector:@selector(onMenuSlideComplete)],
 							nil];
-		[CCTouchDispatcher sharedDispatcher].dispatchEvents = NO;
+		[[CCDirector sharedDirector] touchDispatcher].dispatchEvents = NO;
 		[self runAction:action];
 	}
 }
@@ -216,7 +215,7 @@ static uint startIndex = 0;
 	[oldMenu removeFromParentAndCleanup:YES];
 	oldMenu = nil;
     
-	[CCTouchDispatcher sharedDispatcher].dispatchEvents = YES;
+	[[CCDirector sharedDirector] touchDispatcher].dispatchEvents = YES;
 }
 
 - (void) onSceneSelect:(IndexedMenuItemLabel*) item

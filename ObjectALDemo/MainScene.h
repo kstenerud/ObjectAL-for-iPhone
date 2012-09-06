@@ -1,13 +1,15 @@
 //
 //  MainLayer.h
-//  ObjectAL
+//  ObjectALDemo
 //
-//  Created by Karl Stenerud on 10-05-29.
+//  Created by Monkey on 7/09/12.
 //
-
 
 #import "cocos2d.h"
+
+#import "CCLayer+Scene.h"
 #import "ImageButton.h"
+
 
 /**
  * Main layer to the ObjectAL demo program.
@@ -15,9 +17,8 @@
  *
  * Be sure to look at the header files for the various demos as they give important information.
  */
-@interface MainLayer : CCLayer
-{
-	NSMutableArray* sceneNames;
+@interface MainLayer : CCLayer {
+    NSMutableArray* sceneNames;
 	NSMutableArray* scenes;
 	ImageButton* previousButton;
 	ImageButton* nextButton;

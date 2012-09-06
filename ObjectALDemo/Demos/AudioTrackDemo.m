@@ -8,6 +8,7 @@
 #import "AudioTrackDemo.h"
 #import "MainScene.h"
 #import "CCLayer+Scene.h"
+#import "ImageButton.h"
 #import "ImageAndLabelButton.h"
 #import "Slider.h"
 #import "ObjectAL.h"
