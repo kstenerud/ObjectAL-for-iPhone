@@ -9,6 +9,7 @@
 
 #import "AppDelegate.h"
 #import "IntroLayer.h"
+#import "ObjectAL.h"
 
 @implementation AppController
 
@@ -70,6 +71,10 @@
 	// Assume that PVR images have premultiplied alpha
 	[CCTexture2D PVRImagesHavePremultipliedAlpha:YES];
 
+    // Kick off audio initialization before our main scene begins.
+    // Note: This default init will cause OALSimpleAudio to take all 32 sources.
+    [OALSimpleAudio sharedInstance];
+    
 	// and add the scene to the stack. The director will run it when it automatically when the view is displayed.
 	[director_ pushScene: [IntroLayer scene]]; 
 	
