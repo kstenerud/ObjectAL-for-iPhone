@@ -31,6 +31,7 @@
 #import "OALAction+Private.h"
 #import "OALActionManager.h"
 #import "ObjectALMacros.h"
+#import "ARCSafe_MemMgmt.h"
 #import <objc/message.h>
 
 
@@ -139,7 +140,7 @@
 	[self runWithTarget:target];
 }
 
-- (void) update:(float) proportionComplete	
+- (void) update:(float) proportionComplete
 {
 	// The only difference from COCOS2D_SUBCLASS() is that
 	// I don't call [super update:] here.
@@ -231,9 +232,9 @@
               propertyKey:(NSString*) propertyKey
 				 endValue:(float) endValue
 {
-	return arcsafe_autorelease([[self alloc] initWithDuration:duration
-                                                  propertyKey:propertyKey
-                                                     endValue:endValue]);
+	return as_autorelease([[self alloc] initWithDuration:duration
+                                             propertyKey:propertyKey
+                                                endValue:endValue]);
 }
 
 + (id) actionWithDuration:(float) duration
@@ -241,10 +242,10 @@
 			   startValue:(float) startValue
 				 endValue:(float) endValue
 {
-	return arcsafe_autorelease([[self alloc] initWithDuration:duration
-                                                  propertyKey:propertyKey
-                                                   startValue:startValue
-                                                     endValue:endValue]);
+	return as_autorelease([[self alloc] initWithDuration:duration
+                                             propertyKey:propertyKey
+                                              startValue:startValue
+                                                endValue:endValue]);
 }
 
 - (id) initWithDuration:(float) duration
@@ -282,7 +283,7 @@
     {
         self.startValue = [[target valueForKey:self.propertyKey] floatValue];
     }
-    
+
 	self.delta = self.endValue - self.startValue;
 }
 
@@ -385,9 +386,9 @@ static EaseFunctionPtr g_easeFunctions[2][3] =
                              phase:(OALEasePhase) phase
                             action:(OALAction*) action
 {
-    return arcsafe_autorelease([[self alloc] initWithShape:shape
-                                                     phase:phase
-                                                    action:action]);
+    return as_autorelease([[self alloc] initWithShape:shape
+                                                phase:phase
+                                               action:action]);
 }
 
 - (id) initWithShape:(OALEaseShape) shape
@@ -404,8 +405,8 @@ static EaseFunctionPtr g_easeFunctions[2][3] =
 
 - (void) dealloc
 {
-    arcsafe_release(action_);
-    arcsafe_super_dealloc();
+    as_release(action_);
+    as_superdealloc();
 }
 
 - (void) prepareWithTarget:(id) target

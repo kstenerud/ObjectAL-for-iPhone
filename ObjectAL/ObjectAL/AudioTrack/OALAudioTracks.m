@@ -28,6 +28,7 @@
 #import "OALAudioTracks.h"
 #import "NSMutableArray+WeakReferences.h"
 #import "ObjectALMacros.h"
+#import "ARCSafe_MemMgmt.h"
 #import "OALAudioSession.h"
 #import "IOSVersion.h"
 
@@ -91,9 +92,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioTracks);
 	[[OALAudioSession sharedInstance] removeSuspendListener:self];
     [deviceTimePoller invalidate];
 
-	arcsafe_release(tracks);
-	arcsafe_release(suspendHandler);
-	arcsafe_super_dealloc();
+	as_release(tracks);
+	as_release(suspendHandler);
+	as_superdealloc();
 }
 
 

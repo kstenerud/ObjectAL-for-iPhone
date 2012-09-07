@@ -30,6 +30,7 @@
 #import "ALDevice.h"
 #import "NSMutableArray+WeakReferences.h"
 #import "ObjectALMacros.h"
+#import "ARCSafe_MemMgmt.h"
 #import "ALWrapper.h"
 #import "OpenALManager.h"
 
@@ -40,7 +41,7 @@
 
 + (id) deviceWithDeviceSpecifier:(NSString*) deviceSpecifier
 {
-	return arcsafe_autorelease([[self alloc] initWithDeviceSpecifier:deviceSpecifier]);
+	return as_autorelease([[self alloc] initWithDeviceSpecifier:deviceSpecifier]);
 }
 
 - (id) initWithDeviceSpecifier:(NSString*) deviceSpecifier
@@ -53,7 +54,7 @@
 		if(nil == device)
 		{
 			OAL_LOG_ERROR(@"%@: Failed to init device %@. Returning nil", self, deviceSpecifier);
-			arcsafe_release(self);
+			as_release(self);
 			return nil;
 		}
 
@@ -76,9 +77,9 @@
 
     [ALWrapper closeDevice:device];
 	
-	arcsafe_release(contexts);
-	arcsafe_release(suspendHandler);
-	arcsafe_super_dealloc();
+	as_release(contexts);
+	as_release(suspendHandler);
+	as_superdealloc();
 }
 
 

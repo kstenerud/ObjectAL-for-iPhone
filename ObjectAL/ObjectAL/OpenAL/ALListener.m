@@ -29,6 +29,7 @@
 
 #import "ALListener.h"
 #import "ObjectALMacros.h"
+#import "ARCSafe_MemMgmt.h"
 #import "ALWrapper.h"
 #import "ALContext.h"
 
@@ -48,7 +49,7 @@
 
 + (id) listenerForContext:(ALContext*) context
 {
-	return arcsafe_autorelease([[self alloc] initWithContext:context]);
+	return as_autorelease([[self alloc] initWithContext:context]);
 }
 
 - (id) initWithContext:(ALContext*) contextIn
@@ -65,8 +66,8 @@
 
 - (void) dealloc
 {
-	arcsafe_release(suspendHandler);
-	arcsafe_super_dealloc();
+	as_release(suspendHandler);
+	as_superdealloc();
 }
 
 #pragma mark Properties

@@ -30,6 +30,7 @@
 #import "ALCaptureDevice.h"
 #import "ALWrapper.h"
 #import "ObjectALMacros.h"
+#import "ARCSafe_MemMgmt.h"
 
 
 @implementation ALCaptureDevice
@@ -41,10 +42,10 @@
 						  format:(ALCenum) format
 					  bufferSize:(ALCsizei) bufferSize
 {
-	return arcsafe_autorelease([[self alloc] initWithDeviceSpecifier:deviceSpecifier
-                                                           frequency:frequency
-                                                              format:format
-                                                          bufferSize:bufferSize]);
+	return as_autorelease([[self alloc] initWithDeviceSpecifier:deviceSpecifier
+                                                      frequency:frequency
+                                                         format:format
+                                                     bufferSize:bufferSize]);
 }
 
 - (id) initWithDeviceSpecifier:(NSString*) deviceSpecifier
@@ -66,7 +67,7 @@
 {
     [ALWrapper closeDevice:device];
 
-	arcsafe_super_dealloc();
+	as_superdealloc();
 }
 
 

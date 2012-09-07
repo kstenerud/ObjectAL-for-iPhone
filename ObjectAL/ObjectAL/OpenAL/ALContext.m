@@ -30,6 +30,7 @@
 #import "ALContext.h"
 #import "NSMutableArray+WeakReferences.h"
 #import "ObjectALMacros.h"
+#import "ARCSafe_MemMgmt.h"
 #import "ALWrapper.h"
 #import "OpenALManager.h"
 #import "ALDevice.h"
@@ -68,7 +69,7 @@
 
 + (id) contextOnDevice:(ALDevice *) device attributes:(NSArray*) attributes
 {
-	return arcsafe_autorelease([[self alloc] initOnDevice:device attributes:attributes]);
+	return as_autorelease([[self alloc] initOnDevice:device attributes:attributes]);
 }
 
 + (id) contextOnDevice:(ALDevice*) device
@@ -150,7 +151,7 @@
 		if(nil == deviceIn)
 		{
 			OAL_LOG_ERROR(@"%@: Failed to init because device was nil. Returning nil", self);
-			arcsafe_release(self);
+			as_release(self);
 			return nil;
 		}
 
@@ -170,7 +171,7 @@
 		}
 		
 		// Notify the device that we are being created.
-		device = arcsafe_retain(deviceIn);
+		device = as_retain(deviceIn);
 		[device notifyContextInitializing:self];
 
 		// Open the context with our list of attributes.
@@ -228,12 +229,12 @@
     }
     [ALWrapper destroyContext:context];
 
-	arcsafe_release(sources);
-	arcsafe_release(listener);
-	arcsafe_release(device);
-	arcsafe_release(attributes);
-	arcsafe_release(suspendHandler);
-	arcsafe_super_dealloc();
+	as_release(sources);
+	as_release(listener);
+	as_release(device);
+	as_release(attributes);
+	as_release(suspendHandler);
+	as_superdealloc();
 }
 
 

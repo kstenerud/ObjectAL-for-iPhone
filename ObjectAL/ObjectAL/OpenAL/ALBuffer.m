@@ -31,6 +31,7 @@
 #import "ALWrapper.h"
 #import "OpenALManager.h"
 #import "ObjectALMacros.h"
+#import "ARCSafe_MemMgmt.h"
 
 
 @implementation ALBuffer
@@ -44,7 +45,7 @@
                format:(ALenum) format
             frequency:(ALsizei) frequency
 {
-	return arcsafe_autorelease([[self alloc] initWithName:name
+	return as_autorelease([[self alloc] initWithName:name
                                                      data:data
                                                      size:size
                                                    format:format
@@ -65,10 +66,10 @@
 		if(nil == [OpenALManager sharedInstance].currentContext)
 		{
 			OAL_LOG_ERROR(@"Cannot allocate a buffer without a current context. Make sure [OpenALManager sharedInstance].currentContext is valid");
-			arcsafe_release(self);
+			as_release(self);
 			return nil;
 		}
-		device = arcsafe_retain([OpenALManager sharedInstance].currentContext.device);
+		device = as_retain([OpenALManager sharedInstance].currentContext.device);
 		bufferData = data;
 		format = formatIn;
 		freeDataOnDestroy = YES;
@@ -85,15 +86,15 @@
 {
 	OAL_LOG_DEBUG(@"%@: Dealloc", self);
 	[ALWrapper deleteBuffer:bufferId];
-	arcsafe_release(device);
-	arcsafe_release(name);
-	arcsafe_release(parentBuffer);
+	as_release(device);
+	as_release(name);
+	as_release(parentBuffer);
 	if(freeDataOnDestroy)
 	{
 		free(bufferData);
 	}
 
-	arcsafe_super_dealloc();
+	as_superdealloc();
 }
 
 - (NSString*) description
@@ -165,7 +166,7 @@
 	ALBuffer * slice = [ALBuffer bufferWithName:sliceName data:(void*)(byteOffset + (char*)bufferData) size:byteSize
 										 format:self.format frequency:self.frequency];
 	slice.freeDataOnDestroy = NO;
-	slice->parentBuffer = arcsafe_retain(self);
+	slice->parentBuffer = as_retain(self);
 	return slice;
 }
 

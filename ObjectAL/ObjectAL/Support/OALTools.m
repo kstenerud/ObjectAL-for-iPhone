@@ -29,6 +29,7 @@
 
 #import "OALTools.h"
 #import "ObjectALMacros.h"
+#import "ARCSafe_MemMgmt.h"
 #import "OALNotifications.h"
 #import <AudioToolbox/AudioToolbox.h>
 
@@ -39,13 +40,13 @@ static NSBundle* g_defaultBundle;
 
 + (void) initialize
 {
-    g_defaultBundle = arcsafe_retain([NSBundle mainBundle]);
+    g_defaultBundle = as_retain([NSBundle mainBundle]);
 }
 
 + (void) setDefaultBundle:(NSBundle*) bundle
 {
-    arcsafe_autorelease_unused(g_defaultBundle);
-    g_defaultBundle = arcsafe_retain(bundle);
+    as_autorelease_noref(g_defaultBundle);
+    g_defaultBundle = as_retain(bundle);
 }
 
 + (NSBundle*) defaultBundle
@@ -137,7 +138,7 @@ static NSBundle* g_defaultBundle;
 		description = [[NSString alloc] initWithFormat:description arguments:args];
 		va_end(args);
 		OAL_LOG_ERROR_CONTEXT(function, @"%@ (error code 0x%08lx: %@)", description, (unsigned long)errorCode, errorString);
-		arcsafe_release(description);
+		as_release(description);
 	}
 }
 
@@ -204,7 +205,7 @@ static NSBundle* g_defaultBundle;
 		description = [[NSString alloc] initWithFormat:description arguments:args];
 		va_end(args);
 		OAL_LOG_ERROR_CONTEXT(function, @"%@ (error code 0x%08x: %@)", description, errorCode, errorString);
-		arcsafe_release(description);
+		as_release(description);
 #else
         #pragma unused(function)
         #pragma unused(description)
