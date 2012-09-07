@@ -11,6 +11,8 @@
 		390B671115F95B1500C6F101 /* NSMutableDictionary+WeakReferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 390B670F15F95B1500C6F101 /* NSMutableDictionary+WeakReferences.m */; };
 		390B671A15F95EE000C6F101 /* ARCSafe_MemMgmt.h in Headers */ = {isa = PBXBuildFile; fileRef = 390B671915F95EE000C6F101 /* ARCSafe_MemMgmt.h */; };
 		390B671D15F9739700C6F101 /* SourceNotificationsDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 390B671C15F9739700C6F101 /* SourceNotificationsDemo.m */; };
+		390B686E15F9C26000C6F101 /* IntroAndMainTrackDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 390B686D15F9C26000C6F101 /* IntroAndMainTrackDemo.m */; };
+		390B687115F9C59300C6F101 /* ColdFunk-Intro.caf in Resources */ = {isa = PBXBuildFile; fileRef = 390B687015F9C59300C6F101 /* ColdFunk-Intro.caf */; };
 		390E99371482C4BE002E14E7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 398C16A4147D5533000EFEDF /* Foundation.framework */; };
 		390E993D1482C4BE002E14E7 /* ObjectAL.m in Sources */ = {isa = PBXBuildFile; fileRef = 390E993C1482C4BE002E14E7 /* ObjectAL.m */; };
 		390E99411482C4CB002E14E7 /* OALAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 3914D8C2147D58F00010C4A2 /* OALAction.m */; };
@@ -193,6 +195,9 @@
 		390B671915F95EE000C6F101 /* ARCSafe_MemMgmt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCSafe_MemMgmt.h; sourceTree = "<group>"; };
 		390B671B15F9739700C6F101 /* SourceNotificationsDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SourceNotificationsDemo.h; sourceTree = "<group>"; };
 		390B671C15F9739700C6F101 /* SourceNotificationsDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SourceNotificationsDemo.m; sourceTree = "<group>"; };
+		390B686C15F9C26000C6F101 /* IntroAndMainTrackDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntroAndMainTrackDemo.h; sourceTree = "<group>"; };
+		390B686D15F9C26000C6F101 /* IntroAndMainTrackDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntroAndMainTrackDemo.m; sourceTree = "<group>"; };
+		390B687015F9C59300C6F101 /* ColdFunk-Intro.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "ColdFunk-Intro.caf"; path = "Resources/ColdFunk-Intro.caf"; sourceTree = "<group>"; };
 		390E99361482C4BE002E14E7 /* libObjectAL.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libObjectAL.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		390E993A1482C4BE002E14E7 /* ObjectAL-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ObjectAL-Prefix.pch"; sourceTree = "<group>"; };
 		390E993B1482C4BE002E14E7 /* ObjectAL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.objj.h; path = ObjectAL.h; sourceTree = "<group>"; };
@@ -974,6 +979,8 @@
 				3914D979147D5B570010C4A2 /* VolumePitchPanDemo.m */,
 				39169B5014D381ED00082A89 /* ReverbDemo.h */,
 				39169B5114D381ED00082A89 /* ReverbDemo.m */,
+				390B686C15F9C26000C6F101 /* IntroAndMainTrackDemo.h */,
+				390B686D15F9C26000C6F101 /* IntroAndMainTrackDemo.m */,
 			);
 			path = Demos;
 			sourceTree = "<group>";
@@ -1125,6 +1132,7 @@
 				398C16DC147D555E000EFEDF /* Icon.png */,
 				398C16E0147D555E000EFEDF /* Info.plist */,
 				3914D9C3147D5BDF0010C4A2 /* Back.png */,
+				390B687015F9C59300C6F101 /* ColdFunk-Intro.caf */,
 				3914D9C4147D5BDF0010C4A2 /* ColdFunk.caf */,
 				3914D9C5147D5BDF0010C4A2 /* Exit.png */,
 				3914D9C6147D5BDF0010C4A2 /* Ganymede.png */,
@@ -1308,6 +1316,7 @@
 				3914D9EC147D5BDF0010C4A2 /* vu-face.png in Resources */,
 				3914D9ED147D5BDF0010C4A2 /* vu-needle.png in Resources */,
 				3914D9EE147D5BDF0010C4A2 /* vu-shell.png in Resources */,
+				390B687115F9C59300C6F101 /* ColdFunk-Intro.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1469,6 +1478,7 @@
 				3914D9C2147D5B570010C4A2 /* VUMeter.m in Sources */,
 				39169B5314D381EE00082A89 /* ReverbDemo.m in Sources */,
 				390B671D15F9739700C6F101 /* SourceNotificationsDemo.m in Sources */,
+				390B686E15F9C26000C6F101 /* IntroAndMainTrackDemo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

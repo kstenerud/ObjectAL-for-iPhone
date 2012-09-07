@@ -2,8 +2,7 @@
 //  SourceNotificationsDemo.m
 //  ObjectAL
 //
-//  Created by Karl Stenerud on 9/6/12.
-//  Copyright (c) 2012 Stenerud. All rights reserved.
+//  Created by Karl Stenerud on 12-09-06.
 //
 
 #import "SourceNotificationsDemo.h"

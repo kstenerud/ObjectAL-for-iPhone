@@ -69,9 +69,7 @@ static NSMutableDictionary* g_allSourcesByID;
 
 static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* userData)
 {
-    NSLog(@"Notification");
     ALSource* source = [g_allSourcesByID objectForKey:[NSNumber numberWithUnsignedInt:sid]];
-    NSLog(@"Source = %@", source);
     [source receiveNotification:notificationID userData:userData];
 }
 

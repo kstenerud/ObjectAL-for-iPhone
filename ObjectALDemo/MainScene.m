@@ -21,6 +21,7 @@
 #import "AudioSessionDemo.h"
 #import "ReverbDemo.h"
 #import "SourceNotificationsDemo.h"
+#import "IntroAndMainTrackDemo.h"
 
 
 #define kScenesPerPage 5
@@ -131,6 +132,7 @@ static uint startIndex = 0;
 	[self addScene:[ReverbDemo class] named:@"Reverb"];
 	[self addScene:[AudioTrackDemo class] named:@"Audio Tracks"];
 	[self addScene:[PlanetKillerDemo class] named:@"Planet Killer (OALSimpleAudio)"];
+	[self addScene:[IntroAndMainTrackDemo class] named:@"Intro and Main Track"];
 	[self addScene:[SourceNotificationsDemo class] named:@"Source Notifications"];
 	[self addScene:[HardwareDemo class] named:@"Hardware Monitor"];
 	[self addScene:[AudioSessionDemo class] named:@"Audio Sessions"];
