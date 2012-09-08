@@ -12,10 +12,10 @@
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -28,29 +28,30 @@
 
 
 #import "CCAction.h"
+#import "ccMacros.h"
 #import "Support/ccCArray.h"
 #import "Support/uthash.h"
 
 typedef struct _hashElement
 {
 	struct ccArray	*actions;
-	id				target;
 	NSUInteger		actionIndex;
-	CCAction		*currentAction;
 	BOOL			currentActionSalvaged;
-	BOOL			paused;	
+	BOOL			paused;
 	UT_hash_handle	hh;
+
+	CC_ARC_UNSAFE_RETAINED	id				target;
+	CC_ARC_UNSAFE_RETAINED	CCAction		*currentAction;
 } tHashElement;
 
 
-/** CCActionManager is a singleton that manages all the actions.
- Normally you won't need to use this singleton directly. 99% of the cases you will use the CCNode interface,
- which uses this singleton.
- But there are some cases where you might need to use this singleton.
+/** CCActionManager the object that manages all the actions.
+ Normally you won't need to use this API directly. 99% of the cases you will use the CCNode interface, which uses this object.
+ But there are some cases where you might need to use this API dirctly:
  Examples:
-	- When you want to run an action where the target is different from a CCNode. 
+	- When you want to run an action where the target is different from a CCNode.
 	- When you want to pause / resume the actions
- 
+
  @since v0.8
  */
 @interface CCActionManager : NSObject
@@ -60,13 +61,6 @@ typedef struct _hashElement
 	BOOL			currentTargetSalvaged;
 }
 
-/** returns a shared instance of the CCActionManager */
-+ (CCActionManager *)sharedManager;
-
-/** purges the shared action manager. It releases the retained instance.
- @since v0.99.0
- */
-+(void)purgeSharedManager;
 
 // actions
 
@@ -106,6 +100,14 @@ typedef struct _hashElement
 /** Resumes the target. All queued actions will be resumed.
  */
 -(void) resumeTarget:(id)target;
+
+/** Pauses all running actions, returning a list of targets whose actions were paused.
+ */
+-(NSSet *) pauseAllRunningActions;
+
+/** Resume a set of targets (convenience function to reverse a pauseAllRunningActions call)
+ */
+-(void) resumeTargets:(NSSet *)targetsToResume;
 
 @end
 
