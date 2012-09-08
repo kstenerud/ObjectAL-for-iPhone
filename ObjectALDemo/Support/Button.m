@@ -33,7 +33,7 @@
 		target = targetIn;
 		selector = selectorIn;
 		
-		self.isRelativeAnchorPoint = YES;
+		self.ignoreAnchorPointForPosition = NO;
 		self.anchorPoint = ccp(0.5f, 0.5f);
 	}
 	return self;
