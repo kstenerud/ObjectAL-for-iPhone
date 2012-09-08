@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		390B671015F95B1500C6F101 /* NSMutableDictionary+WeakReferences.h in Headers */ = {isa = PBXBuildFile; fileRef = 390B670E15F95B1500C6F101 /* NSMutableDictionary+WeakReferences.h */; };
+		390B671115F95B1500C6F101 /* NSMutableDictionary+WeakReferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 390B670F15F95B1500C6F101 /* NSMutableDictionary+WeakReferences.m */; };
+		390B671A15F95EE000C6F101 /* ARCSafe_MemMgmt.h in Headers */ = {isa = PBXBuildFile; fileRef = 390B671915F95EE000C6F101 /* ARCSafe_MemMgmt.h */; };
 		390E993D1482C4BE002E14E7 /* ObjectAL.m in Sources */ = {isa = PBXBuildFile; fileRef = 390E993C1482C4BE002E14E7 /* ObjectAL.m */; };
 		390E99411482C4CB002E14E7 /* OALAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 3914D8C2147D58F00010C4A2 /* OALAction.m */; };
 		390E99421482C508002E14E7 /* OALActionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3914D8C4147D58F00010C4A2 /* OALActionManager.m */; };
@@ -72,8 +75,6 @@
 		39F89E9F14831C3500E40CFE /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 39F89E9E14831C3500E40CFE /* libz.dylib */; };
 		8CC0E3D215FAFBB8001AEB04 /* ColdFunk-Intro.caf in Resources */ = {isa = PBXBuildFile; fileRef = 8CC0E3D115FAFBB8001AEB04 /* ColdFunk-Intro.caf */; };
 		8CC0E3D615FAFBE9001AEB04 /* SourceNotificationsDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC0E3D515FAFBE9001AEB04 /* SourceNotificationsDemo.m */; };
-		8CC0E3DA15FAFC92001AEB04 /* NSMutableDictionary+WeakReferences.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CC0E3D815FAFC92001AEB04 /* NSMutableDictionary+WeakReferences.h */; };
-		8CC0E3DB15FAFC92001AEB04 /* NSMutableDictionary+WeakReferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC0E3D915FAFC92001AEB04 /* NSMutableDictionary+WeakReferences.m */; };
 		8CC0E3DF15FAFCD6001AEB04 /* IntroAndMainTrackDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC0E3DE15FAFCD6001AEB04 /* IntroAndMainTrackDemo.m */; };
 		8CE8688115F8C3940060E004 /* CCAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CE867BF15F8C3940060E004 /* CCAction.h */; };
 		8CE8688215F8C3940060E004 /* CCAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE867C015F8C3940060E004 /* CCAction.m */; };
@@ -335,6 +336,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		390B670E15F95B1500C6F101 /* NSMutableDictionary+WeakReferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableDictionary+WeakReferences.h"; sourceTree = "<group>"; };
+		390B670F15F95B1500C6F101 /* NSMutableDictionary+WeakReferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableDictionary+WeakReferences.m"; sourceTree = "<group>"; };
+		390B671915F95EE000C6F101 /* ARCSafe_MemMgmt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCSafe_MemMgmt.h; sourceTree = "<group>"; };
+		390B671B15F9739700C6F101 /* SourceNotificationsDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SourceNotificationsDemo.h; sourceTree = "<group>"; };
+		390B671C15F9739700C6F101 /* SourceNotificationsDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SourceNotificationsDemo.m; sourceTree = "<group>"; };
+		390B686C15F9C26000C6F101 /* IntroAndMainTrackDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntroAndMainTrackDemo.h; sourceTree = "<group>"; };
+		390B686D15F9C26000C6F101 /* IntroAndMainTrackDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntroAndMainTrackDemo.m; sourceTree = "<group>"; };
 		390E99361482C4BE002E14E7 /* libObjectAL.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libObjectAL.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		390E993A1482C4BE002E14E7 /* ObjectAL-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ObjectAL-Prefix.pch"; sourceTree = "<group>"; };
 		390E993B1482C4BE002E14E7 /* ObjectAL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.objj.h; path = ObjectAL.h; sourceTree = "<group>"; };
@@ -479,9 +487,6 @@
 		8CC0E3D115FAFBB8001AEB04 /* ColdFunk-Intro.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ColdFunk-Intro.caf"; sourceTree = "<group>"; };
 		8CC0E3D415FAFBE9001AEB04 /* SourceNotificationsDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SourceNotificationsDemo.h; sourceTree = "<group>"; };
 		8CC0E3D515FAFBE9001AEB04 /* SourceNotificationsDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SourceNotificationsDemo.m; sourceTree = "<group>"; };
-		8CC0E3D715FAFC6C001AEB04 /* ARCSafe_MemMgmt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARCSafe_MemMgmt.h; sourceTree = "<group>"; };
-		8CC0E3D815FAFC92001AEB04 /* NSMutableDictionary+WeakReferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableDictionary+WeakReferences.h"; sourceTree = "<group>"; };
-		8CC0E3D915FAFC92001AEB04 /* NSMutableDictionary+WeakReferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableDictionary+WeakReferences.m"; sourceTree = "<group>"; };
 		8CC0E3DD15FAFCD6001AEB04 /* IntroAndMainTrackDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntroAndMainTrackDemo.h; sourceTree = "<group>"; };
 		8CC0E3DE15FAFCD6001AEB04 /* IntroAndMainTrackDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntroAndMainTrackDemo.m; sourceTree = "<group>"; };
 		8CE867BF15F8C3940060E004 /* CCAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCAction.h; sourceTree = "<group>"; };
@@ -897,15 +902,15 @@
 		3914D8F3147D58F00010C4A2 /* Support */ = {
 			isa = PBXGroup;
 			children = (
-				8CC0E3D715FAFC6C001AEB04 /* ARCSafe_MemMgmt.h */,
+				390B671915F95EE000C6F101 /* ARCSafe_MemMgmt.h */,
 				3914D8F4147D58F00010C4A2 /* IOSVersion.h */,
 				3914D8F5147D58F00010C4A2 /* IOSVersion.m */,
 				3914D8F7147D58F00010C4A2 /* mach_timing.h */,
 				3914D8F6147D58F00010C4A2 /* mach_timing.c */,
 				3914D8F8147D58F00010C4A2 /* NSMutableArray+WeakReferences.h */,
 				3914D8F9147D58F00010C4A2 /* NSMutableArray+WeakReferences.m */,
-				8CC0E3D815FAFC92001AEB04 /* NSMutableDictionary+WeakReferences.h */,
-				8CC0E3D915FAFC92001AEB04 /* NSMutableDictionary+WeakReferences.m */,
+				390B670E15F95B1500C6F101 /* NSMutableDictionary+WeakReferences.h */,
+				390B670F15F95B1500C6F101 /* NSMutableDictionary+WeakReferences.m */,
 				3914D8FA147D58F00010C4A2 /* OALAudioFile.h */,
 				3914D8FB147D58F00010C4A2 /* OALAudioFile.m */,
 				3914D8FC147D58F00010C4A2 /* OALNotifications.h */,
@@ -934,6 +939,8 @@
 			children = (
 				3914D974147D5B570010C4A2 /* SingleSourceDemo.h */,
 				3914D975147D5B570010C4A2 /* SingleSourceDemo.m */,
+				390B671B15F9739700C6F101 /* SourceNotificationsDemo.h */,
+				390B671C15F9739700C6F101 /* SourceNotificationsDemo.m */,
 				3914D976147D5B570010C4A2 /* TwoSourceDemo.h */,
 				3914D977147D5B570010C4A2 /* TwoSourceDemo.m */,
 				3914D978147D5B570010C4A2 /* VolumePitchPanDemo.h */,
@@ -958,6 +965,8 @@
 				3914D971147D5B570010C4A2 /* HardwareDemo.m */,
 				3914D966147D5B570010C4A2 /* AudioSessionDemo.h */,
 				3914D967147D5B570010C4A2 /* AudioSessionDemo.m */,
+				390B686C15F9C26000C6F101 /* IntroAndMainTrackDemo.h */,
+				390B686D15F9C26000C6F101 /* IntroAndMainTrackDemo.m */,
 			);
 			path = Demos;
 			sourceTree = "<group>";
@@ -1475,7 +1484,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				39C48DF8151657D700BC57ED /* OALAction+Private.h in Headers */,
-				8CC0E3DA15FAFC92001AEB04 /* NSMutableDictionary+WeakReferences.h in Headers */,
+				390B671015F95B1500C6F101 /* NSMutableDictionary+WeakReferences.h in Headers */,
+				390B671A15F95EE000C6F101 /* ARCSafe_MemMgmt.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1783,7 +1793,7 @@
 				390E99581482C508002E14E7 /* OALAudioFile.m in Sources */,
 				390E99591482C508002E14E7 /* OALTools.m in Sources */,
 				390E995A1482C508002E14E7 /* OALSimpleAudio.m in Sources */,
-				8CC0E3DB15FAFC92001AEB04 /* NSMutableDictionary+WeakReferences.m in Sources */,
+				390B671115F95B1500C6F101 /* NSMutableDictionary+WeakReferences.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
