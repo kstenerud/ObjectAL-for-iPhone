@@ -16,6 +16,9 @@
 #define kSpaceBetweenButtons 50
 #define kStartY 166
 
+#define kIntroTrackFileName @"ColdFunk-Intro.caf"
+#define kLoopTrackFileName @"ColdFunk.caf"
+
 @interface IntroAndMainTrackDemo ()
 
 // Plays the main part of the track.
@@ -25,8 +28,9 @@
 @property(nonatomic, readwrite, retain) OALAudioTrack* introTrack;
 
 // Intro methods two and three: Use OpenAL.
+@property(nonatomic, readwrite, retain) ALBuffer* mainBuffer;
 @property(nonatomic, readwrite, retain) ALBuffer* introBuffer;
-@property(nonatomic, readwrite, retain) ALSource* introSource;
+@property(nonatomic, readwrite, retain) ALSource* source;
 
 @property(nonatomic, readwrite, assign) LampButton* audioTrackButton;
 @property(nonatomic, readwrite, assign) LampButton* openALButton;
@@ -40,7 +44,8 @@
 @synthesize introTrack = _introTrack;
 @synthesize mainTrack = _mainTrack;
 @synthesize introBuffer = _introBuffer;
-@synthesize introSource = _introSource;
+@synthesize mainBuffer = _mainBuffer;
+@synthesize source = _source;
 
 #pragma mark Object Management
 
@@ -58,7 +63,8 @@
 	[_introTrack release];
 	[_mainTrack release];
 	[_introBuffer release];
-	[_introSource release];
+	[_mainBuffer release];
+	[_source release];
 	[super dealloc];
 }
 
@@ -87,12 +93,12 @@
 
 	pos.y -= kSpaceBetweenButtons;
 
-	button = [LampButton buttonWithText:@"OpenAL (playAtTime)"
+	button = [LampButton buttonWithText:@"OpenAL + Audio Track (playAtTime)"
 								   font:@"Helvetica"
 								   size:20
 							 lampOnLeft:YES
 								 target:self
-							   selector:@selector(onOpenAL)];
+							   selector:@selector(onOpenALHybrid)];
 	button.anchorPoint = ccp(0, 0.5f);
 	button.position = pos;
 	[self addChild:button];
@@ -129,15 +135,15 @@
 	// Since we're not going to use it for playing effects, don't give it any sources.
 	[OALSimpleAudio sharedInstance].reservedSources = 0;
 
-    self.introSource = [ALSource source];
-    self.introBuffer = [[OpenALManager sharedInstance] bufferFromFile:@"ColdFunk-Intro.caf"];
-    self.introSource.buffer = self.introBuffer;
+    self.source = [ALSource source];
+    self.introBuffer = [[OpenALManager sharedInstance] bufferFromFile:kIntroTrackFileName];
+    self.mainBuffer = [[OpenALManager sharedInstance] bufferFromFile:kLoopTrackFileName];
 
     self.introTrack = [OALAudioTrack track];
-    [self.introTrack preloadFile:@"ColdFunk-Intro.caf"];
+    [self.introTrack preloadFile:kIntroTrackFileName];
 
     self.mainTrack = [OALAudioTrack track];
-    [self.mainTrack preloadFile:@"ColdFunk.caf"];
+    [self.mainTrack preloadFile:kLoopTrackFileName];
     // Main music track will loop on itself
     self.mainTrack.numberOfLoops = -1;
 }
@@ -150,8 +156,8 @@
 
 - (void) stop
 {
-    [self.introSource unregisterAllNotifications];
-    [self.introSource stop];
+    [self.source unregisterAllNotifications];
+    [self.source stop];
     [self.introTrack stop];
     [self.mainTrack stop];
     self.introTrack.currentTime = 0;
@@ -168,8 +174,14 @@
 
 - (void) onAudioTracks
 {
-    // Uses two audio tracks: One for the intro and one for the main music.
+    // Uses two audio tracks: One for the intro and one for the main loop.
     // Playback on the main track is delayed by the duration of the intro.
+
+    // This method has decent synchronization, even on slow devices.
+    // It does, however, require you to play one of the tracks in a software
+    // channel, which could cause CPU load if using complex compression formats
+    // such as mp3 or aac. You could mitigate this by storing the intro track
+    // as uncompressed PCM or lightly compressed such as IMA4.
 
     [self stop];
     [self turnOnLamp:self.audioTrackButton];
@@ -188,15 +200,22 @@
     self.mainTrack.volume = 1;
 }
 
-- (void) onOpenAL
+- (void) onOpenALHybrid
 {
-    // Uses OpenAL for the intro and an audio track for the main music.
+    // Uses OpenAL for the intro and an audio track for the main loop.
     // Playback on the main track is delayed by the duration of the intro.
+
+    // This sidesteps the software channel issue, but requires you to load
+    // the entire decoded intro track (not the main track) into memory.
+    // However, there are problems because of differences in how OpenAL and
+    // AVAudioPlayer keep time (AVAudioPlayer is somewhat delayed).
+    // You'll need to do some fudging of the playAt value to get it right.
+    // I've left it as-is so you can hear the issue.
 
     [self stop];
     [self turnOnLamp:self.openALButton];
 
-    [self.introSource play];
+    [self.source play:self.introBuffer];
 
     // Have the main track start again after the intro buffer's duration elapses.
     NSTimeInterval playAt = self.mainTrack.deviceCurrentTime + self.introBuffer.duration;
@@ -206,21 +225,28 @@
 
 - (void) onOpenALNotifications
 {
-    // Uses OpenAL for the intro and an audio track for the main music.
-    // Uses a callback to start the main track playing.
+    // Uses OpenAL for both the intro and the main loop.
+    // Uses a callback to start the main loop playing.
     // Note: This only works on iOS 5+.
+
+    // This is the most robust solution, giving absolutely perfect timing,
+    // but it requires you to load the entire decoded contents of both the
+    // intro track AND the main loop into memory. It also only works on iOS 5.0+
 
     [self stop];
     [self turnOnLamp:self.notificationButton];
 
+    [self.mainTrack preloadFile:kLoopTrackFileName];
+
     __block typeof(self) blockSelf = self;
-    [self.introSource registerNotification:AL_BUFFERS_PROCESSED
+    [self.source registerNotification:AL_BUFFERS_PROCESSED
                              callback:^(ALSource *source, ALuint notificationID, ALvoid *userData)
      {
-         [blockSelf.mainTrack play];
+         [blockSelf.source play:blockSelf.mainBuffer loop:YES];
+         [blockSelf.source unregisterAllNotifications];
      }
                              userData:nil];
-    [self.introSource play];
+    [self.source play:self.introBuffer];
 }
 
 - (void) onExitPressed
