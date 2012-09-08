@@ -8,9 +8,11 @@
 
 
 #if __has_feature(objc_arc)
-    #define arcsafe_bridge_transfer __bridge_transfer
+    #define as_autorelease(X)        (X)
+    #define as_bridge_transfer       __bridge_transfer
 #else
-    #define arcsafe_bridge_transfer
+    #define as_autorelease(X)       [(X) autorelease]
+    #define as_bridge_transfer
 #endif
 
 @implementation NSMutableArray (WeakReferences)
@@ -18,7 +20,9 @@
 + (id) newMutableArrayUsingWeakReferencesWithCapacity:(NSUInteger) capacity
 {
 	CFArrayCallBacks callbacks = {0, NULL, NULL, CFCopyDescription, CFEqual};
-	return (arcsafe_bridge_transfer id)(CFArrayCreateMutable(0, (CFIndex)capacity, &callbacks));
+	return (as_bridge_transfer id)CFArrayCreateMutable(NULL,
+                                                       (CFIndex)capacity,
+                                                       &callbacks);
 }
 
 + (id) newMutableArrayUsingWeakReferences
@@ -28,11 +32,7 @@
 
 + (id) mutableArrayUsingWeakReferencesWithCapacity:(NSUInteger) capacity
 {
-    id result = [self newMutableArrayUsingWeakReferencesWithCapacity:capacity];
-#if !__has_feature(objc_arc)
-    [result autorelease];
-#endif
-    return result;
+    return as_autorelease([self newMutableArrayUsingWeakReferencesWithCapacity:capacity]);
 }
 
 + (id) mutableArrayUsingWeakReferences

@@ -29,6 +29,7 @@
 
 #import "OALSimpleAudio.h"
 #import "ObjectALMacros.h"
+#import "ARCSafe_MemMgmt.h"
 #import "OALAudioSession.h"
 #import "OpenALManager.h"
 
@@ -72,16 +73,16 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 
 + (OALSimpleAudio*) sharedInstanceWithSources:(int) sources
 {
-	return arcsafe_autorelease([[self alloc] initWithSources:sources]);
+	return as_autorelease([[self alloc] initWithSources:sources]);
 }
 
 + (OALSimpleAudio*) sharedInstanceWithReservedSources:(int) reservedSources
                                           monoSources:(int) monoSources
                                         stereoSources:(int) stereoSources
 {
-    return arcsafe_autorelease([[self alloc] initWithReservedSources:reservedSources
-                                                         monoSources:monoSources
-                                                       stereoSources:stereoSources]);
+    return as_autorelease([[self alloc] initWithReservedSources:reservedSources
+                                                    monoSources:monoSources
+                                                  stereoSources:stereoSources]);
 }
 
 - (id) init
@@ -93,14 +94,14 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 {
     [OpenALManager sharedInstance].currentContext = context;
     channel = [[ALChannelSource alloc] initWithSources:reservedSources];
-    
+
     backgroundTrack = [[OALAudioTrack alloc] init];
-    
+
 #if NS_BLOCKS_AVAILABLE && OBJECTAL_CFG_USE_BLOCKS
     oal_dispatch_queue	= dispatch_queue_create("objectal.simpleaudio.queue", NULL);
 #endif
     pendingLoadCount	= 0;
-    
+
     self.preloadCacheEnabled = YES;
     self.bgVolume = 1.0f;
     self.effectsVolume = 1.0f;
@@ -144,14 +145,14 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 #if NS_BLOCKS_AVAILABLE && OBJECTAL_CFG_USE_BLOCKS
 	dispatch_release(oal_dispatch_queue);
 #endif
-	
-	arcsafe_release(backgroundTrack);
+
+	as_release(backgroundTrack);
 	[channel stop];
-	arcsafe_release(channel);
-	arcsafe_release(context);
-	arcsafe_release(device);
-	arcsafe_release(preloadCache);
-	arcsafe_super_dealloc();
+	as_release(channel);
+	as_release(context);
+	as_release(device);
+	as_release(preloadCache);
+	as_superdealloc();
 }
 
 #pragma mark Properties
@@ -191,7 +192,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 				}
 				else
 				{
-					arcsafe_release(preloadCache);
+					as_release(preloadCache);
 					preloadCache = nil;
 				}
 			}
@@ -361,7 +362,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 		backgroundTrack.muted = bgMuted | muted;
 		[OpenALManager sharedInstance].currentContext.listener.muted = effectsMuted | muted;
 	}
-}	
+}
 
 #pragma mark Background Music
 
@@ -458,13 +459,13 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 			OAL_LOG_ERROR(@"Could not load effect %@", filePath);
 			return nil;
 		}
-        
+
 		OPTIONALLY_SYNCHRONIZED(self)
 		{
 			[preloadCache setObject:buffer forKey:filePath];
 		}
 	}
-    
+
 	return buffer;
 }
 
@@ -480,12 +481,12 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 		OAL_LOG_ERROR(@"filePath was NULL");
 		return nil;
 	}
-    
+
     if(pendingLoadCount > 0)
     {
         OAL_LOG_WARNING(@"You are loading an effect synchronously, but have pending async loads that have not completed. Your load will happen after those finish. Your thread is now stuck waiting. Next time just load everything async please.");
     }
-    
+
 #if NS_BLOCKS_AVAILABLE && OBJECTAL_CFG_USE_BLOCKS
 	//Using blocks with the same queue used to asynch load removes the need for locking
 	//BUT be warned that if you had called preloadEffects and then called this method, your app will stall until all of the loading is done.
@@ -515,12 +516,12 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 		completionBlock(nil);
 		return NO;
 	}
-	
+
 	pendingLoadCount++;
 	dispatch_async(oal_dispatch_queue,
                    ^{
                        OAL_LOG_INFO(@"Preloading effect: %@", filePath);
-                       
+
                        ALBuffer *retBuffer = [self internalPreloadEffect:filePath reduceToMono:reduceToMono];
                        if(!retBuffer)
                        {
@@ -546,9 +547,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 		progressBlock(0,0,0);
 		return;
 	}
-	
+
 	__block uint successCount	= 0;
-	
+
 	pendingLoadCount			+= total;
 	dispatch_async(oal_dispatch_queue,
                    ^{
@@ -566,7 +567,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
                                 successCount++;
                             }
                             uint cnt = idx+1;
-                            dispatch_async(dispatch_get_main_queue(), 
+                            dispatch_async(dispatch_get_main_queue(),
                                            ^{
                                                if(cnt == total)
                                                {

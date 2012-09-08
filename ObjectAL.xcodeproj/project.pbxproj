@@ -70,6 +70,11 @@
 		398C1828147D5560000EFEDF /* MainScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 398C1827147D5560000EFEDF /* MainScene.m */; };
 		39C48DF8151657D700BC57ED /* OALAction+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C48DF6151657D600BC57ED /* OALAction+Private.h */; };
 		39F89E9F14831C3500E40CFE /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 39F89E9E14831C3500E40CFE /* libz.dylib */; };
+		8CC0E3D215FAFBB8001AEB04 /* ColdFunk-Intro.caf in Resources */ = {isa = PBXBuildFile; fileRef = 8CC0E3D115FAFBB8001AEB04 /* ColdFunk-Intro.caf */; };
+		8CC0E3D615FAFBE9001AEB04 /* SourceNotificationsDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC0E3D515FAFBE9001AEB04 /* SourceNotificationsDemo.m */; };
+		8CC0E3DA15FAFC92001AEB04 /* NSMutableDictionary+WeakReferences.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CC0E3D815FAFC92001AEB04 /* NSMutableDictionary+WeakReferences.h */; };
+		8CC0E3DB15FAFC92001AEB04 /* NSMutableDictionary+WeakReferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC0E3D915FAFC92001AEB04 /* NSMutableDictionary+WeakReferences.m */; };
+		8CC0E3DF15FAFCD6001AEB04 /* IntroAndMainTrackDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC0E3DE15FAFCD6001AEB04 /* IntroAndMainTrackDemo.m */; };
 		8CE8688115F8C3940060E004 /* CCAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CE867BF15F8C3940060E004 /* CCAction.h */; };
 		8CE8688215F8C3940060E004 /* CCAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE867C015F8C3940060E004 /* CCAction.m */; };
 		8CE8688315F8C3940060E004 /* CCActionCamera.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CE867C115F8C3940060E004 /* CCActionCamera.h */; };
@@ -471,6 +476,14 @@
 		398C1827147D5560000EFEDF /* MainScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainScene.m; sourceTree = "<group>"; };
 		39C48DF6151657D600BC57ED /* OALAction+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OALAction+Private.h"; sourceTree = "<group>"; };
 		39F89E9E14831C3500E40CFE /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		8CC0E3D115FAFBB8001AEB04 /* ColdFunk-Intro.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ColdFunk-Intro.caf"; sourceTree = "<group>"; };
+		8CC0E3D415FAFBE9001AEB04 /* SourceNotificationsDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SourceNotificationsDemo.h; sourceTree = "<group>"; };
+		8CC0E3D515FAFBE9001AEB04 /* SourceNotificationsDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SourceNotificationsDemo.m; sourceTree = "<group>"; };
+		8CC0E3D715FAFC6C001AEB04 /* ARCSafe_MemMgmt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARCSafe_MemMgmt.h; sourceTree = "<group>"; };
+		8CC0E3D815FAFC92001AEB04 /* NSMutableDictionary+WeakReferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableDictionary+WeakReferences.h"; sourceTree = "<group>"; };
+		8CC0E3D915FAFC92001AEB04 /* NSMutableDictionary+WeakReferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableDictionary+WeakReferences.m"; sourceTree = "<group>"; };
+		8CC0E3DD15FAFCD6001AEB04 /* IntroAndMainTrackDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntroAndMainTrackDemo.h; sourceTree = "<group>"; };
+		8CC0E3DE15FAFCD6001AEB04 /* IntroAndMainTrackDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntroAndMainTrackDemo.m; sourceTree = "<group>"; };
 		8CE867BF15F8C3940060E004 /* CCAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCAction.h; sourceTree = "<group>"; };
 		8CE867C015F8C3940060E004 /* CCAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCAction.m; sourceTree = "<group>"; };
 		8CE867C115F8C3940060E004 /* CCActionCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCActionCamera.h; sourceTree = "<group>"; };
@@ -884,12 +897,15 @@
 		3914D8F3147D58F00010C4A2 /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				8CC0E3D715FAFC6C001AEB04 /* ARCSafe_MemMgmt.h */,
 				3914D8F4147D58F00010C4A2 /* IOSVersion.h */,
 				3914D8F5147D58F00010C4A2 /* IOSVersion.m */,
-				3914D8F6147D58F00010C4A2 /* mach_timing.c */,
 				3914D8F7147D58F00010C4A2 /* mach_timing.h */,
+				3914D8F6147D58F00010C4A2 /* mach_timing.c */,
 				3914D8F8147D58F00010C4A2 /* NSMutableArray+WeakReferences.h */,
 				3914D8F9147D58F00010C4A2 /* NSMutableArray+WeakReferences.m */,
+				8CC0E3D815FAFC92001AEB04 /* NSMutableDictionary+WeakReferences.h */,
+				8CC0E3D915FAFC92001AEB04 /* NSMutableDictionary+WeakReferences.m */,
 				3914D8FA147D58F00010C4A2 /* OALAudioFile.h */,
 				3914D8FB147D58F00010C4A2 /* OALAudioFile.m */,
 				3914D8FC147D58F00010C4A2 /* OALNotifications.h */,
@@ -916,28 +932,32 @@
 		3914D965147D5B570010C4A2 /* Demos */ = {
 			isa = PBXGroup;
 			children = (
-				3914D966147D5B570010C4A2 /* AudioSessionDemo.h */,
-				3914D967147D5B570010C4A2 /* AudioSessionDemo.m */,
-				3914D968147D5B570010C4A2 /* AudioTrackDemo.h */,
-				3914D969147D5B570010C4A2 /* AudioTrackDemo.m */,
-				3914D96A147D5B570010C4A2 /* ChannelsDemo.h */,
-				3914D96B147D5B570010C4A2 /* ChannelsDemo.m */,
-				3914D96C147D5B570010C4A2 /* CrossFadeDemo.h */,
-				3914D96D147D5B570010C4A2 /* CrossFadeDemo.m */,
-				3914D96E147D5B570010C4A2 /* FadeDemo.h */,
-				3914D96F147D5B570010C4A2 /* FadeDemo.m */,
-				3914D970147D5B570010C4A2 /* HardwareDemo.h */,
-				3914D971147D5B570010C4A2 /* HardwareDemo.m */,
-				3914D972147D5B570010C4A2 /* PlanetKillerDemo.h */,
-				3914D973147D5B570010C4A2 /* PlanetKillerDemo.m */,
 				3914D974147D5B570010C4A2 /* SingleSourceDemo.h */,
 				3914D975147D5B570010C4A2 /* SingleSourceDemo.m */,
 				3914D976147D5B570010C4A2 /* TwoSourceDemo.h */,
 				3914D977147D5B570010C4A2 /* TwoSourceDemo.m */,
 				3914D978147D5B570010C4A2 /* VolumePitchPanDemo.h */,
 				3914D979147D5B570010C4A2 /* VolumePitchPanDemo.m */,
+				3914D96C147D5B570010C4A2 /* CrossFadeDemo.h */,
+				3914D96D147D5B570010C4A2 /* CrossFadeDemo.m */,
+				3914D96A147D5B570010C4A2 /* ChannelsDemo.h */,
+				3914D96B147D5B570010C4A2 /* ChannelsDemo.m */,
+				3914D96E147D5B570010C4A2 /* FadeDemo.h */,
+				3914D96F147D5B570010C4A2 /* FadeDemo.m */,
 				39169B5014D381ED00082A89 /* ReverbDemo.h */,
 				39169B5114D381ED00082A89 /* ReverbDemo.m */,
+				3914D968147D5B570010C4A2 /* AudioTrackDemo.h */,
+				3914D969147D5B570010C4A2 /* AudioTrackDemo.m */,
+				3914D972147D5B570010C4A2 /* PlanetKillerDemo.h */,
+				3914D973147D5B570010C4A2 /* PlanetKillerDemo.m */,
+				8CC0E3DD15FAFCD6001AEB04 /* IntroAndMainTrackDemo.h */,
+				8CC0E3DE15FAFCD6001AEB04 /* IntroAndMainTrackDemo.m */,
+				8CC0E3D415FAFBE9001AEB04 /* SourceNotificationsDemo.h */,
+				8CC0E3D515FAFBE9001AEB04 /* SourceNotificationsDemo.m */,
+				3914D970147D5B570010C4A2 /* HardwareDemo.h */,
+				3914D971147D5B570010C4A2 /* HardwareDemo.m */,
+				3914D966147D5B570010C4A2 /* AudioSessionDemo.h */,
+				3914D967147D5B570010C4A2 /* AudioSessionDemo.m */,
 			);
 			path = Demos;
 			sourceTree = "<group>";
@@ -1420,6 +1440,7 @@
 			children = (
 				8CE86DB615F8D9420060E004 /* AssetSources.txt */,
 				8CE86DB715F8D9420060E004 /* Back.png */,
+				8CC0E3D115FAFBB8001AEB04 /* ColdFunk-Intro.caf */,
 				8CE86DB815F8D9420060E004 /* ColdFunk.caf */,
 				8CE86DB915F8D9420060E004 /* Exit.png */,
 				8CE86DBA15F8D9420060E004 /* Ganymede.png */,
@@ -1454,6 +1475,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				39C48DF8151657D700BC57ED /* OALAction+Private.h in Headers */,
+				8CC0E3DA15FAFC92001AEB04 /* NSMutableDictionary+WeakReferences.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1724,6 +1746,7 @@
 				8CE86DED15F8D9420060E004 /* vu-face.png in Resources */,
 				8CE86DEE15F8D9420060E004 /* vu-needle.png in Resources */,
 				8CE86DEF15F8D9420060E004 /* vu-shell.png in Resources */,
+				8CC0E3D215FAFBB8001AEB04 /* ColdFunk-Intro.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1760,6 +1783,7 @@
 				390E99581482C508002E14E7 /* OALAudioFile.m in Sources */,
 				390E99591482C508002E14E7 /* OALTools.m in Sources */,
 				390E995A1482C508002E14E7 /* OALSimpleAudio.m in Sources */,
+				8CC0E3DB15FAFC92001AEB04 /* NSMutableDictionary+WeakReferences.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1898,6 +1922,8 @@
 				3914D9C2147D5B570010C4A2 /* VUMeter.m in Sources */,
 				39169B5314D381EE00082A89 /* ReverbDemo.m in Sources */,
 				8CE86DF215F8D9620060E004 /* IntroLayer.m in Sources */,
+				8CC0E3D615FAFBE9001AEB04 /* SourceNotificationsDemo.m in Sources */,
+				8CC0E3DF15FAFCD6001AEB04 /* IntroAndMainTrackDemo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

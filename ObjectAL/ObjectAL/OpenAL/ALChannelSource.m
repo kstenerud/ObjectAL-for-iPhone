@@ -29,6 +29,7 @@
 
 #import "ALChannelSource.h"
 #import "ObjectALMacros.h"
+#import "ARCSafe_MemMgmt.h"
 #import "OpenALManager.h"
 
 
@@ -91,7 +92,7 @@
 
 + (id) channelWithSources:(int) reservedSources
 {
-	return arcsafe_autorelease([[self alloc] initWithSources:reservedSources]);
+	return as_autorelease([[self alloc] initWithSources:reservedSources]);
 }
 
 - (id) initWithSources:(int) reservedSources
@@ -100,7 +101,7 @@
 	{
 		OAL_LOG_DEBUG(@"%@: Init with %d sources", self, reservedSources);
 
-		context = arcsafe_retain([OpenALManager sharedInstance].currentContext);
+		context = as_retain([OpenALManager sharedInstance].currentContext);
 
 		sourcePool = [[ALSoundSourcePool alloc] init];
 
@@ -116,10 +117,10 @@
 {
 	OAL_LOG_DEBUG(@"%@: Dealloc", self);
 	
-	arcsafe_release(sourcePool);
-	arcsafe_release(context);
+	as_release(sourcePool);
+	as_release(context);
 
-    arcsafe_super_dealloc();
+    as_superdealloc();
 }
 
 - (int) reservedSources
@@ -560,7 +561,7 @@ SYNTHESIZE_DELEGATE_PROPERTY(reverbObstruction, ReverbObstruction, float);
                 return nil;
             }
         }
-        arcsafe_autorelease_unused(arcsafe_retain(source));
+        as_autorelease_noref(as_retain(source));
         [sourcePool removeSource:source];
     }
     

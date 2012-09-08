@@ -30,6 +30,7 @@
 #import "OALUtilityActions.h"
 #import "OALAction+Private.h"
 #import "ObjectALMacros.h"
+#import "ARCSafe_MemMgmt.h"
 
 
 #pragma mark OALTargetedAction
@@ -49,7 +50,7 @@
 
 + (id) actionWithTarget:(id) target action:(OALAction*) action
 {
-	return arcsafe_autorelease([(OALTargetedAction*)[self alloc] initWithTarget:target action:action]);
+	return as_autorelease([(OALTargetedAction*)[self alloc] initWithTarget:target action:action]);
 }
 
 - (id) initWithTarget:(id) target action:(OALAction*) action
@@ -65,8 +66,8 @@
 
 - (void) dealloc
 {
-	arcsafe_release(action_);
-    arcsafe_super_dealloc();
+	as_release(action_);
+    as_superdealloc();
 }
 
 
@@ -151,13 +152,13 @@
 		[actions addObject:action];
 	}
 	va_end(params);
-	
-	return arcsafe_autorelease([[self alloc] initWithActions:actions]);
+
+	return as_autorelease([[self alloc] initWithActions:actions]);
 }
 
 + (id) actionsFromArray:(NSArray*) actions;
 {
-	return arcsafe_autorelease([[self alloc] initWithActions:actions]);
+	return as_autorelease([[self alloc] initWithActions:actions]);
 }
 
 - (id) initWithActions:(NSArray*) actions
@@ -174,7 +175,7 @@
 			// Otherwise copy it into a mutable array.
 			self.actions = [NSMutableArray arrayWithArray:actions];
 		}
-		
+
 		self.pDurations = [NSMutableArray arrayWithCapacity:[actions count]];
 	}
 	return self;
@@ -182,9 +183,9 @@
 
 - (void) dealloc
 {
-	arcsafe_release(actions_);
-	arcsafe_release(pDurations_);
-    arcsafe_super_dealloc();
+	as_release(actions_);
+	as_release(pDurations_);
+    as_superdealloc();
 }
 
 
@@ -199,7 +200,7 @@
 		[action prepareWithTarget:target];
 		duration_ += action.duration;
 	}
-	
+
 	// Calculate the childrens' duration as proportions of the total.
 	[pDurations_ removeAllObjects];
 	if(0 == duration_)
@@ -218,7 +219,7 @@
 			[pDurations_ addObject:[NSNumber numberWithFloat:action.duration/duration_]];
 		}
 	}
-	
+
 	// Start at the first action.
 	if([actions_ count] > 0)
 	{
@@ -231,11 +232,11 @@
 		self.currentAction = nil;
 		pCurrentActionDuration_ = 0;
 	}
-	
+
 	actionIndex_ = 0;
 	pLastComplete_ = 0;
 	pCurrentActionComplete_ = 0;
-	
+
 	[super prepareWithTarget:target];
 }
 
@@ -254,7 +255,7 @@
 - (void) updateCompletion:(float) pComplete
 {
 	float pDelta = pComplete - pLastComplete_;
-	
+
 	// First, run past all actions that have been completed since the last update.
 	while(pCurrentActionComplete_ + pDelta >= pCurrentActionDuration_)
 	{
@@ -268,7 +269,7 @@
 
 		// Subtract its contribution to the current delta.
 		pDelta -= (pCurrentActionDuration_ - pCurrentActionComplete_);
-		
+
 		// Move on to the next action.
 		actionIndex_++;
 		if(actionIndex_ >= [actions_ count])
@@ -276,14 +277,14 @@
 			// If there are no more actions, we are done.
 			return;
 		}
-		
+
 		// Store some info about the new current action and start it running.
 		self.currentAction = [actions_ objectAtIndex:actionIndex_];
 		pCurrentActionDuration_ = [[pDurations_ objectAtIndex:actionIndex_] floatValue];
 		pCurrentActionComplete_ = 0;
 		[currentAction_ startAction];
 	}
-	
+
 	if(pComplete >= 1.0)
 	{
 		// Make sure a cumulative rounding error doesn't cause an uncompletable action.
@@ -297,7 +298,7 @@
 		pCurrentActionComplete_ += pDelta;
 		[currentAction_ updateCompletion:pCurrentActionComplete_ / pCurrentActionDuration_];
 	}
-	
+
 	pLastComplete_ = pComplete;
 }
 
@@ -361,13 +362,13 @@ COCOS2D_SUBCLASS(OALSequentialActions)
 		[actions addObject:action];
 	}
 	va_end(params);
-	
-	return arcsafe_autorelease([[self alloc] initWithActions:actions]);
+
+	return as_autorelease([[self alloc] initWithActions:actions]);
 }
 
 + (id) actionsFromArray:(NSArray*) actions;
 {
-	return arcsafe_autorelease([[self alloc] initWithActions:actions]);
+	return as_autorelease([[self alloc] initWithActions:actions]);
 }
 
 - (id) initWithActions:(NSArray*) actions
@@ -384,7 +385,7 @@ COCOS2D_SUBCLASS(OALSequentialActions)
 			// Otherwise copy it into a mutable array.
 			self.actions = [NSMutableArray arrayWithArray:actions];
 		}
-		
+
 		self.pDurations = [NSMutableArray arrayWithCapacity:[actions count]];
 		self.actionsWithDuration = [NSMutableArray arrayWithCapacity:[actions count]];
 	}
@@ -393,10 +394,10 @@ COCOS2D_SUBCLASS(OALSequentialActions)
 
 - (void) dealloc
 {
-	arcsafe_release(actions_);
-	arcsafe_release(pDurations_);
-	arcsafe_release(actionsWithDuration_);
-	arcsafe_super_dealloc();
+	as_release(actions_);
+	as_release(pDurations_);
+	as_release(actionsWithDuration_);
+	as_superdealloc();
 }
 
 
@@ -405,7 +406,7 @@ COCOS2D_SUBCLASS(OALSequentialActions)
 - (void) prepareWithTarget:(id) target
 {
 	[actionsWithDuration_ removeAllObjects];
-	
+
 	// Calculate the longest duration in seconds of all children.
 	duration_ = 0;
 	for(OALAction* action in actions_)
@@ -417,19 +418,19 @@ COCOS2D_SUBCLASS(OALSequentialActions)
 			{
 				duration_ = action.duration;
 			}
-			
+
 			// Also keep track of actions with durations.
 			[actionsWithDuration_ addObject:action];
 		}
 	}
-	
+
 	// Calculate the childrens' durations as proportions of the total.
 	[pDurations_ removeAllObjects];
 	for(OALAction* action in actionsWithDuration_)
 	{
 		[pDurations_ addObject:[NSNumber numberWithFloat:action.duration/duration_]];
 	}
-	
+
 	[super prepareWithTarget:target];
 }
 
@@ -503,16 +504,16 @@ COCOS2D_SUBCLASS(OALConcurrentActions)
 + (id) actionWithCallTarget:(id) callTarget
 				   selector:(SEL) selector
 {
-	return arcsafe_autorelease([[self alloc] initWithCallTarget:callTarget selector:selector]);
+	return as_autorelease([[self alloc] initWithCallTarget:callTarget selector:selector]);
 }
 
 + (id) actionWithCallTarget:(id) callTarget
 				   selector:(SEL) selector
 				 withObject:(id) object
 {
-	return arcsafe_autorelease([[self alloc] initWithCallTarget:callTarget
-                                                       selector:selector
-                                                     withObject:object]);
+	return as_autorelease([[self alloc] initWithCallTarget:callTarget
+                                                  selector:selector
+                                                withObject:object]);
 }
 
 + (id) actionWithCallTarget:(id) callTarget
@@ -520,10 +521,10 @@ COCOS2D_SUBCLASS(OALConcurrentActions)
 				 withObject:(id) firstObject
 				 withObject:(id) secondObject
 {
-	return arcsafe_autorelease([[self alloc] initWithCallTarget:callTarget
-                                                       selector:selector
-                                                     withObject:firstObject
-                                                     withObject:secondObject]);
+	return as_autorelease([[self alloc] initWithCallTarget:callTarget
+                                                  selector:selector
+                                                withObject:firstObject
+                                                withObject:secondObject]);
 }
 
 - (id) initWithCallTarget:(id) callTargetIn selector:(SEL) selectorIn
@@ -574,7 +575,7 @@ COCOS2D_SUBCLASS(OALConcurrentActions)
 #if !OBJECTAL_CFG_USE_COCOS2D_ACTIONS
 	[super startAction];
 #endif /* !OBJECTAL_CFG_USE_COCOS2D_ACTIONS */
-	
+
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 	switch(numObjects_)

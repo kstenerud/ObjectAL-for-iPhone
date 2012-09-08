@@ -30,6 +30,7 @@
 #import "OALAudioSession.h"
 #import <AudioToolbox/AudioToolbox.h>
 #import "ObjectALMacros.h"
+#import "ARCSafe_MemMgmt.h"
 #import "OALNotifications.h"
 
 
@@ -158,10 +159,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
     }
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	arcsafe_release(lastResetTime);	
-	arcsafe_release(audioSessionCategory);
-	arcsafe_release(suspendHandler);
-	arcsafe_super_dealloc();
+	as_release(lastResetTime);	
+	as_release(audioSessionCategory);
+	as_release(suspendHandler);
+	as_superdealloc();
 }
 
 
@@ -179,8 +180,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-        arcsafe_autorelease_unused(audioSessionCategory);
-		audioSessionCategory = arcsafe_retain(value);
+        as_autorelease_noref(audioSessionCategory);
+		audioSessionCategory = as_retain(value);
 		[self updateFromAudioSessionCategory];
 		[self setAudioMode];
 	}	
@@ -338,8 +339,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 	REPORT_AUDIOSESSION_CALL(result, @"Failed to get string property %08x", property);
 	if(noErr == result)
 	{
-        NSString* stringResult = (arcsafe_bridge_transfer NSString*) value;
-		return arcsafe_autorelease(stringResult);
+        NSString* stringResult = (as_bridge_transfer NSString*) value;
+		return as_autorelease(stringResult);
 	}
 	return nil;
 }
@@ -418,21 +419,21 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 
 - (void) updateFromFlags
 {
-	arcsafe_release(audioSessionCategory);
+	as_release(audioSessionCategory);
 	if(honorSilentSwitch)
 	{
 		if(allowIpod)
 		{
-			audioSessionCategory = arcsafe_retain(AVAudioSessionCategoryAmbient);
+			audioSessionCategory = as_retain(AVAudioSessionCategoryAmbient);
 		}
 		else
 		{
-			audioSessionCategory = arcsafe_retain(AVAudioSessionCategorySoloAmbient);
+			audioSessionCategory = as_retain(AVAudioSessionCategorySoloAmbient);
 		}
 	}
 	else
 	{
-		audioSessionCategory = arcsafe_retain(AVAudioSessionCategoryPlayback);
+		audioSessionCategory = as_retain(AVAudioSessionCategoryPlayback);
 	}
 }
 
@@ -556,7 +557,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 			OAL_LOG_WARNING(@"Received audio error notification. Resetting audio session.");
 			self.manuallySuspended = YES;
 			self.manuallySuspended = NO;
-			arcsafe_release(lastResetTime);
+			as_release(lastResetTime);
 			lastResetTime = [[NSDate alloc] init];
 		
             handlingErrorNotification = FALSE;
@@ -758,10 +759,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 
 - (void) dealloc
 {
-	arcsafe_release(lastResetTime);
-	arcsafe_release(audioSessionCategory);
-	arcsafe_release(suspendHandler);
-	arcsafe_super_dealloc();
+	as_release(lastResetTime);
+	as_release(audioSessionCategory);
+	as_release(suspendHandler);
+	as_superdealloc();
 }
 
 #pragma mark Properties

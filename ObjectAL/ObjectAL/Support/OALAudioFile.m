@@ -29,6 +29,7 @@
 
 #import "OALAudioFile.h"
 #import "ObjectALMacros.h"
+#import "ARCSafe_MemMgmt.h"
 
 
 @implementation OALAudioFile
@@ -36,7 +37,7 @@
 + (OALAudioFile*) fileWithUrl:(NSURL*) url
 				 reduceToMono:(bool) reduceToMono
 {
-	return arcsafe_autorelease([[self alloc] initWithUrl:url reduceToMono:reduceToMono]);
+	return as_autorelease([[self alloc] initWithUrl:url reduceToMono:reduceToMono]);
 }
 
 
@@ -45,7 +46,7 @@
 {
 	if(nil != (self = [super init]))
 	{
-		url = arcsafe_retain(urlIn);
+		url = as_retain(urlIn);
 		reduceToMono = reduceToMonoIn;
 
 		OSStatus error;
@@ -58,7 +59,7 @@
 		}
 
 		// Open the file
-		if(noErr != (error = ExtAudioFileOpenURL((arcsafe_bridge CFURLRef)url, &fileHandle)))
+		if(noErr != (error = ExtAudioFileOpenURL((as_bridge CFURLRef)url, &fileHandle)))
 		{
 			REPORT_EXTAUDIO_CALL(error, @"Could not open url %@", url);
 			goto done;
@@ -126,7 +127,7 @@
 	done:
 		if(noErr != error)
 		{
-			arcsafe_release(self);
+			as_release(self);
 			return nil;
 		}
 		
@@ -142,8 +143,8 @@
         fileHandle = nil;
     }
 
-	arcsafe_release(url);
-	arcsafe_super_dealloc();
+	as_release(url);
+	as_superdealloc();
 }
 
 - (NSString*) description
@@ -326,7 +327,7 @@
 	ALBuffer* buffer = [file bufferNamed:[url description]
 							  startFrame:0
 							   numFrames:-1];
-	arcsafe_release(file);
+	as_release(file);
 	return buffer;
 }
 

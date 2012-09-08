@@ -35,7 +35,10 @@
 #import "OALSuspendHandler.h"
 
 @class ALContext;
+@class ALSource;
 
+
+typedef void (^OALSourceNotificationCallback)(ALSource* source, ALuint notificationID, ALvoid* userData);
 
 #pragma mark ALSource
 
@@ -188,5 +191,33 @@
  * @return TRUE if the operation was successful.
  */
 - (bool) unqueueBuffers:(NSArray*) buffers;
+
+
+#pragma mark Notifications
+
+/** Register to receive notifications about an event on this source. (iOS 5.0+)
+ *
+ * The following notification types are recognized:
+ * AL_SOURCE_STATE - Sent when a source's state changes.
+ * AL_BUFFERS_PROCESSED - Sent when all buffers have been processed.
+ * AL_QUEUE_HAS_LOOPED - Sent when a looping source has looped to it's start point.
+ *
+ * @param notificationID The kind of notification to be informed of (see above).
+ * @param callback The block to call for notification.
+ * @param userData a pointer that will be passed to the callback.
+ */
+- (void) registerNotification:(ALuint) notificationID
+                     callback:(OALSourceNotificationCallback) callback
+                     userData:(void*) userData;
+
+/** Unregister notifications for a notification type on this source. (iOS 5.0+)
+ *
+ * @param notificationID The kind of notification to remove.
+ */
+- (void) unregisterNotification:(ALuint) notificationID;
+
+/** Unregister all notifications for this source. (iOS 5.0+)
+ */
+- (void) unregisterAllNotifications;
 
 @end

@@ -29,6 +29,7 @@
 
 #import "ALSoundSourcePool.h"
 #import "ObjectALMacros.h"
+#import "ARCSafe_MemMgmt.h"
 
 
 #pragma mark Private Methods
@@ -56,7 +57,7 @@
 
 + (id) pool
 {
-	return arcsafe_autorelease([[self alloc] init]);
+	return as_autorelease([[self alloc] init]);
 }
 
 - (id) init
@@ -72,8 +73,8 @@
 - (void) dealloc
 {
 	OAL_LOG_DEBUG(@"%@: Dealloc", self);
-	arcsafe_release(sources);
-	arcsafe_super_dealloc();
+	as_release(sources);
+	as_superdealloc();
 }
 
 
@@ -104,10 +105,10 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		id source = arcsafe_retain([sources objectAtIndex:(NSUInteger)index]);
+		id source = as_retain([sources objectAtIndex:(NSUInteger)index]);
 		[sources removeObjectAtIndex:(NSUInteger)index];
 		[sources addObject:source];
-		arcsafe_release(source);
+		as_release(source);
 	}
 }
 
