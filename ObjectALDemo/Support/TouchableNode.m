@@ -32,11 +32,11 @@
 	
 	if(targetedTouches)
 	{
-		[[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:touchPriority swallowsTouches:swallowTouches];
+		[[[CCDirector sharedDirector] touchDispatcher] addTargetedDelegate:self priority:touchPriority swallowsTouches:swallowTouches];
 	}
 	else 
 	{
-		[[CCTouchDispatcher sharedDispatcher] addStandardDelegate:self priority:touchPriority];
+		[[[CCDirector sharedDirector] touchDispatcher] addStandardDelegate:self priority:touchPriority];
 	}
 	registeredWithDispatcher = YES;
 }
@@ -45,7 +45,7 @@
 {
 	if(registeredWithDispatcher)
 	{
-		[[CCTouchDispatcher sharedDispatcher] removeDelegate:self];
+		[[[CCDirector sharedDirector] touchDispatcher] removeDelegate:self];
 		registeredWithDispatcher = NO;
 	}
 }
