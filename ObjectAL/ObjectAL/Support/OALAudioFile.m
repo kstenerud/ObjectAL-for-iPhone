@@ -223,7 +223,7 @@
 		
 		if(noErr != (error = ExtAudioFileSeek(fileHandle, startFrame)))
 		{
-			REPORT_EXTAUDIO_CALL(error, @"Could not seek to %ll in file (url = %@)",
+			REPORT_EXTAUDIO_CALL(error, @"Could not seek to %lld in file (url = %@)",
 								 startFrame,
 								 url);
 			goto onFail;
