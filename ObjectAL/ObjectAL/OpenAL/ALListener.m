@@ -76,10 +76,7 @@
 
 - (bool) muted
 {
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return muted;
-	}
+    return muted;
 }
 
 - (void) setMuted:(bool) value
@@ -100,10 +97,7 @@
 
 - (float) gain
 {
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return gain;
-	}
+    return gain;
 }
 
 - (void) setGain:(float) value

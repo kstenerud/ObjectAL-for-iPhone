@@ -223,7 +223,17 @@
 - (void) addChannel:(ALChannelSource*) channel;
 
 /** Set all buffers in all non-playing sources to nil.
+ *
+ * @return A list of buffers that were cleared.
  */
-- (void) clearUnusedBuffers;
+- (NSArray*) clearUnusedBuffers;
+
+/** Remove all instances of the specified buffer.
+ *
+ * @param name The name of the buffer.
+ *
+ * @return NO if any of the matching buffers are currently being played.
+ */
+- (BOOL) removeBuffersNamed:(NSString*) name;
 
 @end

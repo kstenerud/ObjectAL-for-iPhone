@@ -411,7 +411,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OpenALManager);
 
 - (void) clearAllBuffers
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	OPTIONALLY_SYNCHRONIZED(devices)
 	{
 		for(ALDevice* device in devices)
 		{
@@ -424,7 +424,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OpenALManager);
 
 - (void) notifyDeviceInitializing:(ALDevice*) device
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	OPTIONALLY_SYNCHRONIZED(devices)
 	{
 		[devices addObject:device];
 	}
@@ -432,7 +432,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OpenALManager);
 
 - (void) notifyDeviceDeallocating:(ALDevice*) device
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	OPTIONALLY_SYNCHRONIZED(devices)
 	{
 		[devices removeObject:device];
 	}

@@ -170,10 +170,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 
 - (NSString*) audioSessionCategory
 {
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return audioSessionCategory;
-	}
+    return audioSessionCategory;
 }
 
 - (void) setAudioSessionCategory:(NSString*) value
@@ -189,10 +186,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 
 - (bool) allowIpod
 {
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return allowIpod;
-	}
+    return allowIpod;
 }
 
 - (void) setAllowIpod:(bool) value
@@ -207,10 +201,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 
 - (bool) ipodDucking
 {
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return ipodDucking;
-	}
+    return ipodDucking;
 }
 
 - (void) setIpodDucking:(bool) value
@@ -225,10 +216,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 
 - (bool) useHardwareIfAvailable
 {
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return useHardwareIfAvailable;
-	}
+    return useHardwareIfAvailable;
 }
 
 - (void) setUseHardwareIfAvailable:(bool) value
@@ -246,10 +234,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 
 - (bool) honorSilentSwitch
 {
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return honorSilentSwitch;
-	}
+    return honorSilentSwitch;
 }
 
 - (void) setHonorSilentSwitch:(bool) value
@@ -481,10 +466,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 
 - (bool) audioSessionActive
 {
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return audioSessionActive;
-	}
+    return audioSessionActive;
 }
 
 /** Work around for iOS4 bug that causes the session to not activate on the first few attempts

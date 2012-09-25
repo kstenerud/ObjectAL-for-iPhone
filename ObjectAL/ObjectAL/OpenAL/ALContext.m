@@ -387,7 +387,7 @@
 
 - (void) clearBuffers
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	OPTIONALLY_SYNCHRONIZED(sources)
 	{
 		for(ALSource* source in sources)
 		{
@@ -409,7 +409,7 @@
 
 - (void) stopAllSounds
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	OPTIONALLY_SYNCHRONIZED(sources)
 	{
 		if(self.suspended)
 		{
@@ -455,7 +455,7 @@
 
 - (void) notifySourceInitializing:(ALSource*) source
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	OPTIONALLY_SYNCHRONIZED(sources)
 	{
 		[sources addObject:source];
 	}
@@ -463,7 +463,7 @@
 
 - (void) notifySourceDeallocating:(ALSource*) source
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	OPTIONALLY_SYNCHRONIZED(sources)
 	{
 		[sources removeObject:source];
 	}

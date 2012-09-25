@@ -278,26 +278,17 @@
 
 - (id<AVAudioPlayerDelegate>) delegate
 {
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return delegate;
-	}
+    return delegate;
 }
 
 - (void) setDelegate:(id<AVAudioPlayerDelegate>) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		delegate = value;
-	}
+    delegate = value;
 }
 
 - (float) pan
 {
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return pan;
-	}
+    return pan;
 }
 
 - (void) setPan:(float) value
@@ -323,10 +314,7 @@
 
 - (float) gain
 {
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return gain;
-	}
+    return gain;
 }
 
 - (void) setVolume:(float) value
@@ -349,10 +337,7 @@
 
 - (bool) muted
 {
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return muted;
-	}
+    return muted;
 }
 
 - (void) setMuted:(bool) value
@@ -371,10 +356,7 @@
 
 - (NSInteger) numberOfLoops
 {
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return numberOfLoops;
-	}
+    return numberOfLoops;
 }
 
 - (void) setNumberOfLoops:(NSInteger) value
@@ -387,10 +369,7 @@
 
 - (bool) paused
 {
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return paused;
-	}
+    return paused;
 }
 
 - (void) setPaused:(bool) value
@@ -948,10 +927,7 @@
 
 - (bool) meteringEnabled
 {
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return meteringEnabled;
-	}
+    return meteringEnabled;
 }
 
 - (void) setMeteringEnabled:(bool) value
@@ -965,10 +941,7 @@
 
 - (void) updateMeters
 {
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		[player updateMeters];
-	}
+    [player updateMeters];
 }
 
 - (float) averagePowerForChannel:(NSUInteger)channelNumber

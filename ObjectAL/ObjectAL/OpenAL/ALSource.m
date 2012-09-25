@@ -191,10 +191,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (ALBuffer*) buffer
 {
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return buffer;
-	}
+    return buffer;
 }
 
 - (void) setBuffer:(ALBuffer *) value
@@ -334,10 +331,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (float) gain
 {
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return gain;
-	}
+    return gain;
 }
 
 - (void) setGain:(float) value
@@ -455,10 +449,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (bool) muted
 {
-	OPTIONALLY_SYNCHRONIZED(self)
-	{
-		return muted;
-	}
+    return muted;
 }
 
 - (void) setMuted:(bool) value
