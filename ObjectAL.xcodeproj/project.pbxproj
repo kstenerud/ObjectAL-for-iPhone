@@ -10,7 +10,6 @@
 		390B671015F95B1500C6F101 /* NSMutableDictionary+WeakReferences.h in Headers */ = {isa = PBXBuildFile; fileRef = 390B670E15F95B1500C6F101 /* NSMutableDictionary+WeakReferences.h */; };
 		390B671115F95B1500C6F101 /* NSMutableDictionary+WeakReferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 390B670F15F95B1500C6F101 /* NSMutableDictionary+WeakReferences.m */; };
 		390B671A15F95EE000C6F101 /* ARCSafe_MemMgmt.h in Headers */ = {isa = PBXBuildFile; fileRef = 390B671915F95EE000C6F101 /* ARCSafe_MemMgmt.h */; };
-		390E993D1482C4BE002E14E7 /* ObjectAL.m in Sources */ = {isa = PBXBuildFile; fileRef = 390E993C1482C4BE002E14E7 /* ObjectAL.m */; };
 		390E99411482C4CB002E14E7 /* OALAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 3914D8C2147D58F00010C4A2 /* OALAction.m */; };
 		390E99421482C508002E14E7 /* OALActionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3914D8C4147D58F00010C4A2 /* OALActionManager.m */; };
 		390E99431482C508002E14E7 /* OALAudioActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3914D8C6147D58F00010C4A2 /* OALAudioActions.m */; };
@@ -344,9 +343,6 @@
 		390B686C15F9C26000C6F101 /* IntroAndMainTrackDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntroAndMainTrackDemo.h; sourceTree = "<group>"; };
 		390B686D15F9C26000C6F101 /* IntroAndMainTrackDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntroAndMainTrackDemo.m; sourceTree = "<group>"; };
 		390E99361482C4BE002E14E7 /* libObjectAL.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libObjectAL.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		390E993A1482C4BE002E14E7 /* ObjectAL-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ObjectAL-Prefix.pch"; sourceTree = "<group>"; };
-		390E993B1482C4BE002E14E7 /* ObjectAL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.objj.h; path = ObjectAL.h; sourceTree = "<group>"; };
-		390E993C1482C4BE002E14E7 /* ObjectAL.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjectAL.m; sourceTree = "<group>"; };
 		3914D74E147D57540010C4A2 /* libcocos2d.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libcocos2d.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		3914D752147D57540010C4A2 /* cocos2d-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "cocos2d-Prefix.pch"; sourceTree = "<group>"; };
 		3914D80E147D57D60010C4A2 /* LICENSE_cocos2d.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE_cocos2d.txt; sourceTree = "<group>"; };
@@ -788,24 +784,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		390E99381482C4BE002E14E7 /* ObjectAL */ = {
-			isa = PBXGroup;
-			children = (
-				390E993B1482C4BE002E14E7 /* ObjectAL.h */,
-				390E993C1482C4BE002E14E7 /* ObjectAL.m */,
-				390E99391482C4BE002E14E7 /* Supporting Files */,
-			);
-			path = ObjectAL;
-			sourceTree = "<group>";
-		};
-		390E99391482C4BE002E14E7 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				390E993A1482C4BE002E14E7 /* ObjectAL-Prefix.pch */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		3914D750147D57540010C4A2 /* cocos2d */ = {
 			isa = PBXGroup;
 			children = (
@@ -1012,7 +990,6 @@
 				398C16A9147D5533000EFEDF /* ObjectALTests */,
 				398C16CE147D555E000EFEDF /* ObjectALDemo */,
 				3914D750147D57540010C4A2 /* cocos2d */,
-				390E99381482C4BE002E14E7 /* ObjectAL */,
 				398C169F147D5533000EFEDF /* Frameworks */,
 				398C1691147D5533000EFEDF /* Products */,
 			);
@@ -1767,7 +1744,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				390E993D1482C4BE002E14E7 /* ObjectAL.m in Sources */,
 				390E99411482C4CB002E14E7 /* OALAction.m in Sources */,
 				390E99421482C508002E14E7 /* OALActionManager.m in Sources */,
 				390E99431482C508002E14E7 /* OALAudioActions.m in Sources */,
