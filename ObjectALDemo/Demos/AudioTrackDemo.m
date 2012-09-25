@@ -143,10 +143,6 @@
 	[self addChild:button z:250];
 }
 
-- (void) onEnterTransitionDidFinish
-{
-}
-
 - (void) onPlayStop:(LampButton*) button
 {
 	int index = [buttons indexOfObject:button];

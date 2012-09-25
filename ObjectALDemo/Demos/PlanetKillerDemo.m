@@ -157,6 +157,8 @@
 
 - (void) onEnterTransitionDidFinish
 {
+    [super onEnterTransitionDidFinish];
+
 	[[OALSimpleAudio sharedInstance] preloadEffect:SHOOT_SOUND];
 	[[OALSimpleAudio sharedInstance] preloadEffect:EXPLODE_SOUND];
 	[[OALSimpleAudio sharedInstance] playBg:@"PlanetKiller.mp3" loop:YES];

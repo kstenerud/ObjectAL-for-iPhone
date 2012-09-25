@@ -130,9 +130,8 @@
 
 - (void) onEnterTransitionDidFinish
 {
-	// Initialize the OpenAL device and context here so that it doesn't happen
-	// prematurely.
-	
+    [super onEnterTransitionDidFinish];
+
 	// We'll let OALSimpleAudio deal with the device and context.
 	// Since we're not going to use it for playing effects, don't give it any sources.
 	[OALSimpleAudio sharedInstance].reservedSources = 0;

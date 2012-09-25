@@ -109,6 +109,8 @@
 
 - (void) onEnterTransitionDidFinish
 {
+    [super onEnterTransitionDidFinish];
+
 	[[OALSimpleAudio sharedInstance] playBg:@"ColdFunk.caf" loop:YES];
 	[OALSimpleAudio sharedInstance].backgroundTrack.meteringEnabled = YES;
 	

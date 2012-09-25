@@ -145,20 +145,15 @@ static uint startIndex = 0;
 
 - (void) onEnterTransitionDidFinish
 {
-	/* De-init audio.
-     *
-     * The individual demos assume that they are the only thing configuring
-     * audio, and always assume that the audio starts out uninitialized.
-     *
-     * De-initializing everything here ensures that assumption holds true.
-     *
-     * In a real app, you'd initialize and configure audio once and ONLY once,
-     * at app startup (usually in the app delegate).
-	 */
-	[OALSimpleAudio purgeSharedInstance];
-	[OpenALManager purgeSharedInstance];
-    //	[OALAudioTracks purgeSharedInstance];
-	[OALAudioSession purgeSharedInstance];
+    // Note: I used to destroy and recreate OALSimpleAudio and friends, but
+    // a bug in iOS 5 can cause the OpenAL device to not close when you tell it
+    // to, so this is the next best thing I can do.
+
+    // Restore some sensible defaults in case a demo changed it.
+
+	[OALSimpleAudio sharedInstance].reservedSources = 32;
+    [OALSimpleAudio sharedInstance].context.listener.reverbOn = NO;
+
 }
 
 - (void) setStartIndex:(uint) newIndex

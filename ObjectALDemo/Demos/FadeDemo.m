@@ -175,13 +175,6 @@
 	[self addChild:button z:250];
 }
 
-- (void) onEnterTransitionDidFinish
-{
-	// Initialize the OpenAL device and context here instead of in init so that
-	// it doesn't happen prematurely.
-	[OALSimpleAudio sharedInstance];
-}
-
 - (void) onBackgroundPlayStop:(LampButton*) button
 {
 	[[OALSimpleAudio sharedInstance].backgroundTrack stopFade];
