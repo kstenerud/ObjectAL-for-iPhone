@@ -93,6 +93,7 @@
 		394AF5F516127B210083B392 /* SynthesizeSingleton.h in Headers */ = {isa = PBXBuildFile; fileRef = 3914D900147D58F00010C4A2 /* SynthesizeSingleton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		394AF5F616127B210083B392 /* OALSimpleAudio.h in Headers */ = {isa = PBXBuildFile; fileRef = 3914D8D3147D58F00010C4A2 /* OALSimpleAudio.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		394AF5F716127B210083B392 /* ObjectAL.h in Headers */ = {isa = PBXBuildFile; fileRef = 3914D8D5147D58F00010C4A2 /* ObjectAL.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3961E30F1649E2320008A65B /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3961E30E1649E2320008A65B /* Default-568h@2x.png */; };
 		398C16C1147D555E000EFEDF /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 398C16C0147D555E000EFEDF /* QuartzCore.framework */; };
 		398C16C3147D555E000EFEDF /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 398C16C2147D555E000EFEDF /* OpenGLES.framework */; };
 		398C16C5147D555E000EFEDF /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 398C16C4147D555E000EFEDF /* OpenAL.framework */; };
@@ -487,6 +488,7 @@
 		3914D994147D5B570010C4A2 /* VUMeter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUMeter.m; sourceTree = "<group>"; };
 		39169B5014D381ED00082A89 /* ReverbDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.objj.h; path = ReverbDemo.h; sourceTree = "<group>"; };
 		39169B5114D381ED00082A89 /* ReverbDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReverbDemo.m; sourceTree = "<group>"; };
+		3961E30E1649E2320008A65B /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		398C1694147D5533000EFEDF /* ObjectAL-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ObjectAL-Info.plist"; sourceTree = "<group>"; };
 		398C1696147D5533000EFEDF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		398C1698147D5533000EFEDF /* ObjectAL-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ObjectAL-Prefix.pch"; sourceTree = "<group>"; };
@@ -1016,6 +1018,7 @@
 		398C1682147D5533000EFEDF = {
 			isa = PBXGroup;
 			children = (
+				3961E30E1649E2320008A65B /* Default-568h@2x.png */,
 				3914D960147D5A800010C4A2 /* Sample Code */,
 				398C1692147D5533000EFEDF /* ObjectAL */,
 				398C16A9147D5533000EFEDF /* ObjectALTests */,
@@ -1732,7 +1735,7 @@
 		398C1684147D5533000EFEDF /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0450;
 				ORGANIZATIONNAME = Stenerud;
 			};
 			buildConfigurationList = 398C1687147D5533000EFEDF /* Build configuration list for PBXProject "ObjectAL" */;
@@ -1796,6 +1799,7 @@
 				8CE86DEE15F8D9420060E004 /* vu-needle.png in Resources */,
 				8CE86DEF15F8D9420060E004 /* vu-shell.png in Resources */,
 				8CC0E3D215FAFBB8001AEB04 /* ColdFunk-Intro.caf in Resources */,
+				3961E30F1649E2320008A65B /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2000,11 +2004,18 @@
 		390E993F1482C4BE002E14E7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_SECURITY_FLOATLOOPCOUNTER = YES;
+				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
+				CLANG_ANALYZER_SECURITY_INSECUREAPI_STRCPY = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
 				CLANG_WARN_OBJCPP_ARC_ABI = YES;
 				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
+				CLANG_WARN_OBJC_RECEIVER_WEAK = YES;
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CLANG_WARN__EXIT_TIME_DESTRUCTORS = YES;
 				DSTROOT = /tmp/ObjectAL.dst;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2013,6 +2024,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ObjectAL/ObjectAL-Prefix.pch";
+				GCC_THUMB_SUPPORT = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
@@ -2038,11 +2050,18 @@
 		390E99401482C4BE002E14E7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_SECURITY_FLOATLOOPCOUNTER = YES;
+				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
+				CLANG_ANALYZER_SECURITY_INSECUREAPI_STRCPY = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
 				CLANG_WARN_OBJCPP_ARC_ABI = YES;
 				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
+				CLANG_WARN_OBJC_RECEIVER_WEAK = YES;
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CLANG_WARN__EXIT_TIME_DESTRUCTORS = YES;
 				DSTROOT = /tmp/ObjectAL.dst;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2051,6 +2070,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ObjectAL/ObjectAL-Prefix.pch";
+				GCC_THUMB_SUPPORT = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
@@ -2077,6 +2097,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				DEBUGGING_SYMBOLS = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
@@ -2095,6 +2116,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -2117,6 +2139,8 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "cocos2d/cocos2d-Prefix.pch";
+				GCC_THUMB_SUPPORT = NO;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				USER_HEADER_SEARCH_PATHS = "\"cocos2d/kazmath/include\"";
@@ -2134,6 +2158,8 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "cocos2d/cocos2d-Prefix.pch";
+				GCC_THUMB_SUPPORT = NO;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				USER_HEADER_SEARCH_PATHS = "\"cocos2d/kazmath/include\"";
@@ -2159,6 +2185,7 @@
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -2182,6 +2209,7 @@
 					"CC_ENABLE_GL_STATE_CACHE=1",
 					"CC_ENABLE_DEPRECATED=0",
 				);
+				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -2210,6 +2238,7 @@
 					DEBUG,
 					"COCOS2D_DEBUG=1",
 				);
+				GCC_THUMB_SUPPORT = NO;
 				INFOPLIST_FILE = ObjectALDemo/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_LDFLAGS = "-ObjC";
@@ -2234,6 +2263,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ObjectALDemo/Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = NDEBUG;
+				GCC_THUMB_SUPPORT = NO;
 				INFOPLIST_FILE = ObjectALDemo/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";

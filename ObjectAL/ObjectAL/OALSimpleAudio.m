@@ -416,7 +416,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		OAL_LOG_DEBUG(@"Play bg, loop %d");
+		OAL_LOG_DEBUG(@"Play bg, loop %d", loop);
 		backgroundTrack.numberOfLoops = loop ? -1 : 0;
 		return [backgroundTrack play];
 	}

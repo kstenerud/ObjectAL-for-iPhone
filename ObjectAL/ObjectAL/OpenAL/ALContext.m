@@ -146,7 +146,7 @@
 {
 	if(nil != (self = [super init]))
 	{
-		OAL_LOG_DEBUG(@"%@: Init on %@ with attributes 0x%08x", self, deviceIn, attributesIn);
+		OAL_LOG_DEBUG(@"%@: Init on %@ with attributes %@", self, deviceIn, attributesIn);
 
 		if(nil == deviceIn)
 		{
