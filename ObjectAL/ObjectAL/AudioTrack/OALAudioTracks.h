@@ -61,6 +61,13 @@
 @property(nonatomic,readonly,retain) NSArray* tracks;
 
 
+#pragma mark Playback
+
+/** Stop playback on all audio tracks.
+ */
+- (void) stopAllTracks;
+
+
 #pragma mark Object Management
 
 /** Singleton implementation providing "sharedInstance" and "purgeSharedInstance" methods.

@@ -149,6 +149,14 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioTracks);
 }
 
 
+#pragma mark Playback
+
+- (void) stopAllTracks
+{
+    [self.tracks makeObjectsPerformSelector:@selector(stop)];
+}
+
+
 #pragma mark Suspend Handler
 
 - (void) addSuspendListener:(id<OALSuspendListener>) listener
@@ -193,6 +201,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioTracks);
 {
 	@synchronized(tracks)
 	{
+        track.muted = self.muted;
 		[tracks addObject:track];
 	}
 }

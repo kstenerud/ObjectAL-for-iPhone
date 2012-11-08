@@ -151,6 +151,8 @@ static uint startIndex = 0;
 
     // Restore some sensible defaults in case a demo changed it.
 
+    [[OALSimpleAudio sharedInstance] stopAllEffects];
+    [[OALAudioTracks sharedInstance] stopAllTracks];
 	[OALSimpleAudio sharedInstance].reservedSources = 32;
     [OALSimpleAudio sharedInstance].context.listener.reverbOn = NO;
 
