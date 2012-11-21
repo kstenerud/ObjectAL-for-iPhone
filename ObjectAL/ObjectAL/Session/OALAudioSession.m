@@ -32,6 +32,7 @@
 #import "ObjectALMacros.h"
 #import "ARCSafe_MemMgmt.h"
 #import "OALNotifications.h"
+#import "IOSVersion.h"
 
 
 #define kMaxSessionActivationRetries 40
@@ -123,10 +124,27 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 	{
 		OAL_LOG_DEBUG(@"%@: Init", self);
 
+        float osVersion = [IOSVersion sharedInstance].version;
+
 		suspendHandler = [[OALSuspendHandler alloc] initWithTarget:self selector:@selector(setSuspended:)];
 
-		[(AVAudioSession*)[AVAudioSession sharedInstance] setDelegate:self];
-		
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
+        if(osVersion < 6.0f)
+        {
+            OAL_LOG_DEBUG(@"Setting up AVAudioSession delegate");
+            [(AVAudioSession*)[AVAudioSession sharedInstance] setDelegate:self];
+        }
+#endif // __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
+
+        if(osVersion >= 6.0f)
+        {
+            OAL_LOG_DEBUG(@"Adding notification observer for AVAudioSessionInterruptionNotification");
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(handleInterruption:)
+                                                         name:AVAudioSessionInterruptionNotification
+                                                       object:[AVAudioSession sharedInstance]];
+        }
+
 		// Set up defaults
 		handleInterruptions = YES;
 		allowIpod = YES;
@@ -151,6 +169,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 - (void) dealloc
 {
 	OAL_LOG_DEBUG(@"%@: Dealloc", self);
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 
     NSError* error;
     if(![[AVAudioSession sharedInstance] setActive:NO error:&error])
@@ -611,6 +631,26 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 
 
 #pragma mark Interrupt Handling
+
+// iOS 6.0+ interrupt handling
+- (void) handleInterruption:(NSNotification*) notification
+{
+    NSUInteger type = [[notification.userInfo objectForKey:AVAudioSessionInterruptionTypeKey] unsignedIntegerValue];
+    OAL_LOG_DEBUG(@"iOS 6+ interrupt type %d", type);
+    switch(type)
+    {
+        case AVAudioSessionInterruptionTypeBegan:
+            [self beginInterruption];
+            break;
+        case AVAudioSessionInterruptionTypeEnded:
+        {
+            NSUInteger options = [[notification.userInfo objectForKey:AVAudioSessionInterruptionOptionKey] unsignedIntegerValue];
+            [self endInterruptionWithFlags:options];
+            break;
+        }
+    }
+}
+
 
 // AVAudioSessionDelegate
 - (void) beginInterruption

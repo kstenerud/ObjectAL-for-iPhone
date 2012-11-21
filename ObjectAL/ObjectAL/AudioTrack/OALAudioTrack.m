@@ -973,7 +973,15 @@
 	}
 }
 
-#if defined(__MAC_10_7) || defined(__IPHONE_4_0)
+- (void)audioPlayerEndInterruption:(AVAudioPlayer *)playerIn withOptions:(NSUInteger)flags
+{
+	if([delegate respondsToSelector:@selector(audioPlayerEndInterruption:withOptions:)])
+	{
+		[delegate audioPlayerEndInterruption:playerIn withOptions:flags];
+	}
+}
+
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
 - (void)audioPlayerEndInterruption:(AVAudioPlayer *)playerIn withFlags:(NSUInteger)flags
 {
 	if([delegate respondsToSelector:@selector(audioPlayerEndInterruption:withFlags:)])
@@ -981,7 +989,6 @@
 		[delegate audioPlayerEndInterruption:playerIn withFlags:flags];
 	}
 }
-#endif
 
 - (void) audioPlayerEndInterruption:(AVAudioPlayer*) playerIn
 {
@@ -990,7 +997,8 @@
 		[delegate audioPlayerEndInterruption:playerIn];
 	}
 }
-#endif //TARGET_OS_IPHONE
+#endif // __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
+#endif // TARGET_OS_IPHONE
 
 - (void) audioPlayerDecodeErrorDidOccur:(AVAudioPlayer*) playerIn error:(NSError*) error
 {
