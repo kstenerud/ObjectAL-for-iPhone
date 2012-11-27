@@ -236,4 +236,20 @@
  */
 - (BOOL) removeBuffersNamed:(NSString*) name;
 
+/**
+ *  Mute one sound in the souce list
+ * @param effectSource the buffer of the sound.
+ */
+-(void) muteEffectWithBuffer:(ALBuffer *) effectSource;
+/**
+ *  Unmute one sound in the souce list
+ *  @param effectSource the buffer of the sound.
+ */
+-(void) unmuteEffectWithBuffer:(ALBuffer *) effectSource;
+/**
+ *  Mute and Unmute one sound in the source list
+ *  @param effectSource the buffer of the sound.
+ */
+-(void) switchMuteWithEffectBuffer:(ALBuffer *) effectSource;
+
 @end

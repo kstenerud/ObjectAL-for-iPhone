@@ -667,6 +667,57 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
     [channel clearUnusedBuffers];
 }
 
+#pragma mark -
+#pragma mute Funtions
+- (void) switchMuteWithEffectName:(NSString*) filePath
+{
+	if(nil == filePath)
+	{
+		OAL_LOG_ERROR(@"filePath was NULL");
+	}
+    else
+    {
+        ALBuffer* buffer = [self internalPreloadEffect:filePath reduceToMono:NO];
+        if(nil != buffer)
+        {
+            [channel switchMuteWithEffectBuffer:buffer];
+        }
+    }
+}
+
+- (void) muteEffectWithName:(NSString*) filePath
+{
+	if(nil == filePath)
+	{
+		OAL_LOG_ERROR(@"filePath was NULL");
+	}
+    else
+    {
+        ALBuffer* buffer = [self internalPreloadEffect:filePath reduceToMono:NO];
+        if(nil != buffer)
+        {
+            [channel muteEffectWithBuffer:buffer];
+        }
+    }
+}
+
+- (void) unmuteEffectWithName:(NSString*) filePath
+{
+	if(nil == filePath)
+	{
+		OAL_LOG_ERROR(@"filePath was NULL");
+	}
+    else
+    {
+        ALBuffer* buffer = [self internalPreloadEffect:filePath reduceToMono:NO];
+        if(nil != buffer)
+        {
+            [channel unmuteEffectWithBuffer:buffer];
+        }
+    }
+}
+#pragma mark -
+
 
 #pragma mark Utility
 
