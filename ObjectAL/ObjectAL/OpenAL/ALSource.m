@@ -913,33 +913,39 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) setSuspended:(bool) value
 {
-	if(value)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		shadowState = self.state;
-		if(AL_PLAYING == shadowState)
-		{
-			[ALWrapper sourcePause:sourceId];
-		}
-	}
-	else
-	{
-		// The shadow state holds the state we had when suspending.
-		if(AL_PLAYING == shadowState)
-		{
-			// Because Apple's OpenAL implementation can't stack commands (it defers processing
-			// to a later sequence point), we have to delay resuming playback.
-			abortPlaybackResume = NO;
-			[self performSelector:@selector(delayedResumePlayback) withObject:nil afterDelay:0.03];
-		}
-	}
+        if(value)
+        {
+            shadowState = self.state;
+            if(AL_PLAYING == shadowState)
+            {
+                [ALWrapper sourcePause:sourceId];
+            }
+        }
+        else
+        {
+            // The shadow state holds the state we had when suspending.
+            if(AL_PLAYING == shadowState)
+            {
+                // Because Apple's OpenAL implementation can't stack commands (it defers processing
+                // to a later sequence point), we have to delay resuming playback.
+                abortPlaybackResume = NO;
+                [self performSelector:@selector(delayedResumePlayback) withObject:nil afterDelay:0.03];
+            }
+        }
+    }
 }
 
 - (void) delayedResumePlayback
 {
-	if(!abortPlaybackResume)
+	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		[ALWrapper sourcePlay:sourceId];
-	}
+        if(!abortPlaybackResume)
+        {
+            [ALWrapper sourcePlay:sourceId];
+        }
+    }
 }
 
 
