@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
   s.authors  = { 'Karl Stenerud' => 'kstenerud@gmail.com' }
   s.source   = { :git => 'https://github.com/kstenerud/ObjectAL-for-iPhone.git', :commit => '822c82ef5557523836e56e24a5e4f6b0b4bb35a6' }
   # s.source   = { :git => 'https://github.com/kstenerud/ObjectAL-for-iPhone.git', :tag => '2.1.1' }
-  s.source_files = 'ObjectAL/**/*.[chm}'
+  s.source_files = 'ObjectAL/**/*.[chm]'
   s.public_header_files = '*.h'
   s.requires_arc = false
   s.platform     = :ios, '3.0'
