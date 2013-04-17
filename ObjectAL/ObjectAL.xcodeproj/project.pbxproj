@@ -1,0 +1,949 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CB5E9945171D1A43004CF421 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB5E9944171D1A43004CF421 /* AudioToolbox.framework */; };
+		CB5E9947171D1A4F004CF421 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB5E9946171D1A4F004CF421 /* AVFoundation.framework */; };
+		CB5E9949171D1A58004CF421 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB5E9948171D1A58004CF421 /* OpenAL.framework */; };
+		CBBAB314171D0B84009B955F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBBAB313171D0B84009B955F /* Foundation.framework */; };
+		CBBAB33F171D0BC4009B955F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBBAB33E171D0BC4009B955F /* Cocoa.framework */; };
+		CBBAB349171D0BC4009B955F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CBBAB347171D0BC4009B955F /* InfoPlist.strings */; };
+		CBBAB394171D0C0F009B955F /* OALAction+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB352171D0C0E009B955F /* OALAction+Private.h */; };
+		CBBAB395171D0C0F009B955F /* OALAction.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB353171D0C0E009B955F /* OALAction.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB396171D0C0F009B955F /* OALAction.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB354171D0C0E009B955F /* OALAction.m */; };
+		CBBAB397171D0C0F009B955F /* OALAction.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB354171D0C0E009B955F /* OALAction.m */; };
+		CBBAB398171D0C0F009B955F /* OALActionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB355171D0C0E009B955F /* OALActionManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB399171D0C0F009B955F /* OALActionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB356171D0C0E009B955F /* OALActionManager.m */; };
+		CBBAB39A171D0C0F009B955F /* OALActionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB356171D0C0E009B955F /* OALActionManager.m */; };
+		CBBAB39B171D0C0F009B955F /* OALAudioActions.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB357171D0C0E009B955F /* OALAudioActions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB39C171D0C0F009B955F /* OALAudioActions.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB358171D0C0E009B955F /* OALAudioActions.m */; };
+		CBBAB39D171D0C0F009B955F /* OALAudioActions.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB358171D0C0E009B955F /* OALAudioActions.m */; };
+		CBBAB39E171D0C0F009B955F /* OALUtilityActions.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB359171D0C0E009B955F /* OALUtilityActions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB39F171D0C0F009B955F /* OALUtilityActions.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB35A171D0C0E009B955F /* OALUtilityActions.m */; };
+		CBBAB3A0171D0C0F009B955F /* OALUtilityActions.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB35A171D0C0E009B955F /* OALUtilityActions.m */; };
+		CBBAB3A1171D0C0F009B955F /* OALAudioTrack.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB35C171D0C0E009B955F /* OALAudioTrack.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB3A2171D0C0F009B955F /* OALAudioTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB35D171D0C0E009B955F /* OALAudioTrack.m */; };
+		CBBAB3A3171D0C0F009B955F /* OALAudioTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB35D171D0C0E009B955F /* OALAudioTrack.m */; };
+		CBBAB3A4171D0C0F009B955F /* OALAudioTrackNotifications.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB35E171D0C0E009B955F /* OALAudioTrackNotifications.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB3A5171D0C0F009B955F /* OALAudioTrackNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB35F171D0C0E009B955F /* OALAudioTrackNotifications.m */; };
+		CBBAB3A6171D0C0F009B955F /* OALAudioTrackNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB35F171D0C0E009B955F /* OALAudioTrackNotifications.m */; };
+		CBBAB3A7171D0C0F009B955F /* OALAudioTracks.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB360171D0C0E009B955F /* OALAudioTracks.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB3A8171D0C0F009B955F /* OALAudioTracks.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB361171D0C0E009B955F /* OALAudioTracks.m */; };
+		CBBAB3A9171D0C0F009B955F /* OALAudioTracks.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB361171D0C0E009B955F /* OALAudioTracks.m */; };
+		CBBAB3AB171D0C0F009B955F /* OALSimpleAudio.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB363171D0C0E009B955F /* OALSimpleAudio.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB3AC171D0C0F009B955F /* OALSimpleAudio.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB364171D0C0E009B955F /* OALSimpleAudio.m */; };
+		CBBAB3AD171D0C0F009B955F /* OALSimpleAudio.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB364171D0C0E009B955F /* OALSimpleAudio.m */; };
+		CBBAB3AE171D0C0F009B955F /* ObjectAL.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB365171D0C0E009B955F /* ObjectAL.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB3AF171D0C0F009B955F /* ObjectALConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB366171D0C0E009B955F /* ObjectALConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB3B0171D0C0F009B955F /* ALBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB368171D0C0E009B955F /* ALBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB3B1171D0C0F009B955F /* ALBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB369171D0C0E009B955F /* ALBuffer.m */; };
+		CBBAB3B2171D0C0F009B955F /* ALBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB369171D0C0E009B955F /* ALBuffer.m */; };
+		CBBAB3B3171D0C0F009B955F /* ALCaptureDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB36A171D0C0E009B955F /* ALCaptureDevice.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB3B4171D0C0F009B955F /* ALCaptureDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB36B171D0C0E009B955F /* ALCaptureDevice.m */; };
+		CBBAB3B5171D0C0F009B955F /* ALCaptureDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB36B171D0C0E009B955F /* ALCaptureDevice.m */; };
+		CBBAB3B6171D0C0F009B955F /* ALChannelSource.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB36C171D0C0E009B955F /* ALChannelSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB3B7171D0C0F009B955F /* ALChannelSource.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB36D171D0C0E009B955F /* ALChannelSource.m */; };
+		CBBAB3B8171D0C0F009B955F /* ALChannelSource.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB36D171D0C0E009B955F /* ALChannelSource.m */; };
+		CBBAB3B9171D0C0F009B955F /* ALContext.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB36E171D0C0E009B955F /* ALContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB3BA171D0C0F009B955F /* ALContext.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB36F171D0C0E009B955F /* ALContext.m */; };
+		CBBAB3BB171D0C0F009B955F /* ALContext.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB36F171D0C0E009B955F /* ALContext.m */; };
+		CBBAB3BC171D0C0F009B955F /* ALDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB370171D0C0E009B955F /* ALDevice.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB3BD171D0C0F009B955F /* ALDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB371171D0C0E009B955F /* ALDevice.m */; };
+		CBBAB3BE171D0C0F009B955F /* ALDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB371171D0C0E009B955F /* ALDevice.m */; };
+		CBBAB3BF171D0C0F009B955F /* ALListener.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB372171D0C0E009B955F /* ALListener.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB3C0171D0C0F009B955F /* ALListener.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB373171D0C0E009B955F /* ALListener.m */; };
+		CBBAB3C1171D0C0F009B955F /* ALListener.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB373171D0C0E009B955F /* ALListener.m */; };
+		CBBAB3C2171D0C0F009B955F /* ALSoundSource.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB374171D0C0E009B955F /* ALSoundSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB3C3171D0C0F009B955F /* ALSoundSourcePool.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB375171D0C0E009B955F /* ALSoundSourcePool.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB3C4171D0C0F009B955F /* ALSoundSourcePool.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB376171D0C0E009B955F /* ALSoundSourcePool.m */; };
+		CBBAB3C5171D0C0F009B955F /* ALSoundSourcePool.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB376171D0C0E009B955F /* ALSoundSourcePool.m */; };
+		CBBAB3C6171D0C0F009B955F /* ALSource.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB377171D0C0E009B955F /* ALSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB3C7171D0C0F009B955F /* ALSource.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB378171D0C0E009B955F /* ALSource.m */; };
+		CBBAB3C8171D0C0F009B955F /* ALSource.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB378171D0C0E009B955F /* ALSource.m */; };
+		CBBAB3C9171D0C0F009B955F /* ALTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB379171D0C0E009B955F /* ALTypes.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB3CA171D0C0F009B955F /* ALWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB37A171D0C0E009B955F /* ALWrapper.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB3CB171D0C0F009B955F /* ALWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB37B171D0C0E009B955F /* ALWrapper.m */; };
+		CBBAB3CC171D0C0F009B955F /* ALWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB37B171D0C0E009B955F /* ALWrapper.m */; };
+		CBBAB3CD171D0C0F009B955F /* OpenALManager.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB37C171D0C0E009B955F /* OpenALManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB3CE171D0C0F009B955F /* OpenALManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB37D171D0C0E009B955F /* OpenALManager.m */; };
+		CBBAB3CF171D0C0F009B955F /* OpenALManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB37D171D0C0E009B955F /* OpenALManager.m */; };
+		CBBAB3D0171D0C0F009B955F /* OALAudioSession.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB37F171D0C0E009B955F /* OALAudioSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB3D1171D0C0F009B955F /* OALAudioSession.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB380171D0C0E009B955F /* OALAudioSession.m */; };
+		CBBAB3D2171D0C0F009B955F /* OALAudioSession.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB380171D0C0E009B955F /* OALAudioSession.m */; };
+		CBBAB3D3171D0C0F009B955F /* OALSuspendHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB381171D0C0E009B955F /* OALSuspendHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB3D4171D0C0F009B955F /* OALSuspendHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB382171D0C0E009B955F /* OALSuspendHandler.m */; };
+		CBBAB3D5171D0C0F009B955F /* OALSuspendHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB382171D0C0E009B955F /* OALSuspendHandler.m */; };
+		CBBAB3D6171D0C0F009B955F /* ARCSafe_MemMgmt.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB384171D0C0E009B955F /* ARCSafe_MemMgmt.h */; };
+		CBBAB3D7171D0C0F009B955F /* IOSVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB385171D0C0E009B955F /* IOSVersion.h */; };
+		CBBAB3D8171D0C0F009B955F /* IOSVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB386171D0C0E009B955F /* IOSVersion.m */; };
+		CBBAB3D9171D0C0F009B955F /* IOSVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB386171D0C0E009B955F /* IOSVersion.m */; };
+		CBBAB3DA171D0C0F009B955F /* mach_timing.c in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB387171D0C0E009B955F /* mach_timing.c */; };
+		CBBAB3DB171D0C0F009B955F /* mach_timing.c in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB387171D0C0E009B955F /* mach_timing.c */; };
+		CBBAB3DC171D0C0F009B955F /* mach_timing.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB388171D0C0E009B955F /* mach_timing.h */; };
+		CBBAB3DD171D0C0F009B955F /* NSMutableArray+WeakReferences.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB389171D0C0E009B955F /* NSMutableArray+WeakReferences.h */; };
+		CBBAB3DE171D0C0F009B955F /* NSMutableArray+WeakReferences.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB38A171D0C0E009B955F /* NSMutableArray+WeakReferences.m */; };
+		CBBAB3DF171D0C0F009B955F /* NSMutableArray+WeakReferences.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB38A171D0C0E009B955F /* NSMutableArray+WeakReferences.m */; };
+		CBBAB3E0171D0C0F009B955F /* NSMutableDictionary+WeakReferences.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB38B171D0C0E009B955F /* NSMutableDictionary+WeakReferences.h */; };
+		CBBAB3E1171D0C0F009B955F /* NSMutableDictionary+WeakReferences.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB38C171D0C0E009B955F /* NSMutableDictionary+WeakReferences.m */; };
+		CBBAB3E2171D0C0F009B955F /* NSMutableDictionary+WeakReferences.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB38C171D0C0E009B955F /* NSMutableDictionary+WeakReferences.m */; };
+		CBBAB3E3171D0C0F009B955F /* OALAudioFile.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB38D171D0C0E009B955F /* OALAudioFile.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB3E4171D0C0F009B955F /* OALAudioFile.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB38E171D0C0E009B955F /* OALAudioFile.m */; };
+		CBBAB3E5171D0C0F009B955F /* OALAudioFile.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB38E171D0C0E009B955F /* OALAudioFile.m */; };
+		CBBAB3E6171D0C0F009B955F /* OALNotifications.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB38F171D0C0E009B955F /* OALNotifications.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB3E7171D0C0F009B955F /* OALTools.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB390171D0C0E009B955F /* OALTools.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB3E8171D0C0F009B955F /* OALTools.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB391171D0C0E009B955F /* OALTools.m */; };
+		CBBAB3E9171D0C0F009B955F /* OALTools.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB391171D0C0E009B955F /* OALTools.m */; };
+		CBBAB3EA171D0C0F009B955F /* ObjectALMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB392171D0C0F009B955F /* ObjectALMacros.h */; };
+		CBBAB3EB171D0C0F009B955F /* SynthesizeSingleton.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB393171D0C0F009B955F /* SynthesizeSingleton.h */; };
+		CBBAB400171D0C86009B955F /* OALAction+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB352171D0C0E009B955F /* OALAction+Private.h */; };
+		CBBAB401171D0C86009B955F /* OALAction.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB353171D0C0E009B955F /* OALAction.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB402171D0C86009B955F /* OALActionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB355171D0C0E009B955F /* OALActionManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB403171D0C86009B955F /* OALAudioActions.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB357171D0C0E009B955F /* OALAudioActions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB404171D0C86009B955F /* OALUtilityActions.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB359171D0C0E009B955F /* OALUtilityActions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB405171D0C86009B955F /* OALAudioTrack.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB35C171D0C0E009B955F /* OALAudioTrack.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB406171D0C86009B955F /* OALAudioTrackNotifications.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB35E171D0C0E009B955F /* OALAudioTrackNotifications.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB407171D0C86009B955F /* OALAudioTracks.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB360171D0C0E009B955F /* OALAudioTracks.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB408171D0C86009B955F /* OALSimpleAudio.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB363171D0C0E009B955F /* OALSimpleAudio.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB409171D0C86009B955F /* ObjectAL.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB365171D0C0E009B955F /* ObjectAL.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB40A171D0C86009B955F /* ObjectALConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB366171D0C0E009B955F /* ObjectALConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB40B171D0C86009B955F /* ALBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB368171D0C0E009B955F /* ALBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB40C171D0C86009B955F /* ALCaptureDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB36A171D0C0E009B955F /* ALCaptureDevice.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB40D171D0C86009B955F /* ALChannelSource.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB36C171D0C0E009B955F /* ALChannelSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB40E171D0C86009B955F /* ALContext.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB36E171D0C0E009B955F /* ALContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB40F171D0C86009B955F /* ALDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB370171D0C0E009B955F /* ALDevice.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB410171D0C86009B955F /* ALListener.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB372171D0C0E009B955F /* ALListener.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB411171D0C86009B955F /* ALSoundSource.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB374171D0C0E009B955F /* ALSoundSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB412171D0C86009B955F /* ALSoundSourcePool.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB375171D0C0E009B955F /* ALSoundSourcePool.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB413171D0C86009B955F /* ALSource.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB377171D0C0E009B955F /* ALSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB414171D0C86009B955F /* ALTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB379171D0C0E009B955F /* ALTypes.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB415171D0C86009B955F /* ALWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB37A171D0C0E009B955F /* ALWrapper.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB416171D0C86009B955F /* OpenALManager.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB37C171D0C0E009B955F /* OpenALManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB417171D0C86009B955F /* OALAudioSession.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB37F171D0C0E009B955F /* OALAudioSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB418171D0C86009B955F /* OALSuspendHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB381171D0C0E009B955F /* OALSuspendHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB419171D0C86009B955F /* ARCSafe_MemMgmt.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB384171D0C0E009B955F /* ARCSafe_MemMgmt.h */; };
+		CBBAB41A171D0C86009B955F /* IOSVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB385171D0C0E009B955F /* IOSVersion.h */; };
+		CBBAB41B171D0C86009B955F /* mach_timing.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB388171D0C0E009B955F /* mach_timing.h */; };
+		CBBAB41C171D0C86009B955F /* NSMutableArray+WeakReferences.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB389171D0C0E009B955F /* NSMutableArray+WeakReferences.h */; };
+		CBBAB41D171D0C86009B955F /* NSMutableDictionary+WeakReferences.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB38B171D0C0E009B955F /* NSMutableDictionary+WeakReferences.h */; };
+		CBBAB41E171D0C86009B955F /* OALAudioFile.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB38D171D0C0E009B955F /* OALAudioFile.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB41F171D0C86009B955F /* OALNotifications.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB38F171D0C0E009B955F /* OALNotifications.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB420171D0C86009B955F /* OALTools.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB390171D0C0E009B955F /* OALTools.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB421171D0C86009B955F /* ObjectALMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB392171D0C0F009B955F /* ObjectALMacros.h */; };
+		CBBAB422171D0C86009B955F /* SynthesizeSingleton.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB393171D0C0F009B955F /* SynthesizeSingleton.h */; };
+		CBBAB4E1171D0FB0009B955F /* OALAction.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBAB353171D0C0E009B955F /* OALAction.h */; };
+		CBBAB4E2171D0FB0009B955F /* OALActionManager.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBAB355171D0C0E009B955F /* OALActionManager.h */; };
+		CBBAB4E3171D0FB0009B955F /* OALAudioActions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBAB357171D0C0E009B955F /* OALAudioActions.h */; };
+		CBBAB4E4171D0FB0009B955F /* OALUtilityActions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBAB359171D0C0E009B955F /* OALUtilityActions.h */; };
+		CBBAB4E5171D0FB0009B955F /* OALAudioTrack.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBAB35C171D0C0E009B955F /* OALAudioTrack.h */; };
+		CBBAB4E6171D0FB0009B955F /* OALAudioTrackNotifications.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBAB35E171D0C0E009B955F /* OALAudioTrackNotifications.h */; };
+		CBBAB4E7171D0FB0009B955F /* OALAudioTracks.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBAB360171D0C0E009B955F /* OALAudioTracks.h */; };
+		CBBAB4E8171D0FB0009B955F /* OALSimpleAudio.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBAB363171D0C0E009B955F /* OALSimpleAudio.h */; };
+		CBBAB4E9171D0FB0009B955F /* ObjectAL.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBAB365171D0C0E009B955F /* ObjectAL.h */; };
+		CBBAB4EA171D0FB0009B955F /* ObjectALConfig.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBAB366171D0C0E009B955F /* ObjectALConfig.h */; };
+		CBBAB4EB171D0FB0009B955F /* ALBuffer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBAB368171D0C0E009B955F /* ALBuffer.h */; };
+		CBBAB4EC171D0FB0009B955F /* ALCaptureDevice.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBAB36A171D0C0E009B955F /* ALCaptureDevice.h */; };
+		CBBAB4ED171D0FB0009B955F /* ALChannelSource.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBAB36C171D0C0E009B955F /* ALChannelSource.h */; };
+		CBBAB4EE171D0FB0009B955F /* ALContext.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBAB36E171D0C0E009B955F /* ALContext.h */; };
+		CBBAB4EF171D0FB0009B955F /* ALDevice.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBAB370171D0C0E009B955F /* ALDevice.h */; };
+		CBBAB4F0171D0FB0009B955F /* ALListener.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBAB372171D0C0E009B955F /* ALListener.h */; };
+		CBBAB4F1171D0FB0009B955F /* ALSoundSource.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBAB374171D0C0E009B955F /* ALSoundSource.h */; };
+		CBBAB4F2171D0FB0009B955F /* ALSoundSourcePool.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBAB375171D0C0E009B955F /* ALSoundSourcePool.h */; };
+		CBBAB4F3171D0FB0009B955F /* ALSource.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBAB377171D0C0E009B955F /* ALSource.h */; };
+		CBBAB4F4171D0FB0009B955F /* ALTypes.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBAB379171D0C0E009B955F /* ALTypes.h */; };
+		CBBAB4F5171D0FB0009B955F /* ALWrapper.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBAB37A171D0C0E009B955F /* ALWrapper.h */; };
+		CBBAB4F6171D0FB0009B955F /* OpenALManager.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBAB37C171D0C0E009B955F /* OpenALManager.h */; };
+		CBBAB4F7171D0FB0009B955F /* OALAudioSession.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBAB37F171D0C0E009B955F /* OALAudioSession.h */; };
+		CBBAB4F8171D0FB0009B955F /* OALSuspendHandler.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBAB381171D0C0E009B955F /* OALSuspendHandler.h */; };
+		CBBAB4F9171D0FB0009B955F /* OALAudioFile.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBAB38D171D0C0E009B955F /* OALAudioFile.h */; };
+		CBBAB4FA171D0FB0009B955F /* OALNotifications.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBAB38F171D0C0E009B955F /* OALNotifications.h */; };
+		CBBAB4FB171D0FB0009B955F /* OALTools.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBAB390171D0C0E009B955F /* OALTools.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		CBBAB310171D0B84009B955F /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = "../BuildProductsPath/$(CONFIGURATION)-$(PLATFORM_NAME)/include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 0;
+			files = (
+				CBBAB4E1171D0FB0009B955F /* OALAction.h in CopyFiles */,
+				CBBAB4E2171D0FB0009B955F /* OALActionManager.h in CopyFiles */,
+				CBBAB4E3171D0FB0009B955F /* OALAudioActions.h in CopyFiles */,
+				CBBAB4E4171D0FB0009B955F /* OALUtilityActions.h in CopyFiles */,
+				CBBAB4E5171D0FB0009B955F /* OALAudioTrack.h in CopyFiles */,
+				CBBAB4E6171D0FB0009B955F /* OALAudioTrackNotifications.h in CopyFiles */,
+				CBBAB4E7171D0FB0009B955F /* OALAudioTracks.h in CopyFiles */,
+				CBBAB4E8171D0FB0009B955F /* OALSimpleAudio.h in CopyFiles */,
+				CBBAB4E9171D0FB0009B955F /* ObjectAL.h in CopyFiles */,
+				CBBAB4EA171D0FB0009B955F /* ObjectALConfig.h in CopyFiles */,
+				CBBAB4EB171D0FB0009B955F /* ALBuffer.h in CopyFiles */,
+				CBBAB4EC171D0FB0009B955F /* ALCaptureDevice.h in CopyFiles */,
+				CBBAB4ED171D0FB0009B955F /* ALChannelSource.h in CopyFiles */,
+				CBBAB4EE171D0FB0009B955F /* ALContext.h in CopyFiles */,
+				CBBAB4EF171D0FB0009B955F /* ALDevice.h in CopyFiles */,
+				CBBAB4F0171D0FB0009B955F /* ALListener.h in CopyFiles */,
+				CBBAB4F1171D0FB0009B955F /* ALSoundSource.h in CopyFiles */,
+				CBBAB4F2171D0FB0009B955F /* ALSoundSourcePool.h in CopyFiles */,
+				CBBAB4F3171D0FB0009B955F /* ALSource.h in CopyFiles */,
+				CBBAB4F4171D0FB0009B955F /* ALTypes.h in CopyFiles */,
+				CBBAB4F5171D0FB0009B955F /* ALWrapper.h in CopyFiles */,
+				CBBAB4F6171D0FB0009B955F /* OpenALManager.h in CopyFiles */,
+				CBBAB4F7171D0FB0009B955F /* OALAudioSession.h in CopyFiles */,
+				CBBAB4F8171D0FB0009B955F /* OALSuspendHandler.h in CopyFiles */,
+				CBBAB4F9171D0FB0009B955F /* OALAudioFile.h in CopyFiles */,
+				CBBAB4FA171D0FB0009B955F /* OALNotifications.h in CopyFiles */,
+				CBBAB4FB171D0FB0009B955F /* OALTools.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		CB5E9944171D1A43004CF421 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
+		CB5E9946171D1A4F004CF421 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
+		CB5E9948171D1A58004CF421 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/OpenAL.framework; sourceTree = DEVELOPER_DIR; };
+		CBBAB312171D0B84009B955F /* libObjectAL.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libObjectAL.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		CBBAB313171D0B84009B955F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		CBBAB317171D0B84009B955F /* ObjectAL (iOS)-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ObjectAL (iOS)-Prefix.pch"; sourceTree = "<group>"; };
+		CBBAB33D171D0BC4009B955F /* ObjectAL.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ObjectAL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CBBAB33E171D0BC4009B955F /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		CBBAB341171D0BC4009B955F /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		CBBAB342171D0BC4009B955F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		CBBAB343171D0BC4009B955F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		CBBAB346171D0BC4009B955F /* ObjectAL (OSX)-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ObjectAL (OSX)-Info.plist"; sourceTree = "<group>"; };
+		CBBAB348171D0BC4009B955F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		CBBAB34A171D0BC4009B955F /* ObjectAL (OSX)-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ObjectAL (OSX)-Prefix.pch"; sourceTree = "<group>"; };
+		CBBAB352171D0C0E009B955F /* OALAction+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OALAction+Private.h"; sourceTree = "<group>"; };
+		CBBAB353171D0C0E009B955F /* OALAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALAction.h; sourceTree = "<group>"; };
+		CBBAB354171D0C0E009B955F /* OALAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALAction.m; sourceTree = "<group>"; };
+		CBBAB355171D0C0E009B955F /* OALActionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALActionManager.h; sourceTree = "<group>"; };
+		CBBAB356171D0C0E009B955F /* OALActionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALActionManager.m; sourceTree = "<group>"; };
+		CBBAB357171D0C0E009B955F /* OALAudioActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALAudioActions.h; sourceTree = "<group>"; };
+		CBBAB358171D0C0E009B955F /* OALAudioActions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALAudioActions.m; sourceTree = "<group>"; };
+		CBBAB359171D0C0E009B955F /* OALUtilityActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALUtilityActions.h; sourceTree = "<group>"; };
+		CBBAB35A171D0C0E009B955F /* OALUtilityActions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALUtilityActions.m; sourceTree = "<group>"; };
+		CBBAB35C171D0C0E009B955F /* OALAudioTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALAudioTrack.h; sourceTree = "<group>"; };
+		CBBAB35D171D0C0E009B955F /* OALAudioTrack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALAudioTrack.m; sourceTree = "<group>"; };
+		CBBAB35E171D0C0E009B955F /* OALAudioTrackNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALAudioTrackNotifications.h; sourceTree = "<group>"; };
+		CBBAB35F171D0C0E009B955F /* OALAudioTrackNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALAudioTrackNotifications.m; sourceTree = "<group>"; };
+		CBBAB360171D0C0E009B955F /* OALAudioTracks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALAudioTracks.h; sourceTree = "<group>"; };
+		CBBAB361171D0C0E009B955F /* OALAudioTracks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALAudioTracks.m; sourceTree = "<group>"; };
+		CBBAB363171D0C0E009B955F /* OALSimpleAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALSimpleAudio.h; sourceTree = "<group>"; };
+		CBBAB364171D0C0E009B955F /* OALSimpleAudio.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALSimpleAudio.m; sourceTree = "<group>"; };
+		CBBAB365171D0C0E009B955F /* ObjectAL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectAL.h; sourceTree = "<group>"; };
+		CBBAB366171D0C0E009B955F /* ObjectALConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectALConfig.h; sourceTree = "<group>"; };
+		CBBAB368171D0C0E009B955F /* ALBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALBuffer.h; sourceTree = "<group>"; };
+		CBBAB369171D0C0E009B955F /* ALBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALBuffer.m; sourceTree = "<group>"; };
+		CBBAB36A171D0C0E009B955F /* ALCaptureDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALCaptureDevice.h; sourceTree = "<group>"; };
+		CBBAB36B171D0C0E009B955F /* ALCaptureDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALCaptureDevice.m; sourceTree = "<group>"; };
+		CBBAB36C171D0C0E009B955F /* ALChannelSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALChannelSource.h; sourceTree = "<group>"; };
+		CBBAB36D171D0C0E009B955F /* ALChannelSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALChannelSource.m; sourceTree = "<group>"; };
+		CBBAB36E171D0C0E009B955F /* ALContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALContext.h; sourceTree = "<group>"; };
+		CBBAB36F171D0C0E009B955F /* ALContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALContext.m; sourceTree = "<group>"; };
+		CBBAB370171D0C0E009B955F /* ALDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALDevice.h; sourceTree = "<group>"; };
+		CBBAB371171D0C0E009B955F /* ALDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALDevice.m; sourceTree = "<group>"; };
+		CBBAB372171D0C0E009B955F /* ALListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALListener.h; sourceTree = "<group>"; };
+		CBBAB373171D0C0E009B955F /* ALListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALListener.m; sourceTree = "<group>"; };
+		CBBAB374171D0C0E009B955F /* ALSoundSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALSoundSource.h; sourceTree = "<group>"; };
+		CBBAB375171D0C0E009B955F /* ALSoundSourcePool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALSoundSourcePool.h; sourceTree = "<group>"; };
+		CBBAB376171D0C0E009B955F /* ALSoundSourcePool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALSoundSourcePool.m; sourceTree = "<group>"; };
+		CBBAB377171D0C0E009B955F /* ALSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALSource.h; sourceTree = "<group>"; };
+		CBBAB378171D0C0E009B955F /* ALSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALSource.m; sourceTree = "<group>"; };
+		CBBAB379171D0C0E009B955F /* ALTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALTypes.h; sourceTree = "<group>"; };
+		CBBAB37A171D0C0E009B955F /* ALWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALWrapper.h; sourceTree = "<group>"; };
+		CBBAB37B171D0C0E009B955F /* ALWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALWrapper.m; sourceTree = "<group>"; };
+		CBBAB37C171D0C0E009B955F /* OpenALManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenALManager.h; sourceTree = "<group>"; };
+		CBBAB37D171D0C0E009B955F /* OpenALManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenALManager.m; sourceTree = "<group>"; };
+		CBBAB37F171D0C0E009B955F /* OALAudioSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALAudioSession.h; sourceTree = "<group>"; };
+		CBBAB380171D0C0E009B955F /* OALAudioSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALAudioSession.m; sourceTree = "<group>"; };
+		CBBAB381171D0C0E009B955F /* OALSuspendHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALSuspendHandler.h; sourceTree = "<group>"; };
+		CBBAB382171D0C0E009B955F /* OALSuspendHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALSuspendHandler.m; sourceTree = "<group>"; };
+		CBBAB384171D0C0E009B955F /* ARCSafe_MemMgmt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCSafe_MemMgmt.h; sourceTree = "<group>"; };
+		CBBAB385171D0C0E009B955F /* IOSVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOSVersion.h; sourceTree = "<group>"; };
+		CBBAB386171D0C0E009B955F /* IOSVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOSVersion.m; sourceTree = "<group>"; };
+		CBBAB387171D0C0E009B955F /* mach_timing.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mach_timing.c; sourceTree = "<group>"; };
+		CBBAB388171D0C0E009B955F /* mach_timing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mach_timing.h; sourceTree = "<group>"; };
+		CBBAB389171D0C0E009B955F /* NSMutableArray+WeakReferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+WeakReferences.h"; sourceTree = "<group>"; };
+		CBBAB38A171D0C0E009B955F /* NSMutableArray+WeakReferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+WeakReferences.m"; sourceTree = "<group>"; };
+		CBBAB38B171D0C0E009B955F /* NSMutableDictionary+WeakReferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableDictionary+WeakReferences.h"; sourceTree = "<group>"; };
+		CBBAB38C171D0C0E009B955F /* NSMutableDictionary+WeakReferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableDictionary+WeakReferences.m"; sourceTree = "<group>"; };
+		CBBAB38D171D0C0E009B955F /* OALAudioFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALAudioFile.h; sourceTree = "<group>"; };
+		CBBAB38E171D0C0E009B955F /* OALAudioFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALAudioFile.m; sourceTree = "<group>"; };
+		CBBAB38F171D0C0E009B955F /* OALNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALNotifications.h; sourceTree = "<group>"; };
+		CBBAB390171D0C0E009B955F /* OALTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALTools.h; sourceTree = "<group>"; };
+		CBBAB391171D0C0E009B955F /* OALTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALTools.m; sourceTree = "<group>"; };
+		CBBAB392171D0C0F009B955F /* ObjectALMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectALMacros.h; sourceTree = "<group>"; };
+		CBBAB393171D0C0F009B955F /* SynthesizeSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynthesizeSingleton.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CBBAB30F171D0B84009B955F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CBBAB314171D0B84009B955F /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CBBAB339171D0BC4009B955F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB5E9949171D1A58004CF421 /* OpenAL.framework in Frameworks */,
+				CB5E9947171D1A4F004CF421 /* AVFoundation.framework in Frameworks */,
+				CB5E9945171D1A43004CF421 /* AudioToolbox.framework in Frameworks */,
+				CBBAB33F171D0BC4009B955F /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CBBAA820171D05AA009B955F = {
+			isa = PBXGroup;
+			children = (
+				CBBAB315171D0B84009B955F /* ObjectAL (iOS) */,
+				CBBAB344171D0BC4009B955F /* ObjectAL (OSX) */,
+				CBBAA82B171D05AA009B955F /* Frameworks */,
+				CBBAA82A171D05AA009B955F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CBBAA82A171D05AA009B955F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CBBAB312171D0B84009B955F /* libObjectAL.a */,
+				CBBAB33D171D0BC4009B955F /* ObjectAL.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CBBAA82B171D05AA009B955F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CB5E9944171D1A43004CF421 /* AudioToolbox.framework */,
+				CB5E9946171D1A4F004CF421 /* AVFoundation.framework */,
+				CBBAB33E171D0BC4009B955F /* Cocoa.framework */,
+				CBBAB313171D0B84009B955F /* Foundation.framework */,
+				CB5E9948171D1A58004CF421 /* OpenAL.framework */,
+				CBBAB340171D0BC4009B955F /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CBBAB315171D0B84009B955F /* ObjectAL (iOS) */ = {
+			isa = PBXGroup;
+			children = (
+				CBBAB351171D0C0E009B955F /* Actions */,
+				CBBAB35B171D0C0E009B955F /* AudioTrack */,
+				CBBAB363171D0C0E009B955F /* OALSimpleAudio.h */,
+				CBBAB364171D0C0E009B955F /* OALSimpleAudio.m */,
+				CBBAB365171D0C0E009B955F /* ObjectAL.h */,
+				CBBAB366171D0C0E009B955F /* ObjectALConfig.h */,
+				CBBAB367171D0C0E009B955F /* OpenAL */,
+				CBBAB37E171D0C0E009B955F /* Session */,
+				CBBAB383171D0C0E009B955F /* Support */,
+				CBBAB316171D0B84009B955F /* Supporting Files */,
+			);
+			path = "ObjectAL (iOS)";
+			sourceTree = "<group>";
+		};
+		CBBAB316171D0B84009B955F /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CBBAB317171D0B84009B955F /* ObjectAL (iOS)-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		CBBAB340171D0BC4009B955F /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CBBAB341171D0BC4009B955F /* AppKit.framework */,
+				CBBAB342171D0BC4009B955F /* CoreData.framework */,
+				CBBAB343171D0BC4009B955F /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		CBBAB344171D0BC4009B955F /* ObjectAL (OSX) */ = {
+			isa = PBXGroup;
+			children = (
+				CBBAB345171D0BC4009B955F /* Supporting Files */,
+			);
+			path = "ObjectAL (OSX)";
+			sourceTree = "<group>";
+		};
+		CBBAB345171D0BC4009B955F /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CBBAB347171D0BC4009B955F /* InfoPlist.strings */,
+				CBBAB346171D0BC4009B955F /* ObjectAL (OSX)-Info.plist */,
+				CBBAB34A171D0BC4009B955F /* ObjectAL (OSX)-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		CBBAB351171D0C0E009B955F /* Actions */ = {
+			isa = PBXGroup;
+			children = (
+				CBBAB352171D0C0E009B955F /* OALAction+Private.h */,
+				CBBAB353171D0C0E009B955F /* OALAction.h */,
+				CBBAB354171D0C0E009B955F /* OALAction.m */,
+				CBBAB355171D0C0E009B955F /* OALActionManager.h */,
+				CBBAB356171D0C0E009B955F /* OALActionManager.m */,
+				CBBAB357171D0C0E009B955F /* OALAudioActions.h */,
+				CBBAB358171D0C0E009B955F /* OALAudioActions.m */,
+				CBBAB359171D0C0E009B955F /* OALUtilityActions.h */,
+				CBBAB35A171D0C0E009B955F /* OALUtilityActions.m */,
+			);
+			path = Actions;
+			sourceTree = "<group>";
+		};
+		CBBAB35B171D0C0E009B955F /* AudioTrack */ = {
+			isa = PBXGroup;
+			children = (
+				CBBAB35C171D0C0E009B955F /* OALAudioTrack.h */,
+				CBBAB35D171D0C0E009B955F /* OALAudioTrack.m */,
+				CBBAB35E171D0C0E009B955F /* OALAudioTrackNotifications.h */,
+				CBBAB35F171D0C0E009B955F /* OALAudioTrackNotifications.m */,
+				CBBAB360171D0C0E009B955F /* OALAudioTracks.h */,
+				CBBAB361171D0C0E009B955F /* OALAudioTracks.m */,
+			);
+			path = AudioTrack;
+			sourceTree = "<group>";
+		};
+		CBBAB367171D0C0E009B955F /* OpenAL */ = {
+			isa = PBXGroup;
+			children = (
+				CBBAB368171D0C0E009B955F /* ALBuffer.h */,
+				CBBAB369171D0C0E009B955F /* ALBuffer.m */,
+				CBBAB36A171D0C0E009B955F /* ALCaptureDevice.h */,
+				CBBAB36B171D0C0E009B955F /* ALCaptureDevice.m */,
+				CBBAB36C171D0C0E009B955F /* ALChannelSource.h */,
+				CBBAB36D171D0C0E009B955F /* ALChannelSource.m */,
+				CBBAB36E171D0C0E009B955F /* ALContext.h */,
+				CBBAB36F171D0C0E009B955F /* ALContext.m */,
+				CBBAB370171D0C0E009B955F /* ALDevice.h */,
+				CBBAB371171D0C0E009B955F /* ALDevice.m */,
+				CBBAB372171D0C0E009B955F /* ALListener.h */,
+				CBBAB373171D0C0E009B955F /* ALListener.m */,
+				CBBAB374171D0C0E009B955F /* ALSoundSource.h */,
+				CBBAB375171D0C0E009B955F /* ALSoundSourcePool.h */,
+				CBBAB376171D0C0E009B955F /* ALSoundSourcePool.m */,
+				CBBAB377171D0C0E009B955F /* ALSource.h */,
+				CBBAB378171D0C0E009B955F /* ALSource.m */,
+				CBBAB379171D0C0E009B955F /* ALTypes.h */,
+				CBBAB37A171D0C0E009B955F /* ALWrapper.h */,
+				CBBAB37B171D0C0E009B955F /* ALWrapper.m */,
+				CBBAB37C171D0C0E009B955F /* OpenALManager.h */,
+				CBBAB37D171D0C0E009B955F /* OpenALManager.m */,
+			);
+			path = OpenAL;
+			sourceTree = "<group>";
+		};
+		CBBAB37E171D0C0E009B955F /* Session */ = {
+			isa = PBXGroup;
+			children = (
+				CBBAB37F171D0C0E009B955F /* OALAudioSession.h */,
+				CBBAB380171D0C0E009B955F /* OALAudioSession.m */,
+				CBBAB381171D0C0E009B955F /* OALSuspendHandler.h */,
+				CBBAB382171D0C0E009B955F /* OALSuspendHandler.m */,
+			);
+			path = Session;
+			sourceTree = "<group>";
+		};
+		CBBAB383171D0C0E009B955F /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				CBBAB384171D0C0E009B955F /* ARCSafe_MemMgmt.h */,
+				CBBAB385171D0C0E009B955F /* IOSVersion.h */,
+				CBBAB386171D0C0E009B955F /* IOSVersion.m */,
+				CBBAB387171D0C0E009B955F /* mach_timing.c */,
+				CBBAB388171D0C0E009B955F /* mach_timing.h */,
+				CBBAB389171D0C0E009B955F /* NSMutableArray+WeakReferences.h */,
+				CBBAB38A171D0C0E009B955F /* NSMutableArray+WeakReferences.m */,
+				CBBAB38B171D0C0E009B955F /* NSMutableDictionary+WeakReferences.h */,
+				CBBAB38C171D0C0E009B955F /* NSMutableDictionary+WeakReferences.m */,
+				CBBAB38D171D0C0E009B955F /* OALAudioFile.h */,
+				CBBAB38E171D0C0E009B955F /* OALAudioFile.m */,
+				CBBAB38F171D0C0E009B955F /* OALNotifications.h */,
+				CBBAB390171D0C0E009B955F /* OALTools.h */,
+				CBBAB391171D0C0E009B955F /* OALTools.m */,
+				CBBAB392171D0C0F009B955F /* ObjectALMacros.h */,
+				CBBAB393171D0C0F009B955F /* SynthesizeSingleton.h */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		CBBAB33A171D0BC4009B955F /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CBBAB395171D0C0F009B955F /* OALAction.h in Headers */,
+				CBBAB398171D0C0F009B955F /* OALActionManager.h in Headers */,
+				CBBAB39B171D0C0F009B955F /* OALAudioActions.h in Headers */,
+				CBBAB39E171D0C0F009B955F /* OALUtilityActions.h in Headers */,
+				CBBAB3A1171D0C0F009B955F /* OALAudioTrack.h in Headers */,
+				CBBAB3A4171D0C0F009B955F /* OALAudioTrackNotifications.h in Headers */,
+				CBBAB3A7171D0C0F009B955F /* OALAudioTracks.h in Headers */,
+				CBBAB3AB171D0C0F009B955F /* OALSimpleAudio.h in Headers */,
+				CBBAB3AE171D0C0F009B955F /* ObjectAL.h in Headers */,
+				CBBAB3AF171D0C0F009B955F /* ObjectALConfig.h in Headers */,
+				CBBAB3B0171D0C0F009B955F /* ALBuffer.h in Headers */,
+				CBBAB3B3171D0C0F009B955F /* ALCaptureDevice.h in Headers */,
+				CBBAB3B6171D0C0F009B955F /* ALChannelSource.h in Headers */,
+				CBBAB3B9171D0C0F009B955F /* ALContext.h in Headers */,
+				CBBAB3BC171D0C0F009B955F /* ALDevice.h in Headers */,
+				CBBAB3BF171D0C0F009B955F /* ALListener.h in Headers */,
+				CBBAB3C2171D0C0F009B955F /* ALSoundSource.h in Headers */,
+				CBBAB3C3171D0C0F009B955F /* ALSoundSourcePool.h in Headers */,
+				CBBAB3C6171D0C0F009B955F /* ALSource.h in Headers */,
+				CBBAB3C9171D0C0F009B955F /* ALTypes.h in Headers */,
+				CBBAB3CA171D0C0F009B955F /* ALWrapper.h in Headers */,
+				CBBAB3CD171D0C0F009B955F /* OpenALManager.h in Headers */,
+				CBBAB3D0171D0C0F009B955F /* OALAudioSession.h in Headers */,
+				CBBAB3D3171D0C0F009B955F /* OALSuspendHandler.h in Headers */,
+				CBBAB3E3171D0C0F009B955F /* OALAudioFile.h in Headers */,
+				CBBAB3E6171D0C0F009B955F /* OALNotifications.h in Headers */,
+				CBBAB3E7171D0C0F009B955F /* OALTools.h in Headers */,
+				CBBAB394171D0C0F009B955F /* OALAction+Private.h in Headers */,
+				CBBAB3D6171D0C0F009B955F /* ARCSafe_MemMgmt.h in Headers */,
+				CBBAB3D7171D0C0F009B955F /* IOSVersion.h in Headers */,
+				CBBAB3DC171D0C0F009B955F /* mach_timing.h in Headers */,
+				CBBAB3DD171D0C0F009B955F /* NSMutableArray+WeakReferences.h in Headers */,
+				CBBAB3E0171D0C0F009B955F /* NSMutableDictionary+WeakReferences.h in Headers */,
+				CBBAB3EA171D0C0F009B955F /* ObjectALMacros.h in Headers */,
+				CBBAB3EB171D0C0F009B955F /* SynthesizeSingleton.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CBBAB3EC171D0C25009B955F /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CBBAB401171D0C86009B955F /* OALAction.h in Headers */,
+				CBBAB402171D0C86009B955F /* OALActionManager.h in Headers */,
+				CBBAB403171D0C86009B955F /* OALAudioActions.h in Headers */,
+				CBBAB404171D0C86009B955F /* OALUtilityActions.h in Headers */,
+				CBBAB405171D0C86009B955F /* OALAudioTrack.h in Headers */,
+				CBBAB406171D0C86009B955F /* OALAudioTrackNotifications.h in Headers */,
+				CBBAB407171D0C86009B955F /* OALAudioTracks.h in Headers */,
+				CBBAB408171D0C86009B955F /* OALSimpleAudio.h in Headers */,
+				CBBAB409171D0C86009B955F /* ObjectAL.h in Headers */,
+				CBBAB40A171D0C86009B955F /* ObjectALConfig.h in Headers */,
+				CBBAB40B171D0C86009B955F /* ALBuffer.h in Headers */,
+				CBBAB40C171D0C86009B955F /* ALCaptureDevice.h in Headers */,
+				CBBAB40D171D0C86009B955F /* ALChannelSource.h in Headers */,
+				CBBAB40E171D0C86009B955F /* ALContext.h in Headers */,
+				CBBAB40F171D0C86009B955F /* ALDevice.h in Headers */,
+				CBBAB410171D0C86009B955F /* ALListener.h in Headers */,
+				CBBAB411171D0C86009B955F /* ALSoundSource.h in Headers */,
+				CBBAB412171D0C86009B955F /* ALSoundSourcePool.h in Headers */,
+				CBBAB413171D0C86009B955F /* ALSource.h in Headers */,
+				CBBAB414171D0C86009B955F /* ALTypes.h in Headers */,
+				CBBAB415171D0C86009B955F /* ALWrapper.h in Headers */,
+				CBBAB416171D0C86009B955F /* OpenALManager.h in Headers */,
+				CBBAB417171D0C86009B955F /* OALAudioSession.h in Headers */,
+				CBBAB418171D0C86009B955F /* OALSuspendHandler.h in Headers */,
+				CBBAB41E171D0C86009B955F /* OALAudioFile.h in Headers */,
+				CBBAB41F171D0C86009B955F /* OALNotifications.h in Headers */,
+				CBBAB420171D0C86009B955F /* OALTools.h in Headers */,
+				CBBAB400171D0C86009B955F /* OALAction+Private.h in Headers */,
+				CBBAB419171D0C86009B955F /* ARCSafe_MemMgmt.h in Headers */,
+				CBBAB41A171D0C86009B955F /* IOSVersion.h in Headers */,
+				CBBAB41B171D0C86009B955F /* mach_timing.h in Headers */,
+				CBBAB41C171D0C86009B955F /* NSMutableArray+WeakReferences.h in Headers */,
+				CBBAB41D171D0C86009B955F /* NSMutableDictionary+WeakReferences.h in Headers */,
+				CBBAB421171D0C86009B955F /* ObjectALMacros.h in Headers */,
+				CBBAB422171D0C86009B955F /* SynthesizeSingleton.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXLegacyTarget section */
+		CB5E994A171DC145004CF421 /* Documentation */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "$(ACTION)";
+			buildConfigurationList = CB5E994D171DC145004CF421 /* Build configuration list for PBXLegacyTarget "Documentation" */;
+			buildPhases = (
+			);
+			buildToolPath = ./build_docs.sh;
+			buildWorkingDirectory = "";
+			dependencies = (
+			);
+			name = Documentation;
+			passBuildSettingsInEnvironment = 1;
+			productName = Documentation;
+		};
+/* End PBXLegacyTarget section */
+
+/* Begin PBXNativeTarget section */
+		CBBAB311171D0B84009B955F /* ObjectAL (iOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CBBAB31C171D0B84009B955F /* Build configuration list for PBXNativeTarget "ObjectAL (iOS)" */;
+			buildPhases = (
+				CBBAB30E171D0B84009B955F /* Sources */,
+				CBBAB30F171D0B84009B955F /* Frameworks */,
+				CBBAB3EC171D0C25009B955F /* Headers */,
+				CBBAB310171D0B84009B955F /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "ObjectAL (iOS)";
+			productName = "ObjectAL (iOS)";
+			productReference = CBBAB312171D0B84009B955F /* libObjectAL.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		CBBAB33C171D0BC4009B955F /* ObjectAL (OSX) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CBBAB34E171D0BC4009B955F /* Build configuration list for PBXNativeTarget "ObjectAL (OSX)" */;
+			buildPhases = (
+				CBBAB338171D0BC4009B955F /* Sources */,
+				CBBAB339171D0BC4009B955F /* Frameworks */,
+				CBBAB33A171D0BC4009B955F /* Headers */,
+				CBBAB33B171D0BC4009B955F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "ObjectAL (OSX)";
+			productName = "ObjectAL (OSX)";
+			productReference = CBBAB33D171D0BC4009B955F /* ObjectAL.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CBBAA821171D05AA009B955F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = "Karl Stenerud";
+			};
+			buildConfigurationList = CBBAA824171D05AA009B955F /* Build configuration list for PBXProject "ObjectAL" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = CBBAA820171D05AA009B955F;
+			productRefGroup = CBBAA82A171D05AA009B955F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CBBAB311171D0B84009B955F /* ObjectAL (iOS) */,
+				CBBAB33C171D0BC4009B955F /* ObjectAL (OSX) */,
+				CB5E994A171DC145004CF421 /* Documentation */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CBBAB33B171D0BC4009B955F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CBBAB349171D0BC4009B955F /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CBBAB30E171D0B84009B955F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CBBAB396171D0C0F009B955F /* OALAction.m in Sources */,
+				CBBAB399171D0C0F009B955F /* OALActionManager.m in Sources */,
+				CBBAB39C171D0C0F009B955F /* OALAudioActions.m in Sources */,
+				CBBAB39F171D0C0F009B955F /* OALUtilityActions.m in Sources */,
+				CBBAB3A2171D0C0F009B955F /* OALAudioTrack.m in Sources */,
+				CBBAB3A5171D0C0F009B955F /* OALAudioTrackNotifications.m in Sources */,
+				CBBAB3A8171D0C0F009B955F /* OALAudioTracks.m in Sources */,
+				CBBAB3AC171D0C0F009B955F /* OALSimpleAudio.m in Sources */,
+				CBBAB3B1171D0C0F009B955F /* ALBuffer.m in Sources */,
+				CBBAB3B4171D0C0F009B955F /* ALCaptureDevice.m in Sources */,
+				CBBAB3B7171D0C0F009B955F /* ALChannelSource.m in Sources */,
+				CBBAB3BA171D0C0F009B955F /* ALContext.m in Sources */,
+				CBBAB3BD171D0C0F009B955F /* ALDevice.m in Sources */,
+				CBBAB3C0171D0C0F009B955F /* ALListener.m in Sources */,
+				CBBAB3C4171D0C0F009B955F /* ALSoundSourcePool.m in Sources */,
+				CBBAB3C7171D0C0F009B955F /* ALSource.m in Sources */,
+				CBBAB3CB171D0C0F009B955F /* ALWrapper.m in Sources */,
+				CBBAB3CE171D0C0F009B955F /* OpenALManager.m in Sources */,
+				CBBAB3D1171D0C0F009B955F /* OALAudioSession.m in Sources */,
+				CBBAB3D4171D0C0F009B955F /* OALSuspendHandler.m in Sources */,
+				CBBAB3D8171D0C0F009B955F /* IOSVersion.m in Sources */,
+				CBBAB3DA171D0C0F009B955F /* mach_timing.c in Sources */,
+				CBBAB3DE171D0C0F009B955F /* NSMutableArray+WeakReferences.m in Sources */,
+				CBBAB3E1171D0C0F009B955F /* NSMutableDictionary+WeakReferences.m in Sources */,
+				CBBAB3E4171D0C0F009B955F /* OALAudioFile.m in Sources */,
+				CBBAB3E8171D0C0F009B955F /* OALTools.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CBBAB338171D0BC4009B955F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CBBAB397171D0C0F009B955F /* OALAction.m in Sources */,
+				CBBAB39A171D0C0F009B955F /* OALActionManager.m in Sources */,
+				CBBAB39D171D0C0F009B955F /* OALAudioActions.m in Sources */,
+				CBBAB3A0171D0C0F009B955F /* OALUtilityActions.m in Sources */,
+				CBBAB3A3171D0C0F009B955F /* OALAudioTrack.m in Sources */,
+				CBBAB3A6171D0C0F009B955F /* OALAudioTrackNotifications.m in Sources */,
+				CBBAB3A9171D0C0F009B955F /* OALAudioTracks.m in Sources */,
+				CBBAB3AD171D0C0F009B955F /* OALSimpleAudio.m in Sources */,
+				CBBAB3B2171D0C0F009B955F /* ALBuffer.m in Sources */,
+				CBBAB3B5171D0C0F009B955F /* ALCaptureDevice.m in Sources */,
+				CBBAB3B8171D0C0F009B955F /* ALChannelSource.m in Sources */,
+				CBBAB3BB171D0C0F009B955F /* ALContext.m in Sources */,
+				CBBAB3BE171D0C0F009B955F /* ALDevice.m in Sources */,
+				CBBAB3C1171D0C0F009B955F /* ALListener.m in Sources */,
+				CBBAB3C5171D0C0F009B955F /* ALSoundSourcePool.m in Sources */,
+				CBBAB3C8171D0C0F009B955F /* ALSource.m in Sources */,
+				CBBAB3CC171D0C0F009B955F /* ALWrapper.m in Sources */,
+				CBBAB3CF171D0C0F009B955F /* OpenALManager.m in Sources */,
+				CBBAB3D2171D0C0F009B955F /* OALAudioSession.m in Sources */,
+				CBBAB3D5171D0C0F009B955F /* OALSuspendHandler.m in Sources */,
+				CBBAB3D9171D0C0F009B955F /* IOSVersion.m in Sources */,
+				CBBAB3DB171D0C0F009B955F /* mach_timing.c in Sources */,
+				CBBAB3DF171D0C0F009B955F /* NSMutableArray+WeakReferences.m in Sources */,
+				CBBAB3E2171D0C0F009B955F /* NSMutableDictionary+WeakReferences.m in Sources */,
+				CBBAB3E5171D0C0F009B955F /* OALAudioFile.m in Sources */,
+				CBBAB3E9171D0C0F009B955F /* OALTools.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		CBBAB347171D0BC4009B955F /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CBBAB348171D0BC4009B955F /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		CB5E994B171DC145004CF421 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				DEBUGGING_SYMBOLS = YES;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		CB5E994C171DC145004CF421 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		CBBAA84C171D05AA009B955F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		CBBAA84D171D05AA009B955F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CBBAB31D171D0B84009B955F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/ObjectAL__iOS_.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ObjectAL (iOS)/ObjectAL (iOS)-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = ObjectAL;
+				PUBLIC_HEADERS_FOLDER_PATH = "include/$(PRODUCT_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		CBBAB31E171D0B84009B955F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/ObjectAL__iOS_.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ObjectAL (iOS)/ObjectAL (iOS)-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = ObjectAL;
+				PUBLIC_HEADERS_FOLDER_PATH = "include/$(PRODUCT_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		CBBAB34F171D0BC4009B955F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
+				);
+				FRAMEWORK_VERSION = A;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ObjectAL (OSX)/ObjectAL (OSX)-Prefix.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				INFOPLIST_FILE = "ObjectAL (OSX)/ObjectAL (OSX)-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				PRODUCT_NAME = ObjectAL;
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Debug;
+		};
+		CBBAB350171D0BC4009B955F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
+				);
+				FRAMEWORK_VERSION = A;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ObjectAL (OSX)/ObjectAL (OSX)-Prefix.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				INFOPLIST_FILE = "ObjectAL (OSX)/ObjectAL (OSX)-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				PRODUCT_NAME = ObjectAL;
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CB5E994D171DC145004CF421 /* Build configuration list for PBXLegacyTarget "Documentation" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CB5E994B171DC145004CF421 /* Debug */,
+				CB5E994C171DC145004CF421 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CBBAA824171D05AA009B955F /* Build configuration list for PBXProject "ObjectAL" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CBBAA84C171D05AA009B955F /* Debug */,
+				CBBAA84D171D05AA009B955F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CBBAB31C171D0B84009B955F /* Build configuration list for PBXNativeTarget "ObjectAL (iOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CBBAB31D171D0B84009B955F /* Debug */,
+				CBBAB31E171D0B84009B955F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CBBAB34E171D0BC4009B955F /* Build configuration list for PBXNativeTarget "ObjectAL (OSX)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CBBAB34F171D0BC4009B955F /* Debug */,
+				CBBAB350171D0BC4009B955F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CBBAA821171D05AA009B955F /* Project object */;
+}
