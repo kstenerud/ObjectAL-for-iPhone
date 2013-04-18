@@ -6,7 +6,9 @@
      <key>CFBundleName</key>
      <string>ObjectAL</string>
      <key>CFBundleIdentifier</key>
-     <string>org.doxygen.ObjectAL.docset</string>
+     <string>org.doxygen.ObjectAL</string>
+     <key>CFBundleVersion</key>
+     <string>ProjectNumber</string>
      <key>DocSetFeedName</key>
      <string>Doxygen generated docs</string>
      <key>DocSetPublisherIdentifier</key>
