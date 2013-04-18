@@ -49,7 +49,6 @@
 	/** The uncompressed sound data to play. */
 	void* bufferData;
 	bool freeDataOnDestroy;
-	/** The parent buffer (which owns the uncompressed data) */
 	ALBuffer* parentBuffer;
 }
 
@@ -87,6 +86,9 @@
  * Default: YES
  */
 @property(nonatomic,readwrite,assign) bool freeDataOnDestroy;
+
+/** The parent buffer (which owns the uncompressed data) */
+@property(nonatomic,readwrite,retain) ALBuffer* parentBuffer;
 
 #pragma mark Object Management
 

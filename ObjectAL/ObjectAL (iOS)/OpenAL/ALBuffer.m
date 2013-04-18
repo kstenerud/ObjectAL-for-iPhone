@@ -137,6 +137,8 @@
 
 @synthesize freeDataOnDestroy;
 
+@synthesize parentBuffer;
+
 #pragma mark Buffer slicing
 
 - (ALBuffer*)sliceWithName:(NSString *) sliceName offset:(ALsizei) offset size:(ALsizei) size
@@ -166,7 +168,7 @@
 	ALBuffer * slice = [ALBuffer bufferWithName:sliceName data:(void*)(byteOffset + (char*)bufferData) size:byteSize
 										 format:self.format frequency:self.frequency];
 	slice.freeDataOnDestroy = NO;
-	slice->parentBuffer = as_retain(self);
+	slice.parentBuffer = self;
 	return slice;
 }
 
