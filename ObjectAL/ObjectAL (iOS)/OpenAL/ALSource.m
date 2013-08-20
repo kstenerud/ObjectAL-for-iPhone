@@ -183,6 +183,8 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 	[buffer performSelector:@selector(release) withObject:nil afterDelay:0.1];
 #endif
 	
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    
 	as_superdealloc();
 }
 
