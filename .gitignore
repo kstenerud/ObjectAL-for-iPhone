@@ -19,4 +19,5 @@ Thumbs.db
 *.bak
 .~*
 *.orig
+*.xccheckout
 doxygen.config
