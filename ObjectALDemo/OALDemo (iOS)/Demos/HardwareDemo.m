@@ -113,7 +113,8 @@
 
 	[[OALSimpleAudio sharedInstance] playBg:@"ColdFunk.caf" loop:YES];
 	[OALSimpleAudio sharedInstance].backgroundTrack.meteringEnabled = YES;
-	
+
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 	volume = [OALAudioSession sharedInstance].hardwareVolume;
 	muted = [OALAudioSession sharedInstance].hardwareMuted;
 	route = [[OALAudioSession sharedInstance].audioRoute retain];
@@ -121,6 +122,7 @@
 	[volumeLabel setString:[NSString stringWithFormat:@"%.2f", volume]];
 	muteLabel.isOn = [OALAudioSession sharedInstance].hardwareMuted;
 	[routeLabel setString:[NSString stringWithFormat:@"%@", route]];
+#endif
 
 	[self schedule:@selector(step) interval:0.1f];
 	[self schedule:@selector(vuStep)];
@@ -128,6 +130,7 @@
 
 - (void) step
 {
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 	float newVolume = [OALAudioSession sharedInstance].hardwareVolume;
 	if(newVolume != volume)
 	{
@@ -144,6 +147,7 @@
 		route = [newRoute retain];
 		[routeLabel setString:[NSString stringWithFormat:@"%@", route]];
 	}
+#endif
 }
 
 - (void) vuStep

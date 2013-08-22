@@ -142,11 +142,11 @@ static NSBundle* g_defaultBundle;
 	}
 }
 
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 + (void) notifyAudioSessionError:(OSStatus)errorCode
 					 function:(const char*) function
 				  description:(NSString*) description, ...
 {
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 	if(noErr != errorCode)
 	{
 		NSString* errorString;
@@ -217,7 +217,14 @@ static NSBundle* g_defaultBundle;
 			[[NSNotificationCenter defaultCenter] postNotificationName:OALAudioErrorNotification object:self];
 		}
 	}
-#endif
 }
+#else
++ (void) notifyAudioSessionError:(__unused OSStatus)errorCode
+                        function:(__unused const char*) function
+                     description:(__unused NSString*) description, ...
+{
+
+}
+#endif
 
 @end

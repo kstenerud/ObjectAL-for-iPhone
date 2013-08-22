@@ -267,6 +267,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 	}
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
+
 - (float) preferredIOBufferDuration
 {
     return [self getFloatProperty:kAudioSessionProperty_PreferredHardwareIOBufferDuration];
@@ -302,9 +305,14 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 	return [[self audioRoute] isEqualToString:@""];
 }
 
+#pragma clang diagnostic pop // "-Wdeprecated-implementations"
+
 
 
 #pragma mark Internal Use
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
 - (UInt32) getIntProperty:(AudioSessionPropertyID) property
 {
@@ -369,6 +377,17 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 	}
 	REPORT_AUDIOSESSION_CALL(result, @"Failed to get int property %08x", property);
 }
+
+- (BOOL) _otherAudioPlaying
+{
+    if([IOSVersion version] < 6)
+    {
+        return self.ipodPlaying;
+    }
+    return ((AVAudioSession*)[AVAudioSession sharedInstance]).otherAudioPlaying;
+}
+
+#pragma clang diagnostic pop // "-Wdeprecated-declarations"
 
 - (void) setAudioCategory:(NSString*) audioCategory
 {
@@ -456,7 +475,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 	bool ducking = ipodDucking;
 	
 	// If the hardware is available and we want it, take it.
-	if(mixing && useHardwareIfAvailable && !self.ipodPlaying)
+	if(mixing && useHardwareIfAvailable && !self._otherAudioPlaying)
 	{
 		mixing = NO;
 	}
@@ -829,7 +848,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
     return false;
 }
 
-- (void) setInterrupted:(bool) value
+- (void) setInterrupted:(__unused bool) value
 {
 }
 
