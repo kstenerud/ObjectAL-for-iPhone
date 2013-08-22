@@ -30,7 +30,6 @@
 #import "ObjectALMacros.h"
 #import "ARCSafe_MemMgmt.h"
 #import "OALAudioSession.h"
-#import "IOSVersion.h"
 
 
 SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALAudioTracks);
@@ -72,16 +71,13 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioTracks);
 		
 		[[OALAudioSession sharedInstance] addSuspendListener:self];
 
-		if([IOSVersion sharedInstance].version >= 4.0)
-		{
-            // Need to constantly poll deviceCurrentTime or else it resets to 0
-            // on devices (doesn't happen in simulator).
-            deviceTimePoller = [NSTimer scheduledTimerWithTimeInterval:1.0
-                                                                target:self
-                                                              selector:@selector(pollDeviceTime)
-                                                              userInfo:nil
-                                                               repeats:YES];
-        }
+        // Bug: Need to constantly poll deviceCurrentTime or else it resets to 0
+        // on devices (doesn't happen in simulator).
+        deviceTimePoller = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                            target:self
+                                                          selector:@selector(pollDeviceTime)
+                                                          userInfo:nil
+                                                           repeats:YES];
     }
 	return self;
 }

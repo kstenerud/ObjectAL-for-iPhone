@@ -34,7 +34,6 @@
 #import "OALUtilityActions.h"
 #import "ObjectALMacros.h"
 #import "ARCSafe_MemMgmt.h"
-#import "IOSVersion.h"
 
 #pragma mark Asynchronous Operations
 
@@ -295,15 +294,8 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if([IOSVersion sharedInstance].version >= 4.0)
-		{
-			pan = value;
-			player.pan = pan;
-		}
-		else if(pan != 0.0f)
-		{
-			OAL_LOG_WARNING(@"%@: Pan not supported on iOS %f", self, [IOSVersion sharedInstance].version);
-		}
+        pan = value;
+        player.pan = pan;
 	}
 }
 
@@ -431,11 +423,7 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if([IOSVersion sharedInstance].version >= 4.0)
-		{
-			return player.deviceCurrentTime;
-		}
-		return 0;
+        return player.deviceCurrentTime;
 	}
 }
 
@@ -541,10 +529,7 @@
                 player.numberOfLoops = numberOfLoops;
                 player.meteringEnabled = meteringEnabled;
                 player.delegate = self;
-                if([IOSVersion sharedInstance].version >= 4.0)
-                {
-                    player.pan = pan;
-                }
+                player.pan = pan;
 
                 player.currentTime = currentTime;
 
@@ -610,7 +595,7 @@
 	
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		// No longer re-using AVAudioPlayer because of bugs when using multiple players.
+		// Bug: No longer re-using AVAudioPlayer because of bugs when using multiple players.
 		// Playing two tracks, then stopping one and starting it again will cause prepareToPlay to fail.
 		
 		bool wasPlaying = playing;
@@ -641,11 +626,8 @@
 		player.numberOfLoops = numberOfLoops;
 		player.meteringEnabled = meteringEnabled;
 		player.delegate = self;
-		if([IOSVersion sharedInstance].version >= 4.0)
-		{
-			player.pan = pan;
-		}
-		
+        player.pan = pan;
+
 		as_release(currentlyLoadedUrl);
 		currentlyLoadedUrl = as_retain(url);
 		
@@ -774,27 +756,18 @@
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		if([IOSVersion sharedInstance].version >= 4.0)
-		{
-			[self stopActions];
-            [player stop];
-			player.currentTime = currentTime;
-			player.volume = muted ? 0 : gain;
-			player.numberOfLoops = numberOfLoops;
-			paused = NO;
-			playing = [player playAtTime:time];
-			if(playing)
-			{
-				[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:OALAudioTrackStartedPlayingNotification object:self] waitUntilDone:NO];
-			}
-			return playing;
-		}
-		else
-		{
-			OAL_LOG_WARNING(@"%@: playAtTime not supported on iOS %f", self, [IOSVersion sharedInstance].version);
-		}
-
-		return NO;
+        [self stopActions];
+        [player stop];
+        player.currentTime = currentTime;
+        player.volume = muted ? 0 : gain;
+        player.numberOfLoops = numberOfLoops;
+        paused = NO;
+        playing = [player playAtTime:time];
+        if(playing)
+        {
+            [[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:OALAudioTrackStartedPlayingNotification object:self] waitUntilDone:NO];
+        }
+        return playing;
 	}
 }
 
@@ -871,34 +844,28 @@
 		target:(id) target
 	  selector:(SEL) selector
 {
-	if([IOSVersion sharedInstance].version >= 4.0)
-	{
-		// Must always be synchronized
-		@synchronized(self)
-		{
-			[self stopPan];
-			panAction = [OALSequentialActions actions:
-                         [OALPropertyAction panActionWithDuration:duration endValue:value],
-                         [OALCallAction actionWithCallTarget:target selector:selector withObject:self],
-                         nil];
-            panAction = as_retain(panAction);
-			[panAction runWithTarget:self];
-		}
-	}
+    // Must always be synchronized
+    @synchronized(self)
+    {
+        [self stopPan];
+        panAction = [OALSequentialActions actions:
+                     [OALPropertyAction panActionWithDuration:duration endValue:value],
+                     [OALCallAction actionWithCallTarget:target selector:selector withObject:self],
+                     nil];
+        panAction = as_retain(panAction);
+        [panAction runWithTarget:self];
+    }
 }
 
 - (void) stopPan
 {
-	if([IOSVersion sharedInstance].version >= 4.0)
-	{
-		// Must always be synchronized
-		@synchronized(self)
-		{
-			[panAction stopAction];
-			as_release(panAction);
-			panAction = nil;
-		}
-	}
+    // Must always be synchronized
+    @synchronized(self)
+    {
+        [panAction stopAction];
+        as_release(panAction);
+        panAction = nil;
+    }
 }
 
 - (void) clear
