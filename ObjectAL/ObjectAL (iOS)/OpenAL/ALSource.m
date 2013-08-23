@@ -178,6 +178,8 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 	as_release(context);
     as_release(buffer);
 
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    
 	as_superdealloc();
 }
 
