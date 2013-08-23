@@ -21,6 +21,7 @@
 #import "ReverbDemo.h"
 #import "SourceNotificationsDemo.h"
 #import "IntroAndMainTrackDemo.h"
+#import "HighSpeedPlaybackDemo.h"
 
 
 #define kScenesPerPage 5
@@ -135,6 +136,7 @@ static int startIndex = 0;
 	[self addScene:[SourceNotificationsDemo class] named:@"Source Notifications"];
 	[self addScene:[HardwareDemo class] named:@"Hardware Monitor"];
 	[self addScene:[AudioSessionDemo class] named:@"Audio Sessions"];
+	[self addScene:[HighSpeedPlaybackDemo class] named:@"High Speed Playback"];
 }
 
 - (void) addScene:(Class) sceneClass named:(NSString*) name

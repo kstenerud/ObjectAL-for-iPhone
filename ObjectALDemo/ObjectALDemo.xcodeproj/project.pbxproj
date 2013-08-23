@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CB1AD2B917C6D73D00378C18 /* HighSpeedPlaybackDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1AD2B817C6D73D00378C18 /* HighSpeedPlaybackDemo.m */; };
+		CB1AD2BA17C6D73D00378C18 /* HighSpeedPlaybackDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1AD2B817C6D73D00378C18 /* HighSpeedPlaybackDemo.m */; };
 		CB5E9943171D18D7004CF421 /* ObjectAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB5E9942171D18D7004CF421 /* ObjectAL.framework */; };
 		CBBAAD8F171D080E009B955F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBBAA8A0171D0622009B955F /* Foundation.framework */; };
 		CBBAADB9171D0844009B955F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBBAA8B2171D065C009B955F /* Cocoa.framework */; };
@@ -489,6 +491,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		CB1AD2B717C6D73D00378C18 /* HighSpeedPlaybackDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HighSpeedPlaybackDemo.h; sourceTree = "<group>"; };
+		CB1AD2B817C6D73D00378C18 /* HighSpeedPlaybackDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HighSpeedPlaybackDemo.m; sourceTree = "<group>"; };
 		CB5E9942171D18D7004CF421 /* ObjectAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectAL.framework; path = ../ObjectAL/build/Release/ObjectAL.framework; sourceTree = "<group>"; };
 		CBBAA8A0171D0622009B955F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		CBBAA8B2171D065C009B955F /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
@@ -1490,6 +1494,8 @@
 				CBBAB4BE171D0EC2009B955F /* TwoSourceDemo.m */,
 				CBBAB4BF171D0EC2009B955F /* VolumePitchPanDemo.h */,
 				CBBAB4C0171D0EC2009B955F /* VolumePitchPanDemo.m */,
+				CB1AD2B717C6D73D00378C18 /* HighSpeedPlaybackDemo.h */,
+				CB1AD2B817C6D73D00378C18 /* HighSpeedPlaybackDemo.m */,
 			);
 			path = Demos;
 			sourceTree = "<group>";
@@ -2046,6 +2052,7 @@
 				CBBAB44F171D0D9D009B955F /* ImageButton.m in Sources */,
 				CBBAB451171D0D9D009B955F /* LampButton.m in Sources */,
 				CBBAB453171D0D9D009B955F /* RNG.m in Sources */,
+				CB1AD2B917C6D73D00378C18 /* HighSpeedPlaybackDemo.m in Sources */,
 				CBBAB455171D0D9D009B955F /* Slider.m in Sources */,
 				CBBAB457171D0D9D009B955F /* TargetedAction.m in Sources */,
 				CBBAB459171D0D9D009B955F /* TouchableNode.m in Sources */,
@@ -2097,6 +2104,7 @@
 				CBBAB4D2171D0EC2009B955F /* ReverbDemo.m in Sources */,
 				CBBAB4D4171D0EC2009B955F /* SingleSourceDemo.m in Sources */,
 				CBBAB4D6171D0EC2009B955F /* SourceNotificationsDemo.m in Sources */,
+				CB1AD2BA17C6D73D00378C18 /* HighSpeedPlaybackDemo.m in Sources */,
 				CBBAB4D8171D0EC2009B955F /* TwoSourceDemo.m in Sources */,
 				CBBAB4DA171D0EC2009B955F /* VolumePitchPanDemo.m in Sources */,
 			);
