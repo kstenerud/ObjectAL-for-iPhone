@@ -17,7 +17,7 @@
 	float maxX = -1000000;
 	float maxY = -1000000;
 	
-	for(CCNode* node in children_)
+	for(CCNode* node in _children)
 	{
 		float nextMinX = node.position.x - node.contentSize.width * node.scaleX * node.anchorPoint.x;
 		float nextMaxX = nextMinX + node.contentSize.width * node.scaleX;
@@ -49,7 +49,7 @@
 {
 	CGSize size = CGSizeMake(0, 0);
 	
-	for(CCNode* node in children_)
+	for(CCNode* node in _children)
 	{
 		if(node.contentSize.width * node.scaleX > size.width)
 		{

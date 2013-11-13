@@ -360,7 +360,7 @@
 			children = (
 				CBBAB316171D0B84009B955F /* Supporting Files */,
 			);
-			path = "iOS";
+			path = iOS;
 			sourceTree = "<group>";
 		};
 		CBBAB316171D0B84009B955F /* Supporting Files */ = {
@@ -386,7 +386,7 @@
 			children = (
 				CBBAB345171D0BC4009B955F /* Supporting Files */,
 			);
-			path = "OSX";
+			path = OSX;
 			sourceTree = "<group>";
 		};
 		CBBAB345171D0BC4009B955F /* Supporting Files */ = {
@@ -893,7 +893,10 @@
 				DSTROOT = /tmp/ObjectAL__iOS_.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iOS/ObjectAL (iOS)-Prefix.pch";
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_NAME = ObjectAL;
 				PUBLIC_HEADERS_FOLDER_PATH = "include/$(PRODUCT_NAME)";
 				SKIP_INSTALL = YES;
@@ -906,7 +909,10 @@
 				DSTROOT = /tmp/ObjectAL__iOS_.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iOS/ObjectAL (iOS)-Prefix.pch";
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_NAME = ObjectAL;
 				PUBLIC_HEADERS_FOLDER_PATH = "include/$(PRODUCT_NAME)";
 				SKIP_INSTALL = YES;

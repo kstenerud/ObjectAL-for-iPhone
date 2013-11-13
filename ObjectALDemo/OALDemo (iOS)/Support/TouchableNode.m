@@ -65,7 +65,7 @@
 	{
 		targetedTouches = value;
 		
-		if(isRunning_ && isTouchEnabled)
+		if(_isRunning && isTouchEnabled)
 		{
 			[self registerWithTouchDispatcher];
 		}
@@ -78,7 +78,7 @@
 	{
 		swallowTouches = value;
 		
-		if(isRunning_ && isTouchEnabled)
+		if(_isRunning && isTouchEnabled)
 		{
 			[self registerWithTouchDispatcher];
 		}
@@ -90,7 +90,7 @@
 	if(touchPriority != value)
 	{
 		touchPriority = value;
-		if(isRunning_ && isTouchEnabled)
+		if(_isRunning && isTouchEnabled)
 		{
 			[self registerWithTouchDispatcher];
 		}
@@ -102,7 +102,7 @@
 	if( isTouchEnabled != enabled )
 	{
 		isTouchEnabled = enabled;
-		if( isRunning_ )
+		if( _isRunning )
 		{
 			if( isTouchEnabled )
 			{

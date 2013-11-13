@@ -6,7 +6,7 @@
 //  Copyright Karl Stenerud 2013. All rights reserved.
 //
 
-#import "cocos2d.h"
+#import <cocos2d/cocos2d.h>
 
 #import "AppDelegate.h"
 #import "IntroLayer.h"

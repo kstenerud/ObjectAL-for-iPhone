@@ -62,11 +62,11 @@
 {
 	if(twoObjects)
 	{
-		[targetCallback_ performSelector:selector_ withObject:object withObject:object2];
+		[_targetCallback performSelector:_selector withObject:object withObject:object2];
 	}
 	else
 	{
-		[targetCallback_ performSelector:selector_ withObject:object];
+		[_targetCallback performSelector:_selector withObject:object];
 	}
 }
 

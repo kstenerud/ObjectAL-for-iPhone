@@ -1,7 +1,0 @@
-//
-// Prefix header for all source files of the 'cocos2d (iOS)' target in the 'cocos2d (iOS)' project
-//
-
-#ifdef __OBJC__
-    #import <Foundation/Foundation.h>
-#endif

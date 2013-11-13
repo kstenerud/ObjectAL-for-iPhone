@@ -12,7 +12,7 @@
  */
 @interface TouchableNode : CCNode
 #ifdef __CC_PLATFORM_IOS
-    <CCStandardTouchDelegate, CCTargetedTouchDelegate>
+    <CCTouchOneByOneDelegate, CCTouchAllAtOnceDelegate>
 #elif defined(__CC_PLATFORM_MAC)
     <CCKeyboardEventDelegate, CCMouseEventDelegate, CCTouchEventDelegate>
 #endif

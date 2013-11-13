@@ -11,7 +11,7 @@
 #import "ImageButton.h"
 #import "MainLayer.h"
 #import "CCLayer+Scene.h"
-#import <ObjectAL/OALTools.h>
+#import <ObjectAL/Support/OALTools.h>
 
 #define MAX_RANDOM_REPEATS 2
 
