@@ -21,3 +21,4 @@ Thumbs.db
 *.orig
 *.xccheckout
 doxygen.config
+*.xcworkspace
