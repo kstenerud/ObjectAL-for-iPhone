@@ -116,15 +116,29 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 		OAL_LOG_DEBUG(@"%@: Init with %d reserved sources, %d mono, %d stereo",
                       self, reservedSources, monoSources, stereoSources);
 		device = [[ALDevice alloc] initWithDeviceSpecifier:nil];
+        if(device == nil)
+		{
+			OAL_LOG_ERROR(@"%@: Could not create OpenAL device", self);
+            goto initFailed;
+		}
         context = [[ALContext alloc] initOnDevice:device
                                   outputFrequency:44100
                                  refreshIntervals:10
                                synchronousContext:FALSE
                                       monoSources:monoSources
                                     stereoSources:stereoSources];
+        if(context == nil)
+		{
+			OAL_LOG_ERROR(@"%@: Could not create OpenAL context", self);
+            goto initFailed;
+		}
         [self initCommon:reservedSources];
 	}
 	return self;
+
+initFailed:
+    as_release(self);
+    return nil;
 }
 
 - (id) initWithSources:(int) reservedSources
@@ -133,17 +147,34 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 	{
 		OAL_LOG_DEBUG(@"%@: Init with %d reserved sources", self, reservedSources);
 		device = [[ALDevice alloc] initWithDeviceSpecifier:nil];
+        if(device == nil)
+		{
+			OAL_LOG_ERROR(@"%@: Could not create OpenAL device", self);
+            goto initFailed;
+		}
         context = [[ALContext alloc] initOnDevice:device attributes:nil];
+        if(context == nil)
+		{
+			OAL_LOG_ERROR(@"%@: Could not create OpenAL contextself", self);
+            goto initFailed;
+		}
         [self initCommon:reservedSources];
 	}
 	return self;
+
+initFailed:
+    as_release(self);
+    return nil;
 }
 
 - (void) dealloc
 {
 	OAL_LOG_DEBUG(@"%@: Dealloc", self);
 #if NS_BLOCKS_AVAILABLE && OBJECTAL_CFG_USE_BLOCKS && !__has_feature(objc_arc)
-	dispatch_release(oal_dispatch_queue);
+    if(oal_dispatch_queue != nil)
+    {
+        dispatch_release(oal_dispatch_queue);
+    }
 #endif
 
 	as_release(backgroundTrack);

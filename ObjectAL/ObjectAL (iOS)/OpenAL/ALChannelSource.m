@@ -102,15 +102,24 @@
 		OAL_LOG_DEBUG(@"%@: Init with %d sources", self, reservedSources);
 
 		context = as_retain([OpenALManager sharedInstance].currentContext);
+        if(context == nil)
+        {
+            OAL_LOG_ERROR(@"%@: Could not initialize channel: Context is nil", self);
+            goto initFailed;
+        }
 
 		sourcePool = [[ALSoundSourcePool alloc] init];
 
         for(int i = 0; i < reservedSources; i++)
         {
-            [self addSource:[ALSource source]];
+            [self addSource:nil];
         }            
 	}
 	return self;
+
+initFailed:
+    as_release(self);
+    return nil;
 }
 
 - (void) dealloc
@@ -517,6 +526,11 @@ SYNTHESIZE_DELEGATE_PROPERTY(reverbObstruction, ReverbObstruction, float);
         if(nil == source)
         {
             source = [ALSource source];
+            if(source == nil)
+            {
+                OAL_LOG_ERROR(@"%@: Could not create an OpenAL source", self);
+                return;
+            }
         }
         if(defaultsInitialized)
         {

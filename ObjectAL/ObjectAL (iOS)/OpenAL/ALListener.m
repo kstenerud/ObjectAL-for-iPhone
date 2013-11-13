@@ -56,12 +56,21 @@
 {
 	if(nil != (self = [super init]))
 	{
+        if(contextIn == nil)
+        {
+            OAL_LOG_ERROR(@"%@: Could not init listener: Context is nil", self);
+            goto initFailed;
+        }
 		suspendHandler = [[OALSuspendHandler alloc] initWithTarget:nil selector:nil];
 
 		self.context = contextIn;
 		gain = 1.0f;
 	}
 	return self;
+
+initFailed:
+    as_release(self);
+    return nil;
 }
 
 - (void) dealloc

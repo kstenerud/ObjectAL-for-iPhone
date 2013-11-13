@@ -109,9 +109,8 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 		if(nil == contextIn)
 		{
-			OAL_LOG_ERROR(@"%@: Failed to init because context was nil. Returning nil", self);
-			as_release(self);
-			return nil;
+			OAL_LOG_ERROR(@"%@: Failed to init source: Context is nil", self);
+            goto initFailed;
 		}
 		
 		suspendHandler = [[OALSuspendHandler alloc] initWithTarget:self selector:@selector(setSuspended:)];
@@ -123,6 +122,11 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 			ALContext* realContext = [OpenALManager sharedInstance].currentContext;
 			[OpenALManager sharedInstance].currentContext = context;
 			sourceId = [ALWrapper genSource];
+            if(sourceId == (ALuint)AL_INVALID)
+            {
+                OAL_LOG_ERROR(@"%@: Failed to create OpenAL source", self);
+                goto initFailed;
+            }
 			[OpenALManager sharedInstance].currentContext = realContext;
 		}
 		OAL_LOG_DEBUG(@"%@: Created source %08x", self, sourceId);
@@ -135,6 +139,10 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
         [[self class] notifySourceAllocated:self];
 	}
 	return self;
+
+initFailed:
+    as_release(self);
+    return nil;
 }
 
 - (void) dealloc

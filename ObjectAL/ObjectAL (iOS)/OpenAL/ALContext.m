@@ -150,9 +150,8 @@
 
 		if(nil == deviceIn)
 		{
-			OAL_LOG_ERROR(@"%@: Failed to init because device was nil. Returning nil", self);
-			as_release(self);
-			return nil;
+			OAL_LOG_ERROR(@"%@: Could not init context: Device is nil", self);
+            goto initFailed;
 		}
 
 		suspendHandler = [[OALSuspendHandler alloc] initWithTarget:self selector:@selector(setSuspended:)];
@@ -176,6 +175,11 @@
 
 		// Open the context with our list of attributes.
 		context = [ALWrapper createContext:device.device attributes:attributesList];
+        if(context == nil)
+        {
+            OAL_LOG_ERROR(@"%@: Failed to create OpenAL context", self);
+            goto initFailed;
+        }
 		
 		listener = [[ALListener alloc] initWithContext:self];
 		
@@ -213,6 +217,10 @@
 		[device addSuspendListener:self];
 	}
 	return self;
+
+initFailed:
+    as_release(self);
+    return nil;
 }
 
 - (void) dealloc

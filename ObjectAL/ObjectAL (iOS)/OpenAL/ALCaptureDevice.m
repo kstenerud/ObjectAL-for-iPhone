@@ -59,8 +59,17 @@
 									frequency:frequency
 									   format:format
 								   bufferSize:bufferSize];
+        if(device == nil)
+        {
+            OAL_LOG_ERROR(@"%@: Failed to initialize OpenAL capture device", self);
+            goto initFailed;
+        }
 	}
 	return self;
+
+initFailed:
+    as_release(self);
+    return nil;
 }
 
 - (void) dealloc

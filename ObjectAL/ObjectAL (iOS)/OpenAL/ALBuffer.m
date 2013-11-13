@@ -65,9 +65,8 @@
 		bufferId = [ALWrapper genBuffer];
 		if(nil == [OpenALManager sharedInstance].currentContext)
 		{
-			OAL_LOG_ERROR(@"Cannot allocate a buffer without a current context. Make sure [OpenALManager sharedInstance].currentContext is valid");
-			as_release(self);
-			return nil;
+			OAL_LOG_ERROR(@"%@: Cannot allocate a buffer without a current context. Make sure [OpenALManager sharedInstance].currentContext is valid", self);
+            goto initFailed;
 		}
 		device = as_retain([OpenALManager sharedInstance].currentContext.device);
 		bufferData = data;
@@ -75,11 +74,19 @@
 		freeDataOnDestroy = YES;
 		parentBuffer = nil;
 
-		[ALWrapper bufferDataStatic:bufferId format:format data:bufferData size:size frequency:frequency];
+		if(![ALWrapper bufferDataStatic:bufferId format:format data:bufferData size:size frequency:frequency])
+        {
+            OAL_LOG_ERROR(@"%@: Failed to create an OpenAL buffer", self);
+            goto initFailed;
+        }
 		
 		duration = (float)self.size / ((float)(self.frequency * self.channels * self.bits) / 8);
 	}
 	return self;
+
+initFailed:
+    as_release(self);
+    return nil;
 }
 
 - (void) dealloc
