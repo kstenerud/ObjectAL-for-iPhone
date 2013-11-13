@@ -306,11 +306,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CB5F61EE1833F99D008B74C3 /* ObjectAL */ = {
+			isa = PBXGroup;
+			children = (
+				CBBAB351171D0C0E009B955F /* Actions */,
+				CBBAB35B171D0C0E009B955F /* AudioTrack */,
+				CBBAB363171D0C0E009B955F /* OALSimpleAudio.h */,
+				CBBAB364171D0C0E009B955F /* OALSimpleAudio.m */,
+				CBBAB365171D0C0E009B955F /* ObjectAL.h */,
+				CBBAB366171D0C0E009B955F /* ObjectALConfig.h */,
+				CBBAB367171D0C0E009B955F /* OpenAL */,
+				CBBAB37E171D0C0E009B955F /* Session */,
+				CBBAB383171D0C0E009B955F /* Support */,
+			);
+			path = ObjectAL;
+			sourceTree = "<group>";
+		};
 		CBBAA820171D05AA009B955F = {
 			isa = PBXGroup;
 			children = (
-				CBBAB315171D0B84009B955F /* ObjectAL (iOS) */,
-				CBBAB344171D0BC4009B955F /* ObjectAL (OSX) */,
+				CB5F61EE1833F99D008B74C3 /* ObjectAL */,
+				CBBAB315171D0B84009B955F /* iOS */,
+				CBBAB344171D0BC4009B955F /* OSX */,
 				CBBAA82B171D05AA009B955F /* Frameworks */,
 				CBBAA82A171D05AA009B955F /* Products */,
 			);
@@ -338,21 +355,12 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		CBBAB315171D0B84009B955F /* ObjectAL (iOS) */ = {
+		CBBAB315171D0B84009B955F /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				CBBAB351171D0C0E009B955F /* Actions */,
-				CBBAB35B171D0C0E009B955F /* AudioTrack */,
-				CBBAB363171D0C0E009B955F /* OALSimpleAudio.h */,
-				CBBAB364171D0C0E009B955F /* OALSimpleAudio.m */,
-				CBBAB365171D0C0E009B955F /* ObjectAL.h */,
-				CBBAB366171D0C0E009B955F /* ObjectALConfig.h */,
-				CBBAB367171D0C0E009B955F /* OpenAL */,
-				CBBAB37E171D0C0E009B955F /* Session */,
-				CBBAB383171D0C0E009B955F /* Support */,
 				CBBAB316171D0B84009B955F /* Supporting Files */,
 			);
-			path = "ObjectAL (iOS)";
+			path = "iOS";
 			sourceTree = "<group>";
 		};
 		CBBAB316171D0B84009B955F /* Supporting Files */ = {
@@ -373,12 +381,12 @@
 			name = "Other Frameworks";
 			sourceTree = "<group>";
 		};
-		CBBAB344171D0BC4009B955F /* ObjectAL (OSX) */ = {
+		CBBAB344171D0BC4009B955F /* OSX */ = {
 			isa = PBXGroup;
 			children = (
 				CBBAB345171D0BC4009B955F /* Supporting Files */,
 			);
-			path = "ObjectAL (OSX)";
+			path = "OSX";
 			sourceTree = "<group>";
 		};
 		CBBAB345171D0BC4009B955F /* Supporting Files */ = {
@@ -884,7 +892,7 @@
 			buildSettings = {
 				DSTROOT = /tmp/ObjectAL__iOS_.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "ObjectAL (iOS)/ObjectAL (iOS)-Prefix.pch";
+				GCC_PREFIX_HEADER = "iOS/ObjectAL (iOS)-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = ObjectAL;
 				PUBLIC_HEADERS_FOLDER_PATH = "include/$(PRODUCT_NAME)";
@@ -897,7 +905,7 @@
 			buildSettings = {
 				DSTROOT = /tmp/ObjectAL__iOS_.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "ObjectAL (iOS)/ObjectAL (iOS)-Prefix.pch";
+				GCC_PREFIX_HEADER = "iOS/ObjectAL (iOS)-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = ObjectAL;
 				PUBLIC_HEADERS_FOLDER_PATH = "include/$(PRODUCT_NAME)";
@@ -918,9 +926,9 @@
 				FRAMEWORK_VERSION = A;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "ObjectAL (OSX)/ObjectAL (OSX)-Prefix.pch";
+				GCC_PREFIX_HEADER = "OSX/ObjectAL (OSX)-Prefix.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				INFOPLIST_FILE = "ObjectAL (OSX)/ObjectAL (OSX)-Info.plist";
+				INFOPLIST_FILE = "OSX/ObjectAL (OSX)-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = ObjectAL;
 				SDKROOT = macosx;
@@ -942,9 +950,9 @@
 				FRAMEWORK_VERSION = A;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "ObjectAL (OSX)/ObjectAL (OSX)-Prefix.pch";
+				GCC_PREFIX_HEADER = "OSX/ObjectAL (OSX)-Prefix.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				INFOPLIST_FILE = "ObjectAL (OSX)/ObjectAL (OSX)-Info.plist";
+				INFOPLIST_FILE = "OSX/ObjectAL (OSX)-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = ObjectAL;
 				SDKROOT = macosx;
