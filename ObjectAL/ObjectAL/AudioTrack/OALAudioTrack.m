@@ -616,7 +616,7 @@
 		
 		NSError* error;
 		player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
-		if(nil != error)
+		if(nil == player)
 		{
 			OAL_LOG_ERROR(@"%@: Could not load URL %@: %@", self, url, [error localizedDescription]);
 			return NO;
