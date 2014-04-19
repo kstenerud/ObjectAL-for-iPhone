@@ -513,7 +513,7 @@
                 NSError* error;
                 as_release(player);
                 player = [[AVAudioPlayer alloc] initWithContentsOfURL:currentlyLoadedUrl error:&error];
-                if(nil != error)
+                if(nil == player)
                 {
                     OAL_LOG_ERROR(@"%@: Could not reload URL %@: %@",
                                   self, currentlyLoadedUrl, [error localizedDescription]);
