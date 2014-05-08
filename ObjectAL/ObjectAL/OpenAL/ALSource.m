@@ -210,10 +210,11 @@ initFailed:
 		}
 			
 		[self stop];
-
+        
+		[ALWrapper sourcei:sourceId parameter:AL_BUFFER value:(ALint)value.bufferId];
+        
         as_release(buffer);
 		buffer = as_retain(value);
-		[ALWrapper sourcei:sourceId parameter:AL_BUFFER value:(ALint)buffer.bufferId];
 	}
 }
 
