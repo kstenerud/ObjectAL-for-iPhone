@@ -206,7 +206,7 @@
 	if(0 == duration_)
 	{
 		// Easy case: 0 duration.
-		for(OALAction* action in actions_)
+		for(__unused OALAction* action in actions_)
 		{
 			[pDurations_ addObject:[NSNumber numberWithFloat:0]];
 		}
