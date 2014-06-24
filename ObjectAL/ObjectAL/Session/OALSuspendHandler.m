@@ -218,7 +218,9 @@
 			{
 				if(nil != suspendStatusChangeTarget)
 				{
-					objc_msgSend(suspendStatusChangeTarget, suspendStatusChangeSelector, interruptLock);
+                    void (*suspendStatusChange)(id, SEL, bool);
+                    suspendStatusChange = (void (*)(id, SEL, bool))[suspendStatusChangeTarget methodForSelector:suspendStatusChangeSelector];
+                    suspendStatusChange(suspendStatusChangeTarget, suspendStatusChangeSelector, interruptLock);
 				}
 			}
 		}
