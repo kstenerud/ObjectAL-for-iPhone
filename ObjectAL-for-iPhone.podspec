@@ -10,6 +10,7 @@ Pod::Spec.new do |s|
   s.public_header_files = 'ObjectAL/ObjectAL/**/*.h'
   s.ios.deployment_target = '4.3'
   s.osx.deployment_target = '10.6'
+  s.requires_arc = false
   s.ios.frameworks = 'OpenAL', 'AudioToolbox', 'AVFoundation'
   s.header_mappings_dir = 'ObjectAL'
 end
