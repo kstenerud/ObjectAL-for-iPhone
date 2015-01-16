@@ -151,14 +151,17 @@
 			manualSuspendLock = value;
 			if(!interruptLock)
 			{
-				if(nil != suspendStatusChangeTarget)
-				{
-                    if([suspendStatusChangeTarget respondsToSelector:suspendStatusChangeSelector])
+                // Assign weak member var to a local var to prevent deallocation within this block
+                id localSuspendStatusChangeTarget = suspendStatusChangeTarget;
+                if(nil != localSuspendStatusChangeTarget)
+                {
+                    if([localSuspendStatusChangeTarget respondsToSelector:suspendStatusChangeSelector])
                     {
-                        id (*method)(id, SEL, bool)  = (id (*)(id, SEL, bool))[suspendStatusChangeTarget methodForSelector:suspendStatusChangeSelector];
-                        method(suspendStatusChangeTarget, suspendStatusChangeSelector, manualSuspendLock);
+                        id (*suspendStatusChange)(id, SEL, bool);
+                        suspendStatusChange = (id (*)(id, SEL, bool))[localSuspendStatusChangeTarget methodForSelector:suspendStatusChangeSelector];
+                        suspendStatusChange(localSuspendStatusChangeTarget, suspendStatusChangeSelector, manualSuspendLock);
                     }
-				}
+                }
 			}
 		}
 		
@@ -220,12 +223,18 @@
 			interruptLock = value;
 			if(!manualSuspendLock)
 			{
-				if(nil != suspendStatusChangeTarget)
-				{
-                    void (*suspendStatusChange)(id, SEL, bool);
-                    suspendStatusChange = (void (*)(id, SEL, bool))[suspendStatusChangeTarget methodForSelector:suspendStatusChangeSelector];
-                    suspendStatusChange(suspendStatusChangeTarget, suspendStatusChangeSelector, interruptLock);
-				}
+                // Assign weak member variable to a local var to prevent deallocation within this block
+                id localSuspendStatusChangeTarget = suspendStatusChangeTarget;
+
+                if(nil != localSuspendStatusChangeTarget)
+                {
+                    if([localSuspendStatusChangeTarget respondsToSelector:suspendStatusChangeSelector])
+                    {
+                        id (*suspendStatusChange)(id, SEL, bool);
+                        suspendStatusChange = (id (*)(id, SEL, bool))[localSuspendStatusChangeTarget methodForSelector:suspendStatusChangeSelector];
+                        suspendStatusChange(localSuspendStatusChangeTarget, suspendStatusChangeSelector, interruptLock);
+                    }
+                }
 			}
 		}
 		
