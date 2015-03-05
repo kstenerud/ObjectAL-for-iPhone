@@ -230,9 +230,12 @@
                 {
                     if([localSuspendStatusChangeTarget respondsToSelector:suspendStatusChangeSelector])
                     {
-                        id (*suspendStatusChange)(id, SEL, bool);
-                        suspendStatusChange = (id (*)(id, SEL, bool))[localSuspendStatusChangeTarget methodForSelector:suspendStatusChangeSelector];
-                        suspendStatusChange(localSuspendStatusChangeTarget, suspendStatusChangeSelector, interruptLock);
+                        NSMethodSignature *signature = [[localSuspendStatusChangeTarget class] instanceMethodSignatureForSelector:suspendStatusChangeSelector];
+                        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+                        [invocation setTarget:localSuspendStatusChangeTarget];
+                        [invocation setSelector:suspendStatusChangeSelector];
+                        [invocation setArgument:&interruptLock atIndex:2];
+                        [invocation invoke];
                     }
                 }
 			}
