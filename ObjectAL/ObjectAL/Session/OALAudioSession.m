@@ -380,7 +380,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 
 - (BOOL) _otherAudioPlaying
 {
-    if([IOSVersion version] < 6)
+    if([IOSVersion sharedInstance].version < 6)
     {
         return self.ipodPlaying;
     }
