@@ -1,7 +1,7 @@
-ObjectAL for iPhone and Mac
-===========================
+ObjectAL for iPhone, Apple TV, and Mac
+======================================
 
-### Mac and iOS Audio, minus the headache.
+### Mac, iOS, and TVOS Audio, minus the headache.
 
 So you want to add audio to your app. Usually your audio needs are something like:
 
