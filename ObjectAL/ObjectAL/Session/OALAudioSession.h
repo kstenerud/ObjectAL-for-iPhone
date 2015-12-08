@@ -36,11 +36,7 @@
 /**
  * Handles the audio session and interrupts.
  */
-#if defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && !defined(__TV_OS_VERSION_MIN_REQUIRED)
-@interface OALAudioSession : NSObject <AVAudioSessionDelegate, OALSuspendManager>
-#else
 @interface OALAudioSession : NSObject <OALSuspendManager>
-#endif
 {
     /** The current audio session category */
 	NSString* audioSessionCategory;
@@ -52,7 +48,6 @@
      */
     bool handlingErrorNotification;
 	
-	bool handleInterruptions;
 	bool allowIpod;
 	bool ipodDucking;
 	bool useHardwareIfAvailable;
@@ -131,52 +126,8 @@
  */
 @property(nonatomic,readwrite,assign) bool honorSilentSwitch;
 
-/** If true, automatically handle interruptions. <br>
- *
- * Default value: YES
- */
-@property(nonatomic,readwrite,assign) bool handleInterruptions;
-
-#if defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && !defined(__TV_OS_VERSION_MIN_REQUIRED)
-/** Delegate that will receive all audio session events (WEAK reference).
- */
-@property(nonatomic,readwrite,assign) id<AVAudioSessionDelegate> audioSessionDelegate;
-#endif
-
 /** If true, the audio session is active */
 @property(nonatomic,readwrite,assign) bool audioSessionActive;
-
-/** The preferred I/O buffer duration, in seconds. Lower values give less
- * playback latencey, but use more CPU.
- * @deprecated Use AVAudioSession instead.
- */
-@property(nonatomic,readwrite,assign) float preferredIOBufferDuration __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_NA,__MAC_NA,__IPHONE_2_0,__IPHONE_6_1);
-
-/** If true, another application (usually iPod) is playing music.
- * @deprecated Use AVAudioSession instead.
- */
-@property(nonatomic,readonly,assign) bool ipodPlaying __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_NA,__MAC_NA,__IPHONE_2_0,__IPHONE_6_1);
-
-/** Get the device's final hardware output volume, as controlled by
- * the volume button on the side of the device.
- * @deprecated Use AVAudioSession instead.
- */
-@property(nonatomic,readonly,assign) float hardwareVolume __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_NA,__MAC_NA,__IPHONE_2_0,__IPHONE_6_1);
-
-/** Check if the hardware mute switch is on (not supported on the simulator or iOS 5+).
- * Note: If headphones are plugged in, hardwareMuted will always return FALSE
- *       regardless of the switch state.
- *
- * Note: Please file a bug report with Apple to get this functionality restored in iOS 5!
- */
-@property(nonatomic,readonly,assign) bool hardwareMuted __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_NA,__MAC_NA,__IPHONE_2_0,__IPHONE_5_0);
-
-/** Check what hardware route the audio is taking, such as "Speaker" or "Headphone"
- * (not supported on the simulator).
- * @deprecated Use AVAudioSession instead.
- */
-@property(nonatomic,readonly,retain) NSString* audioRoute __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_NA,__MAC_NA,__IPHONE_2_0,__IPHONE_6_1);
-
 
 #pragma mark Object Management
 
@@ -186,15 +137,5 @@
  * <b>- (void) purgeSharedInstance</b>: Purge (deallocate) the shared instance.
  */
 SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALAudioSession);
-
-
-#pragma mark Utility
-
-/** Force an interrupt end. This can be useful in cases where a buggy OS
- * fails to end an interrupt.
- *
- * Be VERY CAREFUL when using this!
- */
-- (void) forceEndInterruption;
 
 @end

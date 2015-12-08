@@ -488,9 +488,6 @@
 		context = [[ALContext contextOnDevice:device attributes:nil] retain];
 		[OpenALManager sharedInstance].currentContext = context;
 		
-		// Deal with interruptions for me!
-		[OALAudioSession sharedInstance].handleInterruptions = YES;
-		
 		// We don't want ipod music to keep playing since
 		// we have our own bg music.
 		[OALAudioSession sharedInstance].allowIpod = NO;
@@ -661,15 +658,6 @@
 		[OpenALManager sharedInstance].manuallySuspended = NO;
 	}
 }
- \endcode
- <br>
- \subsection mpmusicplayercontroller_ios4_0 MPMusicPlayerController on iOS 4.0
-
- On iOS 4.0, MPMusicPlayerController sends an interrupt when it begins playback, but doesn't send
- a corresponding "end interrupt" when it ends. To work around this, force an "end interrupt"
- after starting playback:
- \code
-	[[OALAudioSession sharedInstance] forceEndInterruption];
  \endcode
 
  

@@ -934,45 +934,6 @@
 #pragma mark -
 #pragma mark AVAudioPlayerDelegate
 
-#if TARGET_OS_IPHONE
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-implementations"
-- (void) audioPlayerBeginInterruption:(AVAudioPlayer*) playerIn
-{
-	if([delegate respondsToSelector:@selector(audioPlayerBeginInterruption:)])
-	{
-		[delegate audioPlayerBeginInterruption:playerIn];
-	}
-}
-
-- (void)audioPlayerEndInterruption:(AVAudioPlayer *)playerIn withOptions:(NSUInteger)flags
-{
-	if([delegate respondsToSelector:@selector(audioPlayerEndInterruption:withOptions:)])
-	{
-		[delegate audioPlayerEndInterruption:playerIn withOptions:flags];
-	}
-}
-#pragma clang diagnostic pop
-
-#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
-- (void)audioPlayerEndInterruption:(AVAudioPlayer *)playerIn withFlags:(NSUInteger)flags
-{
-	if([delegate respondsToSelector:@selector(audioPlayerEndInterruption:withFlags:)])
-	{
-		[delegate audioPlayerEndInterruption:playerIn withFlags:flags];
-	}
-}
-
-- (void) audioPlayerEndInterruption:(AVAudioPlayer*) playerIn
-{
-	if([delegate respondsToSelector:@selector(audioPlayerEndInterruption:)])
-	{
-		[delegate audioPlayerEndInterruption:playerIn];
-	}
-}
-#endif // __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
-#endif // TARGET_OS_IPHONE
-
 - (void) audioPlayerDecodeErrorDidOccur:(AVAudioPlayer*) playerIn error:(NSError*) error
 {
 	if([delegate respondsToSelector:@selector(audioPlayerDecodeErrorDidOccur:error:)])

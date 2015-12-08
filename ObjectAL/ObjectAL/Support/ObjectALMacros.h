@@ -156,18 +156,6 @@
 #pragma mark -
 #pragma mark Special Purpose Logging
 
-/** Report on the specified AudioSession error code, logging an error if the code does not indicate success.
- *
- * @param ERROR_CODE The error code.
- * @param FMT Message with NSLog() style formatting.
- * @param ... Arguments
- */
-#define REPORT_AUDIOSESSION_CALL(ERROR_CODE, FMT, ...) \
-if(noErr != (ERROR_CODE)) \
-{ \
-	[OALTools notifyAudioSessionError:(ERROR_CODE) function:__PRETTY_FUNCTION__ description:(FMT), ##__VA_ARGS__]; \
-}
-
 
 #if OBJECTAL_CFG_LOG_LEVEL > 0
 
