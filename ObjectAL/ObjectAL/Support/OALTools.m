@@ -142,7 +142,7 @@ static NSBundle* g_defaultBundle;
 	}
 }
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#if defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && !defined(__TV_OS_VERSION_MIN_REQUIRED)
 + (void) notifyAudioSessionError:(OSStatus)errorCode
 					 function:(const char*) function
 				  description:(NSString*) description, ...

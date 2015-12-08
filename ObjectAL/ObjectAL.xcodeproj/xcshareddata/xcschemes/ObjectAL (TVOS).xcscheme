@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CBBAB311171D0B84009B955F"
-               BuildableName = "libObjectAL.a"
-               BlueprintName = "ObjectAL (iOS)"
+               BlueprintIdentifier = "CB0C06CF1C17640200297E1C"
+               BuildableName = "ObjectAL.framework"
+               BlueprintName = "ObjectAL"
                ReferencedContainer = "container:ObjectAL.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "CBBAB311171D0B84009B955F"
-            BuildableName = "libObjectAL.a"
-            BlueprintName = "ObjectAL (iOS)"
+            BlueprintIdentifier = "CB0C06CF1C17640200297E1C"
+            BuildableName = "ObjectAL.framework"
+            BlueprintName = "ObjectAL"
             ReferencedContainer = "container:ObjectAL.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -60,6 +60,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "CB0C06CF1C17640200297E1C"
+            BuildableName = "ObjectAL.framework"
+            BlueprintName = "ObjectAL"
+            ReferencedContainer = "container:ObjectAL.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
