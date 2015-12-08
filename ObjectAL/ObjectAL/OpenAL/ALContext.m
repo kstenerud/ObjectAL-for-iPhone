@@ -30,7 +30,6 @@
 #import "ALContext.h"
 #import "NSMutableArray+WeakReferences.h"
 #import "ObjectALMacros.h"
-#import "ARCSafe_MemMgmt.h"
 #import "ALWrapper.h"
 #import "OpenALManager.h"
 #import "ALDevice.h"
@@ -69,7 +68,7 @@
 
 + (id) contextOnDevice:(ALDevice *) device attributes:(NSArray*) attributes
 {
-	return as_autorelease([[self alloc] initOnDevice:device attributes:attributes]);
+	return [[self alloc] initOnDevice:device attributes:attributes];
 }
 
 + (id) contextOnDevice:(ALDevice*) device
@@ -151,7 +150,7 @@
 		if(nil == deviceIn)
 		{
 			OAL_LOG_ERROR(@"%@: Could not init context: Device is nil", self);
-            goto initFailed;
+            return nil;
 		}
 
 		suspendHandler = [[OALSuspendHandler alloc] initWithTarget:self selector:@selector(setSuspended:)];
@@ -170,7 +169,7 @@
 		}
 		
 		// Notify the device that we are being created.
-		device = as_retain(deviceIn);
+		device = deviceIn;
 		[device notifyContextInitializing:self];
 
 		// Open the context with our list of attributes.
@@ -178,7 +177,7 @@
         if(context == nil)
         {
             OAL_LOG_ERROR(@"%@: Failed to create OpenAL context", self);
-            goto initFailed;
+            return nil;
         }
 		
 		listener = [[ALListener alloc] initWithContext:self];
@@ -217,10 +216,6 @@
 		[device addSuspendListener:self];
 	}
 	return self;
-
-initFailed:
-    as_release(self);
-    return nil;
 }
 
 - (void) dealloc
@@ -236,13 +231,6 @@ initFailed:
         [OpenALManager sharedInstance].currentContext = nil;
     }
     [ALWrapper destroyContext:context];
-
-	as_release(sources);
-	as_release(listener);
-	as_release(device);
-	as_release(attributes);
-	as_release(suspendHandler);
-	as_superdealloc();
 }
 
 

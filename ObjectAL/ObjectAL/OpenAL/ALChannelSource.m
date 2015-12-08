@@ -29,7 +29,6 @@
 
 #import "ALChannelSource.h"
 #import "ObjectALMacros.h"
-#import "ARCSafe_MemMgmt.h"
 #import "OpenALManager.h"
 
 
@@ -92,7 +91,7 @@
 
 + (id) channelWithSources:(int) reservedSources
 {
-	return as_autorelease([[self alloc] initWithSources:reservedSources]);
+	return [[self alloc] initWithSources:reservedSources];
 }
 
 - (id) initWithSources:(int) reservedSources
@@ -101,11 +100,11 @@
 	{
 		OAL_LOG_DEBUG(@"%@: Init with %d sources", self, reservedSources);
 
-		context = as_retain([OpenALManager sharedInstance].currentContext);
+		context = [OpenALManager sharedInstance].currentContext;
         if(context == nil)
         {
             OAL_LOG_ERROR(@"%@: Could not initialize channel: Context is nil", self);
-            goto initFailed;
+            return nil;
         }
 
 		sourcePool = [[ALSoundSourcePool alloc] init];
@@ -116,20 +115,6 @@
         }            
 	}
 	return self;
-
-initFailed:
-    as_release(self);
-    return nil;
-}
-
-- (void) dealloc
-{
-	OAL_LOG_DEBUG(@"%@: Dealloc", self);
-	
-	as_release(sourcePool);
-	as_release(context);
-
-    as_superdealloc();
 }
 
 - (int) reservedSources
@@ -572,7 +557,6 @@ SYNTHESIZE_DELEGATE_PROPERTY(reverbObstruction, ReverbObstruction, float);
                 return nil;
             }
         }
-        as_autorelease_noref(as_retain(source));
         [sourcePool removeSource:source];
     }
     

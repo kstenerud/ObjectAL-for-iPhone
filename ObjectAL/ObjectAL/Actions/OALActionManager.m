@@ -30,7 +30,6 @@
 #import "OALActionManager.h"
 #import "mach_timing.h"
 #import "ObjectALMacros.h"
-#import "ARCSafe_MemMgmt.h"
 #import "NSMutableArray+WeakReferences.h"
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 #import <UIKit/UIKit.h>
@@ -92,11 +91,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALActionManager);
 - (void) dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	as_release(targets);
-	as_release(targetActions);
-	as_release(actionsToAdd);
-	as_release(actionsToRemove);
-	as_superdealloc();
 }
 
 - (void) doResetTimeDelta:(NSNotification*) notification

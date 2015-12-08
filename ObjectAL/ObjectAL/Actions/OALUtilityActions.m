@@ -30,7 +30,6 @@
 #import "OALUtilityActions.h"
 #import "OALAction+Private.h"
 #import "ObjectALMacros.h"
-#import "ARCSafe_MemMgmt.h"
 
 
 #pragma mark OALTargetedAction
@@ -50,7 +49,7 @@
 
 + (id) actionWithTarget:(id) target action:(OALAction*) action
 {
-	return as_autorelease([(OALTargetedAction*)[self alloc] initWithTarget:target action:action]);
+	return [(OALTargetedAction*)[self alloc] initWithTarget:target action:action];
 }
 
 - (id) initWithTarget:(id) target action:(OALAction*) action
@@ -62,12 +61,6 @@
 		self.duration = action.duration;
 	}
 	return self;
-}
-
-- (void) dealloc
-{
-	as_release(action_);
-    as_superdealloc();
 }
 
 
@@ -153,12 +146,12 @@
 	}
 	va_end(params);
 
-	return as_autorelease([[self alloc] initWithActions:actions]);
+	return [[self alloc] initWithActions:actions];
 }
 
 + (id) actionsFromArray:(NSArray*) actions;
 {
-	return as_autorelease([[self alloc] initWithActions:actions]);
+	return [[self alloc] initWithActions:actions];
 }
 
 - (id) initWithActions:(NSArray*) actions
@@ -179,13 +172,6 @@
 		self.pDurations = [NSMutableArray arrayWithCapacity:[actions count]];
 	}
 	return self;
-}
-
-- (void) dealloc
-{
-	as_release(actions_);
-	as_release(pDurations_);
-    as_superdealloc();
 }
 
 
@@ -363,12 +349,12 @@ COCOS2D_SUBCLASS(OALSequentialActions)
 	}
 	va_end(params);
 
-	return as_autorelease([[self alloc] initWithActions:actions]);
+	return [[self alloc] initWithActions:actions];
 }
 
 + (id) actionsFromArray:(NSArray*) actions;
 {
-	return as_autorelease([[self alloc] initWithActions:actions]);
+	return [[self alloc] initWithActions:actions];
 }
 
 - (id) initWithActions:(NSArray*) actions
@@ -390,14 +376,6 @@ COCOS2D_SUBCLASS(OALSequentialActions)
 		self.actionsWithDuration = [NSMutableArray arrayWithCapacity:[actions count]];
 	}
 	return self;
-}
-
-- (void) dealloc
-{
-	as_release(actions_);
-	as_release(pDurations_);
-	as_release(actionsWithDuration_);
-	as_superdealloc();
 }
 
 
@@ -504,16 +482,16 @@ COCOS2D_SUBCLASS(OALConcurrentActions)
 + (id) actionWithCallTarget:(id) callTarget
 				   selector:(SEL) selector
 {
-	return as_autorelease([[self alloc] initWithCallTarget:callTarget selector:selector]);
+	return [[self alloc] initWithCallTarget:callTarget selector:selector];
 }
 
 + (id) actionWithCallTarget:(id) callTarget
 				   selector:(SEL) selector
 				 withObject:(id) object
 {
-	return as_autorelease([[self alloc] initWithCallTarget:callTarget
-                                                  selector:selector
-                                                withObject:object]);
+    return [[self alloc] initWithCallTarget:callTarget
+                                   selector:selector
+                                 withObject:object];
 }
 
 + (id) actionWithCallTarget:(id) callTarget
@@ -521,10 +499,10 @@ COCOS2D_SUBCLASS(OALConcurrentActions)
 				 withObject:(id) firstObject
 				 withObject:(id) secondObject
 {
-	return as_autorelease([[self alloc] initWithCallTarget:callTarget
-                                                  selector:selector
-                                                withObject:firstObject
-                                                withObject:secondObject]);
+    return [[self alloc] initWithCallTarget:callTarget
+                                   selector:selector
+                                 withObject:firstObject
+                                 withObject:secondObject];
 }
 
 - (id) initWithCallTarget:(id) callTargetIn selector:(SEL) selectorIn

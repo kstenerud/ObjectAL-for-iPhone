@@ -33,7 +33,6 @@
 #import "OALTools.h"
 #import "OALUtilityActions.h"
 #import "ObjectALMacros.h"
-#import "ARCSafe_MemMgmt.h"
 
 #pragma mark Asynchronous Operations
 
@@ -81,27 +80,20 @@
 
 + (id) operationWithTrack:(OALAudioTrack*) track url:(NSURL*) url seekTime:(NSTimeInterval)seekTime target:(id) target selector:(SEL) selector
 {
-	return as_autorelease([[self alloc] initWithTrack:track url:url seekTime:seekTime target:target selector:selector]);
+	return [[self alloc] initWithTrack:track url:url seekTime:seekTime target:target selector:selector];
 }
 
 - (id) initWithTrack:(OALAudioTrack*) track url:(NSURL*) urlIn seekTime:(NSTimeInterval)seekTimeIn target:(id) targetIn selector:(SEL) selectorIn
 {
 	if(nil != (self = [super init]))
 	{
-		audioTrack = as_retain(track);
-		url = as_retain(urlIn);
+		audioTrack = track;
+		url = urlIn;
 		seekTime = seekTimeIn;
 		target = targetIn;
 		selector = selectorIn;
 	}
 	return self;
-}
-
-- (void) dealloc
-{
-	as_release(audioTrack);
-	as_release(url);
-    as_superdealloc();
 }
 
 @end
@@ -147,7 +139,7 @@
 
 + (id) operationWithTrack:(OALAudioTrack*) track url:(NSURL*) url loops:(NSInteger) loops target:(id) target selector:(SEL) selector
 {
-	return as_autorelease([[self alloc] initWithTrack:track url:url loops:loops target:target selector:selector]);
+	return [[self alloc] initWithTrack:track url:url loops:loops target:target selector:selector];
 }
 
 - (id) initWithTrack:(OALAudioTrack*) track url:(NSURL*) urlIn loops:(NSInteger) loopsIn target:(id) targetIn selector:(SEL) selectorIn
@@ -217,7 +209,7 @@
 
 + (id) track
 {
-	return as_autorelease([[self alloc] init]);
+	return [[self alloc] init];
 }
 
 - (id) init
@@ -249,16 +241,8 @@
     player.delegate = nil;
     [player stop];
 
-	as_release(player);
-	as_release(operationQueue);
-	as_release(currentlyLoadedUrl);
-	as_release(simulatorPlayerRef);
 	[gainAction stopAction];
-	as_release(gainAction);
 	[panAction stopAction];
-	as_release(panAction);
-	as_release(suspendHandler);
-	as_superdealloc();
 }
 
 
@@ -511,13 +495,11 @@
             if(preloaded)
             {
                 NSError* error;
-                as_release(player);
                 player = [[AVAudioPlayer alloc] initWithContentsOfURL:currentlyLoadedUrl error:&error];
                 if(nil == player)
                 {
                     OAL_LOG_ERROR(@"%@: Could not reload URL %@: %@",
                                   self, currentlyLoadedUrl, [error localizedDescription]);
-                    as_release(player);
                     player = nil;
                     preloaded = NO;
                     playing = NO;
@@ -536,7 +518,6 @@
                 if(![player prepareToPlay])
                 {
                     OAL_LOG_ERROR(@"%@: Failed to prepareToPlay on resume: %@", self, currentlyLoadedUrl);
-                    as_release(player);
                     player = nil;
                     preloaded = NO;
                     playing = NO;
@@ -607,8 +588,6 @@
 			[player stop];
 		}
 
-		as_release(player);
-
 		if(wasPlaying)
 		{
 			[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:OALAudioTrackStoppedPlayingNotification object:self] waitUntilDone:NO];
@@ -628,8 +607,7 @@
 		player.delegate = self;
         player.pan = pan;
 
-		as_release(currentlyLoadedUrl);
-		currentlyLoadedUrl = as_retain(url);
+		currentlyLoadedUrl = url;
 		
 		self.currentTime = seekTime;
 		playing = NO;
@@ -823,7 +801,6 @@
                       [OALPropertyAction gainActionWithDuration:duration endValue:value],
                       [OALCallAction actionWithCallTarget:target selector:selector withObject:self],
                       nil];
-        gainAction = as_retain(gainAction);
 		[gainAction runWithTarget:self];
 	}
 }
@@ -834,7 +811,6 @@
 	@synchronized(self)
 	{
 		[gainAction stopAction];
-		as_release(gainAction);
 		gainAction = nil;
 	}
 }
@@ -852,7 +828,6 @@
                      [OALPropertyAction panActionWithDuration:duration endValue:value],
                      [OALCallAction actionWithCallTarget:target selector:selector withObject:self],
                      nil];
-        panAction = as_retain(panAction);
         [panAction runWithTarget:self];
     }
 }
@@ -863,7 +838,6 @@
     @synchronized(self)
     {
         [panAction stopAction];
-        as_release(panAction);
         panAction = nil;
     }
 }
@@ -873,11 +847,9 @@
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
 		[self stopActions];
-		as_release(currentlyLoadedUrl);
 		currentlyLoadedUrl = nil;
 		
 		[player stop];
-		as_release(player);
 		player = nil;
 		playing = NO;
 		paused = NO;

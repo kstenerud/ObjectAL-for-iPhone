@@ -30,7 +30,6 @@
 #import "OpenALManager.h"
 #import "NSMutableArray+WeakReferences.h"
 #import "ObjectALMacros.h"
-#import "ARCSafe_MemMgmt.h"
 #import "ALWrapper.h"
 #import "ALDevice.h"
 #import "OALAudioSession.h"
@@ -91,10 +90,10 @@
 				 target:(id) target
 			   selector:(SEL) selector
 {
-	return as_autorelease([[self alloc] initWithUrl:url
-                                            reduceToMono:reduceToMono
-                                                  target:target
-                                                selector:selector]);
+    return [[self alloc] initWithUrl:url
+                        reduceToMono:reduceToMono
+                              target:target
+                            selector:selector];
 }
 
 - (id) initWithUrl:(NSURL*) urlIn
@@ -104,18 +103,12 @@
 {
 	if(nil != (self = [super init]))
 	{
-		url = as_retain(urlIn);
+		url = urlIn;
 		reduceToMono = reduceToMonoIn;
 		target = targetIn;
 		selector = selectorIn;
 	}
 	return self;
-}
-
-- (void) dealloc
-{
-	as_release(url);
-	as_superdealloc();
 }
 
 - (void)main
@@ -183,11 +176,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OpenALManager);
 {
 	OAL_LOG_DEBUG(@"%@: Dealloc", self);
 	[[OALAudioSession sharedInstance] removeSuspendListener:self];
-
-	as_release(operationQueue);
-	as_release(suspendHandler);
-	as_release(devices);
-	as_superdealloc();
 }
 
 

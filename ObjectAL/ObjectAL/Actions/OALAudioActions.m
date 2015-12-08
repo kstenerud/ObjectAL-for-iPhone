@@ -30,7 +30,6 @@
 #import "OALAudioActions.h"
 #import "OALAction+Private.h"
 #import "ObjectALMacros.h"
-#import "ARCSafe_MemMgmt.h"
 
 
 @implementation OALPropertyAction (Audio)
@@ -116,7 +115,7 @@
 
 + (id) actionWithPosition:(ALPoint) position
 {
-	return as_autorelease([(OALPlaceAction*)[self alloc] initWithPosition:position]);
+	return [(OALPlaceAction*)[self alloc] initWithPosition:position];
 }
 
 - (id) initWithPosition:(ALPoint) positionIn
@@ -163,12 +162,12 @@
 
 + (id) actionWithDuration:(float) duration position:(ALPoint) position
 {
-	return as_autorelease([(OALMoveToAction*)[self alloc] initWithDuration:duration position:position]);
+    return [(OALMoveToAction*)[self alloc] initWithDuration:duration position:position];
 }
 
 + (id) actionWithUnitsPerSecond:(float) unitsPerSecond position:(ALPoint) position
 {
-	return as_autorelease([[self alloc] initWithUnitsPerSecond:unitsPerSecond position:position]);
+	return [[self alloc] initWithUnitsPerSecond:unitsPerSecond position:position];
 }
 
 - (id) initWithDuration:(float) durationIn position:(ALPoint) positionIn
@@ -238,12 +237,12 @@
 
 + (id) actionWithDuration:(float) duration delta:(ALPoint) delta
 {
-	return as_autorelease([[self alloc] initWithDuration:duration delta:delta]);
+	return [[self alloc] initWithDuration:duration delta:delta];
 }
 
 + (id) actionWithUnitsPerSecond:(float) unitsPerSecond delta:(ALPoint) delta
 {
-	return as_autorelease([[self alloc] initWithUnitsPerSecond:unitsPerSecond delta:delta]);
+	return [[self alloc] initWithUnitsPerSecond:unitsPerSecond delta:delta];
 }
 
 - (id) initWithDuration:(float) durationIn delta:(ALPoint) deltaIn

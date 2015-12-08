@@ -33,7 +33,6 @@
 		CB0C06ED1C17647900297E1C /* OpenALManager.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB37C171D0C0E009B955F /* OpenALManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CB0C06EE1C17647900297E1C /* OALAudioSession.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB37F171D0C0E009B955F /* OALAudioSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CB0C06EF1C17647900297E1C /* OALSuspendHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB381171D0C0E009B955F /* OALSuspendHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CB0C06F01C17648E00297E1C /* ARCSafe_MemMgmt.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB384171D0C0E009B955F /* ARCSafe_MemMgmt.h */; };
 		CB0C06F21C17648E00297E1C /* mach_timing.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB388171D0C0E009B955F /* mach_timing.h */; };
 		CB0C06F31C17648E00297E1C /* NSMutableArray+WeakReferences.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB389171D0C0E009B955F /* NSMutableArray+WeakReferences.h */; };
 		CB0C06F41C17648E00297E1C /* NSMutableDictionary+WeakReferences.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB38B171D0C0E009B955F /* NSMutableDictionary+WeakReferences.h */; };
@@ -138,7 +137,6 @@
 		CBBAB3D3171D0C0F009B955F /* OALSuspendHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB381171D0C0E009B955F /* OALSuspendHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CBBAB3D4171D0C0F009B955F /* OALSuspendHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB382171D0C0E009B955F /* OALSuspendHandler.m */; };
 		CBBAB3D5171D0C0F009B955F /* OALSuspendHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB382171D0C0E009B955F /* OALSuspendHandler.m */; };
-		CBBAB3D6171D0C0F009B955F /* ARCSafe_MemMgmt.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB384171D0C0E009B955F /* ARCSafe_MemMgmt.h */; };
 		CBBAB3DA171D0C0F009B955F /* mach_timing.c in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB387171D0C0E009B955F /* mach_timing.c */; };
 		CBBAB3DB171D0C0F009B955F /* mach_timing.c in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB387171D0C0E009B955F /* mach_timing.c */; };
 		CBBAB3DC171D0C0F009B955F /* mach_timing.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB388171D0C0E009B955F /* mach_timing.h */; };
@@ -182,7 +180,6 @@
 		CBBAB416171D0C86009B955F /* OpenALManager.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB37C171D0C0E009B955F /* OpenALManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CBBAB417171D0C86009B955F /* OALAudioSession.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB37F171D0C0E009B955F /* OALAudioSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CBBAB418171D0C86009B955F /* OALSuspendHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB381171D0C0E009B955F /* OALSuspendHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CBBAB419171D0C86009B955F /* ARCSafe_MemMgmt.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB384171D0C0E009B955F /* ARCSafe_MemMgmt.h */; };
 		CBBAB41B171D0C86009B955F /* mach_timing.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB388171D0C0E009B955F /* mach_timing.h */; };
 		CBBAB41C171D0C86009B955F /* NSMutableArray+WeakReferences.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB389171D0C0E009B955F /* NSMutableArray+WeakReferences.h */; };
 		CBBAB41D171D0C86009B955F /* NSMutableDictionary+WeakReferences.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB38B171D0C0E009B955F /* NSMutableDictionary+WeakReferences.h */; };
@@ -323,7 +320,6 @@
 		CBBAB380171D0C0E009B955F /* OALAudioSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALAudioSession.m; sourceTree = "<group>"; };
 		CBBAB381171D0C0E009B955F /* OALSuspendHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALSuspendHandler.h; sourceTree = "<group>"; };
 		CBBAB382171D0C0E009B955F /* OALSuspendHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALSuspendHandler.m; sourceTree = "<group>"; };
-		CBBAB384171D0C0E009B955F /* ARCSafe_MemMgmt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCSafe_MemMgmt.h; sourceTree = "<group>"; };
 		CBBAB387171D0C0E009B955F /* mach_timing.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mach_timing.c; sourceTree = "<group>"; };
 		CBBAB388171D0C0E009B955F /* mach_timing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mach_timing.h; sourceTree = "<group>"; };
 		CBBAB389171D0C0E009B955F /* NSMutableArray+WeakReferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+WeakReferences.h"; sourceTree = "<group>"; };
@@ -545,7 +541,6 @@
 		CBBAB383171D0C0E009B955F /* Support */ = {
 			isa = PBXGroup;
 			children = (
-				CBBAB384171D0C0E009B955F /* ARCSafe_MemMgmt.h */,
 				CBBAB387171D0C0E009B955F /* mach_timing.c */,
 				CBBAB388171D0C0E009B955F /* mach_timing.h */,
 				CBBAB389171D0C0E009B955F /* NSMutableArray+WeakReferences.h */,
@@ -586,7 +581,6 @@
 				CB0C06F91C17649700297E1C /* SynthesizeSingleton.h in Headers */,
 				CB0C06E31C17647900297E1C /* ALCaptureDevice.h in Headers */,
 				CB0C06DF1C17647900297E1C /* OALAudioTracks.h in Headers */,
-				CB0C06F01C17648E00297E1C /* ARCSafe_MemMgmt.h in Headers */,
 				CB0C06F81C17649700297E1C /* OALTools.h in Headers */,
 				CB0C06D91C17647900297E1C /* OALAction.h in Headers */,
 				CB0C06F61C17649700297E1C /* OALAudioFile.h in Headers */,
@@ -640,7 +634,6 @@
 				CBBAB3E7171D0C0F009B955F /* OALTools.h in Headers */,
 				CBBAB3EB171D0C0F009B955F /* SynthesizeSingleton.h in Headers */,
 				CBBAB394171D0C0F009B955F /* OALAction+Private.h in Headers */,
-				CBBAB3D6171D0C0F009B955F /* ARCSafe_MemMgmt.h in Headers */,
 				CBBAB3DC171D0C0F009B955F /* mach_timing.h in Headers */,
 				CBBAB3DD171D0C0F009B955F /* NSMutableArray+WeakReferences.h in Headers */,
 				CBBAB3E0171D0C0F009B955F /* NSMutableDictionary+WeakReferences.h in Headers */,
@@ -681,7 +674,6 @@
 				CBBAB420171D0C86009B955F /* OALTools.h in Headers */,
 				CBBAB422171D0C86009B955F /* SynthesizeSingleton.h in Headers */,
 				CBBAB400171D0C86009B955F /* OALAction+Private.h in Headers */,
-				CBBAB419171D0C86009B955F /* ARCSafe_MemMgmt.h in Headers */,
 				CBBAB41B171D0C86009B955F /* mach_timing.h in Headers */,
 				CBBAB41C171D0C86009B955F /* NSMutableArray+WeakReferences.h in Headers */,
 				CBBAB41D171D0C86009B955F /* NSMutableDictionary+WeakReferences.h in Headers */,

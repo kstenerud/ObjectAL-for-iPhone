@@ -30,7 +30,6 @@
 #import "ALCaptureDevice.h"
 #import "ALWrapper.h"
 #import "ObjectALMacros.h"
-#import "ARCSafe_MemMgmt.h"
 
 
 @implementation ALCaptureDevice
@@ -42,10 +41,10 @@
 						  format:(ALCenum) format
 					  bufferSize:(ALCsizei) bufferSize
 {
-	return as_autorelease([[self alloc] initWithDeviceSpecifier:deviceSpecifier
-                                                      frequency:frequency
-                                                         format:format
-                                                     bufferSize:bufferSize]);
+    return [[self alloc] initWithDeviceSpecifier:deviceSpecifier
+                                       frequency:frequency
+                                          format:format
+                                      bufferSize:bufferSize];
 }
 
 - (id) initWithDeviceSpecifier:(NSString*) deviceSpecifier
@@ -62,21 +61,15 @@
         if(device == nil)
         {
             OAL_LOG_ERROR(@"%@: Failed to initialize OpenAL capture device", self);
-            goto initFailed;
+            return nil;
         }
 	}
 	return self;
-
-initFailed:
-    as_release(self);
-    return nil;
 }
 
 - (void) dealloc
 {
     [ALWrapper closeDevice:device];
-
-	as_superdealloc();
 }
 
 

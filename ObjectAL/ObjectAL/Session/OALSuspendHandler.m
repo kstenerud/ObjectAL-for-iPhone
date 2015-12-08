@@ -30,7 +30,6 @@
 #import "OALSuspendHandler.h"
 #import "NSMutableArray+WeakReferences.h"
 #import "ObjectALMacros.h"
-#import "ARCSafe_MemMgmt.h"
 #import <objc/message.h>
 
 /** \cond */
@@ -49,7 +48,7 @@
 
 + (OALSuspendHandler*) handlerWithTarget:(id) target selector:(SEL) selector
 {
-	return as_autorelease([[self alloc] initWithTarget:target selector:selector]);
+	return [[self alloc] initWithTarget:target selector:selector];
 }
 
 - (id) initWithTarget:(id) target selector:(SEL) selector
@@ -62,13 +61,6 @@
 		suspendStatusChangeSelector = selector;
 	}
 	return self;
-}
-
-- (void) dealloc
-{
-	as_release(listeners);
-	as_release(manualSuspendStates);
-    as_superdealloc();
 }
 
 - (void) addSuspendListener:(id<OALSuspendListener>) listener

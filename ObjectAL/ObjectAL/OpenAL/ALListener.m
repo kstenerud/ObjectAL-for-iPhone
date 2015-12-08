@@ -29,7 +29,6 @@
 
 #import "ALListener.h"
 #import "ObjectALMacros.h"
-#import "ARCSafe_MemMgmt.h"
 #import "ALWrapper.h"
 #import "ALContext.h"
 
@@ -49,7 +48,7 @@
 
 + (id) listenerForContext:(ALContext*) context
 {
-	return as_autorelease([[self alloc] initWithContext:context]);
+	return [[self alloc] initWithContext:context];
 }
 
 - (id) initWithContext:(ALContext*) contextIn
@@ -59,7 +58,7 @@
         if(contextIn == nil)
         {
             OAL_LOG_ERROR(@"%@: Could not init listener: Context is nil", self);
-            goto initFailed;
+            return nil;
         }
 		suspendHandler = [[OALSuspendHandler alloc] initWithTarget:nil selector:nil];
 
@@ -67,16 +66,6 @@
 		gain = 1.0f;
 	}
 	return self;
-
-initFailed:
-    as_release(self);
-    return nil;
-}
-
-- (void) dealloc
-{
-	as_release(suspendHandler);
-	as_superdealloc();
 }
 
 #pragma mark Properties

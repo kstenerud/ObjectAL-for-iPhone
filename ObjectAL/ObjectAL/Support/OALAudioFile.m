@@ -29,7 +29,6 @@
 
 #import "OALAudioFile.h"
 #import "ObjectALMacros.h"
-#import "ARCSafe_MemMgmt.h"
 
 
 @implementation OALAudioFile
@@ -37,7 +36,7 @@
 + (OALAudioFile*) fileWithUrl:(NSURL*) url
 				 reduceToMono:(bool) reduceToMono
 {
-	return as_autorelease([[self alloc] initWithUrl:url reduceToMono:reduceToMono]);
+	return [[self alloc] initWithUrl:url reduceToMono:reduceToMono];
 }
 
 
@@ -46,7 +45,7 @@
 {
 	if(nil != (self = [super init]))
 	{
-		url = as_retain(urlIn);
+		url = urlIn;
 		reduceToMono = reduceToMonoIn;
 
 		OSStatus error = 0;
@@ -55,14 +54,14 @@
 		if(nil == url)
 		{
 			OAL_LOG_ERROR(@"Cannot open NULL file / url");
-			goto done;
+			return nil;
 		}
 
 		// Open the file
-		if(noErr != (error = ExtAudioFileOpenURL((as_bridge CFURLRef)url, &fileHandle)))
+		if(noErr != (error = ExtAudioFileOpenURL((__bridge CFURLRef)url, &fileHandle)))
 		{
 			REPORT_EXTAUDIO_CALL(error, @"Could not open url %@", url);
-			goto done;
+			return nil;
 		}
 
 		// Get some info about the file
@@ -73,7 +72,7 @@
 													 &totalFrames)))
 		{
 			REPORT_EXTAUDIO_CALL(error, @"Could not get frame count for file (url = %@)", url);
-			goto done;
+			return nil;
 		}
 		
 		
@@ -84,7 +83,7 @@
 													 &streamDescription)))
 		{
 			REPORT_EXTAUDIO_CALL(error, @"Could not get audio format for file (url = %@)", url);
-			goto done;
+			return nil;
 		}
 		
 		// Specify the new audio format (anything not changed remains the same)
@@ -121,16 +120,8 @@
 													 &streamDescription)))
 		{
 			REPORT_EXTAUDIO_CALL(error, @"Could not set new audio format for file (url = %@)", url);
-			goto done;
-		}
-		
-	done:
-		if(noErr != error)
-		{
-			as_release(self);
 			return nil;
 		}
-		
 	}
 	return self;
 }
@@ -142,9 +133,6 @@
         REPORT_EXTAUDIO_CALL(ExtAudioFileDispose(fileHandle), @"Error closing file (url = %@)", url);
         fileHandle = nil;
     }
-
-	as_release(url);
-	as_superdealloc();
 }
 
 - (NSString*) description
@@ -327,7 +315,6 @@
 	ALBuffer* buffer = [file bufferNamed:[url description]
 							  startFrame:0
 							   numFrames:-1];
-	as_release(file);
 	return buffer;
 }
 

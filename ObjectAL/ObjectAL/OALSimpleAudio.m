@@ -29,7 +29,6 @@
 
 #import "OALSimpleAudio.h"
 #import "ObjectALMacros.h"
-#import "ARCSafe_MemMgmt.h"
 #import "OALAudioSession.h"
 #import "OpenALManager.h"
 
@@ -73,16 +72,16 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 
 + (OALSimpleAudio*) sharedInstanceWithSources:(int) sources
 {
-	return as_autorelease([[self alloc] initWithSources:sources]);
+	return [[self alloc] initWithSources:sources];
 }
 
 + (OALSimpleAudio*) sharedInstanceWithReservedSources:(int) reservedSources
                                           monoSources:(int) monoSources
                                         stereoSources:(int) stereoSources
 {
-    return as_autorelease([[self alloc] initWithReservedSources:reservedSources
-                                                    monoSources:monoSources
-                                                  stereoSources:stereoSources]);
+    return [[self alloc] initWithReservedSources:reservedSources
+                                     monoSources:monoSources
+                                   stereoSources:stereoSources];
 }
 
 - (id) init
@@ -177,13 +176,7 @@ initFailed:
     }
 #endif
 
-	as_release(backgroundTrack);
 	[channel stop];
-	as_release(channel);
-	as_release(context);
-	as_release(device);
-	as_release(preloadCache);
-	as_superdealloc();
 }
 
 #pragma mark Properties
@@ -220,7 +213,6 @@ initFailed:
 				}
 				else
 				{
-					as_release(preloadCache);
 					preloadCache = nil;
 				}
 			}

@@ -31,7 +31,6 @@
 #import "ALWrapper.h"
 #import "OpenALManager.h"
 #import "ObjectALMacros.h"
-#import "ARCSafe_MemMgmt.h"
 
 
 @implementation ALBuffer
@@ -45,11 +44,11 @@
                format:(ALenum) format
             frequency:(ALsizei) frequency
 {
-	return as_autorelease([[self alloc] initWithName:name
-                                                     data:data
-                                                     size:size
-                                                   format:format
-                                                frequency:frequency]);
+    return [[self alloc] initWithName:name
+                                 data:data
+                                 size:size
+                               format:format
+                            frequency:frequency];
 }
 
 - (id) initWithName:(NSString*) nameIn
@@ -66,9 +65,9 @@
 		if(nil == [OpenALManager sharedInstance].currentContext)
 		{
 			OAL_LOG_ERROR(@"%@: Cannot allocate a buffer without a current context. Make sure [OpenALManager sharedInstance].currentContext is valid", self);
-            goto initFailed;
+            return nil;
 		}
-		device = as_retain([OpenALManager sharedInstance].currentContext.device);
+		device = [OpenALManager sharedInstance].currentContext.device;
 		bufferData = data;
 		format = formatIn;
 		freeDataOnDestroy = YES;
@@ -77,31 +76,22 @@
 		if(![ALWrapper bufferDataStatic:bufferId format:format data:bufferData size:size frequency:frequency])
         {
             OAL_LOG_ERROR(@"%@: Failed to create an OpenAL buffer", self);
-            goto initFailed;
+            return nil;
         }
 		
 		duration = (float)self.size / ((float)(self.frequency * self.channels * self.bits) / 8);
 	}
 	return self;
-
-initFailed:
-    as_release(self);
-    return nil;
 }
 
 - (void) dealloc
 {
 	OAL_LOG_DEBUG(@"%@: Dealloc", self);
 	[ALWrapper deleteBuffer:bufferId];
-	as_release(device);
-	as_release(name);
-	as_release(parentBuffer);
 	if(freeDataOnDestroy)
 	{
 		free(bufferData);
 	}
-
-	as_superdealloc();
 }
 
 - (NSString*) description

@@ -30,7 +30,6 @@
 #import "OALAudioSession.h"
 #import <AudioToolbox/AudioToolbox.h>
 #import "ObjectALMacros.h"
-#import "ARCSafe_MemMgmt.h"
 #import "OALNotifications.h"
 
 
@@ -119,10 +118,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
     }
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	as_release(lastResetTime);	
-	as_release(audioSessionCategory);
-	as_release(suspendHandler);
-	as_superdealloc();
 }
 
 
@@ -137,8 +132,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 {
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-        as_autorelease_noref(audioSessionCategory);
-		audioSessionCategory = as_retain(value);
+		audioSessionCategory = value;
 		[self updateFromAudioSessionCategory];
 		[self setAudioMode];
 	}	
@@ -258,21 +252,20 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 
 - (void) updateFromFlags
 {
-	as_release(audioSessionCategory);
 	if(honorSilentSwitch)
 	{
 		if(allowIpod)
 		{
-			audioSessionCategory = as_retain(AVAudioSessionCategoryAmbient);
+			audioSessionCategory = AVAudioSessionCategoryAmbient;
 		}
 		else
 		{
-			audioSessionCategory = as_retain(AVAudioSessionCategorySoloAmbient);
+			audioSessionCategory = AVAudioSessionCategorySoloAmbient;
 		}
 	}
 	else
 	{
-		audioSessionCategory = as_retain(AVAudioSessionCategoryPlayback);
+		audioSessionCategory = AVAudioSessionCategoryPlayback;
 	}
 }
 
@@ -393,7 +386,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 			OAL_LOG_WARNING(@"Received audio error notification. Resetting audio session.");
 			self.manuallySuspended = YES;
 			self.manuallySuspended = NO;
-			as_release(lastResetTime);
 			lastResetTime = [[NSDate alloc] init];
 		
             handlingErrorNotification = FALSE;

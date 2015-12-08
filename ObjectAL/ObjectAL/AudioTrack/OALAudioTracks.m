@@ -28,7 +28,6 @@
 #import "OALAudioTracks.h"
 #import "NSMutableArray+WeakReferences.h"
 #import "ObjectALMacros.h"
-#import "ARCSafe_MemMgmt.h"
 #import "OALAudioSession.h"
 
 
@@ -87,10 +86,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioTracks);
 	OAL_LOG_DEBUG(@"%@: Dealloc", self);
 	[[OALAudioSession sharedInstance] removeSuspendListener:self];
     [deviceTimePoller invalidate];
-
-	as_release(tracks);
-	as_release(suspendHandler);
-	as_superdealloc();
 }
 
 

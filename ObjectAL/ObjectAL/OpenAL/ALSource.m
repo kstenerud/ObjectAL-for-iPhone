@@ -29,7 +29,6 @@
 
 #import "ALSource.h"
 #import "ObjectALMacros.h"
-#import "ARCSafe_MemMgmt.h"
 #import "ALWrapper.h"
 #import "OpenALManager.h"
 #import "OALAudioActions.h"
@@ -88,12 +87,12 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 + (id) source
 {
-	return as_autorelease([[self alloc] init]);
+	return [[self alloc] init];
 }
 
 + (id) sourceOnContext:(ALContext*) context
 {
-	return as_autorelease([[self alloc] initOnContext:context]);
+	return [[self alloc] initOnContext:context];
 }
 
 - (id) init
@@ -110,13 +109,13 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 		if(nil == contextIn)
 		{
 			OAL_LOG_ERROR(@"%@: Failed to init source: Context is nil", self);
-            goto initFailed;
+            return nil;
 		}
 		
 		suspendHandler = [[OALSuspendHandler alloc] initWithTarget:self selector:@selector(setSuspended:)];
 
         self.notificationCallbacks = [NSMutableDictionary dictionary];
-		context = as_retain(contextIn);
+		context = contextIn;
 		@synchronized([OpenALManager sharedInstance])
 		{
 			ALContext* realContext = [OpenALManager sharedInstance].currentContext;
@@ -125,7 +124,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
             if(sourceId == (ALuint)AL_INVALID)
             {
                 OAL_LOG_ERROR(@"%@: Failed to create OpenAL source", self);
-                goto initFailed;
+                return nil;
             }
 			[OpenALManager sharedInstance].currentContext = realContext;
 		}
@@ -139,10 +138,6 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
         [[self class] notifySourceAllocated:self];
 	}
 	return self;
-
-initFailed:
-    as_release(self);
-    return nil;
 }
 
 - (void) dealloc
@@ -155,13 +150,8 @@ initFailed:
 	[context notifySourceDeallocating:self];
 
 	[gainAction stopAction];
-	as_release(gainAction);
 	[panAction stopAction];
-	as_release(panAction);
 	[pitchAction stopAction];
-	as_release(pitchAction);
-	as_release(suspendHandler);
-    as_release(_notificationCallbacks);
 
     if((ALuint)AL_INVALID != sourceId)
     {
@@ -183,12 +173,7 @@ initFailed:
         }
     }
 
-	as_release(context);
-    as_release(buffer);
-
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    
-	as_superdealloc();
 }
 
 
@@ -213,8 +198,7 @@ initFailed:
         
 		[ALWrapper sourcei:sourceId parameter:AL_BUFFER value:(ALint)value.bufferId];
         
-        as_release(buffer);
-		buffer = as_retain(value);
+		buffer = value;
 	}
 }
 
@@ -1142,7 +1126,6 @@ initFailed:
                       [OALPropertyAction gainActionWithDuration:duration endValue:value],
                       [OALCallAction actionWithCallTarget:target selector:selector withObject:self],
                       nil];
-        gainAction = as_retain(gainAction);
 		[gainAction runWithTarget:self];
 	}
 }
@@ -1159,7 +1142,6 @@ initFailed:
 		}
 		
 		[gainAction stopAction];
-		as_release(gainAction);
 		gainAction = nil;
 	}
 }
@@ -1183,7 +1165,6 @@ initFailed:
                      [OALPropertyAction panActionWithDuration:duration endValue:value],
                      [OALCallAction actionWithCallTarget:target selector:selector withObject:self],
                      nil];
-        panAction = as_retain(panAction);
 		[panAction runWithTarget:self];
 	}
 }
@@ -1200,7 +1181,6 @@ initFailed:
 		}
 		
 		[panAction stopAction];
-		as_release(panAction);
 		panAction = nil;
 	}
 }
@@ -1224,7 +1204,6 @@ initFailed:
                        [OALPropertyAction pitchActionWithDuration:duration endValue:value],
 					   [OALCallAction actionWithCallTarget:target selector:selector withObject:self],
 					   nil];
-        pitchAction = as_retain(pitchAction);
 		[pitchAction runWithTarget:self];
 	}
 }
@@ -1241,7 +1220,6 @@ initFailed:
 		}
 		
 		[pitchAction stopAction];
-		as_release(pitchAction);
 		pitchAction = nil;
 	}
 }
@@ -1408,7 +1386,7 @@ initFailed:
     OPTIONALLY_SYNCHRONIZED(self)
     {
         [self unregisterNotification:notificationID];
-        [self.notificationCallbacks setObject:as_autorelease([callback copy])
+        [self.notificationCallbacks setObject:[callback copy]
                                        forKey:key];
         [ALWrapper addNotification:notificationID
                           onSource:self.sourceId
