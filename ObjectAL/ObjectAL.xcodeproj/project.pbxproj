@@ -267,7 +267,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		CB0C06D01C17640200297E1C /* ObjectAL.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ObjectAL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB0C06D01C17640200297E1C /* ObjectAL_TVOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ObjectAL_TVOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB0C06D21C17640200297E1C /* ObjectAL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectAL.h; sourceTree = "<group>"; };
 		CB0C06D41C17640200297E1C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB5E9944171D1A43004CF421 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
@@ -419,7 +419,7 @@
 			children = (
 				CBBAB312171D0B84009B955F /* libObjectAL.a */,
 				CBBAB33D171D0BC4009B955F /* ObjectAL.framework */,
-				CB0C06D01C17640200297E1C /* ObjectAL.framework */,
+				CB0C06D01C17640200297E1C /* ObjectAL_TVOS.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -722,9 +722,9 @@
 /* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
-		CB0C06CF1C17640200297E1C /* ObjectAL */ = {
+		CB0C06CF1C17640200297E1C /* ObjectAL_TVOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CB0C06D71C17640200297E1C /* Build configuration list for PBXNativeTarget "ObjectAL" */;
+			buildConfigurationList = CB0C06D71C17640200297E1C /* Build configuration list for PBXNativeTarget "ObjectAL_TVOS" */;
 			buildPhases = (
 				CB0C06CB1C17640200297E1C /* Sources */,
 				CB0C06CC1C17640200297E1C /* Frameworks */,
@@ -735,9 +735,9 @@
 			);
 			dependencies = (
 			);
-			name = ObjectAL;
+			name = ObjectAL_TVOS;
 			productName = ObjectAL;
-			productReference = CB0C06D01C17640200297E1C /* ObjectAL.framework */;
+			productReference = CB0C06D01C17640200297E1C /* ObjectAL_TVOS.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		CBBAB311171D0B84009B955F /* ObjectAL (iOS) */ = {
@@ -805,7 +805,7 @@
 				CBBAB311171D0B84009B955F /* ObjectAL (iOS) */,
 				CBBAB33C171D0BC4009B955F /* ObjectAL (OSX) */,
 				CB5E994A171DC145004CF421 /* Documentation */,
-				CB0C06CF1C17640200297E1C /* ObjectAL */,
+				CB0C06CF1C17640200297E1C /* ObjectAL_TVOS */,
 			);
 		};
 /* End PBXProject section */
@@ -1235,7 +1235,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		CB0C06D71C17640200297E1C /* Build configuration list for PBXNativeTarget "ObjectAL" */ = {
+		CB0C06D71C17640200297E1C /* Build configuration list for PBXNativeTarget "ObjectAL_TVOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CB0C06D51C17640200297E1C /* Debug */,
