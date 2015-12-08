@@ -169,13 +169,6 @@ initFailed:
 - (void) dealloc
 {
 	OAL_LOG_DEBUG(@"%@: Dealloc", self);
-#if NS_BLOCKS_AVAILABLE && OBJECTAL_CFG_USE_BLOCKS && !__has_feature(objc_arc)
-    if(oal_dispatch_queue != nil)
-    {
-        dispatch_release(oal_dispatch_queue);
-    }
-#endif
-
 	[channel stop];
 }
 

@@ -7,20 +7,12 @@
 #import "NSMutableDictionary+WeakReferences.h"
 
 
-#if __has_feature(objc_arc)
-    #define as_autorelease(X)        (X)
-    #define as_bridge_transfer       __bridge_transfer
-#else
-    #define as_autorelease(X)       [(X) autorelease]
-    #define as_bridge_transfer
-#endif
-
 @implementation NSMutableDictionary (WeakReferences)
 
 + (NSMutableDictionary*) newMutableDictionaryUsingWeakReferencesWithCapacity:(NSUInteger) capacity
 {
 	CFDictionaryValueCallBacks callbacks = {0, NULL, NULL, CFCopyDescription, CFEqual};
-    return (as_bridge_transfer id)CFDictionaryCreateMutable(NULL,
+    return (__bridge_transfer id)CFDictionaryCreateMutable(NULL,
                                                             (CFIndex)capacity,
                                                             &kCFTypeDictionaryKeyCallBacks,
                                                             &callbacks);
@@ -33,7 +25,7 @@
 
 + (NSMutableDictionary*) mutableDictionaryUsingWeakReferencesWithCapacity:(NSUInteger) capacity
 {
-    return as_autorelease([self newMutableDictionaryUsingWeakReferencesWithCapacity:capacity]);
+    return [self newMutableDictionaryUsingWeakReferencesWithCapacity:capacity];
 }
 
 + (NSMutableDictionary*) mutableDictionaryUsingWeakReferences
