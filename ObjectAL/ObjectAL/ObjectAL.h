@@ -482,8 +482,8 @@
 		// Create the device and context.
 		// Note that it's easier to just let OALSimpleAudio handle
 		// these rather than make and manage them yourself.
-		device = [[ALDevice deviceWithDeviceSpecifier:nil] retain];
-		context = [[ALContext contextOnDevice:device attributes:nil] retain];
+		device = [ALDevice deviceWithDeviceSpecifier:nil];
+		context = [ALContext contextOnDevice:device attributes:nil];
 		[OpenALManager sharedInstance].currentContext = context;
 		
 		// We don't want ipod music to keep playing since
@@ -495,38 +495,18 @@
 		
 		// Take all 32 sources for this channel.
 		// (we probably won't use that many but what the heck!)
-		channel = [[ALChannelSource channelWithSources:32] retain];
+		channel = [ALChannelSource channelWithSources:32];
 		
 		// Preload the buffers so we don't have to load and play them later.
-		shootBuffer = [[[OpenALManager sharedInstance]
-						bufferFromFile:SHOOT_SOUND] retain];
-		explosionBuffer = [[[OpenALManager sharedInstance]
-							bufferFromFile:EXPLODE_SOUND] retain];
+		shootBuffer = [[OpenALManager sharedInstance]
+						bufferFromFile:SHOOT_SOUND];
+		explosionBuffer = [[OpenALManager sharedInstance]
+							bufferFromFile:EXPLODE_SOUND];
 		
 		// Background music track.
-		musicTrack = [[OALAudioTrack track] retain];
+		musicTrack = [OALAudioTrack track];
 	}
 	return self;
-}
-
-- (void) dealloc
-{
-	[musicTrack release];
-	
-	[channel release];
-	[shootBuffer release];
-	[explosionBuffer release];
-	
-	// Note: You'll likely only have one device and context open throughout
-	// your program, so in a real program you'd be better off making a
-	// singleton object that manages the device and context, rather than
-	// allocating/deallocating it here.
-	// Most of the demos just let OALSimpleAudio manage the device and context
-	// for them.
-	[context release];
-	[device release];
-	
-	[super dealloc];
 }
 
 - (void) onGameStart
