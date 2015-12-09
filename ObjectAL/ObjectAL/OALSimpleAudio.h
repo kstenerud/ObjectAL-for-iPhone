@@ -69,13 +69,11 @@
 	ALChannelSource* channel;
 	/** Cache for preloaded sound samples. */
 	NSMutableDictionary* preloadCache;
-#if NS_BLOCKS_AVAILABLE && OBJECTAL_CFG_USE_BLOCKS
 	/** Queue for preloading and async operations that use blocks.
 	 * This ensures all operations are safe because they are guaranteed to run
 	 * in order.
 	 */
 	dispatch_queue_t oal_dispatch_queue;
-#endif
 	/** keeping track of how many effects remain to be loaded */
 	uint pendingLoadCount;
 	
@@ -376,8 +374,6 @@
  */
 - (ALBuffer*) preloadEffect:(NSString*) filePath reduceToMono:(bool) reduceToMono;
 
-#if NS_BLOCKS_AVAILABLE && OBJECTAL_CFG_USE_BLOCKS
-
 /** Asynchronous preload and cache sound effect for later playback.
  *
  * @param filePath an NSString with the path containing the sound data.
@@ -399,8 +395,6 @@
 - (void) preloadEffects:(NSArray*) filePaths
 				   reduceToMono:(bool) reduceToMono
 		  progressBlock:(void (^)(NSUInteger progress, NSUInteger successCount, NSUInteger total)) progressBlock;
-
-#endif
 
 /** Unload a preloaded effect. Only unloads if no source is currently playing
  * that effect (or paused with the effect loaded).

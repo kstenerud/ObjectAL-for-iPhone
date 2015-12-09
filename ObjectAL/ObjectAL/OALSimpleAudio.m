@@ -107,9 +107,7 @@ static void purgeSharedInstance()
 
     backgroundTrack = [[OALAudioTrack alloc] init];
 
-#if NS_BLOCKS_AVAILABLE && OBJECTAL_CFG_USE_BLOCKS
     oal_dispatch_queue	= dispatch_queue_create("objectal.simpleaudio.queue", NULL);
-#endif
     pendingLoadCount	= 0;
 
     self.preloadCacheEnabled = YES;
@@ -514,7 +512,6 @@ initFailed:
         OAL_LOG_WARNING(@"You are loading an effect synchronously, but have pending async loads that have not completed. Your load will happen after those finish. Your thread is now stuck waiting. Next time just load everything async please.");
     }
 
-#if NS_BLOCKS_AVAILABLE && OBJECTAL_CFG_USE_BLOCKS
 	//Using blocks with the same queue used to asynch load removes the need for locking
 	//BUT be warned that if you had called preloadEffects and then called this method, your app will stall until all of the loading is done.
 	//It is advised you just always use async loading
@@ -526,12 +523,7 @@ initFailed:
                   });
 	pendingLoadCount--;
 	return retBuffer;
-#else
-	return [self internalPreloadEffect:filePath reduceToMono:reduceToMono];
-#endif
 }
-
-#if NS_BLOCKS_AVAILABLE && OBJECTAL_CFG_USE_BLOCKS
 
 - (BOOL) preloadEffect:(NSString*) filePath
           reduceToMono:(bool) reduceToMono
@@ -605,7 +597,6 @@ initFailed:
                         }];
                    });
 }
-#endif
 
 - (bool) unloadEffect:(NSString*) filePath
 {
