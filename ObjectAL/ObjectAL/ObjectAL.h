@@ -59,11 +59,9 @@
 
 /** \mainpage ObjectAL for iPhone
  
- <strong>iOS Audio development, minus the headache.</strong> <br><br>
+ <strong>iOS, TVOS, and MacOS Audio development, minus the headache.</strong> <br><br>
  
- Version 2.2 <br> <br>
- 
- Copyright 2009-2013 Karl Stenerud <br><br>
+ Copyright 2009 Karl Stenerud <br><br>
  
  Released under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>
  
