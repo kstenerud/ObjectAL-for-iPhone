@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CB0C06D31C17640200297E1C /* ObjectAL.h in Headers */ = {isa = PBXBuildFile; fileRef = CB0C06D21C17640200297E1C /* ObjectAL.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CB0C06D81C17645E00297E1C /* OALAction+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB352171D0C0E009B955F /* OALAction+Private.h */; };
 		CB0C06D91C17647900297E1C /* OALAction.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB353171D0C0E009B955F /* OALAction.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CB0C06DA1C17647900297E1C /* OALActionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB355171D0C0E009B955F /* OALActionManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -254,11 +253,10 @@
 
 /* Begin PBXFileReference section */
 		CB0C06D01C17640200297E1C /* ObjectAL_TVOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ObjectAL_TVOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CB0C06D21C17640200297E1C /* ObjectAL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectAL.h; sourceTree = "<group>"; };
-		CB0C06D41C17640200297E1C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB5E9944171D1A43004CF421 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
 		CB5E9946171D1A4F004CF421 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		CB5E9948171D1A58004CF421 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/OpenAL.framework; sourceTree = DEVELOPER_DIR; };
+		CB8DD6041C17B5180059F23A /* ObjectAL_TVOS-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ObjectAL_TVOS-Info.plist"; sourceTree = "<group>"; };
 		CBBAB312171D0B84009B955F /* libObjectAL.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libObjectAL.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBBAB313171D0B84009B955F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		CBBAB317171D0B84009B955F /* ObjectAL (iOS)-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ObjectAL (iOS)-Prefix.pch"; sourceTree = "<group>"; };
@@ -359,15 +357,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		CB0C06D11C17640200297E1C /* ObjectAL */ = {
-			isa = PBXGroup;
-			children = (
-				CB0C06D21C17640200297E1C /* ObjectAL.h */,
-				CB0C06D41C17640200297E1C /* Info.plist */,
-			);
-			path = ObjectAL;
-			sourceTree = "<group>";
-		};
 		CB5F61EE1833F99D008B74C3 /* ObjectAL */ = {
 			isa = PBXGroup;
 			children = (
@@ -384,13 +373,21 @@
 			path = ObjectAL;
 			sourceTree = "<group>";
 		};
+		CB8DD6031C17B5180059F23A /* TVOS */ = {
+			isa = PBXGroup;
+			children = (
+				CB8DD6041C17B5180059F23A /* ObjectAL_TVOS-Info.plist */,
+			);
+			path = TVOS;
+			sourceTree = "<group>";
+		};
 		CBBAA820171D05AA009B955F = {
 			isa = PBXGroup;
 			children = (
 				CB5F61EE1833F99D008B74C3 /* ObjectAL */,
 				CBBAB315171D0B84009B955F /* iOS */,
 				CBBAB344171D0BC4009B955F /* OSX */,
-				CB0C06D11C17640200297E1C /* ObjectAL */,
+				CB8DD6031C17B5180059F23A /* TVOS */,
 				CBBAA82B171D05AA009B955F /* Frameworks */,
 				CBBAA82A171D05AA009B955F /* Products */,
 			);
@@ -560,7 +557,6 @@
 			files = (
 				CB0C06E81C17647900297E1C /* ALSoundSource.h in Headers */,
 				CB0C06EE1C17647900297E1C /* OALAudioSession.h in Headers */,
-				CB0C06D31C17640200297E1C /* ObjectAL.h in Headers */,
 				CB0C06DB1C17647900297E1C /* OALAudioActions.h in Headers */,
 				CB0C06E51C17647900297E1C /* ALContext.h in Headers */,
 				CB0C06EB1C17647900297E1C /* ALTypes.h in Headers */,
@@ -927,7 +923,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = ObjectAL/Info.plist;
+				INFOPLIST_FILE = "TVOS/ObjectAL_TVOS-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -962,7 +958,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = ObjectAL/Info.plist;
+				INFOPLIST_FILE = "TVOS/ObjectAL_TVOS-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
