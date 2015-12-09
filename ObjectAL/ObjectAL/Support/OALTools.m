@@ -87,16 +87,14 @@ static NSBundle* g_defaultBundle;
 		
 		switch(errorCode)
 		{
-#ifdef __IPHONE_3_1
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_3_1
+#if defined(__IPHONE_OS_VERSION_MAX_ALLOWED)
 			case kExtAudioFileError_CodecUnavailableInputConsumed:
 				errorString = @"Write function interrupted - last buffer written";
 				break;
 			case kExtAudioFileError_CodecUnavailableInputNotConsumed:
 				errorString = @"Write function interrupted - last buffer not written";
 				break;
-#endif /* __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_3_1 */
-#endif /* __IPHONE_3_1 */
+#endif
 			case kExtAudioFileError_InvalidProperty:
 				errorString = @"Invalid property";
 				break;
