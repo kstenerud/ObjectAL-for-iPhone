@@ -135,7 +135,7 @@
 
 - (void) setAudioSessionCategory:(NSString*) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		audioSessionCategory = value;
 		[self updateFromAudioSessionCategory];
@@ -150,7 +150,7 @@
 
 - (void) setAllowIpod:(bool) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		allowIpod = value;
 		[self updateFromFlags];
@@ -165,7 +165,7 @@
 
 - (void) setIpodDucking:(bool) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		ipodDucking = value;
 		[self updateFromFlags];
@@ -180,7 +180,7 @@
 
 - (void) setUseHardwareIfAvailable:(bool) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		useHardwareIfAvailable = value;
 		[self updateFromFlags];
@@ -195,7 +195,7 @@
 
 - (void) setHonorSilentSwitch:(bool) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		honorSilentSwitch = value;
 		[self updateFromFlags];
@@ -342,7 +342,7 @@
 
 - (void) setAudioSessionActive:(bool) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(value != audioSessionActive)
 		{
@@ -381,7 +381,7 @@
 		return;
 	}
 
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		NSTimeInterval timeSinceLastReset = [[NSDate date] timeIntervalSinceDate:lastResetTime];
 		if(timeSinceLastReset > kMinTimeIntervalBetweenResets && !handlingErrorNotification)

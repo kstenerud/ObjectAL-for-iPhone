@@ -104,7 +104,7 @@
 
 - (void) setPaused:(bool) value
 {
-	OPTIONALLY_SYNCHRONIZED(tracks)
+	@synchronized(tracks)
 	{
 		if(self.suspended)
 		{
@@ -127,7 +127,7 @@
 
 - (void) setMuted:(bool) value
 {
-	OPTIONALLY_SYNCHRONIZED(tracks)
+	@synchronized(tracks)
 	{
 		if(self.suspended)
 		{

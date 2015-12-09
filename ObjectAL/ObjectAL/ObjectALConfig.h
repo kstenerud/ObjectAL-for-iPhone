@@ -95,20 +95,6 @@
 #endif
 
 
-/** When this option is enabled, all critical ObjectAL operations will be wrapped in
- * synchronized blocks. <br>
- *
- * Turning this off can improve performance a bit if your application makes heavy
- * use of audio calls, but you'll be on your own for ensuring two threads don't
- * access the same part of the audio library at the same time. <br>
- *
- * Recommended setting: 1
- */
-#ifndef OBJECTAL_CFG_SYNCHRONIZED_OPERATIONS
-#define OBJECTAL_CFG_SYNCHRONIZED_OPERATIONS 1
-#endif
-
-
 /** When this option is other than LEVEL_NONE, ObjectAL will output log entries that correspond
  * to the LEVEL:
  *

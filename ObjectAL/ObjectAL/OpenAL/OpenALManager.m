@@ -198,7 +198,7 @@
 
 - (ALContext*) currentContext
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		return self.realCurrentContext;
 	}
@@ -206,7 +206,7 @@
 
 - (void) setCurrentContext:(ALContext *) context
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -234,7 +234,7 @@
 
 - (ALdouble) mixerOutputFrequency
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		return [ALWrapper getMixerOutputDataRate];
 	}
@@ -242,7 +242,7 @@
 
 - (void) setMixerOutputFrequency:(ALdouble) frequency
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -256,7 +256,7 @@
 
 - (ALint) renderingQuality
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		return [ALWrapper getRenderingQuality];
 	}
@@ -264,7 +264,7 @@
 
 - (void) setRenderingQuality:(ALint) renderingQuality
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -388,7 +388,7 @@
 						  target:(id) target
 						selector:(SEL) selector
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		[operationQueue addOperation:
 		 [OAL_AsyncALBufferLoadOperation operationWithUrl:url
@@ -404,7 +404,7 @@
 
 - (void) clearAllBuffers
 {
-	OPTIONALLY_SYNCHRONIZED(devices)
+	@synchronized(devices)
 	{
 		for(ALDevice* device in devices)
 		{
@@ -417,7 +417,7 @@
 
 - (void) notifyDeviceInitializing:(ALDevice*) device
 {
-	OPTIONALLY_SYNCHRONIZED(devices)
+	@synchronized(devices)
 	{
 		[devices addObject:device];
 	}
@@ -425,7 +425,7 @@
 
 - (void) notifyDeviceDeallocating:(ALDevice*) device
 {
-	OPTIONALLY_SYNCHRONIZED(devices)
+	@synchronized(devices)
 	{
 		[devices removeObject:device];
 	}

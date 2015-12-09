@@ -109,7 +109,7 @@
 
 - (void) stopAllActions
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		for(NSMutableArray* actions in targetActions)
 		{
@@ -126,7 +126,7 @@
 - (void) step:(NSTimer*) timer
 {
     #pragma unused(timer)
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		// Add new actions
 		for(OALAction* action in actionsToAdd)
@@ -216,7 +216,7 @@
 
 - (void) notifyActionStarted:(OALAction*) action
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		[actionsToAdd addObject:action];
 		
@@ -237,7 +237,7 @@
 
 - (void) notifyActionStopped:(OALAction*) action
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		[actionsToRemove addObject:action];
 	}

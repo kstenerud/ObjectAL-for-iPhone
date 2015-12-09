@@ -276,7 +276,7 @@
 
 - (void) setPan:(float) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
         pan = value;
         player.pan = pan;
@@ -300,7 +300,7 @@
 
 - (void) setGain:(float) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		gain = value;
 		if(muted)
@@ -318,7 +318,7 @@
 
 - (void) setMuted:(bool) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		muted = value;
 		if(muted)
@@ -337,7 +337,7 @@
 
 - (void) setNumberOfLoops:(NSInteger) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		player.numberOfLoops = numberOfLoops = value;
 	}
@@ -350,7 +350,7 @@
 
 - (void) setPaused:(bool) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(paused != value)
 		{
@@ -385,7 +385,7 @@
 
 - (NSTimeInterval) currentTime
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		return (nil == player) ? currentTime : player.currentTime;
 	}
@@ -393,7 +393,7 @@
 
 - (void) setCurrentTime:(NSTimeInterval) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		currentTime = value;
 		if(nil != player)
@@ -405,7 +405,7 @@
 
 - (NSTimeInterval) deviceCurrentTime
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
         return player.deviceCurrentTime;
 	}
@@ -413,7 +413,7 @@
 
 - (NSTimeInterval) duration
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		return player.duration;
 	}
@@ -421,7 +421,7 @@
 
 - (NSUInteger) numberOfChannels
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		return player.numberOfChannels;
 	}
@@ -477,7 +477,7 @@
 	 *
 	 * TODO: Need to find a way to avoid this situation.
 	 */
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
         if(value)
         {
@@ -574,7 +574,7 @@
 		return NO;
 	}
 	
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		// Bug: No longer re-using AVAudioPlayer because of bugs when using multiple players.
 		// Playing two tracks, then stopping one and starting it again will cause prepareToPlay to fail.
@@ -644,7 +644,7 @@
 
 - (bool) preloadUrlAsync:(NSURL*) url seekTime:(NSTimeInterval)seekTime target:(id) target selector:(SEL) selector
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		[operationQueue addOperation:[OAL_AsyncAudioTrackPreloadOperation operationWithTrack:self url:url seekTime:seekTime target:target selector:selector]];
 		return NO;
@@ -668,7 +668,7 @@
 
 - (bool) playUrl:(NSURL*) url loops:(NSInteger) loops
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if([self preloadUrl:url])
 		{
@@ -711,7 +711,7 @@
 
 - (bool) play
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		[self stopActions];
         [player stop];
@@ -732,7 +732,7 @@
 
 - (bool) playAtTime:(NSTimeInterval) time
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
         [self stopActions];
         [player stop];
@@ -764,7 +764,7 @@
 
 - (void) stop
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		[self stopActions];
 		[player stop];
@@ -844,7 +844,7 @@
 
 - (void) clear
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		[self stopActions];
 		currentlyLoadedUrl = nil;
@@ -874,7 +874,7 @@
 
 - (void) setMeteringEnabled:(bool) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		meteringEnabled = value;
 		player.meteringEnabled = meteringEnabled;
@@ -888,7 +888,7 @@
 
 - (float) averagePowerForChannel:(NSUInteger)channelNumber
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		return [player averagePowerForChannel:channelNumber];
 	}
@@ -896,7 +896,7 @@
 
 - (float) peakPowerForChannel:(NSUInteger)channelNumber
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		return [player peakPowerForChannel:channelNumber];
 	}
@@ -916,7 +916,7 @@
 
 - (void) audioPlayerDidFinishPlaying:(AVAudioPlayer*) playerIn successfully:(BOOL) flag
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		playing = NO;
 		paused = NO;

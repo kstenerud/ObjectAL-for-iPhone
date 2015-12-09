@@ -79,7 +79,7 @@
 
 - (void) addSource:(id<ALSoundSource>) source
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		[sources addObject:source];
 	}
@@ -87,7 +87,7 @@
 
 - (void) removeSource:(id<ALSoundSource>) source
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		[sources removeObject:source];
 	}
@@ -95,7 +95,7 @@
 
 - (void) moveToHead:(int) index
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		id source = [sources objectAtIndex:(NSUInteger)index];
 		[sources removeObjectAtIndex:(NSUInteger)index];
@@ -107,7 +107,7 @@
 {
 	int index = 0;
 	
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		// Try to find any free source.
 		for(id<ALSoundSource> source in sources)

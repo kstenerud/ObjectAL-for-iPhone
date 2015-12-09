@@ -187,7 +187,7 @@ initFailed:
 
 - (NSUInteger) preloadCacheCount
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		return [preloadCache count];
 	}
@@ -200,7 +200,7 @@ initFailed:
 
 - (void) setPreloadCacheEnabled:(bool) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(value != self.preloadCacheEnabled)
 		{
@@ -281,7 +281,7 @@ initFailed:
 
 - (void) setBgVolume:(float) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		backgroundTrack.gain = value;
 	}
@@ -304,7 +304,7 @@ initFailed:
 
 - (void) setEffectsVolume:(float) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		[OpenALManager sharedInstance].currentContext.listener.gain = value;
 	}
@@ -312,7 +312,7 @@ initFailed:
 
 - (bool) paused
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		return self.effectsPaused && self.bgPaused;
 	}
@@ -320,7 +320,7 @@ initFailed:
 
 - (void) setPaused:(bool) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		self.effectsPaused = self.bgPaused = value;
 	}
@@ -343,7 +343,7 @@ initFailed:
 
 - (void) setBgMuted:(bool) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		bgMuted = value;
 		backgroundTrack.muted = bgMuted | muted;
@@ -357,7 +357,7 @@ initFailed:
 
 - (void) setEffectsMuted:(bool) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		effectsMuted = value;
 		[OpenALManager sharedInstance].currentContext.listener.muted = effectsMuted | muted;
@@ -371,7 +371,7 @@ initFailed:
 
 - (void) setMuted:(bool) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		muted = value;
 		backgroundTrack.muted = bgMuted | muted;
@@ -426,7 +426,7 @@ initFailed:
 		   loop:(bool) loop
 {
 	OAL_LOG_DEBUG(@"Play bg with vol %f, pan %f, loop %d, file %@", volume, pan, loop, filePath);
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		backgroundTrack.gain = volume;
 		backgroundTrack.pan = pan;
@@ -441,7 +441,7 @@ initFailed:
 
 - (bool) playBgWithLoop:(bool) loop
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		OAL_LOG_DEBUG(@"Play bg, loop %d", loop);
 		backgroundTrack.numberOfLoops = loop ? -1 : 0;
@@ -472,7 +472,7 @@ initFailed:
 {
 	ALBuffer* buffer;
     NSString* cacheKey = [self cacheKeyForEffectPath:filePath];
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		buffer = [preloadCache objectForKey:cacheKey];
 	}
@@ -487,7 +487,7 @@ initFailed:
 		}
 
         buffer.name = cacheKey;
-		OPTIONALLY_SYNCHRONIZED(self)
+		@synchronized(self)
 		{
 			[preloadCache setObject:buffer forKey:cacheKey];
 		}
@@ -617,7 +617,7 @@ initFailed:
     NSString* cacheKey = [self cacheKeyForEffectPath:filePath];
 	OAL_LOG_DEBUG(@"Remove effect from cache: %@", filePath);
     bool isSuccess = YES;
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
         isSuccess = [channel removeBuffersNamed:cacheKey];
         if(isSuccess)
@@ -635,7 +635,7 @@ initFailed:
 - (void) unloadAllEffects
 {
     OAL_LOG_DEBUG(@"Remove all effects from cache");
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
         for(ALBuffer* buffer in [channel clearUnusedBuffers])
         {

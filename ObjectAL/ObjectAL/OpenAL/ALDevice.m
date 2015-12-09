@@ -153,7 +153,7 @@
 
 - (void) clearBuffers
 {
-	OPTIONALLY_SYNCHRONIZED(contexts)
+	@synchronized(contexts)
 	{
 		for(ALContext* context in contexts)
 		{
@@ -167,7 +167,7 @@
 
 - (void) notifyContextInitializing:(ALContext*) context
 {
-	OPTIONALLY_SYNCHRONIZED(contexts)
+	@synchronized(contexts)
 	{
 		[contexts addObject:context];
 	}
@@ -175,7 +175,7 @@
 
 - (void) notifyContextDeallocating:(ALContext*) context
 {
-	OPTIONALLY_SYNCHRONIZED(contexts)
+	@synchronized(contexts)
 	{
 		if([OpenALManager sharedInstance].currentContext == context)
 		{

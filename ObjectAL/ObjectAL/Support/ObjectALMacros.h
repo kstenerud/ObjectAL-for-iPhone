@@ -64,23 +64,6 @@
 
 
 #pragma mark -
-#pragma mark ARC
-
-#pragma mark -
-#pragma mark Synchronization
-
-#if OBJECTAL_CFG_SYNCHRONIZED_OPERATIONS
-
-#define OPTIONALLY_SYNCHRONIZED(A) @synchronized(A)
-
-#else
-
-#define OPTIONALLY_SYNCHRONIZED(A)
-
-#endif /* OBJECTAL_CFG_SYNCHRONIZED_OPERATIONS */
-
-
-#pragma mark -
 #pragma mark Logging
 
 

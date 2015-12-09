@@ -244,7 +244,7 @@
 
 - (ALenum) distanceModel
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		return [ALWrapper getInteger:AL_DISTANCE_MODEL];
 	}
@@ -252,7 +252,7 @@
 
 - (void) setDistanceModel:(ALenum) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -266,7 +266,7 @@
 
 - (float) dopplerFactor
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		return [ALWrapper getFloat:AL_DOPPLER_FACTOR];
 	}
@@ -274,7 +274,7 @@
 
 - (void) setDopplerFactor:(float) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -303,7 +303,7 @@
 
 - (float) speedOfSound
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		return [ALWrapper getFloat:AL_SPEED_OF_SOUND];
 	}
@@ -311,7 +311,7 @@
 
 - (void) setSpeedOfSound:(float) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -383,7 +383,7 @@
 
 - (void) clearBuffers
 {
-	OPTIONALLY_SYNCHRONIZED(sources)
+	@synchronized(sources)
 	{
 		for(ALSource* source in sources)
 		{
@@ -405,7 +405,7 @@
 
 - (void) stopAllSounds
 {
-	OPTIONALLY_SYNCHRONIZED(sources)
+	@synchronized(sources)
 	{
 		if(self.suspended)
 		{
@@ -451,7 +451,7 @@
 
 - (void) notifySourceInitializing:(ALSource*) source
 {
-	OPTIONALLY_SYNCHRONIZED(sources)
+	@synchronized(sources)
 	{
 		[sources addObject:source];
 	}
@@ -459,7 +459,7 @@
 
 - (void) notifySourceDeallocating:(ALSource*) source
 {
-	OPTIONALLY_SYNCHRONIZED(sources)
+	@synchronized(sources)
 	{
 		[sources removeObject:source];
 	}

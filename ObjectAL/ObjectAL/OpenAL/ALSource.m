@@ -186,7 +186,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) setBuffer:(ALBuffer *) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -214,7 +214,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (float) coneInnerAngle
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		return [ALWrapper getSourcef:sourceId parameter:AL_CONE_INNER_ANGLE];
 	}
@@ -222,7 +222,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) setConeInnerAngle:(float) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -236,7 +236,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (float) coneOuterAngle
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		return [ALWrapper getSourcef:sourceId parameter:AL_CONE_OUTER_ANGLE];
 	}
@@ -244,7 +244,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) setConeOuterAngle:(float) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -258,7 +258,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (float) coneOuterGain
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		return [ALWrapper getSourcef:sourceId parameter:AL_CONE_OUTER_GAIN];
 	}
@@ -266,7 +266,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) setConeOuterGain:(float) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -283,7 +283,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 - (ALVector) direction
 {
 	ALVector result;
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		[ALWrapper getSource3f:sourceId parameter:AL_DIRECTION v1:&result.x v2:&result.y v3:&result.z];
 	}
@@ -292,7 +292,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) setDirection:(ALVector) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -321,7 +321,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) setGain:(float) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -342,7 +342,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (bool) looping
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		return [ALWrapper getSourcei:sourceId parameter:AL_LOOPING];
 	}
@@ -350,7 +350,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) setLooping:(bool) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -364,7 +364,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (float) maxDistance
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		return [ALWrapper getSourcef:sourceId parameter:AL_MAX_DISTANCE];
 	}
@@ -372,7 +372,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) setMaxDistance:(float) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -386,7 +386,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (float) maxGain
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		return [ALWrapper getSourcef:sourceId parameter:AL_MAX_GAIN];
 	}
@@ -394,7 +394,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) setMaxGain:(float) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -408,7 +408,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (float) minGain
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		return [ALWrapper getSourcef:sourceId parameter:AL_MIN_GAIN];
 	}
@@ -416,7 +416,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) setMinGain:(float) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -435,7 +435,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) setMuted:(bool) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -455,7 +455,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (float) offsetInBytes
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		return [ALWrapper getSourcef:sourceId parameter:AL_BYTE_OFFSET];
 	}
@@ -463,7 +463,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) setOffsetInBytes:(float) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -477,7 +477,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (float) offsetInSamples
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		return [ALWrapper getSourcef:sourceId parameter:AL_SAMPLE_OFFSET];
 	}
@@ -485,7 +485,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) setOffsetInSamples:(float) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -499,7 +499,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (float) offsetInSeconds
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		return [ALWrapper getSourcef:sourceId parameter:AL_SEC_OFFSET];
 	}
@@ -507,7 +507,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) setOffsetInSeconds:(float) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -531,7 +531,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) setPaused:(bool) shouldPause
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -569,7 +569,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (float) pitch
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		return [ALWrapper getSourcef:sourceId parameter:AL_PITCH];
 	}
@@ -577,7 +577,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) setPitch:(float) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -601,7 +601,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 - (ALPoint) position
 {
 	ALPoint result;
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		[ALWrapper getSource3f:sourceId parameter:AL_POSITION v1:&result.x v2:&result.y v3:&result.z];
 	}
@@ -610,7 +610,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) setPosition:(ALPoint) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -640,7 +640,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (float) referenceDistance
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		return [ALWrapper getSourcef:sourceId parameter:AL_REFERENCE_DISTANCE];
 	}
@@ -648,7 +648,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) setReferenceDistance:(float) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -662,7 +662,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (float) rolloffFactor
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		return [ALWrapper getSourcef:sourceId parameter:AL_ROLLOFF_FACTOR];
 	}
@@ -670,7 +670,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) setRolloffFactor:(float) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -686,7 +686,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (int) sourceRelative
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		return [ALWrapper getSourcei:sourceId parameter:AL_SOURCE_RELATIVE];
 	}
@@ -694,7 +694,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) setSourceRelative:(int) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -708,7 +708,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (int) sourceType
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		return [ALWrapper getSourcei:sourceId parameter:AL_SOURCE_TYPE];
 	}
@@ -716,7 +716,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) setSourceType:(int) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -730,7 +730,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (int) state
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		// Bug: Apple's OpenAL implementation is broken.
 		//return [ALWrapper getSourcei:sourceId parameter:AL_SOURCE_STATE];
@@ -749,7 +749,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) setState:(int) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -765,7 +765,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 - (ALVector) velocity
 {
 	ALVector result;
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		[ALWrapper getSource3f:sourceId parameter:AL_VELOCITY v1:&result.x v2:&result.y v3:&result.z];
 	}
@@ -774,7 +774,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) setVelocity:(ALVector) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -788,7 +788,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (float) reverbSendLevel
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		return [ALWrapper asaGetSourcef:sourceId property:ALC_ASA_REVERB_SEND_LEVEL];
 	}
@@ -796,7 +796,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) setReverbSendLevel:(float) reverbSendLevel
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -810,7 +810,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (float) reverbOcclusion
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		return [ALWrapper asaGetSourcef:sourceId property:ALC_ASA_OCCLUSION];
 	}
@@ -818,7 +818,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) setReverbOcclusion:(float) reverbOcclusion
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -832,7 +832,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (float) reverbObstruction
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		return [ALWrapper asaGetSourcef:sourceId property:ALC_ASA_OBSTRUCTION];
 	}
@@ -840,7 +840,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) setReverbObstruction:(float) reverbObstruction
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -894,7 +894,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) setSuspended:(bool) value
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
         if(value)
         {
@@ -920,7 +920,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) delayedResumePlayback
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
         if(!abortPlaybackResume)
         {
@@ -934,7 +934,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) preload:(ALBuffer*) bufferIn
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -955,7 +955,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (id<ALSoundSource>) play
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -998,7 +998,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (id<ALSoundSource>) play:(ALBuffer*) bufferIn loop:(bool) loop
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -1034,7 +1034,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (id<ALSoundSource>) play:(ALBuffer*) bufferIn gain:(float) gainIn pitch:(float) pitchIn pan:(float) panIn loop:(bool) loopIn
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -1075,7 +1075,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) stop
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -1092,7 +1092,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) rewind
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -1233,7 +1233,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) clear
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		self.manuallySuspended = NO;
 		[self stop];
@@ -1251,7 +1251,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (bool) queueBuffer:(ALBuffer*) bufferIn repeats:(NSUInteger) repeats
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -1284,7 +1284,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (bool) queueBuffers:(NSArray*) buffers repeats:(NSUInteger) repeats
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -1319,7 +1319,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (bool) unqueueBuffer:(ALBuffer*) bufferIn
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -1334,7 +1334,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (bool) unqueueBuffers:(NSArray*) buffers
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.suspended)
 		{
@@ -1383,7 +1383,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
                      userData:(void*) userData
 {
     NSNumber* key = [NSNumber numberWithUnsignedInt:notificationID];
-    OPTIONALLY_SYNCHRONIZED(self)
+    @synchronized(self)
     {
         [self unregisterNotification:notificationID];
         [self.notificationCallbacks setObject:[callback copy]
@@ -1398,7 +1398,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 - (void) unregisterNotification:(ALuint) notificationID
 {
     NSNumber* key = [NSNumber numberWithUnsignedInt:notificationID];
-    OPTIONALLY_SYNCHRONIZED(self)
+    @synchronized(self)
     {
         if([self.notificationCallbacks objectForKey:key] != nil)
         {
@@ -1413,7 +1413,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (void) unregisterAllNotifications
 {
-    OPTIONALLY_SYNCHRONIZED(self)
+    @synchronized(self)
     {
         for(NSNumber* key in [self.notificationCallbacks allKeys])
         {
@@ -1429,7 +1429,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 - (void) receiveNotification:(ALuint) notificationID userData:(void*) userData
 {
     NSNumber* key = [NSNumber numberWithUnsignedInt:notificationID];
-    OPTIONALLY_SYNCHRONIZED(self)
+    @synchronized(self)
     {
         OALSourceNotificationCallback callback = [self.notificationCallbacks objectForKey:key];
         if(callback != nil)
@@ -1444,7 +1444,7 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 
 - (bool) requestUnreserve:(bool) interrupt
 {
-	OPTIONALLY_SYNCHRONIZED(self)
+	@synchronized(self)
 	{
 		if(self.playing)
 		{
