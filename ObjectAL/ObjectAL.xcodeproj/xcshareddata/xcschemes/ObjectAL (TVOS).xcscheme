@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "CB0C06CF1C17640200297E1C"
-               BuildableName = "ObjectAL_TVOS.framework"
-               BlueprintName = "ObjectAL_TVOS"
+               BuildableName = "ObjectAL.framework"
+               BlueprintName = "ObjectAL"
                ReferencedContainer = "container:ObjectAL.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -46,8 +46,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "CB0C06CF1C17640200297E1C"
-            BuildableName = "ObjectAL_TVOS.framework"
-            BlueprintName = "ObjectAL_TVOS"
+            BuildableName = "ObjectAL.framework"
+            BlueprintName = "ObjectAL"
             ReferencedContainer = "container:ObjectAL.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -64,8 +64,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "CB0C06CF1C17640200297E1C"
-            BuildableName = "ObjectAL_TVOS.framework"
-            BlueprintName = "ObjectAL_TVOS"
+            BuildableName = "ObjectAL.framework"
+            BlueprintName = "ObjectAL"
             ReferencedContainer = "container:ObjectAL.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

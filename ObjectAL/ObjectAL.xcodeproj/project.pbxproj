@@ -27,7 +27,7 @@
 		CB0C06E91C17647900297E1C /* ALSoundSourcePool.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB375171D0C0E009B955F /* ALSoundSourcePool.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CB0C06EA1C17647900297E1C /* ALSource.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB377171D0C0E009B955F /* ALSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CB0C06EB1C17647900297E1C /* ALTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB379171D0C0E009B955F /* ALTypes.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CB0C06EC1C17647900297E1C /* ALWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB37A171D0C0E009B955F /* ALWrapper.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CB0C06EC1C17647900297E1C /* ALWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB37A171D0C0E009B955F /* ALWrapper.h */; };
 		CB0C06ED1C17647900297E1C /* OpenALManager.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB37C171D0C0E009B955F /* OpenALManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CB0C06EE1C17647900297E1C /* OALAudioSession.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB37F171D0C0E009B955F /* OALAudioSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CB0C06EF1C17647900297E1C /* OALSuspendHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB381171D0C0E009B955F /* OALSuspendHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -36,8 +36,8 @@
 		CB0C06F41C17648E00297E1C /* NSMutableDictionary+WeakReferences.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB38B171D0C0E009B955F /* NSMutableDictionary+WeakReferences.h */; };
 		CB0C06F51C17648E00297E1C /* ObjectALMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB392171D0C0F009B955F /* ObjectALMacros.h */; };
 		CB0C06F61C17649700297E1C /* OALAudioFile.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB38D171D0C0E009B955F /* OALAudioFile.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CB0C06F71C17649700297E1C /* OALNotifications.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB38F171D0C0E009B955F /* OALNotifications.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CB0C06F81C17649700297E1C /* OALTools.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB390171D0C0E009B955F /* OALTools.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CB0C06F71C17649700297E1C /* OALNotifications.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB38F171D0C0E009B955F /* OALNotifications.h */; };
+		CB0C06F81C17649700297E1C /* OALTools.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB390171D0C0E009B955F /* OALTools.h */; };
 		CB0C06FA1C1764B000297E1C /* OALAction.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB354171D0C0E009B955F /* OALAction.m */; };
 		CB0C06FB1C1764B000297E1C /* OALActionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB356171D0C0E009B955F /* OALActionManager.m */; };
 		CB0C06FC1C1764B000297E1C /* OALAudioActions.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB358171D0C0E009B955F /* OALAudioActions.m */; };
@@ -66,6 +66,7 @@
 		CB5E9945171D1A43004CF421 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB5E9944171D1A43004CF421 /* AudioToolbox.framework */; };
 		CB5E9947171D1A4F004CF421 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB5E9946171D1A4F004CF421 /* AVFoundation.framework */; };
 		CB5E9949171D1A58004CF421 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB5E9948171D1A58004CF421 /* OpenAL.framework */; };
+		CB8DD6081C17B5E60059F23A /* ObjectAL.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB365171D0C0E009B955F /* ObjectAL.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CBBAB314171D0B84009B955F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBBAB313171D0B84009B955F /* Foundation.framework */; };
 		CBBAB33F171D0BC4009B955F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBBAB33E171D0BC4009B955F /* Cocoa.framework */; };
 		CBBAB349171D0BC4009B955F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CBBAB347171D0BC4009B955F /* InfoPlist.strings */; };
@@ -122,7 +123,7 @@
 		CBBAB3C7171D0C0F009B955F /* ALSource.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB378171D0C0E009B955F /* ALSource.m */; };
 		CBBAB3C8171D0C0F009B955F /* ALSource.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB378171D0C0E009B955F /* ALSource.m */; };
 		CBBAB3C9171D0C0F009B955F /* ALTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB379171D0C0E009B955F /* ALTypes.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CBBAB3CA171D0C0F009B955F /* ALWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB37A171D0C0E009B955F /* ALWrapper.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB3CA171D0C0F009B955F /* ALWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB37A171D0C0E009B955F /* ALWrapper.h */; };
 		CBBAB3CB171D0C0F009B955F /* ALWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB37B171D0C0E009B955F /* ALWrapper.m */; };
 		CBBAB3CC171D0C0F009B955F /* ALWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB37B171D0C0E009B955F /* ALWrapper.m */; };
 		CBBAB3CD171D0C0F009B955F /* OpenALManager.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB37C171D0C0E009B955F /* OpenALManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -146,8 +147,8 @@
 		CBBAB3E3171D0C0F009B955F /* OALAudioFile.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB38D171D0C0E009B955F /* OALAudioFile.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CBBAB3E4171D0C0F009B955F /* OALAudioFile.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB38E171D0C0E009B955F /* OALAudioFile.m */; };
 		CBBAB3E5171D0C0F009B955F /* OALAudioFile.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB38E171D0C0E009B955F /* OALAudioFile.m */; };
-		CBBAB3E6171D0C0F009B955F /* OALNotifications.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB38F171D0C0E009B955F /* OALNotifications.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CBBAB3E7171D0C0F009B955F /* OALTools.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB390171D0C0E009B955F /* OALTools.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB3E6171D0C0F009B955F /* OALNotifications.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB38F171D0C0E009B955F /* OALNotifications.h */; };
+		CBBAB3E7171D0C0F009B955F /* OALTools.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB390171D0C0E009B955F /* OALTools.h */; };
 		CBBAB3E8171D0C0F009B955F /* OALTools.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB391171D0C0E009B955F /* OALTools.m */; };
 		CBBAB3E9171D0C0F009B955F /* OALTools.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB391171D0C0E009B955F /* OALTools.m */; };
 		CBBAB3EA171D0C0F009B955F /* ObjectALMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB392171D0C0F009B955F /* ObjectALMacros.h */; };
@@ -172,7 +173,7 @@
 		CBBAB412171D0C86009B955F /* ALSoundSourcePool.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB375171D0C0E009B955F /* ALSoundSourcePool.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CBBAB413171D0C86009B955F /* ALSource.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB377171D0C0E009B955F /* ALSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CBBAB414171D0C86009B955F /* ALTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB379171D0C0E009B955F /* ALTypes.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CBBAB415171D0C86009B955F /* ALWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB37A171D0C0E009B955F /* ALWrapper.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB415171D0C86009B955F /* ALWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB37A171D0C0E009B955F /* ALWrapper.h */; };
 		CBBAB416171D0C86009B955F /* OpenALManager.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB37C171D0C0E009B955F /* OpenALManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CBBAB417171D0C86009B955F /* OALAudioSession.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB37F171D0C0E009B955F /* OALAudioSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CBBAB418171D0C86009B955F /* OALSuspendHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB381171D0C0E009B955F /* OALSuspendHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -180,8 +181,8 @@
 		CBBAB41C171D0C86009B955F /* NSMutableArray+WeakReferences.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB389171D0C0E009B955F /* NSMutableArray+WeakReferences.h */; };
 		CBBAB41D171D0C86009B955F /* NSMutableDictionary+WeakReferences.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB38B171D0C0E009B955F /* NSMutableDictionary+WeakReferences.h */; };
 		CBBAB41E171D0C86009B955F /* OALAudioFile.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB38D171D0C0E009B955F /* OALAudioFile.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CBBAB41F171D0C86009B955F /* OALNotifications.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB38F171D0C0E009B955F /* OALNotifications.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CBBAB420171D0C86009B955F /* OALTools.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB390171D0C0E009B955F /* OALTools.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBBAB41F171D0C86009B955F /* OALNotifications.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB38F171D0C0E009B955F /* OALNotifications.h */; };
+		CBBAB420171D0C86009B955F /* OALTools.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB390171D0C0E009B955F /* OALTools.h */; };
 		CBBAB421171D0C86009B955F /* ObjectALMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB392171D0C0F009B955F /* ObjectALMacros.h */; };
 		CBBAB4E1171D0FB0009B955F /* OALAction.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBAB353171D0C0E009B955F /* OALAction.h */; };
 		CBBAB4E2171D0FB0009B955F /* OALActionManager.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBAB355171D0C0E009B955F /* OALActionManager.h */; };
@@ -252,7 +253,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		CB0C06D01C17640200297E1C /* ObjectAL_TVOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ObjectAL_TVOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB0C06D01C17640200297E1C /* ObjectAL.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ObjectAL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB5E9944171D1A43004CF421 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
 		CB5E9946171D1A4F004CF421 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		CB5E9948171D1A58004CF421 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/OpenAL.framework; sourceTree = DEVELOPER_DIR; };
@@ -398,7 +399,7 @@
 			children = (
 				CBBAB312171D0B84009B955F /* libObjectAL.a */,
 				CBBAB33D171D0BC4009B955F /* ObjectAL.framework */,
-				CB0C06D01C17640200297E1C /* ObjectAL_TVOS.framework */,
+				CB0C06D01C17640200297E1C /* ObjectAL.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -559,6 +560,7 @@
 				CB0C06EE1C17647900297E1C /* OALAudioSession.h in Headers */,
 				CB0C06DB1C17647900297E1C /* OALAudioActions.h in Headers */,
 				CB0C06E51C17647900297E1C /* ALContext.h in Headers */,
+				CB8DD6081C17B5E60059F23A /* ObjectAL.h in Headers */,
 				CB0C06EB1C17647900297E1C /* ALTypes.h in Headers */,
 				CB0C06E41C17647900297E1C /* ALChannelSource.h in Headers */,
 				CB0C06DA1C17647900297E1C /* OALActionManager.h in Headers */,
@@ -687,9 +689,9 @@
 /* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
-		CB0C06CF1C17640200297E1C /* ObjectAL_TVOS */ = {
+		CB0C06CF1C17640200297E1C /* ObjectAL */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CB0C06D71C17640200297E1C /* Build configuration list for PBXNativeTarget "ObjectAL_TVOS" */;
+			buildConfigurationList = CB0C06D71C17640200297E1C /* Build configuration list for PBXNativeTarget "ObjectAL" */;
 			buildPhases = (
 				CB0C06CB1C17640200297E1C /* Sources */,
 				CB0C06CC1C17640200297E1C /* Frameworks */,
@@ -700,9 +702,9 @@
 			);
 			dependencies = (
 			);
-			name = ObjectAL_TVOS;
+			name = ObjectAL;
 			productName = ObjectAL;
-			productReference = CB0C06D01C17640200297E1C /* ObjectAL_TVOS.framework */;
+			productReference = CB0C06D01C17640200297E1C /* ObjectAL.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		CBBAB311171D0B84009B955F /* ObjectAL (iOS) */ = {
@@ -770,7 +772,7 @@
 				CBBAB311171D0B84009B955F /* ObjectAL (iOS) */,
 				CBBAB33C171D0BC4009B955F /* ObjectAL (OSX) */,
 				CB5E994A171DC145004CF421 /* Documentation */,
-				CB0C06CF1C17640200297E1C /* ObjectAL_TVOS */,
+				CB0C06CF1C17640200297E1C /* ObjectAL */,
 			);
 		};
 /* End PBXProject section */
@@ -1203,7 +1205,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		CB0C06D71C17640200297E1C /* Build configuration list for PBXNativeTarget "ObjectAL_TVOS" */ = {
+		CB0C06D71C17640200297E1C /* Build configuration list for PBXNativeTarget "ObjectAL" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CB0C06D51C17640200297E1C /* Debug */,
