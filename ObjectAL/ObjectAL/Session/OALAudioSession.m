@@ -40,8 +40,6 @@
 #pragma mark Private Methods
 
 
-#if defined(__IPHONE_OS_VERSION_MAX_ALLOWED)
-
 /** \cond */
 /**
  * (INTERNAL USE) Private methods for OALAudioSupport. 
@@ -116,13 +114,13 @@
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 
-    NSError* error;
+#if defined(__IPHONE_OS_VERSION_MAX_ALLOWED)
+    NSError* error = nil;
     if(![[AVAudioSession sharedInstance] setActive:NO error:&error])
     {
         OAL_LOG_ERROR(@"Could not deactivate audio session: %@", error);
     }
-	
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+#endif
 }
 
 
@@ -206,22 +204,20 @@
 
 #pragma mark Internal Use
 
-- (BOOL) _otherAudioPlaying
-{
-    return ((AVAudioSession*)[AVAudioSession sharedInstance]).otherAudioPlaying;
-}
-
+#if defined(__IPHONE_OS_VERSION_MAX_ALLOWED)
 - (void) setAudioCategory:(NSString*) audioCategory
 {
-	NSError* error;
+	NSError* error = nil;
 	if(![[AVAudioSession sharedInstance] setCategory:audioCategory error:&error])
 	{
 		OAL_LOG_ERROR(@"Failed to set audio category: %@", error);
 	}
 }
+#endif
 
 - (void) updateFromAudioSessionCategory
 {
+#if defined(__IPHONE_OS_VERSION_MAX_ALLOWED)
 	if([AVAudioSessionCategoryAmbient isEqualToString:audioSessionCategory])
 	{
 		honorSilentSwitch = YES;
@@ -252,11 +248,12 @@
 	{
 		OAL_LOG_WARNING(@"%@: Unrecognized audio session category", audioSessionCategory);
 	}
-	
+#endif
 }
 
 - (void) updateFromFlags
 {
+#if defined(__IPHONE_OS_VERSION_MAX_ALLOWED)
 	if(honorSilentSwitch)
 	{
 		if(allowIpod)
@@ -272,12 +269,13 @@
 	{
 		audioSessionCategory = AVAudioSessionCategoryPlayback;
 	}
+#endif
 }
 
 - (void) setAudioMode
 {
 	// Simulator doesn't support setting the audio session category.
-#if !TARGET_IPHONE_SIMULATOR
+#if !TARGET_IPHONE_SIMULATOR && defined(__IPHONE_OS_VERSION_MAX_ALLOWED)
 	
 	NSString* actualCategory = audioSessionCategory;
 	
@@ -288,7 +286,7 @@
 	bool ducking = ipodDucking;
 	
 	// If the hardware is available and we want it, take it.
-	if(mixing && useHardwareIfAvailable && !self._otherAudioPlaying)
+	if(mixing && useHardwareIfAvailable && ![AVAudioSession sharedInstance].otherAudioPlaying)
 	{
 		mixing = NO;
 	}
@@ -326,6 +324,7 @@
  */ 
 - (void) activateAudioSession
 {
+#if defined(__IPHONE_OS_VERSION_MAX_ALLOWED)
 	NSError* error;
 	for(int try = 1; try <= kMaxSessionActivationRetries; try++)
 	{
@@ -338,6 +337,7 @@
 		[NSThread sleepForTimeInterval:0.2];
 	}
 	OAL_LOG_ERROR(@"Failed to activate the audio session");
+#endif
 }
 
 - (void) setAudioSessionActive:(bool) value
@@ -355,6 +355,7 @@
 			else
 			{
 				OAL_LOG_DEBUG(@"Deactivate audio session");
+#if defined(__IPHONE_OS_VERSION_MAX_ALLOWED)
 				NSError* error;
 				if(![[AVAudioSession sharedInstance] setActive:NO error:&error])
 				{
@@ -364,16 +365,14 @@
 				{
 					audioSessionActive = NO;
 				}
-				
+#endif
 			}
 		}
 	}
 }
 
-- (void) onAudioError:(NSNotification*) notification
+- (void) onAudioError:(__unused NSNotification*) notification
 {
-    #pragma unused(notification)
-
 #if OBJECTAL_CFG_RESET_AUDIO_SESSION_ON_ERROR
 	if(self.suspended)
 	{
@@ -460,104 +459,4 @@
 	}
 }
 
-
 @end
-
-#else
-
-@implementation OALAudioSession
-
-#pragma mark Object Management
-
-SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
-
-- (id) init
-{
-	if(nil != (self = [super init]))
-	{
-		suspendHandler = [[OALSuspendHandler alloc] initWithTarget:self selector:@selector(setSuspended:)];
-
-		// Set up defaults
-		allowIpod = NO;
-		ipodDucking = NO;
-		useHardwareIfAvailable = YES;
-		honorSilentSwitch = NO;
-
-		self.audioSessionActive = YES;
-	}
-	return self;
-}
-
-- (void) dealloc
-{
-	as_release(lastResetTime);
-	as_release(audioSessionCategory);
-	as_release(suspendHandler);
-	as_superdealloc();
-}
-
-#pragma mark Properties
-
-@synthesize audioSessionCategory;
-@synthesize audioSessionActive;
-@synthesize allowIpod;
-@synthesize ipodDucking;
-@synthesize useHardwareIfAvailable;
-@synthesize honorSilentSwitch;
-
-#pragma mark Suspend Handler
-
-- (void) addSuspendListener:(id<OALSuspendListener>) listener
-{
-	[suspendHandler addSuspendListener:listener];
-}
-
-- (void) removeSuspendListener:(id<OALSuspendListener>) listener
-{
-	[suspendHandler removeSuspendListener:listener];
-}
-
-- (bool) manuallySuspended
-{
-	return suspendHandler.manuallySuspended;
-}
-
-- (void) setManuallySuspended:(bool) value
-{
-	suspendHandler.manuallySuspended = value;
-}
-
-- (bool) interrupted
-{
-    return false;
-}
-
-- (void) setInterrupted:(__unused bool) value
-{
-}
-
-- (bool) suspended
-{
-	return suspendHandler.suspended;
-}
-
-- (void) setSuspended:(bool) value
-{
-	OAL_LOG_DEBUG(@"setSuspended %d", value);
-	if(value)
-	{
-		audioSessionWasActive = self.audioSessionActive;
-		self.audioSessionActive = NO;
-	}
-	else
-	{
-		if(audioSessionWasActive)
-		{
-			self.audioSessionActive = YES;
-		}
-	}
-}
-
-@end
-
-#endif
