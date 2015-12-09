@@ -28,7 +28,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SynthesizeSingleton.h"
 #import "ALContext.h"
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 #import <OpenAL/oalMacOSX_OALExtensions.h>
@@ -100,12 +99,7 @@
 
 #pragma mark Object Management
 
-/** Singleton implementation providing "sharedInstance" and "purgeSharedInstance" methods.
- *
- * <b>- (OpenALManager*) sharedInstance</b>: Get the shared singleton instance. <br>
- * <b>- (void) purgeSharedInstance</b>: Purge (deallocate) the shared instance.
- */
-SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OpenALManager);
++ (OpenALManager*)sharedInstance;
 
 
 #pragma mark Buffers

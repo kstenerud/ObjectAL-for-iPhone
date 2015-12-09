@@ -28,7 +28,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SynthesizeSingleton.h"
 #import "ALDevice.h"
 #import "ALContext.h"
 #import "ALSoundSource.h"
@@ -202,12 +201,7 @@
 
 #pragma mark Object Management
 
-/** Singleton implementation providing "sharedInstance" and "purgeSharedInstance" methods.
- *
- * <b>- (OALSimpleAudio*) sharedInstance</b>: Get the shared singleton instance. <br>
- * <b>- (void) purgeSharedInstance</b>: Purge (deallocate) the shared instance. <br>
- */
-SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALSimpleAudio);
++ (OALSimpleAudio*)sharedInstance;
 
 /** Start OALSimpleAudio with the specified number of reserved sources.
  * Call this initializer if you want to use OALSimpleAudio, but keep some of the device's

@@ -38,8 +38,6 @@
 #pragma mark -
 #pragma mark Private Methods
 
-SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALSimpleAudio);
-
 /** \cond */
 /**
  * (INTERNAL USE) Private interface to OALSimpleAudio.
@@ -65,7 +63,20 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALSimpleAudio);
 
 #pragma mark Object Management
 
-SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
+static OALSimpleAudio *g_sharedInstance = nil;
+static dispatch_once_t g_onceToken;
+static void purgeSharedInstance()
+{
+    g_sharedInstance = nil;
+    g_onceToken = 0;
+}
+
++ (OALSimpleAudio*)sharedInstance {
+    dispatch_once(&g_onceToken, ^{
+        g_sharedInstance = [[self alloc] init];
+    });
+    return g_sharedInstance;
+}
 
 @synthesize device;
 @synthesize context;
@@ -136,7 +147,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALSimpleAudio);
 	return self;
 
 initFailed:
-    [[self class] purgeSharedInstance];
+    purgeSharedInstance();
     return nil;
 }
 
@@ -162,7 +173,7 @@ initFailed:
 	return self;
 
 initFailed:
-    [[self class] purgeSharedInstance];
+    purgeSharedInstance();
     return nil;
 }
 

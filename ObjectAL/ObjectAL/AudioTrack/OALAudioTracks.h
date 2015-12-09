@@ -26,7 +26,6 @@
 //
 
 #import "OALAudioTrack.h"
-#import "SynthesizeSingleton.h"
 #import "OALSuspendHandler.h"
 
 
@@ -70,12 +69,7 @@
 
 #pragma mark Object Management
 
-/** Singleton implementation providing "sharedInstance" and "purgeSharedInstance" methods.
- *
- * <b>- (OALAudioTracks*) sharedInstance</b>: Get the shared singleton instance. <br>
- * <b>- (void) purgeSharedInstance</b>: Purge (deallocate) the shared instance.
- */
-SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALAudioTracks);
++ (OALAudioTracks*)sharedInstance;
 
 
 #pragma mark Internal Use

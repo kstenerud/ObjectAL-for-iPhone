@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CB05BF97171F423D0056FCF7 /* SynthesizeSingleton.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBAB393171D0C0F009B955F /* SynthesizeSingleton.h */; };
 		CB0C06D31C17640200297E1C /* ObjectAL.h in Headers */ = {isa = PBXBuildFile; fileRef = CB0C06D21C17640200297E1C /* ObjectAL.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CB0C06D81C17645E00297E1C /* OALAction+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB352171D0C0E009B955F /* OALAction+Private.h */; };
 		CB0C06D91C17647900297E1C /* OALAction.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB353171D0C0E009B955F /* OALAction.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -40,7 +39,6 @@
 		CB0C06F61C17649700297E1C /* OALAudioFile.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB38D171D0C0E009B955F /* OALAudioFile.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CB0C06F71C17649700297E1C /* OALNotifications.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB38F171D0C0E009B955F /* OALNotifications.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CB0C06F81C17649700297E1C /* OALTools.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB390171D0C0E009B955F /* OALTools.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CB0C06F91C17649700297E1C /* SynthesizeSingleton.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB393171D0C0F009B955F /* SynthesizeSingleton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CB0C06FA1C1764B000297E1C /* OALAction.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB354171D0C0E009B955F /* OALAction.m */; };
 		CB0C06FB1C1764B000297E1C /* OALActionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB356171D0C0E009B955F /* OALActionManager.m */; };
 		CB0C06FC1C1764B000297E1C /* OALAudioActions.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB358171D0C0E009B955F /* OALAudioActions.m */; };
@@ -154,7 +152,6 @@
 		CBBAB3E8171D0C0F009B955F /* OALTools.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB391171D0C0E009B955F /* OALTools.m */; };
 		CBBAB3E9171D0C0F009B955F /* OALTools.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBAB391171D0C0E009B955F /* OALTools.m */; };
 		CBBAB3EA171D0C0F009B955F /* ObjectALMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB392171D0C0F009B955F /* ObjectALMacros.h */; };
-		CBBAB3EB171D0C0F009B955F /* SynthesizeSingleton.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB393171D0C0F009B955F /* SynthesizeSingleton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CBBAB400171D0C86009B955F /* OALAction+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB352171D0C0E009B955F /* OALAction+Private.h */; };
 		CBBAB401171D0C86009B955F /* OALAction.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB353171D0C0E009B955F /* OALAction.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CBBAB402171D0C86009B955F /* OALActionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB355171D0C0E009B955F /* OALActionManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -187,7 +184,6 @@
 		CBBAB41F171D0C86009B955F /* OALNotifications.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB38F171D0C0E009B955F /* OALNotifications.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CBBAB420171D0C86009B955F /* OALTools.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB390171D0C0E009B955F /* OALTools.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CBBAB421171D0C86009B955F /* ObjectALMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB392171D0C0F009B955F /* ObjectALMacros.h */; };
-		CBBAB422171D0C86009B955F /* SynthesizeSingleton.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBAB393171D0C0F009B955F /* SynthesizeSingleton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CBBAB4E1171D0FB0009B955F /* OALAction.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBAB353171D0C0E009B955F /* OALAction.h */; };
 		CBBAB4E2171D0FB0009B955F /* OALActionManager.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBAB355171D0C0E009B955F /* OALActionManager.h */; };
 		CBBAB4E3171D0FB0009B955F /* OALAudioActions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBAB357171D0C0E009B955F /* OALAudioActions.h */; };
@@ -251,7 +247,6 @@
 				CBBAB4F9171D0FB0009B955F /* OALAudioFile.h in CopyFiles */,
 				CBBAB4FA171D0FB0009B955F /* OALNotifications.h in CopyFiles */,
 				CBBAB4FB171D0FB0009B955F /* OALTools.h in CopyFiles */,
-				CB05BF97171F423D0056FCF7 /* SynthesizeSingleton.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
@@ -332,7 +327,6 @@
 		CBBAB390171D0C0E009B955F /* OALTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALTools.h; sourceTree = "<group>"; };
 		CBBAB391171D0C0E009B955F /* OALTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALTools.m; sourceTree = "<group>"; };
 		CBBAB392171D0C0F009B955F /* ObjectALMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectALMacros.h; sourceTree = "<group>"; };
-		CBBAB393171D0C0F009B955F /* SynthesizeSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynthesizeSingleton.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -553,7 +547,6 @@
 				CBBAB390171D0C0E009B955F /* OALTools.h */,
 				CBBAB391171D0C0E009B955F /* OALTools.m */,
 				CBBAB392171D0C0F009B955F /* ObjectALMacros.h */,
-				CBBAB393171D0C0F009B955F /* SynthesizeSingleton.h */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -578,7 +571,6 @@
 				CB0C06F21C17648E00297E1C /* mach_timing.h in Headers */,
 				CB0C06F41C17648E00297E1C /* NSMutableDictionary+WeakReferences.h in Headers */,
 				CB0C06EF1C17647900297E1C /* OALSuspendHandler.h in Headers */,
-				CB0C06F91C17649700297E1C /* SynthesizeSingleton.h in Headers */,
 				CB0C06E31C17647900297E1C /* ALCaptureDevice.h in Headers */,
 				CB0C06DF1C17647900297E1C /* OALAudioTracks.h in Headers */,
 				CB0C06F81C17649700297E1C /* OALTools.h in Headers */,
@@ -632,7 +624,6 @@
 				CBBAB3E3171D0C0F009B955F /* OALAudioFile.h in Headers */,
 				CBBAB3E6171D0C0F009B955F /* OALNotifications.h in Headers */,
 				CBBAB3E7171D0C0F009B955F /* OALTools.h in Headers */,
-				CBBAB3EB171D0C0F009B955F /* SynthesizeSingleton.h in Headers */,
 				CBBAB394171D0C0F009B955F /* OALAction+Private.h in Headers */,
 				CBBAB3DC171D0C0F009B955F /* mach_timing.h in Headers */,
 				CBBAB3DD171D0C0F009B955F /* NSMutableArray+WeakReferences.h in Headers */,
@@ -672,7 +663,6 @@
 				CBBAB41E171D0C86009B955F /* OALAudioFile.h in Headers */,
 				CBBAB41F171D0C86009B955F /* OALNotifications.h in Headers */,
 				CBBAB420171D0C86009B955F /* OALTools.h in Headers */,
-				CBBAB422171D0C86009B955F /* SynthesizeSingleton.h in Headers */,
 				CBBAB400171D0C86009B955F /* OALAction+Private.h in Headers */,
 				CBBAB41B171D0C86009B955F /* mach_timing.h in Headers */,
 				CBBAB41C171D0C86009B955F /* NSMutableArray+WeakReferences.h in Headers */,

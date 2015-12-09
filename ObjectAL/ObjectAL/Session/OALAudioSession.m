@@ -39,8 +39,6 @@
 #pragma mark -
 #pragma mark Private Methods
 
-SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALAudioSession);
-
 
 #if defined(__IPHONE_OS_VERSION_MAX_ALLOWED)
 
@@ -75,7 +73,14 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALAudioSession);
 
 #pragma mark Object Management
 
-SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
++ (OALAudioSession*)sharedInstance {
+    static OALAudioSession *shared = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        shared = [[self alloc] init];
+    });
+    return shared;
+}
 
 - (id) init
 {

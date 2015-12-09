@@ -37,8 +37,6 @@
 
 #if !OBJECTAL_CFG_USE_COCOS2D_ACTIONS
 
-SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALActionManager);
-
 /** \cond */
 /**
  * (INTERNAL USE) Private methods for OALActionManager.
@@ -59,7 +57,14 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALActionManager);
 
 #pragma mark Object Management
 
-SYNTHESIZE_SINGLETON_FOR_CLASS(OALActionManager);
++ (OALActionManager*)sharedInstance {
+    static OALActionManager *shared = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        shared = [[self alloc] init];
+    });
+    return shared;
+}
 
 - (id) init
 {

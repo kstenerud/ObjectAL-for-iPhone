@@ -29,7 +29,6 @@
 
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
-#import "SynthesizeSingleton.h"
 #import "OALSuspendHandler.h"
 
 
@@ -131,11 +130,6 @@
 
 #pragma mark Object Management
 
-/** Singleton implementation providing "sharedInstance" and "purgeSharedInstance" methods.
- *
- * <b>- (OALAudioSupport*) sharedInstance</b>: Get the shared singleton instance. <br>
- * <b>- (void) purgeSharedInstance</b>: Purge (deallocate) the shared instance.
- */
-SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALAudioSession);
++ (OALAudioSession*)sharedInstance;
 
 @end

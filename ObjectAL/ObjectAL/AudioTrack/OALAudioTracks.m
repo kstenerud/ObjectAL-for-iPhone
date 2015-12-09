@@ -31,9 +31,6 @@
 #import "OALAudioSession.h"
 
 
-SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALAudioTracks);
-
-
 /** \cond */
 /**
  * (INTERNAL USE) Private methods for OALAudioTracks.
@@ -56,7 +53,14 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OALAudioTracks);
 
 #pragma mark Object Management
 
-SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioTracks);
++ (OALAudioTracks*)sharedInstance {
+    static OALAudioTracks *shared = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        shared = [[self alloc] init];
+    });
+    return shared;
+}
 
 - (id) init
 {
