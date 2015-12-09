@@ -881,9 +881,8 @@ static ALvoid alSourceNotification(ALuint sid, ALuint notificationID, ALvoid* us
 	return NO;
 }
 
-- (void) setInterrupted:(bool) value
+- (void) setInterrupted:(__unused bool) value
 {
-#pragma unused(value)
     // Bug: Suspending on interrupt fails in iOS 6+ and doesn't seem to be needed anyway
 }
 

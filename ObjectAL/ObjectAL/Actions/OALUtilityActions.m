@@ -294,14 +294,12 @@
 
 COCOS2D_SUBCLASS(OALSequentialActions)
 
-- (void) prepareWithTarget:(id) target
+- (void) prepareWithTarget:(__unused id) target
 {
-    #pragma unused(target)
 }
 
-- (void) updateCompletion:(float) proportionComplete
+- (void) updateCompletion:(__unused float) proportionComplete
 {
-    #pragma unused(proportionComplete)
 }
 
 @end
@@ -456,14 +454,12 @@ COCOS2D_SUBCLASS(OALSequentialActions)
 
 COCOS2D_SUBCLASS(OALConcurrentActions)
 
-- (void) prepareWithTarget:(id) target
+- (void) prepareWithTarget:(__unused id) target
 {
-    #pragma unused(target)
 }
 
-- (void) updateCompletion:(float) proportionComplete
+- (void) updateCompletion:(__unused float) proportionComplete
 {
-    #pragma unused(proportionComplete)
 }
 
 @end

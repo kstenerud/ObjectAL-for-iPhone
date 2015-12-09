@@ -98,9 +98,8 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void) doResetTimeDelta:(NSNotification*) notification
+- (void) doResetTimeDelta:(__unused NSNotification*) notification
 {
-    #pragma unused(notification)
 	lastTimestamp = 0;
 }
 
@@ -123,9 +122,8 @@
 
 #pragma mark Timer Interface
 
-- (void) step:(NSTimer*) timer
+- (void) step:(__unused NSTimer*) timer
 {
-    #pragma unused(timer)
 	@synchronized(self)
 	{
 		// Add new actions

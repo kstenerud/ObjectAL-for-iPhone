@@ -103,9 +103,8 @@
 	self.elapsed = 0;
 }
 
-- (void) updateCompletion:(float) proportionComplete
+- (void) updateCompletion:(__unused float) proportionComplete
 {
-    #pragma unused(proportionComplete)
 	// Subclasses will override this.
 }
 
@@ -164,14 +163,12 @@
 	[[CCActionManager sharedManager] removeAction:self];
 }
 
-- (void) prepareWithTarget:(id) target
+- (void) prepareWithTarget:(__unused id) target
 {
-    #pragma unused(target)
 }
 
-- (void) updateCompletion:(float) proportionComplete
+- (void) updateCompletion:(__unused float) proportionComplete
 {
-    #pragma unused(proportionComplete)
 }
 
 - (void) setTarget:(id)target

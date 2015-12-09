@@ -294,9 +294,8 @@ SYNTHESIZE_DELEGATE_PROPERTY(reverbObstruction, ReverbObstruction, float);
 	}
 }
 
-- (void) onFadeComplete:(id<ALSoundSource>) source
+- (void) onFadeComplete:(__unused id<ALSoundSource>) source
 {
-    #pragma unused(source)
 	// Must always be synchronized
 	@synchronized(sourcePool)
 	{
@@ -338,9 +337,8 @@ SYNTHESIZE_DELEGATE_PROPERTY(reverbObstruction, ReverbObstruction, float);
 	}
 }
 
-- (void) onPanComplete:(id<ALSoundSource>) source
+- (void) onPanComplete:(__unused id<ALSoundSource>) source
 {
-    #pragma unused(source)
 	// Must always be synchronized
 	@synchronized(sourcePool)
 	{
@@ -382,9 +380,8 @@ SYNTHESIZE_DELEGATE_PROPERTY(reverbObstruction, ReverbObstruction, float);
 	}
 }
 
-- (void) onPitchComplete:(id<ALSoundSource>) source
+- (void) onPitchComplete:(__unused id<ALSoundSource>) source
 {
-    #pragma unused(source)
 	// Must always be synchronized
 	@synchronized(sourcePool)
 	{

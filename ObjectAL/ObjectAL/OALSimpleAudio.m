@@ -572,9 +572,8 @@ initFailed:
 	pendingLoadCount += total;
 	dispatch_async(oal_dispatch_queue,
                    ^{
-                       [filePaths enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
+                       [filePaths enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, __unused BOOL *stop)
                         {
-                            #pragma unused(stop)
                             OAL_LOG_INFO(@"Preloading effect: %@", obj);
                             ALBuffer *result = [self internalPreloadEffect:(NSString *)obj reduceToMono:reduceToMono];
                             if(!result)
