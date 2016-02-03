@@ -936,7 +936,7 @@
 
 #if TARGET_OS_IPHONE
 #pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-implementations"
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 - (void) audioPlayerBeginInterruption:(AVAudioPlayer*) playerIn
 {
 	if([delegate respondsToSelector:@selector(audioPlayerBeginInterruption:)])
