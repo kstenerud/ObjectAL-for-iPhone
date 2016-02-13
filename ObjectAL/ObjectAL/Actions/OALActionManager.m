@@ -129,31 +129,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALActionManager);
     #pragma unused(timer)
 	OPTIONALLY_SYNCHRONIZED(self)
 	{
-		// Add new actions
-		for(OALAction* action in actionsToAdd)
-		{
-			// But only if they haven't been stopped already
-			if(action.running)
-			{
-				NSUInteger index = [targets indexOfObject:action.target];
-				if(NSNotFound == index)
-				{
-					// Since this target has no running actions yet, add the support
-					// structure to keep track of it.
-					index = [targets count];
-					[targets addObject:action.target];
-					[targetActions addObject:[NSMutableArray arrayWithCapacity:5]];
-				}
-
-				// Get the list of actions operating on this target and add the new action.
-				NSMutableArray* actions = [targetActions objectAtIndex:index];
-				[actions addObject:action];
-			}
-		}
-		// All actions have been added.  Clear the "add" list.
-		[actionsToAdd removeAllObjects];
-		
-
 		// Remove stopped actions
 		for(OALAction* action in actionsToRemove)
 		{
@@ -169,18 +144,48 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALActionManager);
 					[targets removeObjectAtIndex:index];
 					[targetActions removeObjectAtIndex:index];
 					
-					// If there are no more actions running, stop the master timer.
+					// If there are no more actions running, exit this loop.
 					if([targets count] == 0)
 					{
-						[stepTimer invalidate];
-						stepTimer = nil;
 						break;
 					}
 				}
 			}
 		}
 		[actionsToRemove removeAllObjects];
-		
+        
+        // Add new actions
+        for(OALAction* action in actionsToAdd)
+        {
+            // But only if they haven't been stopped already
+            if(action.running)
+            {
+                NSUInteger index = [targets indexOfObject:action.target];
+                if(NSNotFound == index)
+                {
+                    // Since this target has no running actions yet, add the support
+                    // structure to keep track of it.
+                    index = [targets count];
+                    [targets addObject:action.target];
+                    [targetActions addObject:[NSMutableArray arrayWithCapacity:5]];
+                }
+                
+                // Get the list of actions operating on this target and add the new action.
+                NSMutableArray* actions = [targetActions objectAtIndex:index];
+                [actions addObject:action];
+            }
+        }
+        // All actions have been added.  Clear the "add" list.
+        [actionsToAdd removeAllObjects];
+        
+        // If there are no more actions running, stop the master timer.
+        if([targets count] == 0)
+        {
+            [stepTimer invalidate];
+            stepTimer = nil;
+            return;
+        }
+
 		// Get the time elapsed and update timestamp.
 		// If there was a break in timing (lastTimestamp == 0), assume 0 time has elapsed.
 		uint64_t currentTime = mach_absolute_time();
