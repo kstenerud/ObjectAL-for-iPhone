@@ -32,7 +32,6 @@
 #import "ObjectALMacros.h"
 #import "ARCSafe_MemMgmt.h"
 #import "OALNotifications.h"
-#import "IOSVersion.h"
 
 
 #define kMaxSessionActivationRetries 40
@@ -124,26 +123,13 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 	{
 		OAL_LOG_DEBUG(@"%@: Init", self);
 
-        float osVersion = [IOSVersion sharedInstance].version;
-
 		suspendHandler = [[OALSuspendHandler alloc] initWithTarget:self selector:@selector(setSuspended:)];
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
-        if(osVersion < 6.0f)
-        {
-            OAL_LOG_DEBUG(@"Setting up AVAudioSession delegate");
-            [(AVAudioSession*)[AVAudioSession sharedInstance] setDelegate:self];
-        }
-#endif // __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
-
-        if(osVersion >= 6.0f)
-        {
-            OAL_LOG_DEBUG(@"Adding notification observer for AVAudioSessionInterruptionNotification");
-            [[NSNotificationCenter defaultCenter] addObserver:self
-                                                     selector:@selector(handleInterruption:)
-                                                         name:@"AVAudioSessionInterruptionNotification"
-                                                       object:[AVAudioSession sharedInstance]];
-        }
+        OAL_LOG_DEBUG(@"Adding notification observer for AVAudioSessionInterruptionNotification");
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(handleInterruption:)
+                                                     name:@"AVAudioSessionInterruptionNotification"
+                                                   object:[AVAudioSession sharedInstance]];
 
 		// Set up defaults
 		handleInterruptions = YES;
@@ -380,10 +366,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(OALAudioSession);
 
 - (BOOL) _otherAudioPlaying
 {
-    if([IOSVersion sharedInstance].version < 6)
-    {
-        return self.ipodPlaying;
-    }
     return ((AVAudioSession*)[AVAudioSession sharedInstance]).otherAudioPlaying;
 }
 
