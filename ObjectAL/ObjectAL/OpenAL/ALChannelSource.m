@@ -658,4 +658,15 @@ SYNTHESIZE_DELEGATE_PROPERTY(reverbObstruction, ReverbObstruction, float);
     return !playing;
 }
 
+- (void) recycle
+{
+    OPTIONALLY_SYNCHRONIZED(sourcePool)
+    {
+        for(id<ALSoundSource> source in sourcePool.sources)
+        {
+            [source recycle];
+        }
+    }
+}
+
 @end

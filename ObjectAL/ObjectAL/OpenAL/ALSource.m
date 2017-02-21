@@ -191,6 +191,76 @@ initFailed:
 	as_superdealloc();
 }
 
+- (void) recycle
+{
+    if((ALuint)AL_INVALID != sourceId)
+    {
+        [self stop];
+        ALBuffer* currentBuffer = self.buffer;
+        float coneInnerAngle = self.coneInnerAngle;
+        float coneOuterAngle = self.coneOuterAngle;
+        float coneOuterGain = self.coneOuterGain;
+        ALVector direction = self.direction;
+        float currentGain = self.gain;
+        bool isInterruptible = self.interruptible;
+        bool looping = self.looping;
+        float maxDistance = self.maxDistance;
+        float maxGain = self.maxGain;
+        float minGain = self.minGain;
+        float pitch = self.pitch;
+        ALPoint position = self.position;
+        float referenceDistance = self.referenceDistance;
+        float rolloffFactor = self.rolloffFactor;
+        int sourceRelative = self.sourceRelative;
+        ALVector velocity = self.velocity;
+        float reverbSendLevel = self.reverbSendLevel;
+        float reverbOcclusion = self.reverbOcclusion;
+        float reverbObstruction = self.reverbObstruction;
+        
+        [ALWrapper sourcei:sourceId parameter:AL_BUFFER value:AL_NONE];
+        
+        @synchronized([OpenALManager sharedInstance])
+        {
+            ALContext* currentContext = [OpenALManager sharedInstance].currentContext;
+            if(currentContext != context)
+            {
+                // Make this source's context the current one if it isn't already.
+                [OpenALManager sharedInstance].currentContext = context;
+            }
+            
+            [ALWrapper deleteSource:sourceId];
+            sourceId = [ALWrapper genSource];
+            if(sourceId == (ALuint)AL_INVALID)
+            {
+                OAL_LOG_ERROR(@"%@: Failed to create OpenAL source", self);
+            }
+            shadowState = AL_INITIAL;
+
+            [OpenALManager sharedInstance].currentContext = currentContext;
+        }
+        
+        self.buffer = currentBuffer;
+        self.coneInnerAngle = coneInnerAngle;
+        self.coneOuterAngle = coneOuterAngle;
+        self.coneOuterGain = coneOuterGain;
+        self.direction = direction;
+        self.gain = currentGain;
+        self.interruptible = isInterruptible;
+        self.looping = looping;
+        self.maxDistance = maxDistance;
+        self.maxGain = maxGain;
+        self.minGain = minGain;
+        self.pitch = pitch;
+        self.position = position;
+        self.referenceDistance = referenceDistance;
+        self.rolloffFactor = rolloffFactor;
+        self.sourceRelative = sourceRelative;
+        self.velocity = velocity;
+        self.reverbSendLevel = reverbSendLevel;
+        self.reverbOcclusion = reverbOcclusion;
+        self.reverbObstruction = reverbObstruction;
+    }
+}
 
 #pragma mark Properties
 

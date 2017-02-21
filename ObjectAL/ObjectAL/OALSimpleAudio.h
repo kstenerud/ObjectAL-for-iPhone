@@ -489,4 +489,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALSimpleAudio);
  */
 - (void) resetToDefault;
 
+/** Recycle all sources, releasing the underlying OpenAL sources and re-acquiring them.
+ * This may help to counter some Apple playback bugs that lead to no sounds playing
+ * (for example, in ReplayKit).
+ */
+- (void) recycleSources;
+
 @end

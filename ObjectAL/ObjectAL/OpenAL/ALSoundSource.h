@@ -236,6 +236,12 @@
 
 #pragma mark Utility
 
+/** Recycle this source, releasing the underlying OpenAL source and re-acquiring it.
+ * This may help to counter some Apple playback bugs that lead to no sounds playing
+ * (for example, in ReplayKit).
+ */
+- (void) recycle;
+
 /** Clear any buffers this source is currently using.
  */
 - (void) clear;

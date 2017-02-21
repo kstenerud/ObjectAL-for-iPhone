@@ -717,6 +717,11 @@ initFailed:
 	self.bgVolume = 1.0f;
 }
 
+- (void) recycleSources
+{
+    [self.channel recycle];
+}
+
 - (bool) manuallySuspended
 {
 	return [OALAudioSession sharedInstance].manuallySuspended;
