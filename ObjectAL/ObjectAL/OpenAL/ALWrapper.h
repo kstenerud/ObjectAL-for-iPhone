@@ -802,22 +802,19 @@
 
 /** Process a context.
  *
- * @param context The contect to process.
- * @return TRUE if the operation was successful.
+ * @param context The context to process.
  */
 + (void) processContext:(ALCcontext*) context;
 
 /** Suspend a context.
  *
  * @param context The contect to suspend.
- * @return TRUE if the operation was successful.
  */
 + (void) suspendContext:(ALCcontext*) context;
 
 /** Destroy a context.
  *
  * @param context The contect to destroy.
- * @return TRUE if the operation was successful.
  */
 + (void) destroyContext:(ALCcontext*) context;
 
