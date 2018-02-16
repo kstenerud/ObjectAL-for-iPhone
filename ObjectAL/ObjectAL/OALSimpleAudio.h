@@ -489,4 +489,20 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(OALSimpleAudio);
  */
 - (void) resetToDefault;
 
+/**
+ *  switch beteen mute and unmute.
+ *  @param filePath The path containing the sound data.
+ */
+- (void) switchMuteWithEffectName:(NSString*) filePath;
+/**
+ * only mute the effect.
+ * @param filePath The path containing the sound data.
+ */
+- (void) muteEffectWithName:(NSString*) filePath;
+/**
+ * only unmute the effect.
+ * @param filePath The path containing the sound data.
+ */
+- (void) unmuteEffectWithName:(NSString*) filePath;
+
 @end

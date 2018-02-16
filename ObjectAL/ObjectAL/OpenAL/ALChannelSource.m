@@ -658,4 +658,55 @@ SYNTHESIZE_DELEGATE_PROPERTY(reverbObstruction, ReverbObstruction, float);
     return !playing;
 }
 
+#pragma mark -
+#pragma mute Function
+-(void) muteEffectWithBuffer:(ALBuffer *) effectSource
+{
+    OPTIONALLY_SYNCHRONIZED(sourcePool)
+	{
+        for(ALSource* source in sourcePool.sources)
+        {
+            if([source.buffer isEqual:effectSource])
+            {
+                source.volume = 0.0;
+            }
+        }
+    }
+}
+
+-(void) unmuteEffectWithBuffer:(ALBuffer *) effectSource
+{
+    OPTIONALLY_SYNCHRONIZED(sourcePool)
+	{
+        for(ALSource* source in sourcePool.sources)
+        {
+            if([source.buffer isEqual:effectSource])
+            {
+                source.volume = 1.0;
+            }
+        }
+    }
+}
+
+-(void) switchMuteWithEffectBuffer:(ALBuffer *) effectSource
+{
+    OPTIONALLY_SYNCHRONIZED(sourcePool)
+	{
+        for(ALSource* source in sourcePool.sources)
+        {
+            if([source.buffer isEqual:effectSource])
+            {
+                if (source.volume == 0.0)
+                {
+                    source.volume = 1.0;
+                }
+                else
+                {
+                    source.volume = 0.0;
+                }
+            }
+        }
+    }
+}
+
 @end
